@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen 3er Año - Mama, Cuello, Gineco, Angio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0edf5;
+            color: #1a1a2e;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 320px;
+            background: #2d1b4e;
+            color: white;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #5a3d7a;
+            letter-spacing: 0.5px;
+            color: #d4b8ff;
+        }
+        .sidebar h2 span { font-weight: 700; color: #c9a6ff; }
+        .nav-group { margin-top: 8px; }
+        .nav-group-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #b491e0;
+            padding: 10px 20px 4px 20px;
+            font-weight: 600;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #e0d4f0;
+            padding: 8px 20px 8px 28px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover { background: #3d2863; color: white; border-left-color: #b491e0; }
+        .nav-btn.active { background: #4f3480; color: white; border-left-color: #c9a6ff; font-weight: 500; }
+        .nav-btn.sub { padding-left: 40px; font-size: 0.82rem; color: #cdb8ec; }
+        .nav-btn.sub:hover { background: #3d2863; }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 40px 50px 40px;
+            background: white;
+        }
+        .main h1 {
+            font-size: 2.1rem;
+            color: #2d1b4e;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #5a3d7a;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ede8f5;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-section h2 {
+            color: #2d1b4e;
+            border-left: 6px solid #7b4bb5;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .content-section h3 {
+            color: #3d2863;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e5ddf0;
+            padding-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .content-section h4 {
+            color: #4f3480;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; }
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .content-section li { margin-bottom: 5px; }
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 22px 0;
+            font-size: 0.9rem;
+        }
+        .grade-table th {
+            background: #2d1b4e;
+            color: white;
+            padding: 9px 10px;
+            text-align: left;
+            border: 1px solid #2d1b4e;
+        }
+        .grade-table td {
+            border: 1px solid #d4d0e0;
+            padding: 9px 10px;
+            vertical-align: top;
+            background: #fbfafe;
+        }
+        .grade-table tr:nth-child(even) td { background: #f4f0fa; }
+        .badge {
+            display: inline-block;
+            background: #7b4bb5;
+            color: white;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .surg-box, .clin-box, .note-box {
+            padding: 14px 22px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .surg-box { background: #f0ebf8; border-left: 5px solid #7b4bb5; }
+        .clin-box { background: #fdf6e8; border-left: 5px solid #d4a017; }
+        .note-box { background: #edf0f9; border-left: 5px solid #5a6d9a; }
+        hr { margin: 30px 0; border: 0; height: 1px; background: #e5ddf0; }
+        .back-top { display: inline-block; margin-top: 20px; color: #4f3480; font-weight: 500; cursor: pointer; }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
+            .main { padding: 20px; }
+        }
+
+        .pdf-btn-container {
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .pdf-btn {
+            background: #2d1b4e;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(45, 27, 78, 0.3);
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .pdf-btn:hover {
+            background: #1f0f3a;
+            transform: scale(1.02);
+        }
+        .pdf-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media print {
+            .content-section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+            .content-section * {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            .surg-box, .clin-box, .note-box {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .grade-table {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .pdf-btn-container, .sidebar, .nav-group, .nav-btn {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>📘 <span>Cirugía</span> de Cuello, Mama, Ginecología y Angiología</h2>
+    
+    <!-- MAMA -->
+    <div class="nav-group">
+        <div class="nav-group-title">Mama</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+        <button class="nav-btn" data-target="mama-anatomia">Anatomía</button>
+        <button class="nav-btn" data-target="mama-factores">Factores de Riesgo</button>
+        <button class="nav-btn" data-target="mama-clasif">Clasificación TNM</button>
+        <button class="nav-btn" data-target="mama-tto">Tratamiento Quirúrgico</button>
+        <button class="nav-btn" data-target="mama-conservadora">Cirugía Conservadora</button>
+        <button class="nav-btn" data-target="mama-complicaciones">Complicaciones</button>
+        <button class="nav-btn" data-target="mama-tto-medico">Tratamiento Médico</button>
+    </div>
+
+    <!-- CUELLO - TIROIDES -->
+    <div class="nav-group">
+        <div class="nav-group-title">Cuello - Tiroides</div>
+        <button class="nav-btn" data-target="cuello-anatomia">Anatomía del Cuello</button>
+        <button class="nav-btn" data-target="tiroides-anatomia">Anatomía Tiroides</button>
+        <button class="nav-btn" data-target="tiroides-patologia">Patología Tiroidea</button>
+        <button class="nav-btn" data-target="tiroides-cancer">Cáncer de Tiroides</button>
+        <button class="nav-btn" data-target="tiroides-tecnica">Técnica Quirúrgica</button>
+        <button class="nav-btn" data-target="tiroides-complicaciones">Complicaciones</button>
+        <button class="nav-btn" data-target="tiroides-tormenta">Tormenta Tiroidea</button>
+        <button class="nav-btn" data-target="cuello-recurrente">Nervio Laríngeo Recurrente</button>
+    </div>
+
+    <!-- CUELLO - PARÓTIDAS -->
+    <div class="nav-group">
+        <div class="nav-group-title">Cuello - Parótidas</div>
+        <button class="nav-btn" data-target="parotida-anatomia">Anatomía Parótida</button>
+        <button class="nav-btn" data-target="parotida-tecnica">Técnica Quirúrgica</button>
+        <button class="nav-btn" data-target="parotida-nervio">Nervio Facial</button>
+    </div>
+
+    <!-- CUELLO - BRANQUIALES Y TRAQUEOSTOMÍA -->
+    <div class="nav-group">
+        <div class="nav-group-title">Cuello - Otras Patologías</div>
+        <button class="nav-btn" data-target="cuello-branquial">Quistes y Fístulas Branquiales</button>
+        <button class="nav-btn" data-target="cuello-traqueostomia">Traqueostomía</button>
+        <button class="nav-btn" data-target="cuello-laringe">Laringe y Tráquea Cervical</button>
+        <button class="nav-btn" data-target="cuello-mondor">Enfermedad de Mondor</button>
+    </div>
+
+    <!-- GINECOLOGÍA -->
+    <div class="nav-group">
+        <div class="nav-group-title">Ginecología</div>
+        <button class="nav-btn" data-target="gineco-hta">Histerectomía Abdominal</button>
+        <button class="nav-btn" data-target="gineco-htv">Histerectomía Vaginal</button>
+        <button class="nav-btn" data-target="gineco-ovario">Tumores de Ovario</button>
+        <button class="nav-btn" data-target="gineco-prolapso">Prolapso Genital</button>
+    </div>
+
+    <!-- ANGIOLOGÍA -->
+    <div class="nav-group">
+        <div class="nav-group-title">Angiología</div>
+        <button class="nav-btn" data-target="angio-iaa">Insuficiencia Arterial Aguda</button>
+        <button class="nav-btn" data-target="angio-tvp">TVP</button>
+        <button class="nav-btn" data-target="angio-pie">Pie Diabético</button>
+    </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main" id="mainContent">
+    <!-- INICIO -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>📘 Resumen de Cirugía General</h1>
+        <div class="subtitle">3er Año - Mama, Cuello, Ginecología y Angiología</div>
+        <p style="font-size:1.05rem; margin-bottom:16px;">Contenido resumido de los documentos de estudio:</p>
+        <ul style="font-size:1.05rem;">
+            <li><strong>Patología de la Mama:</strong> Anatomía, factores de riesgo, clasificación TNM, técnicas quirúrgicas (conservadoras y radicales), complicaciones y tratamiento médico.</li>
+            <li><strong>Cirugía del Cuello:</strong> Tiroides (anatomía, bocio, cáncer, técnica quirúrgica, complicaciones, tormenta tiroidea) y Parótidas (anatomía, técnica, nervio facial).</li>
+            <li><strong>Ginecología:</strong> Histerectomía abdominal y vaginal, tumores de ovario, prolapso genital.</li>
+            <li><strong>Angiología:</strong> Insuficiencia arterial aguda, TVP, pie diabético.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MAMA -->
+    <div class="content-section" id="sec-mama-anatomia">
+        <h2>Anatomía de la Mama</h2>
+        <ul>
+            <li><strong>Ubicación:</strong> Pared anterior del tórax, entre 2º y 6º espacio intercostal, desde el esternón hasta la línea axilar anterior.</li>
+            <li><strong>Prolongación axilar:</strong> Cola de Spence.</li>
+            <li><strong>Pezón y areola:</strong> Pezón con 12-20 orificios galactóforos; areola con tubérculos de Montgomery (glándulas sebáceas).</li>
+            <li><strong>Parénquima:</strong> Conductos galactóforos, lóbulos y acinos.</li>
+            <li><strong>Estroma:</strong> Tejido fibroso y grasa. Ligamentos suspensorios de Cooper.</li>
+            <li><strong>Irrigación:</strong> Arterias mamaria interna (subclavia), mamaria externa y torácica larga (axilar), e intercostales.</li>
+            <li><strong>Drenaje linfático:</strong>
+                <ul>
+                    <li><strong>Vía axilar:</strong> Principal, a ganglios pectorales, axilares centrales y subclavios (niveles I, II, III).</li>
+                    <li><strong>Vía mamaria interna:</strong> A mediastino.</li>
+                    <li><strong>Vía de Gerota:</strong> A ganglios subdiafragmáticos.</li>
+                    <li><strong>Vía de Groszman:</strong> A ganglios de Rotter → subclavia.</li>
+                    <li><strong>Vía mamaria cruzada:</strong> Superficial a la axila contralateral.</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="note-box">
+            <p><strong>Importancia:</strong> El drenaje linfático explica la diseminación del cáncer de mama a axila, mediastino y huesos (por anastomosis venosas intercostales a vertebrales).</p>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-mama-factores">
+        <h2>Factores de Riesgo para Cáncer de Mama</h2>
+        <h3>Mayores</h3>
+        <ul>
+            <li><strong>Edad:</strong> 45-65 años (mayor incidencia).</li>
+            <li><strong>Antecedentes familiares:</strong> Hermanas, madre, tías maternas, especialmente premenopáusicas y bilaterales.</li>
+            <li><strong>Antecedentes personales:</strong> Cáncer previo en la mama contralateral.</li>
+        </ul>
+        <h3>Menores</h3>
+        <ul>
+            <li><strong>Hormonales y reproductivos:</strong> Menarquia precoz (<12 años), menopausia tardía (>55 años), nuliparidad, primer parto >35 años, terapia hormonal exógena.</li>
+            <li><strong>Enfermedades benignas:</strong> Hiperplasia ductal/lobulillar atípica, papilomatosis florida.</li>
+            <li><strong>Dieta rica en grasas animales.</strong></li>
+            <li><strong>Alcoholismo.</strong></li>
+            <li><strong>Factores socioeconómicos y ambientales.</strong></li>
+            <li><strong>Lactancia materna:</strong> Factor protector.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-mama-clasif">
+        <h2>Clasificación TNM (Cáncer de Mama)</h2>
+        <h3>T - Tumor primario</h3>
+        <ul>
+            <li><strong>Tis:</strong> Carcinoma in situ, Paget del pezón sin tumor.</li>
+            <li><strong>T0:</strong> No tumor palpable.</li>
+            <li><strong>T1:</strong> ≤2 cm. T1a: sin fijación; T1b: con fijación.</li>
+            <li><strong>T2:</strong> 2-4.9 cm. T2a: sin fijación; T2b: con fijación.</li>
+            <li><strong>T3:</strong> >5 cm.</li>
+            <li><strong>T4:</strong> Extensión a pared costal o piel. T4a: pared costal; T4b: piel de naranja, ulceración; T4c: ambas; T4d: carcinoma inflamatorio.</li>
+        </ul>
+        <h3>N - Ganglios regionales</h3>
+        <ul>
+            <li><strong>N0:</strong> No palpables.</li>
+            <li><strong>N1:</strong> Palpables móviles (N1a no tumorales, N1b tumorales).</li>
+            <li><strong>N2:</strong> Fijos a estructuras.</li>
+            <li><strong>N3:</strong> Supraclaviculares, infraclaviculares o edema de brazo.</li>
+        </ul>
+        <h3>M - Metástasis</h3>
+        <ul>
+            <li><strong>M0:</strong> No metástasis.</li>
+            <li><strong>M1:</strong> Metástasis a distancia.</li>
+        </ul>
+        <h3>Etapas Clínicas</h3>
+        <ul>
+            <li><strong>Etapa I:</strong> T1 N0 M0.</li>
+            <li><strong>Etapa II:</strong> T0-2 N1 M0; T2 N0 M0.</li>
+            <li><strong>Etapa III:</strong> T3-4 cualquier N, cualquier T N2-3.</li>
+            <li><strong>Etapa IV:</strong> Cualquier T, cualquier N, M1.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-mama-tto">
+        <h2>Tratamiento Quirúrgico del Cáncer de Mama</h2>
+        <h3>Mastectomías Radicales</h3>
+        <ul>
+            <li><strong>Halsted (Clásica):</strong> Reseca mama, pectorales mayor y menor, disección axilar completa (niveles I, II, III). Indicada en T2, T3, T4.</li>
+            <li><strong>Patey (Modificada):</strong> Reseca mama, pectoral menor, disección axilar completa. Conserva pectoral mayor.</li>
+            <li><strong>Madden (Modificada):</strong> Reseca mama, conserva ambos pectorales, disección axilar completa. La más utilizada actualmente.</li>
+            <li><strong>Supra-radical:</strong> Similar a Halsted + disección supraclavicular, mediastinal y mamaria interna.</li>
+        </ul>
+        <h3>Mastectomías Parciales (Conservadoras)</h3>
+        <ul>
+            <li><strong>Tumorectomía/Lumpectomía:</strong> Resección del tumor con margen de 1 cm. Sin vaciamiento axilar.</li>
+            <li><strong>Cuadrantectomía:</strong> Resección de todo un cuadrante. + disección axilar (niveles I-III).</li>
+            <li><strong>Técnica de Veronesi:</strong> Cuadrantectomía + disección axilar + radioterapia.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Indicaciones de Cirugía Conservadora</h4>
+            <ul>
+                <li>Estadios I y II.</li>
+                <li>Tumor único, <3 cm.</li>
+                <li>Relación mama-tumor favorable.</li>
+                <li>Paciente que acepte radioterapia complementaria y seguimiento estricto.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-mama-conservadora">
+        <h2>Cirugía Conservadora de la Mama</h2>
+        <h3>Requisitos</h3>
+        <ul>
+            <li>Cirujano oncólogo con experiencia.</li>
+            <li>Patólogo calificado (clasificación Scarff-Bloom-Richardson).</li>
+            <li>Departamento de radioterapia y oncología médica.</li>
+            <li>Mamografía preoperatoria y seguimiento.</li>
+            <li>Consentimiento informado.</li>
+        </ul>
+        <h3>Contraindicaciones</h3>
+        <ul>
+            <li>Microcalcificaciones difusas sospechosas.</li>
+            <li>Tumor multicéntrico o lesiones múltiples ipsilaterales.</li>
+            <li>Relación mama/tumor desfavorable o tumor >3 cm.</li>
+            <li>Imposibilidad de recibir radioterapia.</li>
+            <li>Embarazo (1er y 2do trimestre).</li>
+            <li>Negativa de la paciente.</li>
+            <li>Colagenopatías, radioterapia previa.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica Quirúrgica (Cuadrantectomía)</h4>
+            <ol>
+                <li>Incisión sobre el tumor.</li>
+                <li>Resección con margen de 2-3 cm y aponeurosis pectoral.</li>
+                <li>Biopsia por congelación para confirmar márgenes libres.</li>
+                <li>Disección axilar de niveles I-III (según técnica).</li>
+                <li>Lavado con suero o agua destilada.</li>
+                <li>Drenaje por contrabertura (aspiración cerrada).</li>
+                <li>Vendaje compresivo.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-mama-complicaciones">
+        <h2>Complicaciones de la Cirugía de Mama</h2>
+        <ul>
+            <li><strong>Hemorragia:</strong> Intra o postoperatoria.</li>
+            <li><strong>Infección de la herida.</strong></li>
+            <li><strong>Seroma y linfocele.</strong></li>
+            <li><strong>Linfedema del brazo</strong> (por disección axilar).</li>
+            <li><strong>Lesión de nervios:</strong> Parestesias, debilidad del hombro (nervio torácico largo, toracodorsal).</li>
+            <li><strong>Necrosis de colgajos.</strong></li>
+            <li><strong>Complicaciones estéticas:</strong> Retracción, asimetría.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-mama-tto-medico">
+        <h2>Tratamiento Médico del Cáncer de Mama</h2>
+        <h3>Quimioterapia</h3>
+        <ul>
+            <li><strong>Neoadyuvante:</strong> Preoperatorio para reducir tamaño tumoral.</li>
+            <li><strong>Adyuvante:</strong> Postoperatorio en pacientes con ganglios positivos o factores de riesgo.</li>
+            <li>Esquemas: AC (Adriamicina + Ciclofosfamida), CMF (Ciclofosfamida, Metotrexato, 5-FU), Taxanos (Docetaxel, Paclitaxel).</li>
+        </ul>
+        <h3>Radioterapia</h3>
+        <ul>
+            <li><strong>Postoperatoria:</strong> Complemento de cirugía conservadora, en ganglios supraclaviculares, mediastino.</li>
+            <li><strong>Paliativa:</strong> Metástasis óseas.</li>
+        </ul>
+        <h3>Hormonoterapia</h3>
+        <ul>
+            <li><strong>Tamoxifeno:</strong> Antiestrógeno, en RE+ (receptores estrogénicos positivos).</li>
+            <li><strong>Inhibidores de aromatasa:</strong> Letrozol, Anastrozol, en postmenopáusicas.</li>
+            <li><strong>Ooforectomía:</strong> Ablación ovárica en premenopáusicas con tumores hormono-dependientes.</li>
+        </ul>
+        <h3>Terapia dirigida</h3>
+        <ul>
+            <li><strong>Trastuzumab (Herceptin):</strong> Contra HER2/neu positivo.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- SECCIÓN COMPLETA DE CUELLO (ampliada) -->
+<!-- Para integrar en la app principal, reemplazar las secciones existentes de tiroides, parótidas y cuello -->
+<!-- ============================================================ -->
+
+<!-- ============================================================ -->
+<!-- ANATOMÍA DEL CUELLO -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-anatomia">
+    <h2>Anatomía Quirúrgica del Cuello</h2>
+    
+    <h3>Triángulos del Cuello</h3>
+    <p>El músculo <strong>esternocleidomastoideo (ECM)</strong> divide el cuello en dos grandes regiones: el triángulo anterior y el triángulo posterior.</p>
+    
+    <h4>Triángulo Anterior</h4>
+    <p><strong>Límites:</strong> Borde anterior del ECM, línea media del cuello (desde el manubrio hasta la sínfisis mandibular) y borde inferior de la mandíbula.</p>
+    <p>Se subdivide en cuatro triángulos menores:</p>
+    <ul>
+        <li><strong>Submentoniano:</strong> Entre los vientres anteriores del digástrico y el hueso hioides. Contiene ganglios submentonianos (drenan lengua anterior, suelo de boca y encías).</li>
+        <li><strong>Submaxilar (o digástrico):</strong> Entre los vientres del digástrico y el borde mandibular. Contiene la glándula submaxilar, arteria facial y ganglios submandibulares.</li>
+        <li><strong>Carotídeo:</strong> Delimitado por el ECM, el vientre posterior del digástrico y el omohioideo. Contiene el paquete vasculonervioso (carótida, yugular, vago).</li>
+        <li><strong>Muscular (o traqueal):</strong> Entre la línea media, el ECM y el omohioideo. Contiene los músculos infrahioideos, la tráquea, el esófago y el tiroides.</li>
+    </ul>
+
+    <h4>Triángulo Posterior</h4>
+    <p><strong>Límites:</strong> Borde posterior del ECM, borde anterior del trapecio y tercio medio de la clavícula.</p>
+    <p>Contiene el plexo braquial, los vasos subclavios, el nervio accesorio (XI) y ganglios cervicales posteriores.</p>
+
+    <h3>Estructuras Vasculonerviosas Principales</h3>
+    <ul>
+        <li><strong>Arteria carótida común:</strong> Se bifurca en carótida interna y externa a nivel de C4 (borde superior del cartílago tiroides).</li>
+        <li><strong>Vena yugular interna:</strong> Acompaña a la carótida, drena la sangre del cráneo y cuello.</li>
+        <li><strong>Nervio vago (X):</strong> Discurre en la vaina carotídea, entre la carótida y la yugular.</li>
+        <li><strong>Nervio accesorio (XI):</strong> Atraviesa el triángulo posterior, inerva el ECM y el trapecio.</li>
+        <li><strong>Plexo braquial:</strong> Formado por C5-T1, situado en el triángulo posterior.</li>
+    </ul>
+
+    <div class="note-box">
+        <p><strong>Importancia quirúrgica:</strong> El conocimiento preciso de los triángulos y sus contenidos es esencial para la disección cervical, el vaciamiento ganglionar y la prevención de lesiones nerviosas.</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- GLÁNDULA TIROIDES (AMPLIADA) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-anatomia">
+    <h2>Anatomía Quirúrgica de la Glándula Tiroides</h2>
+    
+    <h3>Características Generales</h3>
+    <ul>
+        <li>Es la glándula endocrina más voluminosa del adulto (15-20 g).</li>
+        <li>Color rojo parduzco, consistencia firme y elástica.</li>
+        <li>Más desarrollada en la mujer, el feto y la infancia.</li>
+        <li>El lóbulo tiroideo normal mide aproximadamente el tamaño de la uña del pulgar.</li>
+    </ul>
+
+    <h3>Anatomía Descriptiva</h3>
+    <ul>
+        <li><strong>Lóbulos:</strong> Dos (derecho e izquierdo), cada uno con polo superior e inferior, tres caras (interna, externa y posterior) y tres bordes.</li>
+        <li><strong>Istmo:</strong> Une los lóbulos a nivel de los anillos traqueales 2-4. Dimensiones: 2 cm de ancho, 0.5 cm de grosor.</li>
+        <li><strong>Lóbulo piramidal:</strong> Vestigio del conducto tirogloso, se extiende hacia arriba desde el istmo (más frecuente a la izquierda).</li>
+        <li><strong>Folículo tiroideo:</strong> Unidad estructural, contiene coloide (tiroglobulina, enzimas).</li>
+    </ul>
+
+    <h3>Relaciones Anatómicas</h3>
+    <table class="grade-table">
+        <thead><tr><th>Estructura</th><th>Relación</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Anterior</strong></td><td>Piel, fascia cervical, músculos (esternocleidomastoideo, esternotiroideo, omohioideo).</td></tr>
+            <tr><td><strong>Posterior</strong></td><td>Paratiroides, tráquea, laringe, faringe, nervio laríngeo recurrente.</td></tr>
+            <tr><td><strong>Superior</strong></td><td>Cartílago tiroides, arteria tiroidea superior.</td></tr>
+            <tr><td><strong>Inferior</strong></td><td>Anillos traqueales 5-6, arteria tiroidea inferior.</td></tr>
+            <tr><td><strong>Lateral</strong></td><td>Arterias carótidas comunes, nervio laríngeo recurrente.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Irrigación Sanguínea</h3>
+    <ul>
+        <li><strong>Arterias:</strong>
+            <ul>
+                <li><strong>Tiroideas superiores:</strong> Ramas de la carótida externa.</li>
+                <li><strong>Tiroideas inferiores:</strong> Ramas de la subclavia (tronco tirocervical).</li>
+                <li><strong>Tiroidea media (de Neubauer):</strong> Inconstante, del tronco braquiocefálico o arco aórtico.</li>
+                <li><strong>Nota:</strong> No son arterias terminales; presentan anastomosis.</li>
+            </ul>
+        </li>
+        <li><strong>Venas:</strong>
+            <ul>
+                <li><strong>Superior y media:</strong> Drenan a la yugular interna.</li>
+                <li><strong>Inferior:</strong> Drena a la vena braquiocefálica.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Drenaje Linfático</h3>
+    <ul>
+        <li>Plexo linfático extenso que sigue el trayecto arterial.</li>
+        <li>Termina en ganglios traqueales, cervicales profundos y mediastínicos.</li>
+    </ul>
+
+    <h3>Inervación</h3>
+    <ul>
+        <li><strong>Simpática:</strong> Ganglios cervicales medio, superior e inferior.</li>
+        <li><strong>Parasimpática:</strong> Nervio vago (laríngeo superior e inferior).</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Nervio Laríngeo Recurrente: Trayecto y Relaciones</h4>
+        <ul>
+            <li><strong>Derecho:</strong> Rodea la arteria subclavia derecha.</li>
+            <li><strong>Izquierdo:</strong> Rodea el cayado aórtico.</li>
+            <li><strong>Tres sectores:</strong>
+                <ul>
+                    <li><strong>Traqueal:</strong> Entre tráquea y carótida, por debajo de la arteria tiroidea inferior. (Sector más seguro para identificación).</li>
+                    <li><strong>Vascular:</strong> Cruza la arteria tiroidea inferior (relación variable).</li>
+                    <li><strong>Laríngeo:</strong> Penetra en la laringe 5 mm por delante y debajo del cuerno inferior del cartílago tiroides.</li>
+                </ul>
+            </li>
+            <li><strong>Signo de la cuerda de Lahey:</strong> Traccionar suavemente la arteria tiroidea inferior para palpar el nervio contra la tráquea.</li>
+            <li><strong>Técnica de Wang:</strong> Identificar el nervio en su entrada a la laringe (relación más constante).</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BOCIO Y PATOLOGÍA TIROIDEA -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-patologia">
+    <h2>Patología Quirúrgica de la Tiroides</h2>
+    
+    <h3>Bocio</h3>
+    <p><strong>Definición:</strong> Aumento de volumen de la glándula tiroides, independientemente de su causa.</p>
+    
+    <h4>Clasificación del Bocio</h4>
+    <ul>
+        <li><strong>Por función:</strong>
+            <ul>
+                <li><strong>Tóxico:</strong> Hipertiroidismo (Enfermedad de Graves-Basedow).</li>
+                <li><strong>No tóxico:</strong> Eutiroideo o hipotiroideo.</li>
+            </ul>
+        </li>
+        <li><strong>Por morfología:</strong>
+            <ul>
+                <li><strong>Difuso:</strong> Aumento homogéneo.</li>
+                <li><strong>Multinodular:</strong> Múltiples nódulos.</li>
+                <li><strong>Nodular único:</strong> Nódulo solitario.</li>
+            </ul>
+        </li>
+        <li><strong>Por localización:</strong>
+            <ul>
+                <li><strong>Cervical:</strong> El más frecuente.</li>
+                <li><strong>Retroesternal:</strong> Extensión al mediastino (hasta 20% de los bocios multinodulares).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Enfermedad de Graves-Basedow (Bocio Tóxico Difuso)</h3>
+    <ul>
+        <li><strong>Características:</strong> Bocio difuso, hipertiroidismo, oftalmopatía infiltrativa (exoftalmos), mixedema pretibial.</li>
+        <li><strong>Etiología:</strong> Autoimmune (anticuerpos contra receptor de TSH).</li>
+        <li><strong>Diagnóstico:</strong> Clínica + TSH suprimida, T4/T3 elevados, anticuerpos anti-TSH.</li>
+        <li><strong>Tratamiento médico:</strong>
+            <ul>
+                <li>Antitiroideos: Propiltiuracilo, Metimazol.</li>
+                <li>Yodo radiactivo (I-131).</li>
+                <li>Betabloqueantes (Propranolol).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Tiroiditis</h3>
+    <ul>
+        <li><strong>Hashimoto (tiroiditis linfocítica crónica):</strong> Autoimmune, hipotiroidismo, anticuerpos anti-TPO, bocio firme. Puede asociarse a linfoma tiroideo.</li>
+        <li><strong>Riedel (tiroiditis fibrosa invasiva):</strong> Rara, fibrosis densa que reemplaza el parénquima, se extiende a estructuras vecinas. Tratamiento quirúrgico para aliviar compresión.</li>
+        <li><strong>Subaguda (De Quervain):</strong> Viral, dolorosa, autolimitada.</li>
+    </ul>
+
+    <h4>Indicaciones Quirúrgicas en Patología Tiroidea</h4>
+    <ul>
+        <li><strong>Bocio tóxico difuso:</strong> Fracaso del tratamiento médico, bocio de gran tamaño, compresión, embarazo (1er y 2do trimestre), pacientes jóvenes (<25 años).</li>
+        <li><strong>Bocio multinodular:</strong> Síntomas compresivos, crecimiento rápido, sospecha de malignidad, estética.</li>
+        <li><strong>Nódulo tiroideo no tóxico:</strong> BAAF positiva o sospechosa, crecimiento rápido, nódulo duro/fijo, disfonía, adenopatías, antecedentes de radioterapia, edad <25 o >60 años.</li>
+        <li><strong>Enfermedad de Hashimoto:</strong> Si hay nódulo sospechoso o compresión.</li>
+        <li><strong>Enfermedad de Riedel:</strong> Para aliviar compresión traqueal/esofágica.</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CÁNCER DE TIROIDES (AMPLIADO) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-cancer">
+    <h2>Cáncer de Tiroides</h2>
+    
+    <h3>Clasificación Histopatológica</h3>
+    <table class="grade-table">
+        <thead><tr><th>Tipo</th><th>Frecuencia</th><th>Edad</th><th>Características</th><th>Metástasis</th><th>Pronóstico</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Papilar</strong></td><td>80%</td><td><40 años (pico 30-50)</td><td>Multicéntrico (80%), crecimiento lento, psamomas, BRAF mutado.</td><td>Linfática (ganglios cervicales)</td><td>Excelente (supervivencia 95% a 10 años)</td></tr>
+            <tr><td><strong>Folicular</strong></td><td>10-15%</td><td>5ª-6ª década</td><td>Encapsulado, invasión vascular, capta yodo, mutaciones RAS.</td><td>Hematógena (hueso, pulmón, hígado)</td><td>Bueno (supervivencia 80-90% a 10 años)</td></tr>
+            <tr><td><strong>Células de Hürthle</strong></td><td>3-5%</td><td>5ª-6ª década</td><td>Variante del folicular, oncocitos, mayor agresividad.</td><td>Hematógena y linfática</td><td>Intermedio</td></tr>
+            <tr><td><strong>Medular</strong></td><td>5%</td><td>Variable</td><td>Células C (parafoliculares), produce calcitonina, CEA, MEN II (Sipple).</td><td>Linfática y hematógena</td><td>Intermedio (supervivencia 70% a 10 años)</td></tr>
+            <tr><td><strong>Anaplásico (indiferenciado)</strong></td><td><2%</td><td>>60 años</td><td>Crecimiento rápido, infiltrante, no capta yodo, p53 mutado.</td><td>Local y a distancia</td><td>Muy malo (supervivencia media 4-6 meses)</td></tr>
+            <tr><td><strong>Linfoma</strong></td><td><1%</td><td>>60 años</td><td>Asociado a Hashimoto, fenotipo B, crecimiento rápido.</td><td>Local y a distancia</td><td>Variable (responde a QT/RT)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Factores Pronósticos y de Riesgo</h3>
+    <ul>
+        <li><strong>Edad:</strong> <25 años o >60 años (peor pronóstico).</li>
+        <li><strong>Sexo:</strong> Más frecuente en mujeres (3:1), pero peor pronóstico en hombres.</li>
+        <li><strong>Radiaciones previas:</strong> Exposición a radiaciones ionizantes en cabeza/cuello (aumenta riesgo de papilar).</li>
+        <li><strong>Antecedentes familiares:</strong> Cáncer medular familiar, MEN II, poliposis familiar.</li>
+        <li><strong>Tipo histológico:</strong> Papilar/folicular (buen pronóstico), medular (intermedio), anaplásico (malo).</li>
+        <li><strong>Tamaño del tumor:</strong> >4 cm aumenta riesgo de recidiva.</li>
+        <li><strong>Extensión extratiroidea:</strong> Invasión capsular, vascular, multifocalidad.</li>
+        <li><strong>Metástasis:</strong> Ganglionares o a distancia.</li>
+    </ul>
+
+    <h3>Sistemas de Estadificación</h3>
+    <ul>
+        <li><strong>AJCC/UICC TNM 8ª edición:</strong> Considera edad (corte en 55 años).</li>
+        <li><strong>MACIS:</strong> Metástasis, edad, invasión, tamaño, diferenciación.</li>
+        <li><strong>AMES:</strong> Edad, metástasis, extensión, tamaño.</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Tratamiento del Cáncer Diferenciado (Papilar y Folicular)</h4>
+        <ol>
+            <li><strong>Cirugía:</strong>
+                <ul>
+                    <li><strong>Tiroidectomía total o casi total</strong> (recomendado para tumores >1 cm, multifocales, o con factores de riesgo).</li>
+                    <li><strong>Hemitrioidectomía + istmectomía:</strong> Para tumores ≤1 cm, unifocales, sin factores de riesgo.</li>
+                    <li><strong>Vaciamiento ganglionar:</strong> Central (niveles VI) y lateral (II-V) si hay adenopatías o alto riesgo.</li>
+                </ul>
+            </li>
+            <li><strong>Terapia con I-131 (Radioyodo):</strong>
+                <ul>
+                    <li>Indicada en tumores >1 cm, multifocales, extensión extratiroidea, metástasis.</li>
+                    <li>Previa preparación con dieta baja en yodo y elevación de TSH (suspensión de levotiroxina o rhTSH).</li>
+                    <li>Dosis: 30-100 mCi para ablación de remanentes, 100-200 mCi para metástasis.</li>
+                </ul>
+            </li>
+            <li><strong>Terapia supresora de TSH:</strong>
+                <ul>
+                    <li>Levotiroxina para mantener TSH <0.1 mU/L en alto riesgo, y TSH 0.1-0.5 mU/L en bajo riesgo.</li>
+                </ul>
+            </li>
+            <li><strong>Seguimiento:</strong>
+                <ul>
+                    <li>Tiroglobulina sérica (marcador de recurrencia).</li>
+                    <li>Ecografía cervical cada 6-12 meses.</li>
+                    <li>Gammagrafía con I-131 si tiroglobulina elevada o sospecha ecográfica.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="surg-box">
+        <h4>Cáncer Medular de Tiroides</h4>
+        <ul>
+            <li><strong>Cirugía:</strong> Tiroidectomía total + vaciamiento ganglionar central (nivel VI) y lateral si hay adenopatías.</li>
+            <li><strong>Determinación de calcitonina y CEA</strong> postoperatoria para evaluar persistencia.</li>
+            <li><strong>Seguimiento:</strong> Calcitonina, CEA, ecografía cervical.</li>
+            <li><strong>Estudio genético:</strong> Mutaciones en RET para MEN IIA y IIB (cribado familiar).</li>
+            <li><strong>Tratamiento dirigido:</strong> Inhibidores de tirosina quinasa (Vandetanib, Cabozantinib) en enfermedad metastásica.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h4>Cáncer Anaplásico</h4>
+        <ul>
+            <li><strong>Si resecable:</strong> Tiroidectomía total + radioterapia externa + quimioterapia (5-FU, doxorrubicina).</li>
+            <li><strong>Si irresecable:</strong> Radioterapia + quimioterapia paliativa.</li>
+            <li><strong>Obstrucción de vía aérea:</strong> Traqueostomía urgente.</li>
+            <li><strong>Pronóstico:</strong> Muy malo, con supervivencia media de 4-6 meses.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TÉCNICA QUIRÚRGICA TIROIDES (DETALLADA) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-tecnica">
+    <h2>Técnica Quirúrgica de Tiroidectomía</h2>
+    
+    <h3>Preparación Preoperatoria</h3>
+    <ul>
+        <li><strong>Eutiroideo:</strong> Antes de la cirugía, el paciente debe estar eutiroideo (especialmente en bocio tóxico).</li>
+        <li><strong>Lugol:</strong> 1-5 gotas cada 8 horas durante 10-15 días previos (disminuye vascularización).</li>
+        <li><strong>Propranolol:</strong> 20-40 mg cada 8-12 horas para controlar síntomas adrenérgicos.</li>
+        <li><strong>Reposo físico y psíquico.</strong></li>
+        <li><strong>Dieta hipercalórica y vitaminas.</strong></li>
+        <li><strong>Leucograma semanal</strong> para control de mielotoxicidad por antitiroideos.</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Técnica de Tiroidectomía Subtotal o Total (Pasos Detallados)</h4>
+        <ol>
+            <li><strong>Posición del paciente:</strong> Decúbito supino, hiperextensión del cuello (colocar una almohada bajo los hombros), cabeza ligeramente rotada al lado contralateral.</li>
+            <li><strong>Antisepsia y paños de campo.</strong></li>
+            <li><strong>Incisión:</strong>
+                <ul>
+                    <li>Cervicotomía transversa (Kocher) a 2-3 cm por encima de la horquilla esternal.</li>
+                    <li>Longitud: 4-8 cm, según el tamaño del bocio.</li>
+                </ul>
+            </li>
+            <li><strong>Colgajos cutáneos:</strong>
+                <ul>
+                    <li>Disección en el plano subcutáneo (entre la fascia superficial y la profunda).</li>
+                    <li>Colgajo superior: hasta el borde superior del cartílago tiroides.</li>
+                    <li>Colgajo inferior: hasta la horquilla esternal.</li>
+                    <li>Se eleva con pinzas de Adson y tijeras de Metzenbaum.</li>
+                </ul>
+            </li>
+            <li><strong>Apertura de la línea media:</strong>
+                <ul>
+                    <li>Identificar la línea alba cervical (entre los músculos esternohioideos).</li>
+                    <li>Disección roma con tijeras o dedo para separar los músculos hasta exponer la glándula.</li>
+                </ul>
+            </li>
+            <li><strong>Ligadura de venas tiroideas:</strong>
+                <ul>
+                    <li><strong>Venas medias:</strong> Ligar y seccionar entre pinzas (cuidado con la vena yugular).</li>
+                    <li><strong>Venas superiores:</strong> Ligar cerca de la glándula para evitar lesión del nervio laríngeo superior.</li>
+                </ul>
+            </li>
+            <li><strong>Disección del polo superior:</strong>
+                <ul>
+                    <li>Traccionar el lóbulo hacia abajo y lateralmente.</li>
+                    <li>Identificar la arteria tiroidea superior y su división en ramas anterior y posterior.</li>
+                    <li><strong>Ligadura de la arteria tiroidea superior</strong> en sus ramas (nunca en el tronco principal para proteger la rama externa del nervio laríngeo superior).</li>
+                </ul>
+            </li>
+            <li><strong>Disección del polo inferior:</strong>
+                <ul>
+                    <li>Traccionar el lóbulo hacia arriba y lateralmente.</li>
+                    <li>Identificar la arteria tiroidea inferior.</li>
+                    <li><strong>Ligadura en sus ramas</strong> para preservar el nervio laríngeo recurrente y las paratiroides.</li>
+                </ul>
+            </li>
+            <li><strong>Identificación del nervio laríngeo recurrente:</strong>
+                <ul>
+                    <li>Buscar en el sector traqueal (por debajo de la arteria tiroidea inferior).</li>
+                    <li>Disección cuidadosa, sin tracción excesiva.</li>
+                    <li>Si no se encuentra, usar la técnica de Wang (entrada a la laringe).</li>
+                </ul>
+            </li>
+            <li><strong>Identificación y preservación de las paratiroides:</strong>
+                <ul>
+                    <li>Son estructuras ovaladas, de 5-7 mm, color marrón-amarillento.</li>
+                    <li>Se encuentran en la cara posterior del tiroides, entre la cápsula y la fascia.</li>
+                    <li>Si se lesionan, se pueden autotrasplantar en el músculo esternocleidomastoideo.</li>
+                </ul>
+            </li>
+            <li><strong>Ligadura del ligamento suspensorio de Berry:</strong>
+                <ul>
+                    <li>Es el punto más peligroso para el nervio recurrente.</li>
+                    <li>Se corta cerca de la tráquea, con disección meticulosa.</li>
+                </ul>
+            </li>
+            <li><strong>Resección de la glándula:</strong>
+                <ul>
+                    <li><strong>Tiroidectomía subtotal:</strong> Dejar 3-4 g de remanente en cada lóbulo (aproximadamente 2.5 x 2.5 x 1.5 cm).</li>
+                    <li><strong>Tiroidectomía total:</strong> Resecar toda la glándula, incluyendo el istmo y el lóbulo piramidal.</li>
+                    <li>Se reseca con bisturí frío o eléctrico, hemostasia con suturas o clips.</li>
+                </ul>
+            </li>
+            <li><strong>Hemostasia final:</strong>
+                <ul>
+                    <li>Revisión cuidadosa del lecho quirúrgico.</li>
+                    <li>Control de puntos sangrantes con bipolar o ligaduras.</li>
+                </ul>
+            </li>
+            <li><strong>Drenaje:</strong>
+                <ul>
+                    <li>Colocar un drenaje de Penrose o Jackson-Pratt en el lecho tiroideo.</li>
+                    <li>Salida por contrabertura lateral o por el extremo de la incisión.</li>
+                </ul>
+            </li>
+            <li><strong>Cierre:</strong>
+                <ul>
+                    <li>Aproximar los músculos pretiroideos con sutura continua de Vicryl 2/0.</li>
+                    <li>Cerrar la fascia cervical con Vicryl 2/0.</li>
+                    <li>Sutura subcutánea con Vicryl 3/0 y piel con seda 3/0 o grapas.</li>
+                </ul>
+            </li>
+            <li><strong>Laringoscopia:</strong> Al final de la intervención para evaluar la movilidad de las cuerdas vocales.</li>
+        </ol>
+    </div>
+
+    <div class="note-box">
+        <p><strong>Consejos prácticos:</strong></p>
+        <ul>
+            <li>La disección debe ser avascular y atraumática.</li>
+            <li>No usar pinzas hemostáticas en el nervio recurrente.</li>
+            <li>Si se duda de la viabilidad de una paratiroides, biopsiar y autotrasplantar.</li>
+            <li>En bocios retroesternales, puede ser necesario esternotomía parcial.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- COMPLICACIONES DE LA CIRUGÍA TIROIDEA (AMPLIADO) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-complicaciones">
+    <h2>Complicaciones de la Cirugía Tiroidea</h2>
+    
+    <h3>Complicaciones Transoperatorias</h3>
+    <ul>
+        <li><strong>Hemorragia:</strong> Puede ser arterial (tiroidea superior o inferior) o venosa. Prevención: ligadura cuidadosa, hemostasia meticulosa.</li>
+        <li><strong>Lesión del nervio laríngeo recurrente:</strong>
+            <ul>
+                <li><strong>Unilateral:</strong> Disfonía (voz bitonal), puede ser transitoria (edema) o permanente.</li>
+                <li><strong>Bilateral:</strong> Afonía, estridor, dificultad respiratoria (requiere traqueostomía urgente).</li>
+                <li><strong>Prevención:</strong> Identificación sistemática del nervio, disección en el sector traqueal, ligadura de la arteria tiroidea inferior en sus ramas.</li>
+                <li><strong>Tratamiento:</strong> Si es bilateral, traqueostomía y posterior cordoplastia.</li>
+            </ul>
+        </li>
+        <li><strong>Lesión de la rama externa del nervio laríngeo superior:</strong>
+            <ul>
+                <li>Causa pérdida de tono de la voz (hipofonía), fatiga vocal.</li>
+                <li>Prevención: Ligadura de la arteria tiroidea superior en sus ramas, identificando el nervio medial a la arteria.</li>
+            </ul>
+        </li>
+        <li><strong>Lesión de las paratiroides:</strong>
+            <ul>
+                <li><strong>Hipoparatiroidismo transitorio:</strong> Hipocalcemia leve (signo de Chvostek, Trousseau).</li>
+                <li><strong>Hipoparatiroidismo permanente:</strong> Requiere tratamiento con calcio y vitamina D de por vida.</li>
+                <li><strong>Prevención:</strong> Identificar y preservar las paratiroides, autotrasplante si se lesionan.</li>
+            </ul>
+        </li>
+        <li><strong>Lesión traqueal o esofágica:</strong>
+            <ul>
+                <li>Rara, ocurre en bocios grandes o invasivos.</li>
+                <li>Reparación primaria con sutura y drenaje.</li>
+            </ul>
+        </li>
+        <li><strong>Neumotórax:</strong> Si se lesiona la cúpula pleural durante la disección inferior (raro).</li>
+    </ul>
+
+    <h3>Complicaciones Postoperatorias Precoces</h3>
+    <ul>
+        <li><strong>Hemorragia postoperatoria:</strong>
+            <ul>
+                <li>Puede causar hematoma compresivo y compromiso de la vía aérea.</li>
+                <li><strong>Conducta:</strong> Reapertura urgente de la herida, evacuación del hematoma, control de la hemorragia.</li>
+            </ul>
+        </li>
+        <li><strong>Disfonía transitoria:</strong>
+            <ul>
+                <li>Por edema del nervio recurrente o intubación.</li>
+                <li>Mejora espontáneamente en días-semanas.</li>
+            </ul>
+        </li>
+        <li><strong>Hipoparatiroidismo postoperatorio:</strong>
+            <ul>
+                <li>Hipocalcemia: parestesias periorales, calambres, signo de Chvostek y Trousseau.</li>
+                <li><strong>Tratamiento:</strong> Gluconato de calcio EV 1-2 g en 100 mL de suero, seguido de calcio oral (1-2 g/día) y vitamina D (1,25-dihidroxicolecalciferol).</li>
+            </ul>
+        </li>
+        <li><strong>Tormenta tiroidea (crisis tirotóxica):</strong>
+            <ul>
+                <li>En pacientes hipertiroideos mal preparados.</li>
+                <li><strong>Tratamiento:</strong> Ver sección específica.</li>
+            </ul>
+        </li>
+        <li><strong>Infección de la herida:</strong>
+            <ul>
+                <li>Antibióticos según cultivo, drenaje si es necesario.</li>
+            </ul>
+        </li>
+        <li><strong>Enfisema subcutáneo:</strong>
+            <ul>
+                <li>Por lesión traqueal o drenaje inadecuado.</li>
+                <li>Resuelve espontáneamente si la causa se controla.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Complicaciones Tardías</h3>
+    <ul>
+        <li><strong>Hipo o hipertiroidismo:</strong> Requiere seguimiento y tratamiento hormonal.</li>
+        <li><strong>Hipoparatiroidismo permanente:</strong> Calcio oral y vitamina D de por vida.</li>
+        <li><strong>Estenosis traqueal:</strong> Por cicatrización excesiva, rara.</li>
+        <li><strong>Queloide o cicatriz hipertrófica.</strong></li>
+        <li><strong>Recidiva del bocio o del cáncer:</strong> Seguimiento con ecografía y tiroglobulina.</li>
+    </ul>
+
+    <div class="clin-box">
+        <h4>Manejo de la Hemorragia Postoperatoria</h4>
+        <ol>
+            <li>Retirar puntos de la incisión en la cabecera del paciente.</li>
+            <li>Evacuar los coágulos con los dedos (si está en parada, abrir toda la herida).</li>
+            <li>Si el sangrado es activo, llevar a quirófano para revisión quirúrgica.</li>
+            <li>Si hay compromiso respiratorio, intubar o traqueostomizar.</li>
+        </ol>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TORMENTA TIROIDEA (DETALLADA) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-tiroides-tormenta">
+    <h2>Tormenta Tiroidea (Crisis Tirotóxica)</h2>
+    
+    <h3>Definición y Etiología</h3>
+    <p>Es una exacerbación aguda y potencialmente mortal del hipertiroidismo, con descompensación multisistémica. Desencadenantes comunes:</p>
+    <ul>
+        <li>Cirugía tiroidea en paciente no preparado.</li>
+        <li>Infección intercurrente.</li>
+        <li>Trauma, estrés emocional.</li>
+        <li>Suspensión brusca del tratamiento antitiroideo.</li>
+        <li>Administración de yodo radiactivo.</li>
+    </ul>
+
+    <h3>Cuadro Clínico</h3>
+    <ul>
+        <li><strong>Hipertermia:</strong> Temperatura >38.5-40°C.</li>
+        <li><strong>Taquicardia:</strong> >140 lpm, puede haber fibrilación auricular.</li>
+        <li><strong>Insuficiencia cardíaca:</strong> Alta gasto, edema pulmonar.</li>
+        <li><strong>Alteraciones del SNC:</strong> Ansiedad, agitación, delirio, coma.</li>
+        <li><strong>Gastrointestinales:</strong> Náuseas, vómitos, diarrea.</li>
+        <li><strong>Ictericia:</strong> Por insuficiencia hepática.</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Tratamiento de la Tormenta Tiroidea</h4>
+        <p><strong>Objetivos:</strong> Bloquear síntesis y liberación de hormonas tiroideas, controlar los efectos periféricos, tratar el desencadenante y medidas de soporte.</p>
+        
+        <h5>1. Control de Hipertermia e Hiperdinamia</h5>
+        <ul>
+            <li><strong>Enfriamiento físico:</strong> Sábanas húmedas, hielo en axilas e ingles, colchón refrigerado.</li>
+            <li><strong>Sedación:</strong> Clorpromazina 25-50 mg EV, meperidina 50 mg EV.</li>
+            <li><strong>Betabloqueantes:</strong> Propranolol 1-2 mg EV lento (o 5 mg IM), repetir cada 4-6 horas según frecuencia cardíaca. También bloquea la conversión periférica de T4 a T3.</li>
+        </ul>
+
+        <h5>2. Bloqueo de Síntesis y Liberación Hormonal</h5>
+        <ul>
+            <li><strong>Antitiroideos:</strong> Propiltiuracilo (PTU) 200 mg VO cada 4-6 horas (inhibe síntesis y conversión T4 a T3).</li>
+            <li><strong>Yoduros:</strong> Solución de Lugol 5 gotas VO cada 6 horas, o yoduro de sodio 0.5-2 g EV en 500 mL de suero (administrar 1-2 horas después del PTU para evitar que el yodo se utilice para más síntesis).</li>
+            <li><strong>Corticoides:</strong> Dexametasona 2 mg EV cada 6 horas (inhibe conversión periférica de T4 a T3 y previene insuficiencia suprarrenal).</li>
+        </ul>
+
+        <h5>3. Tratamiento del Factor Desencadenante</h5>
+        <ul>
+            <li>Antibióticos si hay infección (cefalosporinas de 3ª generación).</li>
+            <li>Control quirúrgico si el desencadenante es quirúrgico.</li>
+        </ul>
+
+        <h5>4. Medidas de Soporte General</h5>
+        <ul>
+            <li><strong>Reanimación hidroelectrolítica:</strong> Soluciones con dextrosa y vitaminas del complejo B.</li>
+            <li><strong>Oxígeno suplementario.</strong></li>
+            <li><strong>Monitoreo en UCI:</strong> Control de signos vitales, ECG, gasometría.</li>
+            <li><strong>Digital y diuréticos</strong> si hay insuficiencia cardíaca.</li>
+            <li><strong>Levine</strong> si hay vómitos o íleo.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- GLÁNDULA PARÓTIDA (AMPLIADA) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-parotida-anatomia">
+    <h2>Anatomía Quirúrgica de la Glándula Parótida</h2>
+    
+    <h3>Anatomía Descriptiva</h3>
+    <ul>
+        <li>Es la glándula salival más voluminosa (20-30 g).</li>
+        <li><strong>Ubicación:</strong> Región preauricular, entre el conducto auditivo externo y el ángulo de la mandíbula.</li>
+        <li><strong>Porción superficial:</strong> Cubre la rama ascendente de la mandíbula y el masetero.</li>
+        <li><strong>Porción profunda:</strong> Se extiende hacia el espacio parafaríngeo.</li>
+        <li><strong>Conducto de Stenon:</strong> Atraviesa el masetero y desemboca en el vestíbulo oral a nivel del 2º molar superior.</li>
+    </ul>
+
+    <h3>Relaciones Anatómicas</h3>
+    <ul>
+        <li><strong>Superior:</strong> Conducto auditivo externo, articulación temporomandibular.</li>
+        <li><strong>Inferior:</strong> Ángulo de la mandíbula, vientre posterior del digástrico.</li>
+        <li><strong>Anterior:</strong> Músculo masetero, mandíbula.</li>
+        <li><strong>Posterior:</strong> Apófisis mastoides, músculo ECM.</li>
+        <li><strong>Profundo:</strong> Arteria carótida externa, vena yugular interna, nervios facial e hipogloso.</li>
+    </ul>
+
+    <h3>Nervio Facial</h3>
+    <ul>
+        <li>Sale del cráneo por el <strong>agujero estilomastoideo</strong>.</li>
+        <li>Atraviesa la glándula parótida, dividiéndose en sus ramas terminales.</li>
+        <li><strong>Ramas:</strong> Temporal, cigomática, bucal, mandibular y cervical.</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Referencias Anatómicas para Localizar el Nervio Facial</h4>
+        <ul>
+            <li><strong>Vientre posterior del digástrico:</strong> Siguiendo su borde anterior hasta la inserción ósea, el nervio aparece en su cara interna.</li>
+            <li><strong>Conducto auditivo externo:</strong> En la unión cartílago-hueso, la parte cartilaginosa forma un triángulo que apunta al tronco (0.5-1 cm por delante y dentro).</li>
+            <li><strong>Apófisis mastoides:</strong> El nervio sale inmediatamente por delante de su punta.</li>
+            <li><strong>Apófisis estiloides:</strong> El nervio está medial a ella.</li>
+            <li><strong>Fascia temporoparotídea:</strong> Al incidirla, se puede identificar el tronco.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TUMORES DE PARÓTIDA Y TÉCNICA QUIRÚRGICA (AMPLIADO) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-parotida-tecnica">
+    <h2>Tumores de la Parótida y Técnica Quirúrgica</h2>
+    
+    <h3>Clasificación de los Tumores Parotídeos</h3>
+    <table class="grade-table">
+        <thead><tr><th>Tipo</th><th>Frecuencia</th><th>Características</th><th>Malignidad</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Adenoma pleomorfo (tumor mixto)</strong></td><td>60-70%</td><td>Benigno, recidiva si enucleación, potencial de malignización (carcinoma ex-adenoma pleomorfo).</td><td>Bajo (1-5% maligniza)</td></tr>
+            <tr><td><strong>Tumor de Warthin (adenolinfoma)</strong></td><td>10-15%</td><td>Benigno, bilateral en 10-15%, asociado a tabaquismo.</td><td>Muy bajo</td></tr>
+            <tr><td><strong>Carcinoma mucoepidermoide</strong></td><td>10%</td><td>Maligno, bajo/alto grado, el más frecuente de los malignos.</td><td>Alto (según grado)</td></tr>
+            <tr><td><strong>Carcinoma adenoide quístico</strong></td><td>5%</td><td>Maligno, crecimiento lento, perineural, recidiva tardía.</td><td>Alto</td></tr>
+            <tr><td><strong>Carcinoma de células acinares</strong></td><td>2%</td><td>Maligno de bajo grado, buen pronóstico.</td><td>Bajo-intermedio</td></tr>
+            <tr><td><strong>Metástasis a parótida</strong></td><td>Variable</td><td>De melanoma, carcinoma escamoso de piel o cabeza/cuello.</td><td>Alto</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Tipos de Intervenciones Quirúrgicas</h3>
+    <ul>
+        <li><strong>Enucleación:</strong> Extirpación del tumor sin tejido glandular sano. <span class="badge">No recomendada</span> por alta recidiva en adenoma pleomorfo.</li>
+        <li><strong>Parotidectomía parcial:</strong> Resección del tumor con margen de tejido glandular sano.</li>
+        <li><strong>Parotidectomía subtotal:</strong> Resección de la porción superficial de la glándula, conservando el nervio facial y sus ramas.</li>
+        <li><strong>Parotidectomía total:</strong> Resección completa de la glándula (superficial y profunda), conservando el nervio facial.</li>
+        <li><strong>Parotidectomía radical:</strong> Resección total con sacrificio del nervio facial (indicada en tumores malignos que invaden el nervio).</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Técnica de Parotidectomía Subtotal (Pasos Detallados)</h4>
+        <ol>
+            <li><strong>Posición:</strong> Decúbito supino, cabeza rotada al lado contralateral, hiperextensión del cuello.</li>
+            <li><strong>Incisión:</strong>
+                <ul>
+                    <li><strong>S de Blair:</strong> Desde la región preauricular, rodeando el lóbulo de la oreja, hasta la región cervical, siguiendo el borde anterior del ECM.</li>
+                    <li><strong>Y de Sistrunk:</strong> Incisión en Y con rama vertical sobre el ECM y ramas horizontal y oblicua.</li>
+                </ul>
+            </li>
+            <li><strong>Elevación de colgajos:</strong>
+                <ul>
+                    <li>Disección subcutánea, respetando la fascia superficial.</li>
+                    <li>Colgajo anterior: Hasta el borde anterior del masetero.</li>
+                    <li>Colgajo posterior: Hasta el borde anterior del ECM.</li>
+                </ul>
+            </li>
+            <li><strong>Liberación de la glándula:</strong>
+                <ul>
+                    <li>Disección de la glándula de sus inserciones en el cartílago auditivo y la aponeurosis.</li>
+                    <li>Identificación del conducto de Stenon.</li>
+                </ul>
+            </li>
+            <li><strong>Identificación del nervio facial (métodos):</strong>
+                <ul>
+                    <li><strong>Directo (centrífugo):</strong> Localizar el tronco a la salida del agujero estilomastoideo y disecar sus ramas.</li>
+                    <li><strong>Indirecto (centrípeto):</strong> Identificar una rama periférica (ej. rama cervical o bucal) y disecar retrógradamente hasta el tronco.</li>
+                    <li><strong>Referencias:</strong> Vientre posterior del digástrico, apófisis mastoides, conducto auditivo externo.</li>
+                </ul>
+            </li>
+            <li><strong>Disección del nervio facial:</strong>
+                <ul>
+                    <li>Disección cuidadosa, sin tracción, con tijeras finas y bipolar.</li>
+                    <li>Se liberan las ramas del parénquima glandular.</li>
+                </ul>
+            </li>
+            <li><strong>Extirpación de la glándula:</strong>
+                <ul>
+                    <li>Se reseca la porción superficial (y profunda si es necesario) con bisturí o bipolar.</li>
+                    <li>En tumores malignos, ampliar los márgenes con tejido sano.</li>
+                </ul>
+            </li>
+            <li><strong>Hemostasia:</strong> Revisión del campo, especialmente cerca del nervio.</li>
+            <li><strong>Drenaje:</strong> Penrose o Jackson-Pratt, salida por el extremo inferior de la incisión.</li>
+            <li><strong>Cierre:</strong> Por planos, con sutura intradérmica para mejor estética.</li>
+            <li><strong>Biopsia por congelación:</strong> Si el tumor es sospechoso, se envía a congelación intraoperatoria.</li>
+        </ol>
+    </div>
+
+    <div class="clin-box">
+        <h4>Manejo de la Lesión del Nervio Facial</h4>
+        <ul>
+            <li><strong>Transitoria:</strong> Observación y fisioterapia facial.</li>
+            <li><strong>Permanente:</strong> Reconstrucción nerviosa (injerto de nervio sural o hipogloso) o técnicas de reanimación facial (colgajos musculares).</li>
+            <li><strong>Protección ocular:</strong> Lágrimas artificiales, oclusión nocturna, tarsorrafia si es necesario.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- LESIÓN DEL NERVIO FACIAL (PREVENCIÓN) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-parotida-nervio">
+    <h2>Prevención de Lesión del Nervio Facial en Parotidectomía</h2>
+    
+    <h3>Métodos de Identificación</h3>
+    <ul>
+        <li><strong>Identificación directa del tronco:</strong>
+            <ul>
+                <li>Palpación de la apófisis mastoides.</li>
+                <li>Disección roma en el ángulo formado por el cartílago del conducto auditivo y la mastoides.</li>
+                <li>El tronco se encuentra aproximadamente 1 cm por delante y 1 cm por dentro del borde anterior de la mastoides.</li>
+            </ul>
+        </li>
+        <li><strong>Identificación indirecta (retrógrada):</strong>
+            <ul>
+                <li>Rama cervical: Cruza la vena yugular externa en el ángulo de la mandíbula.</li>
+                <li>Rama bucal: Sobre el conducto de Stenon.</li>
+                <li>Rama marginal mandibular: Por debajo del borde de la mandíbula.</li>
+            </ul>
+        </li>
+        <li><strong>Uso de neuroestimulador:</strong>
+            <ul>
+                <li>Estimulación de 0.5-1 mA para identificar el nervio.</li>
+                <li>Evitar estimulación excesiva que pueda causar parestesias.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Medidas Preventivas</h3>
+    <ul>
+        <li><strong>Disección meticulosa:</strong> Usar tijeras de iris y disección roma, evitando tracción excesiva.</li>
+        <li><strong>Hemostasia:</strong> Usar bipolar lejos del nervio. Evitar electrocoagulación directa sobre el nervio.</li>
+        <li><strong>Exposición adecuada:</strong> Incisión amplia, buena iluminación y separación.</li>
+        <li><strong>Identificación temprana:</strong> Localizar el tronco antes de comenzar la disección de la glándula.</li>
+        <li><strong>Conocimiento anatómico:</strong> Conocer las variaciones anatómicas (ej. ramas que pasan por la glándula).</li>
+        <li><strong>Prueba de movilidad:</strong> Solicitar al paciente que mueva la cara (en cirugía con anestesia local) o estimulación eléctrica intraoperatoria.</li>
+    </ul>
+
+    <h3>Signos de Lesión del Nervio Facial</h3>
+    <ul>
+        <li><strong>Parálisis completa:</strong> Hemiparálisis facial ipsilateral (frente lisa, ojo abierto, comisura descendida).</li>
+        <li><strong>Parálisis de ramas:</strong>
+            <ul>
+                <li><strong>Temporal:</strong> Dificultad para elevar la ceja.</li>
+                <li><strong>Cigomática:</strong> Dificultad para cerrar el ojo (riesgo de queratitis).</li>
+                <li><strong>Bucal:</strong> Dificultad para mostrar los dientes, babeo.</li>
+                <li><strong>Mandibular:</strong> Asimetría de la comisura labial.</li>
+                <li><strong>Cervical:</strong> Dificultad para fruncir el cuello.</li>
+            </ul>
+        </li>
+        <li><strong>Síndrome de Frey (sudoración gustativa):</strong> Complicación tardía por regeneración aberrante de fibras parasimpáticas a glándulas sudoríparas.</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- QUISTES Y FÍSTULAS BRANQUIALES -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-branquial">
+    <h2>Malformaciones Branquiales</h2>
+    
+    <h3>Embriología</h3>
+    <p>Los arcos branquiales (1º al 4º) dan origen a estructuras del cuello y la cara. Las anomalías del desarrollo pueden dar lugar a quistes, fístulas o senos.</p>
+
+    <h3>Clasificación según Arco Branquial</h3>
+    <table class="grade-table">
+        <thead><tr><th>Arco</th><th>Estructuras Derivadas</th><th>Localización de la Fístula/Quiste</th><th>Características</th></tr></thead>
+        <tbody>
+            <tr><td><strong>1º</strong></td><td>Mandíbula, huesecillos del oído, nervio facial</td><td>Preauricular o retroauricular, cerca del conducto auditivo externo</td><td>Fístula hacia el conducto auditivo, quiste preauricular</td></tr>
+            <tr><td><strong>2º</strong></td><td>Hioides, músculos de la cara, nervio facial</td><td>Borde anterior del ECM (tercio medio-inferior)</td><td>Fístula completa hacia la fosa amigdalina (más frecuente)</td></tr>
+            <tr><td><strong>3º</strong></td><td>Hioides, músculos faríngeos, nervio glosofaríngeo</td><td>Borde anterior del ECM (tercio inferior)</td><td>Fístula hacia el seno piriforme (rara)</td></tr>
+            <tr><td><strong>4º</strong></td><td>Cartílagos laríngeos, músculos faríngeos</td><td>Borde anterior del ECM (tercio inferior)</td><td>Fístula hacia el esófago (muy rara)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Quiste del Conducto Tirogloso</h3>
+    <ul>
+        <li><strong>Origen:</strong> Persistencia del conducto tirogloso (vestigio de la migración de la glándula tiroides desde la base de la lengua hasta su posición cervical).</li>
+        <li><strong>Localización:</strong> Línea media del cuello, desde el foramen ciego (base de la lengua) hasta el istmo tiroideo.</li>
+        <li><strong>Clínica:</strong> Masa móvil en la línea media, que asciende al sacar la lengua o al deglutir.</li>
+        <li><strong>Complicaciones:</strong> Infección, absceso, fístula.</li>
+        <li><strong>Tratamiento:</strong> <strong>Procedimiento de Sistrunk:</strong> Resección del quiste, el trayecto del conducto y la porción central del hueso hioides, hasta la base de la lengua.</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Técnica de Sistrunk (Resección del Quiste Tirogloso)</h4>
+        <ol>
+            <li>Incisión transversa sobre la masa, con extensión según necesidad.</li>
+            <li>Disección del quiste y del trayecto fibroso hasta el hueso hioides.</li>
+            <li>Resección de la porción central del hueso hioides (1-2 cm).</li>
+            <li>Disección del trayecto hacia la base de la lengua (foramen ciego).</li>
+            <li>Ligadura del trayecto en su origen y resección completa.</li>
+            <li>Drenaje y cierre por planos.</li>
+        </ol>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAQUEOSTOMÍA (DETALLADA) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-traqueostomia">
+    <h2>Traqueostomía</h2>
+    
+    <h3>Definición</h3>
+    <p>Procedimiento quirúrgico que consiste en la creación de una abertura en la tráquea para establecer una vía aérea alternativa.</p>
+
+    <h3>Indicaciones</h3>
+    <h4>Indicaciones de Urgencia</h4>
+    <ul>
+        <li>Heridas penetrantes de laringe y tráquea.</li>
+        <li>Coma por trauma craneoencefálico.</li>
+        <li>Trauma maxilofacial con obstrucción de la vía aérea alta.</li>
+        <li>Edema laríngeo (alérgico, infeccioso).</li>
+        <li>Obstrucción por cuerpo extraño no extraíble.</li>
+        <li>Enfisema mediastinal por lesión traqueobronquial.</li>
+        <li>Lesión bilateral del nervio laríngeo recurrente.</li>
+    </ul>
+
+    <h4>Indicaciones Programadas</h4>
+    <ul>
+        <li>Ventilación mecánica prolongada (>7-10 días de intubación).</li>
+        <li>Protección de la vía aérea en pacientes con secreciones abundantes.</li>
+        <li>Cirugías de cabeza y cuello (laringectomía, resecciones amplias).</li>
+        <li>Estenosis laríngeas progresivas.</li>
+        <li>Quemaduras graves con compromiso de la vía aérea.</li>
+    </ul>
+
+    <h3>Triángulo de Seguridad de Chevalier Jackson</h3>
+    <ul>
+        <li><strong>Base superior:</strong> Borde inferior del cartílago cricoides.</li>
+        <li><strong>Lados:</strong> Bordes anteriores de los músculos ECM.</li>
+        <li><strong>Vértice inferior:</strong> Horquilla esternal.</li>
+        <li>La bisectriz del ángulo inferior (línea media) es la <strong>zona de seguridad</strong> para la incisión.</li>
+        <li>Los lados del triángulo representan <strong>zonas de peligro</strong> (paquete vasculonervioso).</li>
+    </ul>
+
+    <div class="surg-box">
+        <h4>Técnica de Traqueostomía (Pasos Detallados)</h4>
+        <ol>
+            <li><strong>Posición:</strong> Decúbito supino, hiperextensión del cuello (almohada bajo hombros), cabeza alineada.</li>
+            <li><strong>Antisepsia y paños de campo.</strong></li>
+            <li><strong>Anestesia:</strong> Local (lidocaína 1-2%) en electivos; general en urgencias si es posible.</li>
+            <li><strong>Incisión:</strong>
+                <ul>
+                    <li><strong>Vertical:</strong> En la línea media, desde el borde inferior del cartílago cricoides hasta la horquilla esternal (preferida en urgencias).</li>
+                    <li><strong>Transversa:</strong> A 2 cm por encima de la horquilla esternal (preferida en electivos por mejor cicatriz).</li>
+                </ul>
+            </li>
+            <li><strong>Disección de partes blandas:</strong>
+                <ul>
+                    <li>Disección roma de la línea alba cervical (entre los músculos esternohioideos).</li>
+                    <li>Exponer el istmo tiroideo.</li>
+                </ul>
+            </li>
+            <li><strong>Manejo del istmo tiroideo:</strong>
+                <ul>
+                    <li>Si el istmo es pequeño: Separar hacia arriba con un gancho.</li>
+                    <li>Si el istmo es grande: Ligar y seccionar en la línea media, con pinzas y sutura transfixiante.</li>
+                </ul>
+            </li>
+            <li><strong>Fijación de la tráquea:</strong>
+                <ul>
+                    <li>Colocar un separador de garfio en el cartílago cricoides o en un anillo traqueal.</li>
+                    <li>Traccionar suavemente hacia arriba para estabilizar la tráquea.</li>
+                </ul>
+            </li>
+            <li><strong>Incisión traqueal:</strong>
+                <ul>
+                    <li>Identificar los anillos traqueales (el 1º es el del cricoides, que NO se debe incidir).</li>
+                    <li>Incisión vertical entre el 2º y 3º anillo traqueal (o 3º-4º).</li>
+                    <li>Técnicas: <strong>En I (vertical)</strong> o <strong>en U</strong> (con base inferior).</li>
+                    <li>Proteger la pared posterior con el dedo o una pinza para evitar lesión del esófago.</li>
+                </ul>
+            </li>
+            <li><strong>Introducción de la cánula:</strong>
+                <ul>
+                    <li>Introducir el mandril en la cánula.</li>
+                    <li>Dirigir la cánula en dirección caudal y ligeramente hacia la derecha (para evitar el bronquio izquierdo).</li>
+                    <li>Retirar el mandril y la cánula interna (si es de dos piezas).</li>
+                    <li>Verificar la posición: <strong>Signos de colocación correcta:</strong> salida de aire, tos, estabilidad ventilatoria.</li>
+                </ul>
+            </li>
+            <li><strong>Fijación de la cánula:</strong>
+                <ul>
+                    <li>Cinta de hiladillo alrededor del cuello, ajustada (permitir 1-2 dedos de holgura).</li>
+                    <li>Puntos de fijación en la piel si es necesario.</li>
+                </ul>
+            </li>
+            <li><strong>Insuflación del manguito (si es cánula con balón):</strong>
+                <ul>
+                    <li>Insuflar con aire (5-10 mL) hasta obtener un sello sin fugas.</li>
+                    <li>Medir la presión del manguito (<25 cm H₂O) para evitar necrosis traqueal.</li>
+                </ul>
+            </li>
+            <li><strong>Cierre de la herida:</strong>
+                <ul>
+                    <li>Puntos simples en la piel por encima y por debajo de la cánula.</li>
+                    <li>No cerrar demasiado apretado para permitir drenaje.</li>
+                </ul>
+            </li>
+            <li><strong>Apósito:</strong>
+                <ul>
+                    <li>Colocar gasa estéril alrededor de la cánula (gasa hendida).</li>
+                    <li>Cambiar según necesidad.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <h3>Complicaciones de la Traqueostomía</h3>
+    <ul>
+        <li><strong>Transoperatorias:</strong>
+            <ul>
+                <li>Hemorragia (lesión de vasos cervicales o istmo).</li>
+                <li>Lesión de la pared posterior de la tráquea (fístula traqueoesofágica).</li>
+                <li>Neumotórax, neumomediastino.</li>
+                <li>Arritmias (por estimulación vagal).</li>
+            </ul>
+        </li>
+        <li><strong>Postoperatorias precoces:</strong>
+            <ul>
+                <li>Desplazamiento de la cánula (decánulación accidental).</li>
+                <li>Obstrucción de la cánula (secreciones, coágulos).</li>
+                <li>Infección del estoma.</li>
+                <li>Hemorragia (por fístula innominada-tráquea).</li>
+                <li>Enfisema subcutáneo.</li>
+            </ul>
+        </li>
+        <li><strong>Tardías:</strong>
+            <ul>
+                <li>Estenosis traqueal (por cicatrización o presión excesiva del manguito).</li>
+                <li>Traqueomalacia.</li>
+                <li>Granuloma.</li>
+                <li>Estoma persistente (requiere cierre quirúrgico).</li>
+                <li>Disfagia (por compresión esofágica).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Criterios de Decánulación</h3>
+    <ul>
+        <li>Desaparición de la causa que motivó la traqueostomía.</li>
+        <li>Permeabilidad de la vía aérea superior (laringoscopia normal).</li>
+        <li>Capacidad de eliminar secreciones espontáneamente.</li>
+        <li><strong>Prueba de tolerancia al taponamiento:</strong> Ocluir la cánula durante 24-48 horas, monitorizando la saturación de O₂ y la comodidad respiratoria.</li>
+        <li>Si el paciente tolera bien: retirar la cánula, cubrir el estoma con apósito y permitir el cierre espontáneo.</li>
+        <li>Si el estoma no cierra espontáneamente (después de 4-6 semanas): cierre quirúrgico.</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- ANATOMÍA DE LA LARINGE Y TRÁQUEA CERVICAL -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-laringe">
+    <h2>Anatomía Quirúrgica de la Laringe y Tráquea Cervical</h2>
+    
+    <h3>Laringe</h3>
+    <ul>
+        <li><strong>Esqueleto:</strong> Cartílagos tiroides, cricoides, aritenoides, epiglotis, corniculados y cuneiformes.</li>
+        <li><strong>Cartílago cricoides:</strong> El único anillo completo de la vía aérea inferior.</li>
+        <li><strong>Cuerdas vocales:</strong> Pliegues mucosos que se insertan en los aritenoides y el tiroides.</li>
+        <li><strong>Inervación motora:</strong> Nervio laríngeo recurrente (todos los músculos excepto el cricotiroideo).</li>
+        <li><strong>Inervación sensitiva:</strong> Nervio laríngeo superior (por encima de las cuerdas) y recurrente (por debajo).</li>
+    </ul>
+
+    <h3>Tráquea Cervical</h3>
+    <ul>
+        <li>Se extiende desde el cartílago cricoides (C6) hasta la entrada del tórax (T1).</li>
+        <li>Relaciones: Anterior: istmo tiroideo y músculos infrahioideos. Lateral: nervio laríngeo recurrente y vasos tiroideos. Posterior: esófago.</li>
+        <li><strong>Anillos traqueales:</strong> Son 15-20 anillos cartilaginosos en forma de C, abiertos posteriormente (pared membranosa).</li>
+        <li><strong>Vascularización:</strong> Ramas traqueales de las arterias tiroideas inferior y superior.</li>
+    </ul>
+
+    <div class="note-box">
+        <p><strong>Regla de oro de la traqueostomía:</strong> Respetar el 1er anillo traqueal y el cartílago cricoides para prevenir estenosis subglótica.</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- LESIONES DEL NERVIO LARÍNGEO RECURRENTE (AMPLIADO) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-recurrente">
+    <h2>Lesiones del Nervio Laríngeo Recurrente</h2>
+    
+    <h3>Fisiopatología</h3>
+    <ul>
+        <li><strong>Nervio laríngeo recurrente:</strong> Inerva todos los músculos intrínsecos de la laringe excepto el cricotiroideo.</li>
+        <li><strong>Función:</strong> Aducción y abducción de las cuerdas vocales, fonación, protección de la vía aérea.</li>
+    </ul>
+
+    <h3>Tipos de Lesión</h3>
+    <ul>
+        <li><strong>Unilateral:</strong> Disfonía (voz bitonal, cansancio vocal).</li>
+        <li><strong>Bilateral:</strong> Afonía, estridor inspiratorio, dificultad respiratoria (emergencia médica).</li>
+        <li><strong>Transitoria:</strong> Por edema o neuropraxia, resuelve en días-semanas.</li>
+        <li><strong>Permanente:</strong> Por sección o lesión severa, requiere tratamiento definitivo.</li>
+    </ul>
+
+    <h3>Prevención en Cirugía Tiroidea</h3>
+    <ul>
+        <li><strong>Identificación sistemática:</strong> Localizar el nervio en el sector traqueal antes de ligar la arteria tiroidea inferior.</li>
+        <li><strong>Disección meticulosa:</strong> Sin tracción excesiva, usar tijeras finas.</li>
+        <li><strong>Ligadura arterial:</strong> Ligar la arteria tiroidea inferior en sus ramas, no en el tronco.</li>
+        <li><strong>Monitorización intraoperatoria:</strong> EMG del nervio recurrente (útil en cirugías complejas).</li>
+    </ul>
+
+    <h3>Tratamiento de la Lesión</h3>
+    <ul>
+        <li><strong>Unilateral:</strong>
+            <ul>
+                <li>Logopedia y rehabilitación vocal.</li>
+                <li>Inyección de colágeno o grasa en la cuerda vocal paralítica (aumento de volumen).</li>
+                <li>Tiroplastia de medialización (cirugía de Isshiki).</li>
+            </ul>
+        </li>
+        <li><strong>Bilateral:</strong>
+            <ul>
+                <li><strong>Traqueostomía</strong> de urgencia para asegurar la vía aérea.</li>
+                <li>A largo plazo: Cordotomía posterior o aritenoidectomía para aumentar el espacio glótico.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- CUELLO - ENFERMEDAD DE MONDOR (TROMBOFLEBITIS) -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cuello-mondor">
+    <h2>Enfermedad de Mondor (Tromboflebitis de la Vena del Cuello)</h2>
+    
+    <h3>Definición</h3>
+    <p>La enfermedad de Mondor es una tromboflebitis superficial de las venas del cuello (más frecuente en la vena yugular externa o sus tributarias). Se describe en el cuello como una variante de la tromboflebitis de la mama (en el contexto de cirugía mamaria).</p>
+
+    <h3>Clínica</h3>
+    <ul>
+        <li>Dolor a lo largo del trayecto venoso.</li>
+        <li>Palpación de un cordón indurado, sensible, que sigue el curso de la vena.</li>
+        <li>Enrojecimiento e inflamación local.</li>
+        <li>En ocasiones, asociado a traumatismo o cirugía previa.</li>
+    </ul>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li>Clínico (exploración física).</li>
+        <li>Ecografía Doppler para confirmar la trombosis superficial y descartar TVP.</li>
+    </ul>
+
+    <h3>Tratamiento</h3>
+    <ul>
+        <li><strong>Fomentos fríos</strong> locales y antiinflamatorios no esteroideos (AINES).</li>
+        <li>Analgesia.</li>
+        <li>En general, es autolimitada y resuelve en 2-4 semanas.</li>
+        <li>Antibióticos solo si hay sobreinfección.</li>
+        <li>No requiere anticoagulación (a diferencia de la TVP).</li>
+    </ul>
+</div>
+
+    <!-- ============================================================ -->
+    <!-- GINECOLOGÍA -->
+    <div class="content-section" id="sec-gineco-hta">
+        <h2>Histerectomía Abdominal Total (HTA)</h2>
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Ginecológicas:</strong> Fibroma uterino sintomático, cáncer de cuello/endometrio/ovario, endometriosis, adenomiosis, hiperplasia endometrial atípica.</li>
+            <li><strong>Obstétricas:</strong> Ruptura uterina, atonía, acretismo placentario, sepsis puerperal, aborto séptico, embarazo ectópico.</li>
+            <li><strong>Traumáticas:</strong> Heridas penetrantes.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica Quirúrgica</h4>
+            <ol>
+                <li>Posición ginecológica.</li>
+                <li>Antisepsia y paños de campo.</li>
+                <li>Incisión longitudinal media supra-infraumbilical.</li>
+                <li>Tracción del útero (tirabuzón).</li>
+                <li>Sección y ligadura de ligamentos redondos.</li>
+                <li>Apertura del ligamento ancho.</li>
+                <li>Pinzado, sección y ligadura de pedículos ováricos y arterias uterinas.</li>
+                <li>Sección del útero (extra o intrafascial).</li>
+                <li>Cierre de la cúpula vaginal.</li>
+                <li>Peritonización y cierre de pared.</li>
+            </ol>
+        </div>
+        <h3>Complicaciones</h3>
+        <ul>
+            <li><strong>Transoperatorias:</strong> Lesión de uréteres, vejiga, asas intestinales, hemorragia.</li>
+            <li><strong>Postoperatorias precoces:</strong> Infección de herida, dehiscencia, hemorragia, retención de orina, TEP, neumonía.</li>
+            <li><strong>Postoperatorias tardías:</strong> Prolapso de cúpula, fístula vesicovaginal/rectovaginal, bridas, evisceración.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-gineco-htv">
+        <h2>Histerectomía Vaginal por Prolapso</h2>
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Prolapso uterino sintomático.</li>
+            <li>Hemorragia uterina anormal.</li>
+            <li>Fibroma uterino pequeño.</li>
+            <li>Lesiones premalignas o malignas (seleccionadas).</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica Quirúrgica</h4>
+            <ol>
+                <li>Posición ginecológica. Puntos de ninfa.</li>
+                <li>Exposición con valvas.</li>
+                <li>Sujeción y tracción del cuello.</li>
+                <li>Incisión circular del cuello a 1 cm de exocérvix.</li>
+                <li>Disección de la vejiga y vagina.</li>
+                <li>Pinzado, sección y ligadura de ligamentos vesicouterinos.</li>
+                <li>Apertura de plica vesicouterina y peritoneo posterior.</li>
+                <li>Pinzado y ligadura de ligamentos uterosacros, cardinales y vasos uterinos.</li>
+                <li>Inversión del útero y ligadura de pedículos tuboováricos.</li>
+                <li>Cierre de peritoneo y cúpula vaginal.</li>
+                <li>Rectopexia y sutura de mucosa vaginal.</li>
+                <li>Tapón vaginal y apósito.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-gineco-ovario">
+        <h2>Tumores de Ovario</h2>
+        <h3>Conducta Intraoperatoria ante Tumor Sólido</h3>
+        <ul>
+            <li>Revisión de toda la cavidad abdominal (cúpulas diafragmáticas, peritoneo).</li>
+            <li>Lavado peritoneal para citología.</li>
+            <li>Biopsias peritoneales múltiples.</li>
+            <li>Extirpación de la pieza y biopsia por congelación.</li>
+            <li>Si benigno: terminar operación.</li>
+            <li>Si maligno: Histerectomía total + doble anexectomía + omentectomía + apendicectomía + linfadenectomía retroperitoneal + citorreducción máxima.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Sistemática de Laparotomía Exploradora</h4>
+            <ol>
+                <li>Incisión media supra-infraumbilical.</li>
+                <li>Muestra de líquido ascítico o lavados peritoneales.</li>
+                <li>Revisión de toda la cavidad (hígado, diafragma).</li>
+                <li>Resección del tumor y biopsia por congelación.</li>
+                <li>Si maligno: HTA + anexectomía bilateral + omentectomía + apendicectomía + citorreducción.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-gineco-prolapso">
+        <h2>Prolapso Genital</h2>
+        <h3>Clasificación del Prolapso de Cúpula Vaginal</h3>
+        <ul>
+            <li><strong>Grado I:</strong> No llega al introito.</li>
+            <li><strong>Grado II:</strong> Llega al introito.</li>
+            <li><strong>Grado III:</strong> Sobrepasa el introito.</li>
+        </ul>
+        <h3>Lesiones Anatómicas Responsables</h3>
+        <ul>
+            <li><strong>Segmento anterior:</strong> Soporte de uretra y vejiga (ligamentos puboureterales, músculo pubococcígeo, fascia endopélvica).</li>
+            <li><strong>Segmento superior:</strong> Ligamentos cardinales, uterosacros.</li>
+            <li><strong>Segmento posterior:</strong> Soporte del recto y perineo (músculos pubococcígeo, transverso profundo, esfínter anal).</li>
+        </ul>
+        <h3>Tratamiento Médico del Prolapso</h3>
+        <ul>
+            <li>Cambios en el estilo de vida (evitar esfuerzos).</li>
+            <li>Terapia estrogénica local o sistémica.</li>
+            <li>Tratamiento de comorbilidades (constipación, tos crónica).</li>
+            <li>Ejercicios de resistencia perineal (Kegel).</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Colporrafia Anterior (Pasos)</h4>
+            <ol>
+                <li>Posición ginecológica, puntos de ninfa, sonda vesical.</li>
+                <li>Incisión de la pared vaginal anterior.</li>
+                <li>Disección y rechazamiento de la vejiga.</li>
+                <li>Suturas de Kelly en el cuello vesical.</li>
+                <li>Sutura de fascia vesicovaginal.</li>
+                <li>Resección de mucosa vaginal redundante.</li>
+                <li>Sutura de pared vaginal.</li>
+                <li>Tapón vaginal.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ANGIOLOGÍA -->
+    <div class="content-section" id="sec-angio-iaa">
+        <h2>Insuficiencia Arterial Aguda (IAA)</h2>
+        <h3>Etiología</h3>
+        <ul>
+            <li><strong>Embolismo:</strong> Fibrilación auricular, placas de ateroma, endocarditis, aortitis.</li>
+            <li><strong>Trombosis:</strong> Arterioesclerosis, aneurisma, periarteritis nudosa.</li>
+            <li><strong>Traumática:</strong> Sección o lesión arterial.</li>
+        </ul>
+        <h3>Conducta</h3>
+        <ul>
+            <li>No demorar el tratamiento >6-8 horas.</li>
+            <li>No elevar la extremidad.</li>
+            <li>No aplicar calor externo (abrigar la extremidad).</li>
+            <li>Arteriografía + embolectomía (femorocrura) para revascularización.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-angio-tvp">
+        <h2>Trombosis Venosa Profunda (TVP)</h2>
+        <h3>Factores Predisponentes (Triada de Virchow)</h3>
+        <ul>
+            <li><strong>Estasis venosa:</strong> Encamamiento, inmovilización, cirugía, hemiplejía.</li>
+            <li><strong>Daño de la pared venosa:</strong> Cateterismo, traumatismos, cirugía.</li>
+            <li><strong>Hipercoagulabilidad:</strong> Cáncer, septicemia, policitemia, deshidratación.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-angio-pie">
+        <h2>Pie Diabético</h2>
+        <ul>
+            <li><strong>Definición:</strong> Proceso séptico (absceso, flemón, mal perforante plantar) en paciente diabético con pulsos distales presentes.</li>
+            <li><strong>Objetivo:</strong> Evitar la amputación mediante diagnóstico y tratamiento precoz.</li>
+            <li><strong>Tratamiento:</strong> Desbridamiento quirúrgico, antibióticos, control metabólico, revascularización si es necesario.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Navegación
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    showSection('inicio');
+
+    // Función para PDF (usando window.print)
+    function generarPDFAlternativo() {
+        const allSections = document.querySelectorAll('.content-section');
+        const originalDisplay = [];
+        allSections.forEach((sec, i) => {
+            originalDisplay[i] = sec.style.display;
+            sec.style.display = 'block';
+            sec.classList.add('active');
+        });
+        const pdfContainer = document.querySelector('.pdf-btn-container');
+        if (pdfContainer) pdfContainer.style.display = 'none';
+
+        window.print();
+
+        setTimeout(() => {
+            allSections.forEach((sec, i) => {
+                sec.style.display = originalDisplay[i] || 'none';
+            });
+            if (pdfContainer) pdfContainer.style.display = 'block';
+        }, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const pdfBtn = document.getElementById('pdfBtn');
+        if (pdfBtn) {
+            pdfBtn.addEventListener('dblclick', function() {
+                generarPDFAlternativo();
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

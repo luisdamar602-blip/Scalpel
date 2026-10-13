@@ -1,0 +1,3206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cirugía General - Resúmenes Clínicos (Imperial)</title>
+    <style>
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background: #f5f0f0;
+    color: #2d1a1a;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 320px;
+    background: #faf6f6;
+    padding: 20px 0 20px 10px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
+    border-right: 2px solid #c0392b;
+}
+.sidebar h2 {
+    font-size: 1.6rem;
+    font-weight: 300;
+    padding: 0 16px 16px 10px;
+    border-bottom: 2px solid #e8c8c8;
+    color: #8b1a1a;
+    letter-spacing: 1px;
+}
+.sidebar h2 span {
+    font-weight: 700;
+    color: #c0392b;
+}
+.nav-group {
+    margin-top: 14px;
+}
+.nav-group-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #a06060;
+    padding: 8px 16px 4px 16px;
+    font-weight: 600;
+}
+.nav-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #3d2a2a;
+    padding: 8px 16px 8px 22px;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: 0.15s;
+    border-left: 4px solid transparent;
+    font-family: inherit;
+    line-height: 1.3;
+}
+.nav-btn:hover {
+    background: #f0e0e0;
+    color: #1a0a0a;
+    border-left-color: #c0392b;
+}
+.nav-btn.active {
+    background: #f0d8d8;
+    color: #8b1a1a;
+    border-left-color: #c0392b;
+    font-weight: 600;
+}
+.nav-btn.sub {
+    padding-left: 36px;
+    font-size: 0.82rem;
+    color: #6a4a4a;
+}
+.nav-btn.sub:hover {
+    background: #f0e0e0;
+    border-left-color: #b06060;
+}
+
+/* ===== SUBMENÚS ===== */
+.parent-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 16px;
+}
+.parent-btn .arrow {
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+    color: #a06060;
+}
+.parent-btn.open .arrow {
+    transform: rotate(90deg);
+}
+.parent-btn.open {
+    background: #f0e0e0;
+    border-left-color: #c0392b;
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: #fdf5f5;
+    border-left: 3px solid #e8c8c8;
+    margin-left: 8px;
+}
+.submenu.open {
+    max-height: 900px;
+}
+.submenu .nav-btn.sub {
+    padding-left: 44px;
+    font-size: 0.82rem;
+    color: #6a4a4a;
+    border-left: 3px solid transparent;
+}
+.submenu .nav-btn.sub:hover {
+    background: #f0e0e0;
+    border-left-color: #b06060;
+    color: #1a0a0a;
+}
+.submenu .nav-btn.sub.active {
+    background: #f0d8d8;
+    color: #8b1a1a;
+    border-left-color: #c0392b;
+    font-weight: 600;
+}
+
+/* ===== MAIN ===== */
+.main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 45px 50px 45px;
+    background: #ffffff;
+}
+.main h1 {
+    font-size: 2.3rem;
+    color: #8b1a1a;
+    border-bottom: 3px solid #c0392b;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+}
+.subtitle {
+    color: #a06060;
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e8d8d8;
+    padding-bottom: 14px;
+}
+
+.content-section {
+    display: none;
+    animation: fade 0.25s ease;
+}
+.content-section.active {
+    display: block;
+}
+@keyframes fade {
+    from {
+        opacity: 0.4;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-section h2 {
+    color: #c0392b;
+    border-left: 6px solid #b32b2b;
+    padding-left: 18px;
+    margin: 0 0 12px 0;
+    font-size: 1.8rem;
+}
+.content-section h3 {
+    color: #c0392b;
+    margin-top: 28px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e8d8d8;
+    padding-bottom: 5px;
+    font-size: 1.3rem;
+}
+.content-section h4 {
+    color: #c0392b;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-size: 1.08rem;
+}
+.content-section h5 {
+    color: #a06060;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+.content-section h6 {
+    color: #d64545;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.content-section p {
+    margin-bottom: 12px;
+    line-height: 1.7;
+}
+.content-section ul,
+.content-section ol {
+    padding-left: 28px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+.content-section li {
+    margin-bottom: 4px;
+}
+
+.clin-box,
+.surg-box,
+.note-box {
+    padding: 14px 24px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+.clin-box {
+    background: #faf2f0;
+    border-left: 5px solid #c0392b;
+}
+.surg-box {
+    background: #f8f0f0;
+    border-left: 5px solid #b32b2b;
+}
+.note-box {
+    background: #f5f0f0;
+    border-left: 5px solid #a06060;
+}
+
+.grade-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px 0;
+    font-size: 0.9rem;
+    background: #ffffff;
+    border: 1px solid #d8c8c8;
+}
+.grade-table th {
+    background: #f0e0e0;
+    color: #3d1a1a;
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid #d8c8c8;
+}
+.grade-table td {
+    border: 1px solid #d8c8c8;
+    padding: 8px 10px;
+    vertical-align: top;
+    background: #ffffff;
+}
+.grade-table tr:nth-child(even) td {
+    background: #faf5f5;
+}
+.badge {
+    display: inline-block;
+    background: #c0392b;
+    color: white;
+    font-weight: 700;
+    padding: 1px 12px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+}
+
+hr {
+    margin: 28px 0;
+    border: 0;
+    height: 1px;
+    background: #e0d0d0;
+}
+
+/* scrollbar */
+.sidebar::-webkit-scrollbar,
+.main::-webkit-scrollbar {
+    width: 5px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: #f5f0f0;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: #c8a0a0;
+    border-radius: 10px;
+}
+.main::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+.main::-webkit-scrollbar-thumb {
+    background: #c8a0a0;
+    border-radius: 10px;
+}
+
+@media (max-width: 760px) {
+    body {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+    .sidebar {
+        width: 100%;
+        max-height: 260px;
+        overflow-y: auto;
+    }
+    .main {
+        padding: 20px;
+    }
+}
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR MEJORADO CON SUBMENÚS ===== -->
+<div class="sidebar">
+    <h2>📘 <span>Cirugía</span> General</h2>
+    <div class="nav-group">
+        <div class="nav-group-title">Temas principales</div>
+        <button class="nav-btn active" data-target="inicio">📋 Inicio</button>
+
+        <!-- ===== HERNIAS ===== -->
+        <button class="nav-btn parent-btn" data-target="hernias" data-toggle="submenu-hernias">
+            🧵 Hernias <span class="arrow">▶</span>
+        </button>
+        <div class="submenu" id="submenu-hernias">
+            <button class="nav-btn sub" data-target="hernias">📖 Definición y conceptos</button>
+            <button class="nav-btn sub" data-target="hernia-inguinal">🔹 Hernia Inguinal</button>
+            <button class="nav-btn sub" data-target="hernia-crural">🔹 Hernia Crural</button>
+            <button class="nav-btn sub" data-target="hernia-incisional">🔹 Hernia Incisional</button>
+            <button class="nav-btn sub" data-target="hernia-spiegel">🔹 Hernia de Spiegel</button>
+            <button class="nav-btn sub" data-target="hernia-umbilical">🔹 Hernia Umbilical</button>
+            <button class="nav-btn sub" data-target="hernia-epigastrica">🔹 Hernia Epigástrica</button>
+            <button class="nav-btn sub" data-target="hernias-complicaciones">⚠️ Complicaciones generales</button>
+        </div>
+
+        <!-- ===== ABDOMEN AGUDO ===== -->
+        <button class="nav-btn parent-btn" data-target="abdomen-agudo" data-toggle="submenu-abdomen">
+            ⚡ Abdomen Agudo <span class="arrow">▶</span>
+        </button>
+        <div class="submenu" id="submenu-abdomen">
+            <button class="nav-btn sub" data-target="abdomen-agudo">📖 Definición y síndromes</button>
+            <button class="nav-btn sub" data-target="peritonitis">🔹 Peritonitis</button>
+            <button class="nav-btn sub" data-target="diverticulitis">🔹 Diverticulitis Aguda</button>
+            <button class="nav-btn sub" data-target="pancreatitis">🔹 Pancreatitis Aguda</button>
+            <button class="nav-btn sub" data-target="embarazo-ectopico">🔹 Embarazo Ectópico Roto</button>
+            <button class="nav-btn sub" data-target="isquemia-mesenterica">🔹 Oclusión Vascular Mesentérica</button>
+            <button class="nav-btn sub" data-target="apendicitis">🔹 Apendicitis Aguda</button>
+            <button class="nav-btn sub" data-target="colecistitis">🔹 Colecistitis Aguda</button>
+            <button class="nav-btn sub" data-target="oclusion-intestinal">🔹 Oclusión Intestinal Mecánica</button>
+        </div>
+
+        <!-- ===== EQUILIBRIO ===== -->
+        <button class="nav-btn parent-btn" data-target="equilibrio" data-toggle="submenu-equilibrio">
+            💧 Equilibrio Hidroelectrolítico <span class="arrow">▶</span>
+        </button>
+        <div class="submenu" id="submenu-equilibrio">
+            <button class="nav-btn sub" data-target="equilibrio">📖 Introducción y generalidades</button>
+            <button class="nav-btn sub" data-target="eq-deshidratacion">🔹 Deshidrataciones</button>
+            <button class="nav-btn sub" data-target="eq-electrolitos">🔹 Alteraciones electrolíticas</button>
+            <button class="nav-btn sub" data-target="eq-sodio">🔹 Sodio (hipo/hipernatremia)</button>
+            <button class="nav-btn sub" data-target="eq-potasio">🔹 Potasio (hipo/hiperpotasemia)</button>
+            <button class="nav-btn sub" data-target="eq-calcio">🔹 Calcio (hipo/hipercalcemia)</button>
+            <button class="nav-btn sub" data-target="eq-magnesio">🔹 Magnesio (hipo/hipermagnesemia)</button>
+            <button class="nav-btn sub" data-target="eq-acido-base">🔹 Ácido-base (gasometría)</button>
+        </div>
+
+        <!-- ===== OSTOMÍAS ===== -->
+        <button class="nav-btn parent-btn" data-target="ostomias" data-toggle="submenu-ostomias">
+            🩺 Ostomías <span class="arrow">▶</span>
+        </button>
+        <div class="submenu" id="submenu-ostomias">
+            <button class="nav-btn sub" data-target="ostomias">📖 Definición y clasificación</button>
+            <button class="nav-btn sub" data-target="gastrostomia">🔹 Gastrostomía</button>
+            <button class="nav-btn sub" data-target="cuidados-gastrostomia">🔹 Cuidados de gastrostomía</button>
+            <button class="nav-btn sub" data-target="yeyunostomia">🔹 Yeyunostomía</button>
+            <button class="nav-btn sub" data-target="ileostomia">🔹 Ileostomía</button>
+            <button class="nav-btn sub" data-target="colostomia">🔹 Colostomía</button>
+            <button class="nav-btn sub" data-target="cuidados-ostomias">🔹 Cuidados generales</button>
+        </div>
+
+        <!-- ===== ANTIBIÓTICOS ===== -->
+        <button class="nav-btn parent-btn" data-target="antibioticos" data-toggle="submenu-antibioticos">
+            💊 Antibióticos <span class="arrow">▶</span>
+        </button>
+        <div class="submenu" id="submenu-antibioticos">
+            <button class="nav-btn sub" data-target="antibioticos">📖 Definición y objetivos</button>
+            <button class="nav-btn sub" data-target="ab-mecanismos">🔹 Mecanismos de acción</button>
+            <button class="nav-btn sub" data-target="ab-clasificacion">🔹 Clasificación</button>
+            <button class="nav-btn sub" data-target="ab-profilaxis">🔹 Profilaxis perioperatoria</button>
+            <button class="nav-btn sub" data-target="ab-empirico">🔹 Tratamiento empírico</button>
+            <button class="nav-btn sub" data-target="ab-toxicidad">🔹 Reacciones adversas</button>
+            <button class="nav-btn sub" data-target="ab-resistencia">🔹 Resistencia bacteriana</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONTENIDO ===== -->
+<div class="main" id="mainContent">
+
+    <!-- ============================================================ -->
+    <!-- INICIO -->
+    <!-- ============================================================ -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>📘 Resumen de Cirugía General</h1>
+        <div class="subtitle">Temas clave del 1er año — basado en el resumen del Dr. Luis Damar Martínez Hevia</div>
+        <p style="font-size:1.05rem;">Selecciona un tema en el menú lateral. Esta aplicación sintetiza los módulos más importantes del programa de Cirugía General.</p>
+        <ul style="font-size:1.05rem;">
+            <li><strong>Hernias:</strong> inguinal, crural, incisional, Spiegel, umbilical.</li>
+            <li><strong>Abdomen Agudo:</strong> peritonitis, apendicitis, colecistitis, pancreatitis, oclusión intestinal.</li>
+            <li><strong>Equilibrio Hidroelectrolítico:</strong> deshidrataciones, alteraciones de sodio, potasio, calcio.</li>
+            <li><strong>Ostomías:</strong> gastrostomía, colostomía, técnicas quirúrgicas y cuidados.</li>
+            <li><strong>Antibióticos:</strong> profilaxis, clasificación, mecanismos de acción.</li>
+        </ul>
+        <hr>
+        <p style="color:#b08080;">Énfasis en cuadro clínico, clasificaciones, indicaciones y técnicas quirúrgicas.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIAS - INTRODUCCIÓN Y DEFINICIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernias">
+        <h2>🧵 Hernias Abdominales Externas</h2>
+
+        <h3>Definición y conceptos generales</h3>
+        <p><strong>Definición:</strong> Protrusión anormal de uno o más órganos de la cavidad abdómino-pélvica a través de orificios congénitos o adquiridos de las capas músculo-fascio-aponeuróticas de la pared abdominal, pudiendo perder la capacidad de reintegrarse a su lugar habitual.</p>
+
+        <h4>Elementos de una hernia</h4>
+        <ul>
+            <li><strong>Saco herniario:</strong> evaginación del peritoneo parietal en forma diverticular.</li>
+            <li><strong>Cuello:</strong> porción estrecha del saco que atraviesa el anillo, puede fibrosarse y causar estrangulación.</li>
+            <li><strong>Contenido:</strong> víscera abdominal (intestino delgado, grueso, epiplón, vejiga, apéndice, divertículo de Meckel) o líquido peritoneal.</li>
+            <li><strong>Anillo herniario:</strong> orificio en la pared por donde emerge la hernia (congénito o adquirido).</li>
+        </ul>
+
+        <h4>Clasificación según reductibilidad</h4>
+        <ul>
+            <li><strong>Reductible:</strong> el contenido puede reintegrarse a la cavidad con maniobras suaves.</li>
+            <li><strong>Irreductible simple:</strong> no se reduce por adherencias intrasaculares, deslizamiento o pérdida de derecho a domicilio.</li>
+            <li><strong>Irreductible complicada:</strong>
+                <ul>
+                    <li><strong>Incarcerada:</strong> sin compromiso vascular (atascamiento u obstructiva).</li>
+                    <li><strong>Estrangulada:</strong> con compromiso vascular (urgencia quirúrgica).</li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <p style="color:#a06060; font-style:italic;">Selecciona un tipo específico de hernia en el menú lateral para ver detalles y técnicas quirúrgicas.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA INGUINAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-inguinal">
+        <h2>🧵 Hernia Inguinal</h2>
+
+        <h3>Anatomía quirúrgica</h3>
+        <h4>Estructuras de la pared anterior</h4>
+        <ul>
+            <li><strong>Aponeurosis del oblicuo mayor:</strong> forma la pared anterior del canal inguinal.</li>
+            <li><strong>Anillo inguinal superficial:</strong> orificio en la aponeurosis del oblicuo mayor, limitado por pilares medial y lateral.</li>
+            <li><strong>Ligamento inguinal (Poupart):</strong> borde inferior engrosado del oblicuo mayor, desde EIAS hasta tubérculo púbico.</li>
+        </ul>
+
+        <h4>Estructuras de la pared posterior (lámina TF/TAA)</h4>
+        <ul>
+            <li><strong>Fascia transversalis:</strong> capa fascial profunda que recubre la cavidad abdominal.</li>
+            <li><strong>Aponeurosis del transverso del abdomen:</strong> se fusiona con la fascia transversalis formando la <strong>lámina TF/TAA</strong>.</li>
+            <li><strong>Triángulo de Hesselbach:</strong> zona débil limitada por:
+                <ul>
+                    <li><strong>Superolateral:</strong> vasos epigástricos inferiores.</li>
+                    <li><strong>Medial:</strong> tendón conjunto o borde del recto.</li>
+                    <li><strong>Inferior:</strong> arcada crural.</li>
+                </ul>
+            </li>
+            <li><strong>Cintilla iliopubiana:</strong> banda fascial profunda, importante para técnicas de Madden y Lichtenstein.</li>
+            <li><strong>Ligamento de Cooper:</strong> banda tendinosa en la rama superior del pubis, anclaje para McVay.</li>
+            <li><strong>Ligamento lacunar (Gimbernat):</strong> porción interna del ligamento inguinal.</li>
+            <li><strong>Seno piriforme:</strong> zona de unión de los tercios medio e interno de la pared posterior, referencia para disecar la cintilla iliopubiana.</li>
+        </ul>
+
+        <h4>Anillo inguinal profundo</h4>
+        <ul>
+            <li>Orificio en la fascia transversalis, 6-12 mm por encima del tercio medio del ligamento inguinal.</li>
+            <li><strong>Límites:</strong> arco del transverso (superior), cintilla iliopubiana (inferior), vasos epigástricos (medial).</li>
+            <li>Mecanismo de cierre automático al contraerse el transverso.</li>
+        </ul>
+
+        <h4>Contenido del canal inguinal (hombre)</h4>
+        <ul>
+            <li><strong>3 arterias:</strong> espermática interna (testicular), deferente, espermática externa (cremasteriana).</li>
+            <li><strong>3 venas:</strong> plexo pampiniforme, vena cremasteriana, vena deferente.</li>
+            <li><strong>3 nervios:</strong> ilioinguinal, iliohipogástrico, rama genital del genitocrural.</li>
+            <li><strong>3 capas fasciales:</strong> fascia espermática externa, capa cremasteriana, fascia espermática interna.</li>
+            <li><strong>Conducto deferente.</strong></li>
+        </ul>
+
+        <h3>Clasificación</h3>
+        <h4>Según topografía (relación con vasos epigástricos)</h4>
+        <ul>
+            <li><strong>Indirecta (oblicua externa):</strong> lateral a los vasos epigástricos. Sale por el anillo inguinal profundo. Generalmente congénita (persistencia del conducto peritoneovaginal).</li>
+            <li><strong>Directa:</strong> medial a los vasos epigástricos. Sale por el triángulo de Hesselbach. Adquirida, por debilidad de la pared posterior.</li>
+            <li><strong>Combinada (en pantalón):</strong> ambos tipos coexisten.</li>
+        </ul>
+
+        <h4>Clasificación de Nyhus (modificada por Rutkow-Robbins)</h4>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Tipo</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="badge">I</span></td><td>Conducto peritoneovaginal persistente, anillo profundo normal, vasos epigástricos no desplazados.</td></tr>
+                <tr><td><span class="badge">II</span></td><td>Anillo profundo moderadamente dilatado (&lt;4 cm), vasos poco desplazados, fascia normal.</td></tr>
+                <tr><td><span class="badge">III</span></td><td>Anillo profundo &gt;4 cm, vasos desplazados, fascia debilitada (con o sin deslizamiento).</td></tr>
+                <tr><td><span class="badge">IV</span></td><td>Piso inguinal débil (hernia directa) con anillo profundo normal.</td></tr>
+                <tr><td><span class="badge">V</span></td><td>Defecto diverticular &lt;2 cm en piso inguinal (suprapúbico).</td></tr>
+                <tr><td><span class="badge">VI</span></td><td>Hernia en pantalón (combinada).</td></tr>
+                <tr><td><span class="badge">VII</span></td><td>Todas las hernias femorales.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Síntomas:</strong> aumento de volumen en región inguinal (intermitente, aumenta con esfuerzo), dolor o molestia local, sensación de pesadez.</li>
+                <li><strong>En estrangulación:</strong> dolor intenso y continuo, vómitos, distensión abdominal, taquicardia, shock.</li>
+                <li><strong>Signos:</strong> tumor que emerge por encima de la línea de Malgaigne (EIAS → espina del pubis). Impulso al toser o con maniobra de Valsalva.</li>
+                <li><strong>Exploración digital del canal inguinal:</strong>
+                    <ul>
+                        <li>Se introduce el dedo por el anillo superficial guiándose por la espina del pubis.</li>
+                        <li><strong>Indirecta:</strong> el saco golpea la punta del dedo (o el pulpejo).</li>
+                        <li><strong>Directa:</strong> el saco golpea la cara lateral del dedo.</li>
+                        <li><strong>Oclusión del anillo profundo:</strong> si al ocluirlo no hay hernia, es indirecta; si persiste, es directa.</li>
+                    </ul>
+                </li>
+                <li><strong>Hernia crural:</strong> el saco emerge por debajo de la arcada, por fuera del dedo.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+
+        <h4>Preparación preoperatoria</h4>
+        <ul>
+            <li>Chequeo preoperatorio según enfermedades asociadas.</li>
+            <li>Suspender aspirina 10-15 días antes.</li>
+            <li>Antibiótico profiláctico: cefazolina 1g IV 30 min antes de la incisión.</li>
+            <li>En grandes hernias con pérdida de domicilio: neumoperitoneo progresivo de Goñi Moreno.</li>
+        </ul>
+
+        <h4>A. Técnicas con sutura (herniorrafias)</h4>
+
+        <div class="surg-box">
+            <h5>1. Técnica de Bassini (1889) - la clásica</h5>
+            <ol>
+                <li><strong>Incisión:</strong> oblicua inguinal de 6-7 cm, paralela a la arcada crural, desde punto equidistante entre EIAS y tubérculo púbico hasta el anillo superficial.</li>
+                <li><strong>Apertura de la aponeurosis del oblicuo mayor:</strong> desde el anillo superficial hasta el anillo profundo.</li>
+                <li><strong>Disección del cordón espermático:</strong> se eleva con cuidado y se disecan las estructuras suprayacentes (nervios, cremáster, lipoma del cordón).</li>
+                <li><strong>Identificación del saco herniario:</strong> estructura blanco-nacarada, en posición anterointerna respecto al cordón.</li>
+                <li><strong>Apertura del saco:</strong> se abre con cuidado, se reduce el contenido y se explora digitalmente.</li>
+                <li><strong>Ligadura alta del saco:</strong> se diseca hasta el anillo profundo, se liga con seda 2/0 por transfixión en el cuello.</li>
+                <li><strong>Incisión de la fascia transversalis:</strong> desde el anillo profundo hasta el pubis (para movilizar el "estrato triple").</li>
+                <li><strong>Sutura del "estrato triple":</strong> puntos interrumpidos de seda o polipropileno que unen:
+                    <ul>
+                        <li>Fascia transversalis</li>
+                        <li>Borde libre inferior del transverso</li>
+                        <li>Borde libre inferior del oblicuo menor</li>
+                        <li>→ Al ligamento inguinal (Poupart)</li>
+                    </ul>
+                </li>
+                <li><strong>Reconstrucción:</strong> cierre de la aponeurosis del oblicuo mayor sobre el cordón, dejando el anillo superficial con el diámetro adecuado.</li>
+                <li><strong>Cierre:</strong> tejido subcutáneo y piel.</li>
+            </ol>
+
+            <h5>2. Técnica de McVay (1942) - para hernias grandes y femorales</h5>
+            <ol>
+                <li><strong>Incisión y disección:</strong> similar a Bassini.</li>
+                <li><strong>Incisión de la fascia transversalis:</strong> desde el anillo profundo hasta el pubis.</li>
+                <li><strong>Disección del ligamento de Cooper:</strong> se expone la rama superior del pubis.</li>
+                <li><strong>Sutura del arco aponeurótico del transverso</strong> (o tendón conjunto si existe) al <strong>ligamento de Cooper</strong> con puntos interrumpidos de polipropileno 2/0.</li>
+                <li><strong>Incisión relajante:</strong> en la vaina del recto (para evitar tensión en la línea de sutura).</li>
+                <li><strong>Puntos de transición:</strong> sutura del arco aponeurótico a la vaina de los vasos femorales (para cerrar el anillo crural).</li>
+                <li><strong>Cierre:</strong> de la aponeurosis del oblicuo mayor sobre el cordón.</li>
+            </ol>
+
+            <h5>3. Técnica de Shouldice (1953) - reparación en 6 capas</h5>
+            <ol>
+                <li><strong>Disección:</strong> similar a Bassini, con especial énfasis en la disección de la lámina TF/TAA.</li>
+                <li><strong>División de la lámina TF/TAA:</strong> creando colgajo lateral (cintilla iliopubiana) y colgajo medial (arco aponeurótico del transverso).</li>
+                <li><strong>Sutura continua de acero o polipropileno 2/0:</strong>
+                    <ul>
+                        <li><strong>1ª línea:</strong> colgajo lateral al arco aponeurótico del transverso (desde pubis hasta anillo profundo).</li>
+                        <li><strong>2ª línea:</strong> colgajo medial a la arcada crural (desde anillo profundo hasta pubis).</li>
+                        <li><strong>3ª línea:</strong> arco aponeurótico del transverso al borde externo de la arcada crural.</li>
+                        <li><strong>4ª línea:</strong> refuerzo adicional sobre la anterior (cuando el desarrollo aponeurótico lo permite).</li>
+                    </ul>
+                </li>
+                <li><strong>Reimplantación del cordón:</strong> se coloca en su nueva posición.</li>
+                <li><strong>Cierre de la aponeurosis del oblicuo mayor:</strong> en dos planos (5ª y 6ª capas).</li>
+            </ol>
+
+            <h5>4. Técnica de Madden - reparación sin tensión (con sutura)</h5>
+            <ol>
+                <li><strong>Incisión y disección:</strong> similar a Bassini.</li>
+                <li><strong>Resección del segmento débil</strong> de la pared posterior (triángulo de Hesselbach).</li>
+                <li><strong>Sutura del arco aponeurótico del transverso</strong> a la <strong>cintilla iliopubiana</strong> con puntos interrumpidos de polipropileno.</li>
+                <li><strong>Desde el seno piriforme</strong> hasta el anillo inguinal profundo.</li>
+                <li><strong>Cierre:</strong> de la aponeurosis del oblicuo mayor.</li>
+            </ol>
+
+            <h5>5. Técnica de Zimmerman</h5>
+            <ul>
+                <li><strong>Zimmerman I:</strong> plicatura de la pared posterior con puntos interrumpidos del arco aponeurótico del transverso a la arcada crural.</li>
+                <li><strong>Zimmerman II:</strong> igual que I, pero reforzando la pared reparada con el colgajo lateral de la aponeurosis del oblicuo mayor (se reinserta el cordón y se cubre con el colgajo medial).</li>
+            </ul>
+
+            <h5>6. Técnica de Ferguson-Andrews</h5>
+            <ul>
+                <li><strong>Cierre del defecto de la fascia transversal</strong> con puntos separados.</li>
+                <li><strong>Sutura de la hoja media de la aponeurosis del oblicuo mayor</strong> al ligamento inguinal.</li>
+                <li><strong>Imbricación de la hoja externa</strong> alrededor del cordón (maniobra de Stetten: cortar la hoja externa para evitar constricción).</li>
+                <li><strong>Indicada:</strong> para hernias indirectas pequeñas en pacientes jóvenes.</li>
+            </ul>
+        </div>
+
+        <h4>B. Técnicas libres de tensión (hernioplastias con malla)</h4>
+
+        <div class="surg-box">
+            <h5>1. Técnica de Lichtenstein (1989) - la más utilizada</h5>
+            <ol>
+                <li><strong>Disección:</strong> igual que en Bassini, incluyendo disección del cordón, búsqueda de hernia femoral y exposición de la cintilla iliopubiana.</li>
+                <li><strong>Preparación de la malla:</strong> malla de polipropileno de 8x15 cm (o 15x15 cm) con un ojal para el cordón.</li>
+                <li><strong>Fijación medial:</strong> sutura del borde medial de la malla al tendón conjunto o al recto anterior con puntos de polipropileno 2/0.</li>
+                <li><strong>Fijación inferior:</strong> sutura del borde inferior de la malla a la cintilla iliopubiana o al ligamento inguinal, desde el tubérculo púbico hasta el anillo profundo.</li>
+                <li><strong>Punto de transición:</strong> sutura del ojal de la malla alrededor del cordón, dejando suficiente espacio (un dedo).</li>
+                <li><strong>Fijación superior:</strong> sutura del borde superior de la malla al oblicuo menor y al transverso.</li>
+                <li><strong>Colgadura lateral:</strong> se deja la malla laxa lateralmente (sin fijar) para permitir la movilidad y evitar tensión.</li>
+                <li><strong>Reconstrucción:</strong> cierre de la aponeurosis del oblicuo mayor sobre la malla (o se deja la malla expuesta si la aponeurosis es muy fina).</li>
+            </ol>
+
+            <h5>2. Técnica del tapón de Gilbert (1992)</h5>
+            <ol>
+                <li><strong>Disección:</strong> igual que Bassini, se identifica el defecto.</li>
+                <li><strong>Selección del tapón:</strong> cono de polipropileno del tamaño adecuado (prefabricado o hecho a mano).</li>
+                <li><strong>Inserción:</strong> el cono se introduce en el defecto (anillo profundo o directo) en forma invertida, con el vértice hacia la cavidad peritoneal.</li>
+                <li><strong>Fijación:</strong> con 4 puntos circunferenciales de polipropileno al anillo inguinal profundo o al borde del defecto.</li>
+                <li><strong>Refuerzo opcional:</strong> se puede colocar una malla plana sobre el piso inguinal para cubrir el triángulo de Hesselbach.</li>
+                <li><strong>Reconstrucción:</strong> cierre de la aponeurosis del oblicuo mayor.</li>
+            </ol>
+
+            <h5>3. Técnica de Rutkow-Robbins (1993)</h5>
+            <ol>
+                <li><strong>Tapón de 8 pétalos</strong> (prefabricado) insertado en el defecto (indirecto o directo).</li>
+                <li>Los pétalos se abren en la cavidad peritoneal para anclar el tapón.</li>
+                <li><strong>Malla de refuerzo:</strong> se coloca una malla plana sobre el piso inguinal (5x10 cm) para cubrir todo el triángulo de Hesselbach.</li>
+                <li><strong>Fijación:</strong> con puntos de polipropileno o cianoacrilato.</li>
+                <li><strong>Indicado:</strong> para hernias indirectas y directas de cualquier tamaño.</li>
+            </ol>
+
+            <h5>4. Técnica de Stoppa (vía posterior preperitoneal)</h5>
+            <ol>
+                <li><strong>Incisión:</strong> media infraumbilical o Pfannenstiel.</li>
+                <li><strong>Abordaje preperitoneal:</strong> se incide la fascia transversalis y se accede al espacio de Retzius y Bogros.</li>
+                <li><strong>Malla gigante de 30 cm:</strong> de polipropileno, insertada en el espacio preperitoneal, cubriendo ambos orificios miopectíneos.</li>
+                <li><strong>Fijación:</strong> la malla se mantiene por la presión intraabdominal (no se fija o solo con algunos puntos).</li>
+                <li><strong>Indicada:</strong> para hernias bilaterales, recidivantes o complejas.</li>
+                <li><strong>Variante unilateral:</strong> técnica de Wantz (malla más pequeña).</li>
+            </ol>
+        </div>
+
+        <h4>C. Técnicas laparoscópicas</h4>
+
+        <div class="surg-box">
+            <h5>1. TAPP (Transabdominal Preperitoneal)</h5>
+            <ol>
+                <li><strong>Posición:</strong> decúbito supino, brazos extendidos, Trendelenburg 15-20°.</li>
+                <li><strong>Puertos:</strong> umbilicus (10 mm para óptica), dos puertos de 5 mm en flancos (línea medioclavicular).</li>
+                <li><strong>Neumoperitoneo:</strong> 12-15 mmHg de CO₂.</li>
+                <li><strong>Incisión del peritoneo:</strong> desde la EIAS hasta el ligamento redondo/conducto deferente, en forma de arco.</li>
+                <li><strong>Disección del espacio preperitoneal:</strong> se crea un colgajo peritoneal y se expone:
+                    <ul>
+                        <li>Anillo inguinal profundo</li>
+                        <li>Triángulo de Hesselbach</li>
+                        <li>Ligamento de Cooper</li>
+                        <li>Cintilla iliopubiana</li>
+                        <li>Vasos epigástricos</li>
+                        <li>Vasos femorales</li>
+                    </ul>
+                </li>
+                <li><strong>Reducción del saco:</strong> se tracciona y se reduce a la cavidad peritoneal.</li>
+                <li><strong>Colocación de la malla:</strong> de polipropileno (10x15 cm) cubriendo todo el orificio miopectíneo.</li>
+                <li><strong>Fijación:</strong> con grapas o sutura al ligamento de Cooper, tendón conjunto, cintilla iliopubiana y arcada crural.</li>
+                <li><strong>Cierre del peritoneo:</strong> con sutura continua o grapas, para evitar adherencias a la malla.</li>
+            </ol>
+
+            <h5>2. TEP (Total Extraperitoneal)</h5>
+            <ol>
+                <li><strong>Posición:</strong> igual que TAPP.</li>
+                <li><strong>Puerto principal:</strong> subumbilical (10 mm), con disección hasta la fascia transversalis.</li>
+                <li><strong>Inserción del balón:</strong> se introduce un balón para crear el espacio preperitoneal (Retzius y Bogros).</li>
+                <li><strong>Disección del espacio:</strong> con óptica de 0° o 30°, se identifica:
+                    <ul>
+                        <li>Vasos epigástricos</li>
+                        <li>Anillo inguinal profundo</li>
+                        <li>Ligamento de Cooper</li>
+                        <li>Vasos femorales</li>
+                    </ul>
+                </li>
+                <li><strong>Reducción del saco:</strong> igual que TAPP.</li>
+                <li><strong>Colocación de la malla:</strong> 10x15 cm cubriendo el orificio miopectíneo.</li>
+                <li><strong>Fijación:</strong> con grapas o sutura.</li>
+                <li><strong>Ventaja:</strong> no se abre el peritoneo, menor riesgo de lesión intraabdominal y adherencias.</li>
+                <li><strong>Desventaja:</strong> espacio de trabajo más limitado.</li>
+            </ol>
+        </div>
+
+        <h4>Complicaciones de la herniorrafia inguinal</h4>
+
+        <h5>Complicaciones inmediatas</h5>
+        <ul>
+            <li><strong>Hemorragia:</strong> por lesión de vasos epigástricos, femorales o del cordón. Puede producir hematoma en "bikini" (decolla la fascia de Scarpa).</li>
+            <li><strong>Sepsis:</strong> infección de la herida o de la malla (puede hacer fracasar la reparación).</li>
+            <li><strong>Orquitis isquémica y atrofia testicular:</strong> por compromiso de la circulación del cordón (trombosis de la arteria testicular o compresión).</li>
+            <li><strong>Lesión del conducto deferente:</strong> requiere anastomosis término-terminal con sutura fina de polipropileno bajo lupa.</li>
+            <li><strong>Lesión visceral:</strong> intestino, vejiga, uréter (requiere reparación inmediata).</li>
+            <li><strong>Lesión nerviosa:</strong> ilioinguinal, iliohipogástrico, genitocrural (causa parestesias o inguinodinia).</li>
+            <li><strong>Lesión vascular:</strong> arteria femoral, vena femoral, vasos epigástricos.</li>
+        </ul>
+
+        <h5>Complicaciones tardías</h5>
+        <ul>
+            <li><strong>Recurrencia:</strong>
+                <ul>
+                    <li><strong>Temprana (&lt;5 años):</strong> por infección, tensión, técnica inadecuada, material de sutura inapropiado.</li>
+                    <li><strong>Tardía (&gt;5 años):</strong> por envejecimiento de tejidos, colagenopatías, tabaquismo (disminuye alfa-1 antitripsina), ascitis, EPOC.</li>
+                </ul>
+            </li>
+            <li><strong>Inguinodinia crónica:</strong> dolor persistente por atrapamiento nervioso (nervio ilioinguinal, iliohipogástrico o genitocrural).</li>
+            <li><strong>Neuromas:</strong> por sección o daño de nervios durante la disección.</li>
+            <li><strong>Parestesias:</strong> en región inguinal y escrotal (zona del nervio ilioinguinal).</li>
+            <li><strong>Atrofia testicular:</strong> por compromiso vascular tardío.</li>
+            <li><strong>Esterilidad:</strong> por lesión del conducto deferente o compromiso vascular.</li>
+            <li><strong>Infección de la malla:</strong> requiere retirada de la malla (a veces con pérdida de la reparación).</li>
+            <li><strong>Reacción a cuerpo extraño:</strong> seroma, granuloma, fibrosis excesiva.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA CRURAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-crural">
+        <h2>🧵 Hernia Crural (Femoral)</h2>
+
+        <h3>Anatomía</h3>
+        <ul>
+            <li><strong>Límites del anillo femoral:</strong>
+                <ul>
+                    <li><strong>Anterior:</strong> ligamento inguinal (Poupart).</li>
+                    <li><strong>Posterior:</strong> ligamento de Cooper (pectíneo).</li>
+                    <li><strong>Externo:</strong> vena femoral.</li>
+                    <li><strong>Interno:</strong> ligamento lacunar de Gimbernat.</li>
+                </ul>
+            </li>
+            <li><strong>Canal femoral:</strong> conducto de 1-2 cm entre la vena femoral y la pared interna de la vaina femoral.</li>
+            <li><strong>Contenido del canal femoral:</strong> ganglios linfáticos, tejido adiposo, vasos epigástricos superficiales.</li>
+            <li><strong>Vaina femoral:</strong> revestimiento de los vasos femorales, con 3 compartimentos: externo (arteria), medio (vena), interno (conducto crural).</li>
+        </ul>
+
+        <h3>Clasificación topográfica</h3>
+        <ul>
+            <li><strong>Típica:</strong> por el anillo femoral (conducto crural).</li>
+            <li><strong>Atípicas:</strong>
+                <ul>
+                    <li><strong>De Laugier:</strong> a través del ligamento lacunar.</li>
+                    <li><strong>De Calisen-Cloquet:</strong> pectínea (relación con el músculo pectíneo).</li>
+                    <li><strong>Prevascular de Teale:</strong> por delante de la vena femoral.</li>
+                    <li><strong>Retrovascular de Serafín:</strong> por detrás de la vena femoral.</li>
+                    <li><strong>Externa de Hesselbach:</strong> por fuera de la arteria femoral.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Tumor:</strong> semiesférico, liso, en región superointerna del muslo, por debajo de la arcada crural.</li>
+                <li><strong>Epidemiología:</strong> más frecuente en mujeres (2:1).</li>
+                <li><strong>Alta incidencia de estrangulación</strong> (por anillo rígido y contenido intestinal).</li>
+                <li><strong>Signo de Asley y Cooper:</strong> dolor y náuseas al extender la extremidad (por compresión del nervio femoral).</li>
+                <li><strong>Diagnóstico diferencial:</strong> adenopatía, lipoma, varices de la safena, absceso, hernia inguinal.</li>
+                <li><strong>En pacientes obesos:</strong> puede pasar desapercibida hasta la estrangulación.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+
+        <div class="surg-box">
+            <h5>1. Vía femoral (Bassini para crural)</h5>
+            <ol>
+                <li><strong>Incisión:</strong> vertical de 8-10 cm sobre el canal femoral (paralela a los vasos femorales), desde 1 cm por encima del ligamento inguinal.</li>
+                <li><strong>Disección:</strong> apertura de la fascia cribosa (cribiforme) y la fascia transversalis.</li>
+                <li><strong>Saco herniario:</strong> identificación, liberación de tejido adiposo (cuidado con la vena femoral, lateral al saco).</li>
+                <li><strong>Apertura y reducción:</strong> se abre el saco, se reduce el contenido (cuidado con la estrangulación).</li>
+                <li><strong>Ligadura alta:</strong> transfixión del cuello con seda 2/0 y resección del saco.</li>
+                <li><strong>Sutura del ligamento de Cooper al ligamento inguinal:</strong> con 3-4 puntos interrumpidos de seda o polipropileno (el punto más interno cerca de la espina del pubis).</li>
+                <li><strong>Refuerzo:</strong> sutura del margen falciforme (borde de la fascia lata) al ligamento de Cooper.</li>
+                <li><strong>Cierre:</strong> por planos.</li>
+            </ol>
+
+            <h5>2. Técnica de Cadenat</h5>
+            <ul>
+                <li>Abordaje femoral similar a Bassini.</li>
+                <li>Fijación del ligamento de Cooper al ligamento inguinal mediante <strong>puntos en "U"</strong> de polipropileno (más resistentes).</li>
+                <li>Se colocan 2-3 puntos en "U" que abarcan ambos ligamentos.</li>
+            </ul>
+
+            <h5>3. Técnica de Lotheissen-McVay (vía inguinal)</h5>
+            <ol>
+                <li><strong>Abordaje inguinal:</strong> misma incisión que para hernia inguinal.</li>
+                <li><strong>Incisión de la fascia transversalis:</strong> y disección del espacio preperitoneal.</li>
+                <li><strong>Identificación del saco crural:</strong> se visualiza el anillo crural y el saco.</li>
+                <li><strong>Sutura del tendón conjunto</strong> (o arco aponeurótico del transverso) al <strong>ligamento de Cooper</strong> con puntos interrumpidos de polipropileno 2/0.</li>
+                <li><strong>Puntos de transición:</strong> desde el ligamento de Cooper hacia la vaina de los vasos femorales (para cerrar el anillo crural).</li>
+                <li><strong>Incisión relajante:</strong> en la vaina del recto para evitar tensión.</li>
+                <li><strong>Cierre:</strong> de la aponeurosis del oblicuo mayor.</li>
+            </ol>
+
+            <h5>4. Técnica de Cheatle-Henry (vía posterior preperitoneal)</h5>
+            <ol>
+                <li><strong>Abordaje extraperitoneal:</strong> incisión media o paramedia infraumbilical (Pfannenstiel).</li>
+                <li><strong>Acceso al espacio preperitoneal:</strong> se incide la fascia transversalis y se entra al espacio de Retzius.</li>
+                <li><strong>Identificación del anillo crural:</strong> se visualizan los vasos femorales y el defecto.</li>
+                <li><strong>Sutura del tracto iliopúbico al ligamento de Cooper.</strong></li>
+                <li><strong>Ventaja:</strong> permite explorar ambos lados y reparar hernias bilaterales.</li>
+                <li><strong>Desventaja:</strong> técnica más compleja, requiere anestesia general.</li>
+            </ol>
+
+            <h5>5. Inguinalización de la hernia crural</h5>
+            <ul>
+                <li><strong>Abordaje por encima del ligamento inguinal.</strong></li>
+                <li>Se convierte la hernia crural en inguinal para facilitar la reparación.</li>
+                <li>Se sutura el saco al arco aponeurótico del transverso y se fija al ligamento de Cooper.</li>
+                <li><strong>Indicada:</strong> cuando el abordaje femoral es difícil (obesidad, recidiva).</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li><strong>Estrangulación:</strong> muy frecuente (anillo rígido, contenido intestinal).</li>
+            <li><strong>Lesión de la vena femoral:</strong> sangrado profuso, trombosis venosa.</li>
+            <li><strong>Lesión de la "corona mortis":</strong> anastomosis entre la obturatriz y la epigástrica (sangrado retroperitoneal).</li>
+            <li><strong>Recurrencia:</strong> mayor que en hernias inguinales (por dificultad técnica y anillo difícil de cerrar).</li>
+            <li><strong>Hematoma o seroma en la región crural.</strong></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA INCISIONAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-incisional">
+        <h2>🧵 Hernia Incisional (Eventración)</h2>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Por localización:</strong> supraumbilical, infraumbilical, media, paramedia, transversa, mixta (según la incisión original).</li>
+            <li><strong>Por tamaño:</strong> pequeña (&lt;5 cm), mediana (5-10 cm), grande (&gt;10 cm).</li>
+            <li><strong>Por reductibilidad:</strong> reductible o irreductible.</li>
+            <li><strong>Por número de loculaciones:</strong> unilocular o multilocular.</li>
+            <li><strong>Según etiología:</strong> postlaparotomía (la más frecuente) o postraumática.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Triada característica:</strong> dolor, cicatriz y tumor referido o palpable.</li>
+                <li><strong>En grandes hernias:</strong> pérdida de derecho a domicilio, riesgo de hipertensión intraabdominal (PIA).</li>
+                <li><strong>Síntomas de atrapamiento o estrangulación.</strong></li>
+                <li><strong>Factores predisponentes:</strong> obesidad, EPOC, tabaquismo, diabetes, desnutrición, infección de la herida, uso de corticoides.</li>
+                <li><strong>Diagnóstico:</strong> con maniobra de Valsalva, se siente la protrusión o el choque del contenido.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+
+        <h4>A. Técnicas con sutura</h4>
+        <div class="surg-box">
+            <h5>1. Técnica de Mayo (para umbilicales y pequeñas incisionales)</h5>
+            <ol>
+                <li><strong>Incisión:</strong> arciforme infraumbilical (o supraumbilical) que rodea la cicatriz.</li>
+                <li><strong>Disección del saco:</strong> se separa de la piel y se trata el contenido (ligadura o invaginación).</li>
+                <li><strong>Prolongación del defecto:</strong> en sentido horizontal hasta los bordes de los músculos rectos anteriores.</li>
+                <li><strong>Incisión de las vainas aponeuróticas:</strong> se convierten los bordes del defecto en colgajos superiores e inferiores.</li>
+                <li><strong>Superposición de colgajos:</strong>
+                    <ul>
+                        <li>Colgajo superior sobre el inferior (imbricación).</li>
+                        <li><strong>Primera hilera:</strong> puntos de colchonero con sutura no absorbible (polipropileno 1).</li>
+                        <li><strong>Segunda hilera:</strong> sutura del borde libre del colgajo superior a la cara anterior del colgajo inferior.</li>
+                    </ul>
+                </li>
+                <li><strong>Cierre:</strong> tejido subcutáneo y piel.</li>
+            </ol>
+
+            <h5>2. Técnica de Catell</h5>
+            <ul>
+                <li><strong>Cierre con puntos totales</strong> que abarcan todos los planos (piel al peritoneo).</li>
+                <li><strong>Puntos en U</strong> con sutura no absorbible (polipropileno 1).</li>
+                <li><strong>Indicada:</strong> para defectos pequeños y medianos (&lt;5 cm).</li>
+            </ul>
+        </div>
+
+        <h4>B. Hernioplastia con malla (técnicas libres de tensión)</h4>
+        <div class="surg-box">
+            <h5>1. Colocación preperitoneal (sublay)</h5>
+            <ul>
+                <li><strong>Abordaje:</strong> se incide la fascia posterior y se diseca el espacio preperitoneal.</li>
+                <li><strong>Colocación de la malla:</strong> se coloca entre el peritoneo y la fascia posterior, cubriendo el defecto con un margen de 5 cm.</li>
+                <li><strong>Fijación:</strong> con puntos de polipropileno a la fascia circundante o con adhesivos.</li>
+                <li><strong>Ventaja:</strong> la presión intraabdominal mantiene la malla en su lugar.</li>
+                <li><strong>Materiales:</strong> polipropileno, poliéster, PTFE.</li>
+            </ul>
+
+            <h5>2. Colocación retrofascial (intraperitoneal - IPOM)</h5>
+            <ul>
+                <li><strong>Malla:</strong> se coloca directamente sobre el peritoneo (cara interna de la pared).</li>
+                <li><strong>Fijación:</strong> con grapas (tackers) o puntos transfixiantes.</li>
+                <li><strong>Materiales:</strong> mallas compuestas (antiadherentes) con una cara de PTFE o colágeno para evitar adherencias a las vísceras.</li>
+                <li><strong>Ventaja:</strong> fácil colocación, buen anclaje.</li>
+                <li><strong>Desventaja:</strong> riesgo de adherencias y fístulas enterocutáneas.</li>
+            </ul>
+
+            <h5>3. Colocación prefascial (onlay)</h5>
+            <ul>
+                <li><strong>Malla:</strong> se coloca sobre la fascia anterior (en el tejido subcutáneo).</li>
+                <li><strong>Fijación:</strong> con puntos a la fascia circundante.</li>
+                <li><strong>Indicada:</strong> para defectos pequeños y medianos cuando no se puede acceder al espacio preperitoneal.</li>
+                <li><strong>Desventaja:</strong> mayor riesgo de seroma e infección.</li>
+            </ul>
+
+            <h5>4. Técnica en "sandwich" (doble malla)</h5>
+            <ul>
+                <li><strong>Malla preperitoneal</strong> (sublay) + <strong>malla prefascial</strong> (onlay).</li>
+                <li><strong>Indicada:</strong> para defectos grandes (&gt;10 cm) o recidivantes.</li>
+                <li>Proporciona un refuerzo máximo de la pared.</li>
+            </ul>
+        </div>
+
+        <h4>C. Técnica laparoscópica (IPOM)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Abordaje:</strong> tres puertos laparoscópicos a distancia del defecto (para evitar adherencias).</li>
+                <li><strong>Neumoperitoneo:</strong> 12-15 mmHg.</li>
+                <li><strong>Reducción del contenido:</strong> se liberan adherencias y se reduce el contenido.</li>
+                <li><strong>Medición del defecto:</strong> se mide el tamaño del defecto con una pinza graduada.</li>
+                <li><strong>Colocación de la malla:</strong> se introduce una malla compuesta (antiadherente) y se coloca cubriendo el defecto con 5 cm de margen.</li>
+                <li><strong>Fijación:</strong> con grapas (tackers) o sutura transabdominal (puntos de polipropileno).</li>
+                <li><strong>Ventajas:</strong> menor dolor, menor estancia hospitalaria, menor riesgo de infección.</li>
+                <li><strong>Desventaja:</strong> curva de aprendizaje, riesgo de lesión visceral.</li>
+            </ol>
+        </div>
+
+        <h4>D. Neumoperitoneo previo de Goñi Moreno</h4>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Indicación:</strong> grandes hernias con pérdida de derecho a domicilio (vísceras no caben en la cavidad).</li>
+                <li><strong>Técnica:</strong> inyección de aire en la cavidad abdominal (10-20 L en sesiones sucesivas de 2-3 veces por semana).</li>
+                <li><strong>Ventajas:</strong>
+                    <ul>
+                        <li>Restricción respiratoria gradual (habilita músculos accesorios de la respiración).</li>
+                        <li>Da "derecho de domicilio" a las vísceras (aumenta la capacidad abdominal).</li>
+                        <li>Eleva el diafragma progresivamente para adaptar al paciente a la insuficiencia respiratoria.</li>
+                        <li>Divide adherencias entre el saco y las vísceras.</li>
+                        <li>Da elasticidad a la pared abdominal.</li>
+                    </ul>
+                </li>
+                <li><strong>Cuidados:</strong> monitorizar la tolerancia respiratoria del paciente.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li><strong>Hipertensión intraabdominal (PIA):</strong>
+                <ul>
+                    <li><strong>Grados:</strong> I (10-15), II (16-25), III (26-35), IV (&gt;35 cm H₂O).</li>
+                    <li><strong>Medición:</strong> presión intravesical (sonda Foley + manómetro, con 50-100 mL de suero).</li>
+                    <li><strong>Tratamiento:</strong> descompresión abdominal en grados III-IV (reabrir la pared).</li>
+                </ul>
+            </li>
+            <li><strong>Seroma:</strong> acumulación de líquido seroso (se resuelve con drenaje o aspiración percutánea).</li>
+            <li><strong>Hematoma:</strong> por hemostasia deficiente.</li>
+            <li><strong>Infección de la malla:</strong> requiere retirada de la malla (a veces con pérdida de la reparación) y antibióticos.</li>
+            <li><strong>Recidiva:</strong> más frecuente en grandes defectos, técnicas con sutura y pacientes obesos.</li>
+            <li><strong>Fístula enterocutánea:</strong> por erosión de la malla sobre el intestino (especialmente en IPOM sin cara antiadherente).</li>
+            <li><strong>Distrés respiratorio:</strong> por elevación del diafragma y restricción pulmonar (en grandes hernias).</li>
+            <li><strong>Íleo paralítico:</strong> por manipulación intestinal excesiva.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA DE SPIEGEL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-spiegel">
+        <h2>🧵 Hernia de Spiegel</h2>
+
+        <h3>Anatomía</h3>
+        <ul>
+            <li><strong>Línea semilunar (Spiegel):</strong> línea curva que señala la transición de músculo a aponeurosis en el músculo transverso del abdomen.</li>
+            <li><strong>Aponeurosis de Spiegel:</strong> zona entre la línea semilunar y el borde externo del recto.</li>
+            <li><strong>"Cinturón de Spiegel":</strong> área de 6 cm por encima y por debajo de la línea que une las EIAS. <strong>El 90%</strong> de las hernias se desarrollan en este cinturón.</li>
+            <li>El orificio herniario suele ser pequeño (0.5-2 cm) y rígido.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor:</strong> intermitente o continuo, puede ser difuso o localizado. A veces descrito como "mialgia".</li>
+                <li><strong>Tumor:</strong> difícil de palpar por su localización intraparietal (solo el 50% son palpables).</li>
+                <li><strong>Hiperestesia:</strong> en el área del nervio intercostal correspondiente (por irritación mecánica).</li>
+                <li><strong>Diagnóstico:</strong> ecografía (visualiza el defecto en la aponeurosis) o TAC.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Hernia palpable:</strong>
+                    <ul>
+                        <li>Incisión sobre el defecto.</li>
+                        <li>Apertura de la fascia del oblicuo mayor.</li>
+                        <li>Identificación del saco, resección y reducción del contenido.</li>
+                        <li>Cierre aponeurótico con sutura no absorbible (polipropileno 2/0) o malla.</li>
+                    </ul>
+                </li>
+                <li><strong>Hernia no palpable:</strong>
+                    <ul>
+                        <li>Incisión media o paramedia.</li>
+                        <li>Abordaje preperitoneal a través de la vaina del recto (se abre la pared posterior).</li>
+                        <li>Palpación bimanual (desde dentro y desde fuera) para identificar el defecto.</li>
+                        <li>Disección subcutánea hacia el defecto y reparación con sutura o malla.</li>
+                    </ul>
+                </li>
+                <li><strong>Laparoscópica:</strong> opción para defectos difíciles de localizar.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA UMBILICAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-umbilical">
+        <h2>🧵 Hernia Umbilical</h2>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Congénitas:</strong>
+                <ul>
+                    <li><strong>Onfalocele:</strong> defecto de la pared con saco de doble capa (amnios + peritoneo), sin piel.</li>
+                    <li><strong>Gastrosquisis:</strong> defecto paraumbilical sin saco, vísceras libres en cavidad amniótica.</li>
+                    <li><strong>Hernia del cordón:</strong> pequeña protrusión en la base del cordón umbilical.</li>
+                </ul>
+            </li>
+            <li><strong>Adquiridas:</strong>
+                <ul>
+                    <li><strong>Infantil:</strong> cierre espontáneo hasta los 4-5 años.</li>
+                    <li><strong>Del adulto:</strong> obesidad, embarazo, ascitis, neoplasias.</li>
+                </ul>
+            </li>
+            <li><strong>Por localización:</strong> directa (por el anillo umbilical), indirecta (supra o infraumbilical).</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Tumor en ombligo:</strong> reductible, con gorgoteo (si contiene intestino).</li>
+                <li><strong>Puede incarcerarse o estrangularse.</strong></li>
+                <li><strong>Diagnóstico diferencial:</strong> granuloma umbilical, endometrioma (dolor cíclico), fístula del uraco (salida de orina), adenoma umbilical.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <h5>1. Técnica de Mayo (la más utilizada)</h5>
+            <ol>
+                <li><strong>Incisión:</strong> arciforme infraumbilical (o supraumbilical) que rodea el ombligo.</li>
+                <li><strong>Disección del saco:</strong> se separa de la piel del ombligo y se trata el contenido (ligadura o invaginación).</li>
+                <li><strong>Prolongación del defecto:</strong> en sentido horizontal hasta los bordes de los músculos rectos anteriores.</li>
+                <li><strong>Incisión de las vainas aponeuróticas:</strong> se convierten los bordes del defecto en colgajos superiores e inferiores.</li>
+                <li><strong>Superposición de colgajos (imbricación):</strong>
+                    <ul>
+                        <li>Colgajo superior sobre el inferior.</li>
+                        <li><strong>Primera hilera:</strong> puntos de colchonero con sutura no absorbible (polipropileno 1).</li>
+                        <li><strong>Segunda hilera:</strong> sutura del borde libre del colgajo superior a la cara anterior del colgajo inferior.</li>
+                    </ul>
+                </li>
+                <li><strong>Cierre:</strong> tejido subcutáneo y piel (se puede resecar el ombligo si está muy deformado).</li>
+            </ol>
+
+            <h5>2. Cierre simple</h5>
+            <ul>
+                <li><strong>Indicado:</strong> para hernias pequeñas (&lt;2 cm) en niños o adultos sin factores de riesgo.</li>
+                <li><strong>Técnica:</strong> puntos interrumpidos o continuos de sutura no absorbible (polipropileno 2/0) en sentido transversal o vertical.</li>
+            </ul>
+
+            <h5>3. Hernioplastia con malla</h5>
+            <ul>
+                <li><strong>Colocación preperitoneal:</strong> malla en el espacio preperitoneal (sublay).</li>
+                <li><strong>Colocación retrofascial (IPOM):</strong> malla intraperitoneal con fijación transabdominal.</li>
+                <li><strong>Laparoscópica:</strong> para defectos grandes o recidivantes (menor dolor, menor estancia).</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Incarceración, estrangulación.</li>
+            <li>Recidiva (más frecuente en adultos obesos y técnicas sin malla).</li>
+            <li>Infección del ombligo (onfalitis).</li>
+            <li>Seroma, hematoma.</li>
+            <li>Granuloma umbilical (por material de sutura).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA EPIGÁSTRICA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernia-epigastrica">
+        <h2>🧵 Hernia Epigástrica (de la línea alba)</h2>
+
+        <h3>Anatomía</h3>
+        <ul>
+            <li>Se producen en la porción supraumbilical de la línea alba (desde el apéndice xifoides hasta 2-2.5 cm por encima del ombligo).</li>
+            <li><strong>Orificios de Rieder:</strong> pequeñas aberturas en la línea alba para vasos y nervios perforantes.</li>
+            <li>La mayoría son <strong>hernias adiposas</strong> (solo grasa preperitoneal).</li>
+            <li>Rara vez contienen vísceras (epiplón, estómago, intestino).</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Tumor:</strong> pequeño, fijo, ligeramente lateral a la línea media (generalmente hacia la izquierda).</li>
+                <li><strong>Dolor:</strong> reflejo, irradiado al precordio, espalda o epigastrio (por tracción del epiplón).</li>
+                <li><strong>Náuseas y vómitos:</strong> en hernias con contenido epiplónico.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Incisión:</strong> sobre el defecto o vertical sobre la línea alba.</li>
+                <li><strong>Disección del saco:</strong> se identifica y reseca (si es adiposo, se extirpa el lipoma preherniario).</li>
+                <li><strong>Cierre:</strong> de la línea alba con sutura no absorbible (polipropileno 2/0) en puntos interrumpidos.</li>
+                <li><strong>Malla:</strong> en defectos grandes o recidivantes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COMPLICACIONES GENERALES DE LAS HERNIAS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-hernias-complicaciones">
+        <h2>⚠️ Complicaciones generales de las hernias</h2>
+
+        <h3>Incarceración (atascamiento)</h3>
+        <ul>
+            <li><strong>Definición:</strong> aprisionamiento de las vísceras sin compromiso vascular.</li>
+            <li><strong>Causa:</strong> anillo fibroso o inextensible (cuello del saco engrosado).</li>
+            <li><strong>Clínica:</strong> dolor cólico, obstrucción intestinal (si es intestino), tumor irreducible.</li>
+            <li><strong>Peligro:</strong> puede evolucionar a estrangulación.</li>
+            <li><strong>Reducción en masa:</strong> taxis forzada que reduce el saco sin liberar el anillo → estrangulación interna.</li>
+        </ul>
+
+        <h3>Estrangulación</h3>
+        <ul>
+            <li><strong>Definición:</strong> compromiso circulatorio del contenido herniario.</li>
+            <li><strong>Etapas:</strong>
+                <ol>
+                    <li>Congestión y edema.</li>
+                    <li>Infarto intestinal y mesentérico.</li>
+                    <li>Necrosis y gangrena (con contribución bacteriana).</li>
+                    <li>Peritonitis sacular (paso de gérmenes al saco).</li>
+                    <li>Absceso pioestercoráceo.</li>
+                </ol>
+            </li>
+            <li><strong>Clínica:</strong> dolor intenso y continuo, vómitos, distensión, taquicardia, shock.</li>
+            <li><strong>Tratamiento:</strong> quirúrgico de urgencia (laparotomía, resección intestinal si hay necrosis).</li>
+            <li><strong>Mortalidad:</strong> 30-45% si se requiere resección intestinal.</li>
+            <li><strong>Factor tiempo:</strong> en ancianos (arteriosclerosis) el tiempo hasta la necrosis es menor.</li>
+        </ul>
+
+        <h3>Hernia de Richter</h3>
+        <ul>
+            <li><strong>Definición:</strong> estrangulación parcial del borde antimesentérico de un asa intestinal.</li>
+            <li><strong>Característica:</strong> no hay obstrucción completa (la luz intestinal no se compromete), puede haber diarrea.</li>
+            <li><strong>Peligro:</strong> necrosis sin síntomas oclusivos, perforación tardía.</li>
+        </ul>
+
+        <h3>Hernia de Littré</h3>
+        <ul>
+            <li><strong>Definición:</strong> contenido del saco es un divertículo de Meckel.</li>
+        </ul>
+
+        <h3>Hernia de Maydl</h3>
+        <ul>
+            <li><strong>Definición:</strong> hernia en "W" con dos asas en el saco y una asa estrangulada en la cavidad abdominal (entre las dos asas).</li>
+            <li><strong>Peligro:</strong> el asa estrangulada en la cavidad puede pasar desapercibida.</li>
+        </ul>
+
+        <h3>Hernia deslizada</h3>
+        <ul>
+            <li><strong>Definición:</strong> una víscera (colon o vejiga) forma parte de la pared del saco (no está completamente cubierta por peritoneo).</li>
+            <li><strong>Peligro:</strong> lesión de la víscera al abrir o ligar el saco.</li>
+            <li><strong>Tratamiento:</strong> reducción del saco con maniobra de La Roque y reparación de la pared posterior con McVay o malla.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABDOMEN AGUDO - INTRODUCCIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-abdomen-agudo">
+        <h2>⚡ Abdomen Agudo</h2>
+
+        <h3>Definición</h3>
+        <p><strong>Abdomen agudo:</strong> Proceso de carácter grave y evolución rápida que se desarrolla dentro de la cavidad peritoneal y que exige usualmente la intervención quirúrgica urgente para evitar complicaciones graves o la muerte.</p>
+
+        <h3>Síndromes principales</h3>
+        <ul>
+            <li><strong>Síndrome peritoneal:</strong> dolor continuo, contractura, defensa, reacción peritoneal.</li>
+            <li><strong>Síndrome oclusivo:</strong> dolor cólico, vómitos, constipación, distensión.</li>
+            <li><strong>Síndrome hemorrágico:</strong> shock, palidez, dolor abdominal, punción positiva.</li>
+        </ul>
+
+        <h3>Signos semiológicos clave</h3>
+        <ul>
+            <li><strong>Signo de Blumberg:</strong> dolor a la descompresión brusca (reacción peritoneal).</li>
+            <li><strong>Signo de Jaubert:</strong> borramiento de la matidez hepática (neumoperitoneo).</li>
+            <li><strong>Signo de Kehr:</strong> dolor irradiado a hombros (irritación diafragmática).</li>
+            <li><strong>Signo de Holman:</strong> dolor a la percusión suave en zona inflamada.</li>
+            <li><strong>Signo de Winter:</strong> ausencia de movimientos abdominales durante la respiración.</li>
+            <li><strong>Signo de Cullen:</strong> oscurecimiento de la piel periumbilical (hemoperitoneo).</li>
+            <li><strong>Signo de Rovsing:</strong> dolor en FID al presionar FII (apendicitis).</li>
+            <li><strong>Signo de Murphy:</strong> detención de la inspiración al presionar el hipocondrio derecho (colecistitis).</li>
+        </ul>
+
+        <hr>
+        <p style="color:#a06060; font-style:italic;">Selecciona una patología específica en el menú lateral para ver el detalle completo.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PERITONITIS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-peritonitis">
+        <h2>🔴 Peritonitis</h2>
+
+        <h3>Definición</h3>
+        <p>Proceso inflamatorio general o localizado de la membrana peritoneal secundario a una irritación química, invasión bacteriana, necrosis local o contusión directa.</p>
+
+        <h3>Clasificación detallada</h3>
+
+        <h4>Por extensión</h4>
+        <ul>
+            <li><strong>Localizada (focalizada):</strong> limitada a un espacio (FID, subfrénico, Douglas).</li>
+            <li><strong>Generalizada (difusa):</strong> afecta 2 o más cuadrantes de la cavidad peritoneal.</li>
+        </ul>
+
+        <h4>Por agente causal</h4>
+        <ul>
+            <li><strong>Séptica:</strong> bacteriana (E. coli, Bacteroides fragilis, Clostridium, Estreptococo).</li>
+            <li><strong>Aséptica (química):</strong> bilis, jugo gástrico, jugo pancreático, sangre, quimo.</li>
+        </ul>
+
+        <h4>Por origen</h4>
+        <ul>
+            <li><strong>Primaria:</strong> sin causa intraabdominal. Más frecuente en niños (neumococo, estreptococo) y cirróticos con ascitis.</li>
+            <li><strong>Secundaria:</strong> por perforación (úlcera, apéndice, divertículo), necrosis, postoperatoria (dehiscencia de sutura), traumática.</li>
+            <li><strong>Terciaria:</strong> en pacientes inmunodeprimidos, con largas estancias en UCI. Gérmenes oportunistas (Candida, Pseudomonas, Enterococcus).</li>
+        </ul>
+
+        <h4>Por evolución</h4>
+        <ul>
+            <li><strong>Aguda:</strong> de instalación rápida (perforación, necrosis).</li>
+            <li><strong>Crónica:</strong> evolución lenta (tuberculosa, actinomicosis).</li>
+        </ul>
+
+        <h3>Cuadro clínico de la peritonitis aguda</h3>
+        <div class="clin-box">
+            <h4>Síntomas</h4>
+            <ul>
+                <li><strong>Dolor:</strong> continuo, intenso, que empeora con movimientos y tos.</li>
+                <li><strong>Vómitos:</strong> ligeros al inicio, persistentes en fases avanzadas.</li>
+                <li><strong>Fiebre:</strong> en agujas (pico vespertino, remisión matutina).</li>
+                <li><strong>Taquicardia:</strong> desproporcionada a la fiebre.</li>
+                <li><strong>Deshidratación:</strong> sed, mucosas secas, oliguria.</li>
+            </ul>
+            <h4>Signos</h4>
+            <ul>
+                <li><strong>Inspección:</strong> abdomen distendido, inmovilidad respiratoria (signo de Winter).</li>
+                <li><strong>Palpación:</strong> contractura abdominal (signo capital), dolor a la descompresión (Blumberg).</li>
+                <li><strong>Percusión:</strong> timpanismo generalizado, matidez en declives.</li>
+                <li><strong>Auscultación:</strong> silencio abdominal (Ley de Stokes), íleo paralítico.</li>
+                <li><strong>Tacto rectal:</strong> abombamiento y dolor en fondo de saco de Douglas.</li>
+            </ul>
+        </div>
+
+        <h3>Fisiopatología de la sepsis peritoneal</h3>
+        <ul>
+            <li><strong>Fase inicial (química):</strong> irritación peritoneal por contenido gástrico, biliar o pancreático.</li>
+            <li><strong>Fase bacteriana:</strong> proliferación de gérmenes (E. coli, Bacteroides fragilis).</li>
+            <li><strong>Fase séptica:</strong> liberación de mediadores (TNF, IL-1, IL-6), vasodilatación, aumento de permeabilidad.</li>
+            <li><strong>Fase de shock:</strong> hipotensión, acidosis metabólica, fallo multiorgánico.</li>
+            <li><strong>Fase de abscedación:</strong> formación de abscesos en espacios declives (subfrénico, Douglas, interasas).</li>
+        </ul>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Laboratorio:</strong> leucocitosis con desviación a la izquierda, hemoconcentración, acidosis metabólica.</li>
+            <li><strong>Rx de abdomen:</strong> neumoperitoneo (perforación), asas dilatadas, borramiento del psoas.</li>
+            <li><strong>Ecografía y TAC:</strong> colecciones líquidas, abscesos, engrosamiento parietal.</li>
+            <li><strong>Punción abdominal:</strong> aspiración de líquido (pus, bilis, sangre, orina).</li>
+            <li><strong>Laparoscopia diagnóstica:</strong> en casos dudosos.</li>
+        </ul>
+
+        <h3>Tratamiento de la peritonitis y la sepsis</h3>
+
+        <h4>A. Tratamiento médico (soporte)</h4>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Reanimación hemodinámica:</strong> cristaloides (Ringer lactato) 20-30 ml/kg en bolo, luego mantener.</li>
+                <li><strong>Vasopresores:</strong> noradrenalina (0.05-1.5 mcg/kg/min) si hipotensión refractaria a fluidos.</li>
+                <li><strong>Antibióticos empíricos de amplio espectro:</strong>
+                    <ul>
+                        <li><strong>Comunitario:</strong> ceftriaxona 2g IV + metronidazol 500mg IV c/8h.</li>
+                        <li><strong>Nosocomial:</strong> piperacilina/tazobactam 4.5g IV c/6h o imipenem 500mg IV c/6h.</li>
+                        <li><strong>Alérgicos a penicilina:</strong> aztreonam + clindamicina + metronidazol.</li>
+                    </ul>
+                </li>
+                <li><strong>Control de la fuente:</strong> drenaje de abscesos, resección de tejido necrótico.</li>
+                <li><strong>Corrección de acidosis:</strong> bicarbonato de sodio si pH &lt;7.20.</li>
+                <li><strong>Soporte nutricional:</strong> nutrición enteral precoz (sonda nasoyeyunal) o parenteral.</li>
+                <li><strong>Protección gástrica:</strong> inhibidores de la bomba de protones (omeprazol 40mg IV/día).</li>
+                <li><strong>Profilaxis de trombosis:</strong> heparina de bajo peso molecular.</li>
+            </ul>
+        </div>
+
+        <h4>B. Tratamiento quirúrgico (control de la fuente)</h4>
+        <div class="surg-box">
+            <h5>Técnica de laparotomía exploradora</h5>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media xifopubiana (la más versátil).</li>
+                <li><strong>Exploración sistemática:</strong> se revisan todos los cuadrantes.</li>
+                <li><strong>Control de la contaminación:</strong>
+                    <ul>
+                        <li>Sutura de perforaciones (úlcera, divertículo).</li>
+                        <li>Resección de segmentos no viables (intestino necrótico).</li>
+                        <li>Apendicectomía o colecistectomía si son la causa.</li>
+                    </ul>
+                </li>
+                <li><strong>Lavado peritoneal:</strong> 5-10 L de solución salina tibia hasta que el líquido de retorno sea claro.</li>
+                <li><strong>Drenaje:</strong> colocar drenajes en zonas de riesgo (subhepático, pelviano, interasas).</li>
+                <li><strong>Abdomen abierto o relaparotomía programada:</strong> en peritonitis grave con acidosis, hipotermia o coagulopatía.</li>
+            </ol>
+
+            <h5>Técnica de drenaje percutáneo de abscesos</h5>
+            <ul>
+                <li><strong>Guiado por ecografía o TAC:</strong> se coloca un catéter de drenaje (tipo pigtail) en la colección.</li>
+                <li><strong>Indicado:</strong> abscesos bien delimitados (subfrénicos, pélvicos).</li>
+                <li><strong>Se conecta a aspiración continua</strong> hasta que el débito sea mínimo.</li>
+            </ul>
+
+            <h5>Técnica de relaparotomía programada</h5>
+            <ul>
+                <li><strong>Indicación:</strong> peritonitis grave con alto riesgo de sepsis persistente.</li>
+                <li><strong>Se realiza cada 24-48h</strong> para lavado y revisión.</li>
+                <li><strong>Cierre temporal:</strong> con bolsa de Bogotá, malla o sistema ABRA.</li>
+                <li><strong>Se cierra definitivamente</strong> cuando el paciente está estable y el peritoneo limpio.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones de la peritonitis</h4>
+        <ul>
+            <li><strong>Abscesos intraabdominales:</strong> subfrénico, Douglas, interasas, parietocólicos.</li>
+            <li><strong>Sepsis y shock séptico:</strong> con fallo multiorgánico.</li>
+            <li><strong>Íleo paralítico persistente.</strong></li>
+            <li><strong>Fístulas enterocutáneas.</strong></li>
+            <li><strong>Eventración por infección de la herida.</strong></li>
+            <li><strong>Peritonitis terciaria:</strong> en pacientes inmunodeprimidos.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DIVERTICULITIS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-diverticulitis">
+        <h2>🔴 Diverticulitis Aguda</h2>
+
+        <h3>Definición</h3>
+        <p>Inflamación aguda de uno o más divertículos del colon, generalmente del sigmoides. La diverticulosis es la presencia de divertículos; la diverticulitis es su inflamación.</p>
+
+        <h3>Clasificación (Hinchey)</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Grado</th><th>Descripción</th><th>Tratamiento</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="badge">I</span></td><td>Absceso pericólico confinado</td><td>Antibióticos + drenaje percutáneo si &gt;4 cm</td></tr>
+                <tr><td><span class="badge">II</span></td><td>Absceso pélvico o retroperitoneal</td><td>Drenaje percutáneo + antibióticos</td></tr>
+                <tr><td><span class="badge">III</span></td><td>Peritonitis purulenta generalizada</td><td>Cirugía urgente (Hartmann o resección + anastomosis)</td></tr>
+                <tr><td><span class="badge">IV</span></td><td>Peritonitis fecaloidea</td><td>Cirugía urgente (Hartmann, resección y colostomía)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor:</strong> en cuadrante inferior izquierdo (sigmoides), inicialmente cólico, luego continuo.</li>
+                <li><strong>Manifestaciones gastrointestinales:</strong> anorexia, náuseas, vómitos, constipación o diarrea.</li>
+                <li><strong>Signos locales:</strong> contractura en FII, dolor a la descompresión, masa palpable (plastrón).</li>
+                <li><strong>Signos generales:</strong> fiebre, taquicardia, leucocitosis.</li>
+                <li><strong>Tacto rectal:</strong> doloroso, puede palparse masa o absceso.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>TAC con contraste:</strong> prueba de elección. Muestra engrosamiento de la pared, absceso, burbujas de gas, fístula.</li>
+            <li><strong>Ecografía:</strong> engrosamiento parietal, colecciones.</li>
+            <li><strong>Colonoscopia:</strong> contraindicada en fase aguda (riesgo de perforación).</li>
+            <li><strong>Enema de bario:</strong> solo después de la fase aguda para descartar cáncer.</li>
+        </ul>
+
+        <h3>Tratamiento</h3>
+
+        <h4>A. Tratamiento médico (grados I-II)</h4>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Ingreso y reposo.</strong></li>
+                <li><strong>Suspensión de vía oral</strong> y sonda nasogástrica si hay íleo.</li>
+                <li><strong>Antibióticos:</strong> cefalosporina 3ª generación + metronidazol (o ciprofloxacino + metronidazol).</li>
+                <li><strong>Analgésicos:</strong> meperidina (evitar opiáceos que aumentan la presión intraluminal).</li>
+                <li><strong>Drenaje percutáneo:</strong> si el absceso es &gt;4 cm (guiado por TAC).</li>
+            </ul>
+        </div>
+
+        <h4>B. Tratamiento quirúrgico (grados III-IV)</h4>
+        <div class="surg-box">
+            <h5>Operación de Hartmann (la más utilizada en urgencia)</h5>
+            <ol>
+                <li><strong>Laparotomía media</strong> (o laparoscópica).</li>
+                <li><strong>Resección del segmento afectado</strong> (sigmoides o colon descendente).</li>
+                <li><strong>Cierre del muñón distal</strong> (recto) con grapadora lineal (TA) o sutura manual en dos planos.</li>
+                <li><strong>Colostomía terminal proximal</strong> (abocamiento del colon a la piel).</li>
+                <li><strong>Lavado peritoneal</strong> y drenaje pélvico.</li>
+                <li><strong>Reconstrucción:</strong> en un segundo tiempo (3-6 meses) se realiza anastomosis colo-rectal.</li>
+            </ol>
+
+            <h5>Resección con anastomosis primaria (en pacientes seleccionados)</h5>
+            <ul>
+                <li><strong>Indicada:</strong> en pacientes estables, sin peritonitis fecaloidea, con buena preparación.</li>
+                <li><strong>Técnica:</strong> resección del segmento afectado y anastomosis término-terminal con grapadora circular (EEA).</li>
+                <li><strong>Colostomía de protección:</strong> en asa si hay factores de riesgo (anastomosis baja, inestabilidad).</li>
+            </ul>
+
+            <h5>Colostomía en asa + drenaje (en pacientes inestables)</h5>
+            <ul>
+                <li><strong>Indicada:</strong> pacientes muy graves donde no se puede realizar resección.</li>
+                <li><strong>Técnica:</strong> se exterioriza el asa del colon afectado y se deja abierta (descompresión).</li>
+                <li><strong>Drenaje</strong> de la zona inflamada.</li>
+                <li><strong>Resección electiva</strong> en un segundo tiempo.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li><strong>Perforación:</strong> con peritonitis purulenta o fecaloidea (grados III-IV).</li>
+            <li><strong>Absceso:</strong> pericólico, pélvico, retroperitoneal.</li>
+            <li><strong>Obstrucción intestinal:</strong> por estenosis inflamatoria.</li>
+            <li><strong>Fístula:</strong> colovesical (la más frecuente), colovaginal, colocutánea.</li>
+            <li><strong>Sangramiento:</strong> generalmente escaso, pero puede ser masivo.</li>
+            <li><strong>Neumatosis portal:</strong> complicación grave (mortalidad 75%).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PANCREATITIS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-pancreatitis">
+        <h2>🔴 Pancreatitis Aguda</h2>
+
+        <h3>Definición</h3>
+        <p>Proceso inflamatorio agudo del páncreas debido a una activación enzimática intrínseca, que afecta fundamentalmente los acinis y los vasos sanguíneos. Se caracteriza por edema, necrosis grasa, hemorragia y destrucción de la glándula.</p>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Intersticial (edematosa):</strong> leve, sin necrosis.</li>
+            <li><strong>Necrotizante:</strong> con necrosis parenquimatosa (estéril o infectada).</li>
+            <li><strong>Por etiología:</strong>
+                <ul>
+                    <li><strong>Biliar (60%):</strong> por cálculos en el colédoco.</li>
+                    <li><strong>Alcohólica (80% en países anglosajones).</strong></li>
+                    <li><strong>Idiopática (30%).</strong></li>
+                    <li><strong>Metabólica:</strong> hipertrigliceridemia, hipercalcemia.</li>
+                    <li><strong>Post-CPRE:</strong> por manipulación de la papila.</li>
+                    <li><strong>Traumática:</strong> abierta o cerrada.</li>
+                    <li><strong>Tóxica:</strong> fármacos, picadura de escorpión.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor:</strong> epigástrico en "barra", irradiado a la espalda (dolor en "camisa").</li>
+                <li><strong>Vómitos:</strong> copiosos, sin náuseas previas.</li>
+                <li><strong>Sensación de muerte inminente.</strong></li>
+                <li><strong>Shock:</strong> por hipovolemia y liberación de mediadores.</li>
+                <li><strong>Ictericia:</strong> si hay obstrucción biliar.</li>
+                <li><strong>Signos:</strong>
+                    <ul>
+                        <li><strong>Cullen:</strong> equimosis periumbilical.</li>
+                        <li><strong>Grey-Turner:</strong> equimosis en flancos.</li>
+                        <li><strong>Fox:</strong> equimosis en ingle.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Amilasa sérica:</strong> &gt;220 UI (elevada 3-5 veces).</li>
+            <li><strong>Lipasa sérica:</strong> &gt;190 UI (más específica).</li>
+            <li><strong>Hemograma:</strong> leucocitosis, hemoconcentración.</li>
+            <li><strong>Calcio sérico:</strong> &lt;8 mg/dL (mal pronóstico).</li>
+            <li><strong>Rx de abdomen:</strong> asa centinela, borramiento del psoas, calcificaciones.</li>
+            <li><strong>TAC con contraste:</strong> clasificación de Balthazar (A-E).</li>
+            <li><strong>Ecografía:</strong> para evaluar etiología biliar.</li>
+            <li><strong>CPRE:</strong> si hay colangitis o coledocolitiasis.</li>
+        </ul>
+
+        <h3>Criterios de gravedad (Ranson)</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Al ingreso</th><th>A las 48h</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Edad &gt;55 años</td><td>Caída del Hct &gt;10%</td></tr>
+                <tr><td>Glicemia &gt;200 mg/dL</td><td>Calcio sérico &lt;8 mg/dL</td></tr>
+                <tr><td>Leucocitos &gt;16,000/mm³</td><td>Urea &gt;5 mg%</td></tr>
+                <tr><td>LDH &gt;700 UI</td><td>PaO₂ &lt;60 mmHg</td></tr>
+                <tr><td>GOT &gt;250 U</td><td>Déficit de base &gt;4 mEq/L</td></tr>
+                <tr><td></td><td>Secuestro de líquido &gt;6 L</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Interpretación:</strong> &gt;3 criterios = pancreatitis grave. Mortalidad: 0-2 criterios (&lt;1%), 3-4 (15%), 5-6 (40%), &gt;6 (100%).</p>
+
+        <h3>Tratamiento de la pancreatitis aguda</h3>
+
+        <h4>A. Tratamiento médico (base)</h4>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Hidratación agresiva:</strong> 250-500 mL/h de Ringer lactato (15-20 ml/kg en bolo).</li>
+                <li><strong>Analgesia:</strong> meperidina (50-100 mg IM) o morfina con cautela (puede contraer el esfínter de Oddi).</li>
+                <li><strong>Ayuno:</strong> sonda nasogástrica si hay vómitos o íleo.</li>
+                <li><strong>Nutrición enteral precoz:</strong> sonda nasoyeyunal (iniciar a las 24-48h) con fórmulas elementales.</li>
+                <li><strong>Nutrición parenteral:</strong> si la enteral no es tolerada.</li>
+                <li><strong>Somatostatina u octreótide:</strong> 50-100 µg SC c/8h (inhiben la secreción pancreática).</li>
+                <li><strong>Antibióticos:</strong> solo si hay necrosis infectada o colangitis (imipenem, meropenem).</li>
+                <li><strong>CPRE:</strong> si hay colangitis o coledocolitiasis (esfinterotomía + extracción de cálculos).</li>
+            </ul>
+        </div>
+
+        <h4>B. Tratamiento quirúrgico (en complicaciones)</h4>
+        <div class="surg-box">
+            <h5>Necrosis infectada - Necrosectomía</h5>
+            <ol>
+                <li><strong>Indicación:</strong> necrosis &gt;30% con gas en la TAC o cultivo positivo.</li>
+                <li><strong>Abordaje:</strong> laparotomía media o abordaje retroperitoneal (lumbotomía).</li>
+                <li><strong>Disección:</strong> se abre la transcavidad de los epiplones y se expone el páncreas.</li>
+                <li><strong>Desbridamiento:</strong> se reseca el tejido necrótico con disección roma (dedo o pinza).</li>
+                <li><strong>Lavado:</strong> con 5-10 L de solución salina tibia.</li>
+                <li><strong>Drenaje:</strong> colocar múltiples drenajes de gran calibre (Jackson-Pratt o tubulares).</li>
+                <li><strong>Relaparotomías programadas:</strong> cada 24-48h para lavado y nuevo desbridamiento.</li>
+                <li><strong>Alternativa mínimamente invasiva:</strong> necrosectomía videolaparoscópica o percutánea (STEP-UP).</li>
+            </ol>
+
+            <h5>Absceso pancreático - Drenaje</h5>
+            <ul>
+                <li><strong>Drenaje percutáneo</strong> guiado por TAC (catéter pigtail de 10-14 Fr).</li>
+                <li><strong>Si no se resuelve:</strong> drenaje quirúrgico abierto con desbridamiento.</li>
+            </ul>
+
+            <h5>Pseudoquiste pancreático - Derivación</h5>
+            <ul>
+                <li><strong>Indicación:</strong> pseudoquiste &gt;6 cm, sintomático o complicado.</li>
+                <li><strong>Endoscópica:</strong> drenaje transgástrico o transduodenal (con stent).</li>
+                <li><strong>Percutánea:</strong> catéter de drenaje guiado por TAC.</li>
+                <li><strong>Quirúrgica:</strong> cistoyeyunostomía en Y de Roux (si falla el drenaje endoscópico).</li>
+            </ul>
+
+            <h5>Colecistectomía</h5>
+            <ul>
+                <li><strong>Indicación:</strong> pancreatitis de origen biliar.</li>
+                <li><strong>Timing:</strong> durante la misma hospitalización (tras la resolución de la pancreatitis), o diferida 4-6 semanas.</li>
+                <li><strong>Vía:</strong> laparoscópica si es posible.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones de la pancreatitis</h4>
+        <ul>
+            <li><strong>Locales:</strong> necrosis infectada, absceso, pseudoquiste, fístula pancreática, hemorragia (erosión de vasos), síndrome compartimental abdominal.</li>
+            <li><strong>Sistémicas:</strong> SDRA, insuficiencia renal, CID, encefalopatía, retinopatía de Purtscher.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- EMBARAZO ECTÓPICO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-embarazo-ectopico">
+        <h2>🔴 Embarazo Ectópico Roto</h2>
+
+        <h3>Definición</h3>
+        <p>Anidación del huevo fuera de la cavidad uterina. El 98% de los casos son tubarios (ampular 60%, ístmico 30%, fímbrico 5%, intersticial 3%).</p>
+
+        <h3>Factores de riesgo</h3>
+        <ul>
+            <li>Salpingitis (Clamidia, tuberculosis).</li>
+            <li>Tratamiento de infertilidad.</li>
+            <li>DIU.</li>
+            <li>Cirugía pelviana previa (apendicectomía).</li>
+            <li>Embarazo ectópico previo.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor:</strong> abdominal bajo, súbito, intenso, inicialmente localizado, luego difuso.</li>
+                <li><strong>Hemorragia:</strong> vaginal escasa o ausente (sangre intraabdominal).</li>
+                <li><strong>Amenorrea:</strong> puede faltar (30% tienen sangrado normal).</li>
+                <li><strong>Shock:</strong> hipovolémico por hemoperitoneo.</li>
+                <li><strong>Signos:</strong>
+                    <ul>
+                        <li><strong>Cullen:</strong> equimosis periumbilical.</li>
+                        <li><strong>Banki:</strong> dolor al movilizar el cuello uterino anteroposteriormente.</li>
+                        <li><strong>Fraenkel:</strong> dolor al movilizar el cuello lateralmente.</li>
+                        <li><strong>Síndrome de la bañadera:</strong> colapso al levantarse (hemorragia masiva).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Prueba de embarazo:</strong> positiva (β-hCG).</li>
+            <li><strong>Ecografía transvaginal:</strong> ausencia de embarazo intrauterino, masa anexial, líquido libre.</li>
+            <li><strong>Culdocentesis:</strong> punción del fondo de saco de Douglas → sangre incoagulable.</li>
+            <li><strong>Laparoscopia:</strong> diagnóstico y tratamiento.</li>
+        </ul>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <h5>Salpingectomía (técnica de elección en urgencia)</h5>
+            <ol>
+                <li><strong>Laparotomía media</strong> (o laparoscópica si el paciente está estable).</li>
+                <li><strong>Evacuación del hemoperitoneo</strong> (recuperación de sangre para autotransfusión).</li>
+                <li><strong>Identificación de la trompa afectada.</strong></li>
+                <li><strong>Ligadura del mesosalpinx</strong> con Vicryl 2/0 (cerca de la trompa).</li>
+                <li><strong>Sección de la trompa</strong> y hemostasia.</li>
+                <li><strong>Peritonización del muñón</strong> con el ligamento redondo.</li>
+            </ol>
+
+            <h5>Salpingotomía (técnica conservadora)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> pacientes con deseo de fertilidad futura y trompa sana.</li>
+                <li><strong>Técnica:</strong> incisión longitudinal en el borde antimesentérico, extracción del producto, sutura con Vicryl 6/0.</li>
+                <li><strong>Se puede realizar por laparoscopia.</strong></li>
+            </ul>
+
+            <h5>Tratamiento médico (metotrexate)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> embarazo ectópico no roto, &lt;3.5 cm, sin latido cardíaco.</li>
+                <li><strong>Dosis:</strong> 50 mg/m² IM (dosis única).</li>
+                <li><strong>Control:</strong> β-hCG a los 4 y 7 días.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Shock hipovolémico (mortalidad).</li>
+            <li>Infertilidad secundaria.</li>
+            <li>Recurrencia (riesgo 10-15%).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ISQUEMIA MESENTÉRICA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-isquemia-mesenterica">
+        <h2>🔴 Oclusión Vascular Mesentérica</h2>
+
+        <h3>Definición</h3>
+        <p>Interrupción del flujo sanguíneo intestinal por obstrucción arterial (émbolo o trombosis) o venosa (trombosis), que produce isquemia y necrosis intestinal.</p>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Arterial (75%):</strong>
+                <ul>
+                    <li><strong>Embolia de la arteria mesentérica superior (50%):</strong> origen cardíaco (FA, IAM).</li>
+                    <li><strong>Trombosis de la arteria mesentérica superior (25%):</strong> en pacientes con aterosclerosis.</li>
+                </ul>
+            </li>
+            <li><strong>Venosa (25%):</strong> trombosis de la vena mesentérica (hipercoagulabilidad, cirrosis, pancreatitis).</li>
+            <li><strong>No oclusiva (10%):</strong> por bajo gasto (shock, deshidratación).</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor abdominal:</strong> súbito, intenso, desproporcionado a los hallazgos físicos.</li>
+                <li><strong>Vómitos:</strong> y náuseas.</li>
+                <li><strong>Diarrea:</strong> sanguinolenta en fases avanzadas.</li>
+                <li><strong>Signos:</strong>
+                    <ul>
+                        <li>Abdomen blando en las primeras horas.</li>
+                        <li>Luego distensión, defensa y contractura.</li>
+                        <li>Shock séptico por necrosis y translocación bacteriana.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Angio-TAC:</strong> prueba de elección (visualiza el trombo y la isquemia).</li>
+            <li><strong>Angiografía:</strong> gold standard (permite diagnóstico y tratamiento).</li>
+            <li><strong>Laboratorio:</strong> leucocitosis, acidosis metabólica, elevación de LDH, CPK, D-dímero.</li>
+            <li><strong>Rx de abdomen:</strong> edema de la pared intestinal (signo de la huella digital).</li>
+        </ul>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <h5>Laparotomía exploradora urgente</h5>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media xifopubiana.</li>
+                <li><strong>Exploración:</strong> evaluar la viabilidad intestinal (color, peristaltismo, pulsos arteriales).</li>
+                <li><strong>Embolectomía o trombectomía:</strong>
+                    <ul>
+                        <li>Se expone la arteria mesentérica superior en la raíz del mesenterio.</li>
+                        <li>Se realiza arteriotomía longitudinal y se extrae el trombo con catéter de Fogarty.</li>
+                        <li>Se sutura la arteriotomía con prolene 6/0.</li>
+                    </ul>
+                </li>
+                <li><strong>Resección intestinal:</strong>
+                    <ul>
+                        <li>Se resecan los segmentos no viables (color púrpura, sin peristaltismo).</li>
+                        <li>Anastomosis primaria si el paciente está estable.</li>
+                        <li>Exteriorización (colostomía) si el paciente está inestable.</li>
+                    </ul>
+                </li>
+                <li><strong>Second-look laparotomy:</strong> a las 24-48h para reevaluar la viabilidad de los segmentos dudosos.</li>
+            </ol>
+
+            <h5>Tratamiento endovascular (si el paciente está estable)</h5>
+            <ul>
+                <li><strong>Trombólisis intraarterial:</strong> con urocinasa o tPA.</li>
+                <li><strong>Angioplastia y stent.</strong></li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Necrosis intestinal (requiere resección extensa).</li>
+            <li>Síndrome de intestino corto.</li>
+            <li>Peritonitis, shock séptico.</li>
+            <li>Fallo multiorgánico.</li>
+            <li>Mortalidad: 50-80% (más alta en trombosis venosa).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- APENDICITIS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-apendicitis">
+        <h2>🔴 Apendicitis Aguda</h2>
+
+        <h3>Clasificación anatomopatológica</h3>
+        <ul>
+            <li>Catarral (temprana), supurada, gangrenosa, perforada.</li>
+            <li>Según posición: retrocecal, pélvica, mesoceliaca, subhepática, izquierda.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor:</strong> periumbilical (visceral) que migra a FID (somático) - secuencia clásica.</li>
+                <li><strong>Anorexia:</strong> signo importante (si el paciente tiene apetito, dudar del diagnóstico).</li>
+                <li><strong>Náuseas y vómitos:</strong> después del dolor (secuencia de Murphy).</li>
+                <li><strong>Signos:</strong> punto de McBurney, Blumberg, Rovsing, psoas (retrocecal).</li>
+                <li><strong>Laboratorio:</strong> leucocitosis con desviación a la izquierda.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <h5>Apendicectomía</h5>
+            <ol>
+                <li><strong>Incisión:</strong> McBurney (oblicua) o laparoscópica (3 puertos).</li>
+                <li><strong>Identificación del apéndice:</strong> se sigue el ciego hasta encontrar el apéndice.</li>
+                <li><strong>Ligadura del meso:</strong> se liga la arteria apendicular con Vicryl 2/0 y se secciona.</li>
+                <li><strong>Ligadura de la base:</strong> se liga la base con Vicryl 2/0 (o sutura en bolsa de señora).</li>
+                <li><strong>Sección:</strong> se corta el apéndice por encima de la ligadura.</li>
+                <li><strong>Invaginación del muñón:</strong> con puntos de Lembert (Vicryl 3/0).</li>
+                <li><strong>Drenaje:</strong> si hay perforación o absceso.</li>
+            </ol>
+            <ul>
+                <li><strong>Antibióticos:</strong> clindamicina + gentamicina o metronidazol + cefalosporina.</li>
+                <li><strong>En plastrón:</strong> tratar con antibióticos y operar a los 60-90 días.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Absceso de la herida, dehiscencia del muñón, peritonitis.</li>
+            <li>Plastrón apendicular, absceso pélvico, subfrénico.</li>
+            <li>Pileflebitis (trombosis séptica de la porta), abscesos hepáticos.</li>
+            <li>Shock séptico, fístula cecal.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COLECISTITIS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-colecistitis">
+        <h2>🔴 Colecistitis Aguda</h2>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Litiásica (90%):</strong> obstrucción del cístico por cálculo.</li>
+            <li><strong>Alitiásica:</strong> en pacientes críticos (trauma, quemados, nutrición parenteral, sepsis).</li>
+            <li>Anatomopatológica: catarral, supurada (empiema), gangrenosa, enfisematosa (Clostridium).</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li>Dolor en hipocondrio derecho, irradiado a omóplato derecho (signo de Murphy).</li>
+                <li>Náuseas, vómitos, fiebre (38°C), ictericia (20%).</li>
+                <li>Ecografía: pared &gt;3 mm, distensión, cálculos, signo de Murphy sonográfico.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <h5>Colecistectomía laparoscópica</h5>
+            <ol>
+                <li><strong>Neumoperitoneo:</strong> 12-15 mmHg.</li>
+                <li><strong>Puertos:</strong> umbilical (10 mm) + 3 puertos de 5 mm.</li>
+                <li><strong>Disección del triángulo de Calot:</strong> identificar conducto cístico y arteria cística.</li>
+                <li><strong>Clipado o ligadura del conducto cístico y la arteria cística.</strong></li>
+                <li><strong>Colecistectomía:</strong> de fondo a cuello.</li>
+                <li><strong>Colangiografía transoperatoria:</strong> si se sospecha coledocolitiasis.</li>
+                <li><strong>Drenaje subhepático:</strong> si hay perforación o empiema.</li>
+            </ol>
+
+            <h5>Colecistostomía (en pacientes de alto riesgo)</h5>
+            <ul>
+                <li><strong>Punción percutánea guiada por ecografía</strong> con catéter pigtail.</li>
+                <li><strong>Abierta:</strong> sutura en bolsa de señora en el fondo vesicular, sonda de Pezzer.</li>
+                <li><strong>Colecistectomía diferida:</strong> en 4-6 semanas.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Perforación, peritonitis biliar, absceso pericolecístico.</li>
+            <li>Coledocolitiasis, pancreatitis aguda.</li>
+            <li>Fístula biliar, íleo biliar.</li>
+            <li>Lesión de vías biliares (iatrogénica).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OCLUSIÓN INTESTINAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-oclusion-intestinal">
+        <h2>🔴 Oclusión Intestinal Mecánica</h2>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li>Según altura: alta (duodeno/yeyuno) o baja (íleon/colon).</li>
+            <li>Simple o con estrangulación (compromiso vascular).</li>
+            <li>Por causa: bridas (la más frecuente en delgado), hernias, tumores (colon), vólvulos, invaginación, íleo biliar.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dolor cólico:</strong> intermitente, con "oleadas" sincrónicas con el peristaltismo.</li>
+                <li><strong>Vómitos:</strong> precoces en oclusiones altas, tardíos y fecaloideos en bajas.</li>
+                <li><strong>Constipación:</strong> ausencia de emisión de heces y gases.</li>
+                <li><strong>Distensión abdominal:</strong> central en delgado, periférica en colon.</li>
+                <li><strong>Rx:</strong> niveles hidroaéreos, asas dilatadas, válvulas conniventes (delgado) o haustras (grueso).</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento quirúrgico</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Intestino delgado:</strong> lisis de bridas, resección y anastomosis primaria.</li>
+                <li><strong>Colon derecho:</strong> hemicolectomía derecha + anastomosis ileotransversa.</li>
+                <li><strong>Colon izquierdo:</strong> colostomía en cañón de escopeta (Rankin-Mikulicz) o Hartmann.</li>
+                <li><strong>Vólvulo del sigmoides:</strong> detorsión + resección o colostomía.</li>
+                <li><strong>Invaginación:</strong> reducción manual o resección si hay necrosis.</li>
+                <li><strong>Íleo biliar:</strong> enterolitotomía + colecistectomía diferida.</li>
+            </ul>
+        </div>
+
+        <h4>Complicaciones</h4>
+        <ul>
+            <li>Estrangulación con necrosis intestinal.</li>
+            <li>Perforación, peritonitis, shock séptico.</li>
+            <li>Síndrome compartimental abdominal.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- EQUILIBRIO - INTRODUCCIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-equilibrio">
+        <h2>💧 Equilibrio Hidroelectrolítico</h2>
+
+        <h3>Introducción</h3>
+        <p><strong>Agua corporal total (ACT):</strong> 60% del peso (42 L en adulto). Distribución: 40% LIC, 20% LEC (15% intersticial + 5% intravascular).</p>
+
+        <h3>Balance hídrico diario (adulto)</h3>
+        <ul>
+            <li><strong>Ingresos:</strong> agua visible (1000-1500 ml), agua de alimentos (1000 ml), agua endógena (300 ml).</li>
+            <li><strong>Pérdidas obligadas:</strong> diuresis (1000-1500 ml), heces (100-150 ml).</li>
+            <li><strong>Pérdidas insensibles:</strong> piel (600 ml), respiración (400 ml).</li>
+            <li><strong>Pérdidas concurrentes:</strong> sondas, fístulas, diarreas, hemorragias.</li>
+        </ul>
+        <hr>
+        <p style="color:#a06060; font-style:italic;">Selecciona un tema específico en el menú lateral para ver el detalle.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DESHIDRATACIONES -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-deshidratacion">
+        <h2>💧 Deshidrataciones</h2>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Isotónica (isonatrémica):</strong> pérdida proporcional de agua y sodio. Na 135-145 mEq/L. La más frecuente (70%).</li>
+            <li><strong>Hipertónica (hipernatrémica):</strong> pérdida de agua > sodio. Na >150 mEq/L. Deshidratación celular.</li>
+            <li><strong>Hipotónica (hiponatrémica):</strong> pérdida de sodio > agua. Na &lt;135 mEq/L.</li>
+        </ul>
+
+        <h3>Cuadro clínico</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Isotónica:</strong> pérdida de elasticidad de la piel, mucosas secas, taquicardia, hipotensión, shock.</li>
+                <li><strong>Hipertónica:</strong> sed intensa, fiebre, oliguria, manifestaciones neurológicas (confusión, coma).</li>
+                <li><strong>Hipotónica:</strong> astenia, calambres, vómitos, convulsiones, coma (sin sed).</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Isotónica:</strong> solución salina 0.9%, 2000-3000 ml/m²/día según grado.</li>
+                <li><strong>Hipertónica:</strong> soluciones hipotónicas (dextrosa 5% + NaCl 0.45%), corrección lenta (no &gt;10 mEq/L/24h).</li>
+                <li><strong>Hipotónica:</strong> NaCl hipertónico (3%) si Na &lt;125 mEq/L, vigilar mielinolisis pontina.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ELECTROLITOS GENERAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-electrolitos">
+        <h2>💧 Alteraciones de los electrolitos</h2>
+        <p>Los principales electrolitos a monitorizar en el paciente quirúrgico son: sodio, potasio, calcio y magnesio. Selecciona uno en el menú lateral para ver el detalle completo.</p>
+        <ul>
+            <li><strong>Sodio:</strong> hiponatremia / hipernatremia.</li>
+            <li><strong>Potasio:</strong> hipopotasemia / hiperpotasemia.</li>
+            <li><strong>Calcio:</strong> hipocalcemia / hipercalcemia.</li>
+            <li><strong>Magnesio:</strong> hipomagnesemia / hipermagnesemia.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SODIO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-sodio">
+        <h2>💧 Alteraciones del Sodio</h2>
+
+        <h3>Hiponatremia (Na &lt;135 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> pérdidas gastrointestinales, diuréticos, insuficiencia cardíaca, SIADH, hipotiroidismo.</li>
+                <li><strong>Clínica:</strong> náuseas, cefalea, confusión, convulsiones, coma.</li>
+                <li><strong>Tratamiento:</strong> restricción hídrica (leve), NaCl 0.9% (moderada), NaCl 3% (grave). Corrección lenta: no &gt;8-10 mEq/L/24h.</li>
+            </ul>
+        </div>
+
+        <h3>Hipernatremia (Na &gt;145 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> pérdida de agua (fiebre, sudoración, diabetes insípida), aporte insuficiente.</li>
+                <li><strong>Clínica:</strong> sed intensa, mucosas secas, oliguria, irritabilidad, convulsiones.</li>
+                <li><strong>Tratamiento:</strong> soluciones hipotónicas (Dextrosa 5% o Dextrosa 5% + NaCl 0.45%). No descender Na &gt;10 mEq/L/24h.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- POTASIO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-potasio">
+        <h2>💧 Alteraciones del Potasio</h2>
+
+        <h3>Hipopotasemia (K &lt;3.5 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> vómitos, diarrea, aspiración nasogástrica, diuréticos, alcalosis.</li>
+                <li><strong>Clínica:</strong> debilidad muscular, íleo paralítico, arritmias (depresión ST, onda U).</li>
+                <li><strong>Tratamiento:</strong> KCl oral (leve), KCl IV (moderada-grave). Máximo 20 mEq/h por vía central, 40 mEq/h por vía periférica. Nunca en bolo.</li>
+            </ul>
+        </div>
+
+        <h3>Hiperpotasemia (K &gt;5.5 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> insuficiencia renal, acidosis, hemólisis, rabdomiólisis, diuréticos ahorradores de K⁺, IECA.</li>
+                <li><strong>Clínica:</strong> debilidad muscular, bradicardia, arritmias (onda T picuda, QRS ancho, fibrilación ventricular).</li>
+                <li><strong>Tratamiento:</strong> gluconato de calcio (estabilización cardíaca), insulina + dextrosa, bicarbonato, β-agonistas, diuréticos, resinas, diálisis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CALCIO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-calcio">
+        <h2>💧 Alteraciones del Calcio</h2>
+
+        <h3>Hipocalcemia (Ca &lt;8.5 mg/dL)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> hipoparatiroidismo, déficit de vitamina D, pancreatitis, sepsis, transfusión masiva.</li>
+                <li><strong>Clínica:</strong> parestesias, calambres, tetania, convulsiones, signo de Chvostek, signo de Trousseau.</li>
+                <li><strong>Tratamiento:</strong> gluconato de calcio 10% IV (10-20 mL en 10 min), calcio oral + vitamina D.</li>
+            </ul>
+        </div>
+
+        <h3>Hipercalcemia (Ca &gt;10.5 mg/dL)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> hiperparatiroidismo, neoplasias, intoxicación por vitamina D, inmovilización.</li>
+                <li><strong>Clínica:</strong> poliuria, polidipsia, estreñimiento, náuseas, confusión, nefrolitiasis.</li>
+                <li><strong>Tratamiento:</strong> hidratación intensa, furosemida, calcitonina, bifosfonatos, diálisis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MAGNESIO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-magnesio">
+        <h2>💧 Alteraciones del Magnesio</h2>
+
+        <h3>Hipomagnesemia (Mg &lt;1.5 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> diarrea, vómitos, diuréticos, alcoholismo, desnutrición, aminoglucósidos.</li>
+                <li><strong>Clínica:</strong> anorexia, debilidad, tetania, convulsiones, arritmias (torsades de pointes).</li>
+                <li><strong>Tratamiento:</strong> sulfato de magnesio 10% (2-4 g IV), luego infusión continua.</li>
+            </ul>
+        </div>
+
+        <h3>Hipermagnesemia (Mg &gt;2.5 mEq/L)</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Causas:</strong> insuficiencia renal, administración excesiva de magnesio.</li>
+                <li><strong>Clínica:</strong> náuseas, hipotensión, bradicardia, depresión del SNC, parálisis muscular, paro cardíaco.</li>
+                <li><strong>Tratamiento:</strong> suspender aporte, gluconato de calcio, diuresis forzada, diálisis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ÁCIDO-BASE -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-eq-acido-base">
+        <h2>💧 Equilibrio Ácido-Base</h2>
+
+        <h3>Valores normales de gasometría arterial</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Parámetro</th><th>Valor normal</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>pH</strong></td><td>7.35-7.45</td></tr>
+                <tr><td><strong>PaCO₂</strong></td><td>35-45 mmHg</td></tr>
+                <tr><td><strong>PaO₂</strong></td><td>80-100 mmHg</td></tr>
+                <tr><td><strong>HCO₃⁻</strong></td><td>22-26 mEq/L</td></tr>
+                <tr><td><strong>BE</strong></td><td>-2 a +2 mEq/L</td></tr>
+                <tr><td><strong>SaO₂</strong></td><td>95-100%</td></tr>
+                <tr><td><strong>Lactato</strong></td><td>0.5-2.2 mmol/L</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Acidosis Metabólica</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Características:</strong> pH &lt;7.35, HCO₃⁻ &lt;22, PaCO₂ compensadora baja.</li>
+                <li><strong>Causas con AG elevado:</strong> cetoacidosis, acidosis láctica, insuficiencia renal, intoxicaciones.</li>
+                <li><strong>Causas con AG normal:</strong> diarrea, fístulas, acidosis tubular renal, acetazolamida.</li>
+                <li><strong>Clínica:</strong> taquipnea (Kussmaul), confusión, arritmias, hipotensión.</li>
+                <li><strong>Tratamiento:</strong> tratar la causa, bicarbonato si pH &lt;7.10, mejorar perfusión.</li>
+            </ul>
+        </div>
+
+        <h3>Alcalosis Metabólica</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Características:</strong> pH &gt;7.45, HCO₃⁻ &gt;26, PaCO₂ compensadora elevada.</li>
+                <li><strong>Causas sensibles a Cl⁻:</strong> vómitos, aspiración nasogástrica, diuréticos.</li>
+                <li><strong>Causas resistentes a Cl⁻:</strong> hiperaldosteronismo, Cushing, hipopotasemia.</li>
+                <li><strong>Tratamiento:</strong> NaCl 0.9% + KCl (sensible), tratar causa (resistente), acetazolamida.</li>
+            </ul>
+        </div>
+
+        <h3>Acidosis Respiratoria</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Características:</strong> pH &lt;7.35, PaCO₂ &gt;45, HCO₃⁻ compensador elevado (crónico).</li>
+                <li><strong>Causas agudas:</strong> depresión del SNC, obstrucción de vía aérea, neumotórax, TEP, fatiga muscular.</li>
+                <li><strong>Causas crónicas:</strong> EPOC, obesidad, cifoescoliosis.</li>
+                <li><strong>Tratamiento:</strong> mejorar ventilación, VMNI o invasiva, tratar causa.</li>
+            </ul>
+        </div>
+
+        <h3>Alcalosis Respiratoria</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Características:</strong> pH &gt;7.45, PaCO₂ &lt;35, HCO₃⁻ compensador bajo (crónico).</li>
+                <li><strong>Causas:</strong> hiperventilación (dolor, ansiedad, sepsis, hipoxia, embolia pulmonar, ventilación mecánica excesiva).</li>
+                <li><strong>Tratamiento:</strong> tratar la causa, reinhalación de CO₂, ajustar ventilación mecánica.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OSTOMÍAS - INTRODUCCIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ostomias">
+        <h2>🩺 Ostomías</h2>
+
+        <h3>Definición</h3>
+        <p><strong>Ostomía:</strong> Comunicación creada quirúrgicamente entre un órgano interno (digestivo, respiratorio, urinario) y el exterior de la pared abdominal, con fines derivativos, descompresivos o de alimentación.</p>
+
+        <h3>Clasificación general</h3>
+        <ul>
+            <li><strong>Según el carácter:</strong> Urgente o Electiva.</li>
+            <li><strong>Según la perdurabilidad:</strong> Temporal o Definitiva.</li>
+            <li><strong>Según la porción del órgano abocado:</strong> Terminal o Lateral (en asa).</li>
+            <li><strong>Según su localización:</strong>
+                <ul>
+                    <li><strong>Aparato respiratorio:</strong> Traqueostomía, Pleurostomía.</li>
+                    <li><strong>Aparato digestivo:</strong> Esofagostomía, Gastrostomía, Duodenostomía, Yeyunostomía, Ileostomía, Colostomía, Colecistostomía, Coledocostomía.</li>
+                    <li><strong>Aparato urinario:</strong> Nefrostomía, Pielostomía, Ureterostomía, Cistostomía.</li>
+                </ul>
+            </li>
+            <li><strong>Según el propósito:</strong> Descompresiva, Derivativa, Alimentaria.</li>
+        </ul>
+        <hr>
+        <p style="color:#a06060; font-style:italic;">Selecciona un tipo específico en el menú lateral para ver el detalle.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- GASTROSTOMÍA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-gastrostomia">
+        <h2>🩺 Gastrostomía</h2>
+
+        <h3>Definición</h3>
+        <p>Fístula creada entre la luz del estómago y la pared anterior del abdomen que permite el acceso a la luz gástrica desde el exterior. Generalmente se usa con fines alimentarios, aunque puede utilizarse para descomprimir o drenar el estómago.</p>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Por el tipo de trayecto:</strong>
+                <ul>
+                    <li><strong>Serosa (transitoria):</strong> el trayecto está recubierto por serosa. La fístula se cierra al retirar la sonda. Ej: Stamm, Witzel.</li>
+                    <li><strong>Mucosa (definitiva):</strong> el trayecto está tapizado por mucosa gástrica. No necesita sonda permanente. Ej: Janeway, Beck-Jianu.</li>
+                </ul>
+            </li>
+            <li><strong>Por la técnica de acceso:</strong>
+                <ul>
+                    <li><strong>Quirúrgica abierta:</strong> Stamm, Witzel, Janeway, Beck-Jianu.</li>
+                    <li><strong>Percutánea endoscópica (PEG).</strong></li>
+                    <li><strong>Laparoscópica.</strong></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Alimentarias:</strong>
+                <ul>
+                    <li>Cáncer de esófago, faringe o laringe.</li>
+                    <li>Estenosis esofágica congénita o adquirida.</li>
+                    <li>Fístulas esofágicas.</li>
+                    <li>Secuelas neurológicas (ACV, coma).</li>
+                    <li>Traumatismos maxilofaciales.</li>
+                </ul>
+            </li>
+            <li><strong>Descompresivas:</strong>
+                <ul>
+                    <li>Postoperatorio de cirugía esofágica o gástrica.</li>
+                    <li>Pacientes con íleo paralítico prolongado.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Requisitos para una gastrostomía satisfactoria</h3>
+        <ul>
+            <li>Ser continente (no permite salida de jugo gástrico).</li>
+            <li>Permitir la introducción fácil de la sonda (que pueda realizarla el paciente).</li>
+            <li>No tener superficie de granulación sujeta a infección.</li>
+            <li>Permitir el paso de instrumentos para dilataciones o endoscopia retrógrada (en casos seleccionados).</li>
+        </ul>
+
+        <h3>Técnicas quirúrgicas</h3>
+
+        <h4>A. Gastrostomía de Stamm (transitoria)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Incisión:</strong> media o paramedia izquierda supraumbilical (10 cm).</li>
+                <li><strong>Exposición del estómago:</strong> se localiza la cara anterior del estómago.</li>
+                <li><strong>Sutura en bolsa de señora:</strong> se coloca una sutura circular en la cara anterior del estómago (Vicryl 2/0 o seda 2/0), dejando los cabos largos sin anudar.</li>
+                <li><strong>Incisión gástrica:</strong> en el centro de la bolsa de señora se practica una incisión transversal de 1.5-2 cm, aspirando el contenido gástrico.</li>
+                <li><strong>Introducción de la sonda:</strong> se introduce una sonda de Foley (18-20 Fr) o de Pezzer (destechada en su porción de sombrilla) hasta el interior del estómago (8-10 cm).</li>
+                <li><strong>Anudado de la bolsa de señora:</strong> se anuda la sutura alrededor de la sonda, aproximando los bordes de la incisión a la sonda.</li>
+                <li><strong>Segunda bolsa de señora:</strong> a 1 cm de la primera, se coloca otra sutura en bolsa de señora y se anuda alrededor de la sonda (invaginando la primera).</li>
+                <li><strong>Fijación del estómago al peritoneo:</strong> con 4 puntos de Vicryl 2/0 alrededor de la emergencia de la sonda.</li>
+                <li><strong>Exteriorización:</strong> la sonda se extrae por una contraabertura en el hipocondrio izquierdo (por fuera del recto).</li>
+                <li><strong>Fijación de la sonda a la piel:</strong> con un punto de seda 2/0 alrededor de la sonda (sin obliterarla).</li>
+            </ol>
+            <p><strong>Ventaja:</strong> sencilla y rápida. <strong>Desventaja:</strong> si la sonda se desplaza, la fístula se cierra rápidamente.</p>
+        </div>
+
+        <h4>B. Gastrostomía de Witzel (transitoria)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Incisión y exposición:</strong> similar a Stamm.</li>
+                <li><strong>Sutura en bolsa de señora:</strong> una o dos suturas circulares concéntricas en la cara anterior del estómago.</li>
+                <li><strong>Incisión gástrica:</strong> de 1.5-2 cm en el centro.</li>
+                <li><strong>Introducción de la sonda:</strong> sonda de Nélaton 16-18 Fr, se introducen 8 cm.</li>
+                <li><strong>Anudado de las bolsas de señora:</strong> comenzando por la más cercana a la sonda.</li>
+                <li><strong>Túnel seromuscular:</strong> la sonda se coloca a lo largo de la pared del estómago y se cubre con puntos seromusculares (Lembert) de Vicryl 3/0, creando un túnel de 4-6 cm.</li>
+                <li><strong>Exteriorización:</strong> por contraabertura en hipocondrio izquierdo.</li>
+                <li><strong>Fijación del estómago al peritoneo:</strong> con 4 puntos.</li>
+            </ol>
+            <p><strong>Ventaja:</strong> mejor sellado, menor riesgo de fuga. <strong>Desventaja:</strong> más compleja que Stamm.</p>
+        </div>
+
+        <h4>C. Gastrostomía de Janeway (definitiva)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Incisión:</strong> media o paramedia izquierda supraumbilical.</li>
+                <li><strong>Disección del colgajo gástrico:</strong> se toma un colgajo de la cara anterior del estómago (5-6 cm de largo, 3-4 cm de ancho) en sentido transversal, respetando la vascularización (arteria gastroepiploica).</li>
+                <li><strong>Cierre de la gastrotomía:</strong> se sutura la incisión resultante en dos planos (mucosa con Vicryl 3/0 y seromuscular con Vicryl 2/0).</li>
+                <li><strong>Confección del tubo gástrico:</strong> el colgajo se enrolla sobre sí mismo (con la mucosa hacia fuera) y se sutura para formar un tubo.</li>
+                <li><strong>Exteriorización:</strong> el tubo gástrico se exterioriza por una contraabertura en hipocondrio izquierdo.</li>
+                <li><strong>Fijación:</strong> la mucosa del tubo se sutura a la piel (madurada) con puntos de seda 3/0.</li>
+                <li><strong>Se coloca una sonda:</strong> que debe atravesar el píloro hasta el duodeno.</li>
+            </ol>
+            <p><strong>Ventaja:</strong> no necesita sonda permanente. <strong>Desventaja:</strong> riesgo de necrosis del colgajo (por compromiso vascular).</p>
+        </div>
+
+        <h4>D. Gastrostomía percutánea endoscópica (PEG)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Endoscopia:</strong> se introduce un endoscopio flexible por vía oral hasta el estómago.</li>
+                <li><strong>Insulfación:</strong> se distiende el estómago con aire.</li>
+                <li><strong>Transiluminación:</strong> se busca el punto de mayor luminosidad en la pared abdominal (epigastrio, 2 cm a la izquierda de la línea media).</li>
+                <li><strong>Punción:</strong> en ese punto se hace una incisión de piel y se introduce un trócar que atraviesa la pared y entra al estómago.</li>
+                <li><strong>Paso de la guía:</strong> se pasa una guía a través del trócar, se atrapa con el endoscopio y se extrae por la boca.</li>
+                <li><strong>Anclaje de la sonda:</strong> al extremo de la guía que sale por la boca se ata una sonda de Pezzer (destechada).</li>
+                <li><strong>Tracción:</strong> se tira del extremo abdominal de la guía para que la sonda emerja por la incisión abdominal.</li>
+                <li><strong>Fijación:</strong> la sonda se fija a la piel con un punto de seda.</li>
+            </ol>
+            <p><strong>Ventaja:</strong> mínimamente invasiva. <strong>Desventaja:</strong> requiere endoscopio y no es posible en estenosis esofágicas completas.</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CUIDADOS DE GASTROSTOMÍA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-cuidados-gastrostomia">
+        <h2>🩺 Cuidados de la Gastrostomía</h2>
+
+        <h3>Cuidados inmediatos (primeras 48 horas)</h3>
+        <div class="surg-box">
+            <h4>1. Verificación de la posición de la sonda</h4>
+            <ul>
+                <li><strong>Confirmación radiológica:</strong> radiografía de abdomen simple o con contraste.</li>
+                <li><strong>Aspiración de contenido gástrico:</strong> conectar a jeringa y aspirar.</li>
+                <li><strong>Test de insuflación de aire:</strong> inyectar 10-20 ml de aire y auscultar epigastrio.</li>
+                <li><strong>Medición del pH:</strong> pH &lt;4 confirma posición gástrica.</li>
+            </ul>
+            <h4>2. Fijación segura de la sonda</h4>
+            <ul>
+                <li><strong>Punto de fijación a la piel:</strong> seda 2/0 sin obliterar la luz.</li>
+                <li><strong>Dispositivo de fijación externo:</strong> en sondas de Foley, balón inflado con 5-10 ml de agua.</li>
+                <li><strong>Marcar la sonda:</strong> con rotulador indeleble en el punto de salida.</li>
+                <li><strong>Evitar la tracción:</strong> fijar la sonda a la ropa.</li>
+            </ul>
+            <h4>3. Control del débito y permeabilidad</h4>
+            <ul>
+                <li><strong>Aspiración intermitente:</strong> las primeras 24-48h.</li>
+                <li><strong>Ordeñar la sonda:</strong> 3-4 veces al día.</li>
+                <li><strong>Irrigación con suero:</strong> 20-30 ml de suero fisiológico cada 4-6h.</li>
+                <li><strong>Registrar el débito:</strong> volumen y características.</li>
+            </ul>
+            <h4>4. Cuidado del estoma y la piel periestomal</h4>
+            <ul>
+                <li><strong>Limpieza:</strong> agua tibia y jabón neutro o suero fisiológico.</li>
+                <li><strong>Observación:</strong> signos de infección, maceración, irritación.</li>
+                <li><strong>Apósito:</strong> cambiar diariamente.</li>
+                <li><strong>Barreras protectoras:</strong> pastas de zinc, películas adhesivas.</li>
+            </ul>
+        </div>
+
+        <h3>Cuidados durante la alimentación enteral</h3>
+        <div class="surg-box">
+            <h4>5. Posición del paciente</h4>
+            <ul>
+                <li><strong>Posición semisentada:</strong> 30-45° durante y 1-2h después.</li>
+                <li><strong>Evitar decúbito supino:</strong> riesgo de broncoaspiración.</li>
+            </ul>
+            <h4>6. Preparación de la fórmula y la jeringa</h4>
+            <ul>
+                <li><strong>Temperatura ambiente:</strong> retirar del refrigerador 30-60 min antes.</li>
+                <li><strong>Agitar bien:</strong> antes de verter.</li>
+                <li><strong>Jeringa estéril:</strong> de 50-60 ml.</li>
+                <li><strong>No mezclar medicamentos:</strong> administrar por separado.</li>
+                <li><strong>Cambiar equipos:</strong> cada 24h.</li>
+            </ul>
+            <h4>7. Técnica de administración (bolos)</h4>
+            <ul>
+                <li><strong>Irrigación previa:</strong> 20-30 ml de agua tibia.</li>
+                <li><strong>Velocidad:</strong> 20-30 ml/minuto.</li>
+                <li><strong>Volumen:</strong> comenzar con 50-100 ml, máximo 400-450 ml por toma.</li>
+                <li><strong>Control de residuo:</strong> antes de cada bolo. Si &gt;200 ml, suspender.</li>
+                <li><strong>Irrigación posterior:</strong> 20-30 ml de agua.</li>
+            </ul>
+            <h4>8. Técnica de administración continua</h4>
+            <ul>
+                <li><strong>Velocidad inicial:</strong> 25-50 ml/hora, aumentar gradualmente.</li>
+                <li><strong>Bomba de infusión:</strong> para velocidad constante.</li>
+                <li><strong>Control de residuo:</strong> cada 4-6h.</li>
+            </ul>
+            <h4>9. Control de residuo gástrico</h4>
+            <ul>
+                <li><strong>Frecuencia:</strong> cada 4-6h.</li>
+                <li><strong>Volumen normal:</strong> &lt;200 ml.</li>
+                <li><strong>Residuo elevado:</strong> &gt;200 ml: suspender; &gt;500 ml: notificar al médico.</li>
+            </ul>
+        </div>
+
+        <h3>Signos de alarma (cuándo acudir al médico)</h3>
+        <div class="note-box">
+            <ul>
+                <li>Dolor abdominal intenso o persistente.</li>
+                <li>Fiebre (&gt;38°C) o escalofríos.</li>
+                <li>Sangrado o salida de contenido gástrico por el estoma.</li>
+                <li>Enrojecimiento, calor o supuración alrededor del estoma.</li>
+                <li>Dificultad para pasar la alimentación o irrigar la sonda.</li>
+                <li>Desplazamiento de la sonda (la marca se ha movido).</li>
+                <li>Náuseas, vómitos o distensión abdominal persistente.</li>
+                <li>Residuo gástrico &gt;500 ml o &gt;200 ml en 2 controles consecutivos.</li>
+                <li>Signos de aspiración (tos, disnea, fiebre, estertores).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- YEYUNOSTOMÍA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-yeyunostomia">
+        <h2>🩺 Yeyunostomía</h2>
+
+        <h3>Definición</h3>
+        <p>Fístula creada entre la luz del yeyuno y la pared abdominal, generalmente con fines de alimentación enteral precoz o descompresión.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Cuando no se puede utilizar el estómago (gastrectomía, fístula duodenal).</li>
+            <li>En cirugía esofágica para alimentación precoz.</li>
+            <li>En dehiscencia del muñón duodenal (con sonda proximal de aspiración y distal de alimentación).</li>
+            <li>En pancreatitis aguda grave (alimentación distal al páncreas).</li>
+            <li>En obstrucción duodenal intrínseca o extrínseca.</li>
+        </ul>
+
+        <h3>Técnica quirúrgica (Witzel)</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Selección del asa:</strong> se localiza el yeyuno a 30-40 cm del ligamento de Treitz.</li>
+                <li><strong>Sutura en bolsa de señora:</strong> en el borde antimesentérico del yeyuno (Vicryl 3/0).</li>
+                <li><strong>Incisión:</strong> de 1.5-2 cm en el centro de la bolsa.</li>
+                <li><strong>Introducción de la sonda:</strong> sonda de Nélaton 16-18 Fr (o sonda de Foley). Se introducen 10-15 cm en dirección distal.</li>
+                <li><strong>Anudado de la bolsa de señora:</strong> alrededor de la sonda.</li>
+                <li><strong>Túnel seromuscular:</strong> se crea un túnel de 4-6 cm con puntos de Lembert (Vicryl 3/0) cubriendo la sonda.</li>
+                <li><strong>Fijación del yeyuno al peritoneo:</strong> con 4 puntos alrededor de la emergencia de la sonda.</li>
+                <li><strong>Exteriorización:</strong> por contraabertura en la pared abdominal.</li>
+                <li><strong>Fijación de la sonda a la piel.</strong></li>
+            </ol>
+            <p><strong>Precaución:</strong> usar sonda de calibre ≤18 Fr para no obstruir la luz del yeyuno.</p>
+        </div>
+
+        <h3>Cuidados postoperatorios</h3>
+        <ul>
+            <li><strong>Inicio de alimentación:</strong> a las 12-24h con soluciones isotónicas (25-50 ml/h), progresando hasta la fórmula completa.</li>
+            <li><strong>Irrigación:</strong> con 20-30 ml de agua cada 4h.</li>
+            <li><strong>Posición:</strong> semisentado para evitar reflujo.</li>
+            <li><strong>Control de residuo:</strong> menos necesario que en gastrostomía.</li>
+        </ul>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li><strong>Obstrucción de la sonda:</strong> más frecuente que en gastrostomía (por el menor calibre).</li>
+            <li><strong>Fuga:</strong> peritonitis por contaminación.</li>
+            <li><strong>Diarrea:</strong> por síndrome de intestino corto o sobrecarga osmótica.</li>
+            <li><strong>Necrosis del yeyuno:</strong> por compresión de la sonda.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ILEOSTOMÍA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ileostomia">
+        <h2>🩺 Ileostomía</h2>
+
+        <h3>Definición</h3>
+        <p>Abocamiento del íleon a la pared abdominal, casi siempre con fines derivativos. Puede ser terminal (definitiva) o en asa (temporal).</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Terminal (definitiva):</strong>
+                <ul>
+                    <li>Colitis ulcerosa idiopática (tras coloproctectomía total).</li>
+                    <li>Enfermedad de Crohn grave.</li>
+                    <li>Poliposis familiar (tras colectomía total).</li>
+                </ul>
+            </li>
+            <li><strong>En asa (temporal):</strong>
+                <ul>
+                    <li>Protección de anastomosis ileoanal o ileorrectal.</li>
+                    <li>Descompresión en oclusión del ciego (cuando no se puede resecar).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Técnicas quirúrgicas</h3>
+
+        <h4>A. Ileostomía de Brooke (terminal evertida)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Selección del sitio:</strong> cuadrante inferior derecho, plano, sin interferencia con eminencias óseas.</li>
+                <li><strong>Extracción del cilindro de piel:</strong> se reseca un cilindro de 2 cm de diámetro (piel, TCS, aponeurosis).</li>
+                <li><strong>Divulsión del músculo:</strong> en la dirección de sus fibras.</li>
+                <li><strong>Selección del íleon terminal:</strong> a 10-15 cm de la válvula ileocecal.</li>
+                <li><strong>Sección del íleon:</strong> entre pinzas rectas o con grapadora lineal.</li>
+                <li><strong>División del mesenterio:</strong> 10-15 cm para garantizar movilidad y buena vascularización.</li>
+                <li><strong>Exteriorización:</strong> el extremo del íleon se exterioriza a través del orificio abdominal.</li>
+                <li><strong>Everción:</strong> el extremo del íleon se everted sobre sí mismo (3 cm de trompa por encima de la piel).</li>
+                <li><strong>Fijación del mesenterio:</strong> al peritoneo parietal con puntos de polipropileno 2/0 (para evitar hernias internas).</li>
+                <li><strong>Sutura mucocutánea:</strong> la mucosa evertida se sutura a la piel con puntos de Vicryl 3/0 o polipropileno 4/0.</li>
+                <li><strong>Colocación de bolsa:</strong> se coloca una bolsa colectora con adhesivo protector de la piel.</li>
+            </ol>
+            <p><strong>Ventaja:</strong> la eversión protege la piel del contenido irritante.</p>
+        </div>
+
+        <h4>B. Ileostomía en asa (temporal)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Selección del asa:</strong> se identifica el íleon terminal.</li>
+                <li><strong>Exteriorización del asa:</strong> se extrae un asa de íleon a través de una incisión separada.</li>
+                <li><strong>Fijación:</strong> con una varilla de plástico por debajo del asa (para evitar la retracción).</li>
+                <li><strong>Fijación al peritoneo:</strong> con puntos de Vicryl 2/0.</li>
+                <li><strong>Apertura:</strong> se abre el asa longitudinalmente (o se coloca una sonda en el cabo proximal).</li>
+                <li><strong>Colocación de bolsa.</strong></li>
+                <li><strong>Cierre:</strong> en un segundo tiempo (cuando se restablece la continuidad).</li>
+            </ol>
+        </div>
+
+        <h4>C. Ileostomía continente de Kock</h4>
+        <ul>
+            <li><strong>Indicación:</strong> pacientes que no quieren usar bolsa externa.</li>
+            <li><strong>Técnica:</strong> se confecciona un reservorio con el íleon (bolsa de Kock) y una válvula antirreflujo.</li>
+            <li><strong>Desventaja:</strong> técnica compleja, requiere intubación periódica para vaciar.</li>
+        </ul>
+
+        <h3>Cuidados postoperatorios</h3>
+        <ul>
+            <li><strong>Bolsa:</strong> cambiar cuando esté 1/3-1/2 llena. Limpiar la piel con agua y jabón neutro.</li>
+            <li><strong>Piel:</strong> usar barreras protectoras (pasta de zinc, películas adhesivas).</li>
+            <li><strong>Dieta:</strong> masticar bien los alimentos, evitar alimentos que obstruyan (nueces, maíz, champiñones).</li>
+            <li><strong>Hidratación:</strong> aumentar la ingesta de líquidos (pérdidas de 500-1500 ml/día).</li>
+            <li><strong>Suplementos:</strong> vitaminas (B12), electrolitos (Na, K) según déficit.</li>
+        </ul>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li><strong>Necrosis del estoma:</strong> color oscuro, requiere reintervención.</li>
+            <li><strong>Retracción:</strong> hundimiento del estoma, riesgo de dermatitis.</li>
+            <li><strong>Estenosis:</strong> dificultad para la salida de heces.</li>
+            <li><strong>Prolapso:</strong> del asa aferente.</li>
+            <li><strong>Dermatitis periestomal:</strong> por irritación del contenido intestinal.</li>
+            <li><strong>Obstrucción:</strong> por alimentos no digeridos.</li>
+            <li><strong>Deshidratación y pérdida electrolítica.</strong></li>
+            <li><strong>Fístula enterocutánea.</strong></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COLOSTOMÍA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-colostomia">
+        <h2>🩺 Colostomía</h2>
+
+        <h3>Definición</h3>
+        <p>Abocamiento del colon a la pared abdominal. Puede ser temporal o definitiva, descompresiva o derivativa, según la patología.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Oclusión tumoral</strong> del colon izquierdo (tumores, vólvulos).</li>
+            <li><strong>Perforación traumática o diverticular</strong> (grados III-IV de Hinchey).</li>
+            <li><strong>Protección de anastomosis baja</strong> (colorrectal, coloanal).</li>
+            <li><strong>Enfermedad inflamatoria intestinal</strong> (colitis ulcerosa, Crohn).</li>
+            <li><strong>Fístula rectovaginal o colovesical.</strong></li>
+        </ul>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Por localización:</strong>
+                <ul>
+                    <li><strong>Cecostomía:</strong> en el ciego (descompresiva).</li>
+                    <li><strong>Transversostomía:</strong> en el colon transverso (temporal, derivativa).</li>
+                    <li><strong>Sigmoidostomía:</strong> en el sigmoides (la más frecuente).</li>
+                </ul>
+            </li>
+            <li><strong>Por técnica:</strong>
+                <ul>
+                    <li><strong>En asa (temporal):</strong> se exterioriza un asa de colon sin seccionar.</li>
+                    <li><strong>En cañón de escopeta (Rankin-Mikulicz):</strong> dos cabos (proximal y distal) exteriorizados en paralelo.</li>
+                    <li><strong>Terminal (Hartmann):</strong> colostomía de un solo cabo (proximal) con cierre del distal.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Técnicas quirúrgicas</h3>
+
+        <h4>A. Colostomía en asa (temporal)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Selección del asa:</strong> transverso o sigmoides.</li>
+                <li><strong>Liberación del asa:</strong> se libera 10-15 cm de colon (epiplón mayor en transverso, peritoneo parietocólico en sigmoides).</li>
+                <li><strong>Incisión en la pared abdominal:</strong> de 8-10 cm, en la zona donde se exteriorizará el asa.</li>
+                <li><strong>Exteriorización:</strong> el asa se extrae a través de la incisión (debe quedar redundante, sin tensión).</li>
+                <li><strong>Anclaje:</strong> se coloca una varilla de cristal o plástico a través del meso del asa (para evitar retracción).</li>
+                <li><strong>Fijación al peritoneo:</strong> puntos de Vicryl 2/0 entre la pared del colon y el peritoneo.</li>
+                <li><strong>Apertura:</strong> a las 48h (o inmediata si hay distensión severa). Se realiza una incisión longitudinal en la bandeleta anterior.</li>
+                <li><strong>Colocación de bolsa.</strong></li>
+            </ol>
+        </div>
+
+        <h4>B. Colostomía en cañón de escopeta (Rankin-Mikulicz)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Resección del segmento afectado</strong> (generalmente sigmoides).</li>
+                <li><strong>Exteriorización de ambos cabos</strong> (proximal y distal) en paralelo, a través de una incisión abdominal.</li>
+                <li><strong>Sutura de los cabos:</strong> se suturan entre sí en una longitud de 6-7 cm.</li>
+                <li><strong>Anclaje:</strong> con una varilla por debajo de ambos cabos.</li>
+                <li><strong>Apertura:</strong> se abre el cabo proximal para derivar, el distal queda cerrado (o se abre para lavados).</li>
+                <li><strong>Permite restablecer el tránsito</strong> posteriormente ("matar el espolón" con enterotribo).</li>
+            </ol>
+        </div>
+
+        <h4>C. Colostomía terminal (Hartmann)</h4>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Resección del segmento afectado</strong> (colon izquierdo o recto superior).</li>
+                <li><strong>Cierre del muñón distal (rectal):</strong> con grapadora lineal (TA) o sutura manual en dos planos (Vicryl 2/0).</li>
+                <li><strong>Exteriorización del cabo proximal:</strong> se aboca el colon a la piel (colostomía terminal).</li>
+                <li><strong>Fijación del muñón distal:</strong> al sacro o a la fascia pélvica para evitar retracción.</li>
+                <li><strong>Drenaje pélvico:</strong> si hay contaminación.</li>
+                <li><strong>Reconstrucción:</strong> en un segundo tiempo (3-6 meses), se realiza anastomosis colorectal.</li>
+            </ol>
+        </div>
+
+        <h4>D. Cecostomía (descompresiva)</h4>
+        <div class="surg-box">
+            <h5>Por sonda (Stamm en ciego)</h5>
+            <ol>
+                <li><strong>Incisión:</strong> en la fosa ilíaca derecha (McBurney).</li>
+                <li><strong>Exposición del ciego:</strong> se identifica el ciego.</li>
+                <li><strong>Sutura en bolsa de señora:</strong> en la cara anterior del ciego (Vicryl 2/0).</li>
+                <li><strong>Incisión:</strong> en el centro de la bolsa.</li>
+                <li><strong>Introducción de la sonda:</strong> sonda de Pezzer 30F (destechada) o Foley.</li>
+                <li><strong>Anudado de la bolsa:</strong> alrededor de la sonda (dos bolsas concéntricas).</li>
+                <li><strong>Fijación del ciego al peritoneo:</strong> con 4 puntos.</li>
+                <li><strong>Exteriorización:</strong> por contraabertura.</li>
+            </ol>
+            <h5>Cecostomía lateral</h5>
+            <ul>
+                <li>Se fija la pared anterior del ciego a la incisión de McBurney con puntos de seda 2/0 (sin penetrar la luz).</li>
+                <li>Se cubre con gasa vaselinada y se espera 24-48h para abrir.</li>
+                <li>Indicada cuando no se puede colocar sonda (ciego muy distendido).</li>
+            </ul>
+        </div>
+
+        <h3>Cuidados postoperatorios</h3>
+        <ul>
+            <li><strong>Protección de la piel:</strong> con gasa vaselinada inicialmente, luego con bolsa colectora y adhesivos protectores.</li>
+            <li><strong>Limpieza:</strong> lavar con agua y jabón neutro, secar suavemente.</li>
+            <li><strong>Irrigación:</strong> en colostomías descendentes o sigmoides, se puede hacer irrigación para regularizar el tránsito (500-1000 ml de agua tibia).</li>
+            <li><strong>Dieta:</strong> evitar alimentos que produzcan gases o mal olor (cebolla, col, legumbres).</li>
+            <li><strong>Educación del paciente:</strong> en el manejo de la bolsa, la higiene y la detección de complicaciones.</li>
+        </ul>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li><strong>Necrosis del estoma:</strong> color púrpura o negro, requiere reintervención inmediata.</li>
+            <li><strong>Retracción:</strong> hundimiento del estoma por debajo de la piel (riesgo de peritonitis fecal).</li>
+            <li><strong>Estenosis:</strong> cicatrización excesiva que estrecha el estoma.</li>
+            <li><strong>Prolapso:</strong> protrusión excesiva del asa aferente.</li>
+            <li><strong>Hernia paraostomía:</strong> protrusión alrededor del estoma.</li>
+            <li><strong>Separación mucocutánea:</strong> separación entre la mucosa y la piel.</li>
+            <li><strong>Dermatitis periestomal.</strong></li>
+            <li><strong>Obstrucción:</strong> por alimentos no digeridos.</li>
+            <li><strong>Sangrado:</strong> del estoma.</li>
+            <li><strong>Fístula fecal:</strong> en la herida quirúrgica.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CUIDADOS GENERALES DE OSTOMÍAS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-cuidados-ostomias">
+        <h2>🩺 Cuidados generales de las ostomías</h2>
+
+        <h3>Mantener el buen funcionamiento</h3>
+        <ul>
+            <li><strong>Evitar la dislocación de las sondas:</strong> fijar adecuadamente, manipular con cuidado, educar al paciente.</li>
+            <li><strong>Mantener la permeabilidad:</strong> ordeñar las sondas 3-4 veces al día, irrigar con 30-40 ml de suero fisiológico a partir de las 48h.</li>
+            <li><strong>Evitar la retracción y el hundimiento:</strong> dejar el asa sin tensión y redundante; no retirar la varilla de anclaje antes de las 48h.</li>
+        </ul>
+
+        <h3>Proteger la piel alrededor del estoma</h3>
+        <ul>
+            <li><strong>Limpieza:</strong> con agua tibia y jabón neutro, secar con gasa suave (sin frotar).</li>
+            <li><strong>Barreras protectoras:</strong> usar pastas de zinc, películas adhesivas o anillos de colostomía.</li>
+            <li><strong>Bolsa:</strong> cambiar regularmente, asegurar un sellado hermético.</li>
+            <li><strong>Observar:</strong> signos de irritación, enrojecimiento, maceración o infección.</li>
+        </ul>
+
+        <h3>Educación del paciente</h3>
+        <ul>
+            <li><strong>Manejo de la bolsa:</strong> cómo cambiarla, limpiarla y desecharla.</li>
+            <li><strong>Dieta:</strong> alimentos recomendados y los que deben evitarse.</li>
+            <li><strong>Reconocimiento de complicaciones:</strong> necrosis, retracción, estenosis, prolapso.</li>
+            <li><strong>Aspectos psicosociales:</strong> apoyo emocional, grupos de ayuda, sexualidad.</li>
+        </ul>
+
+        <h3>Cuadro comparativo de ostomías digestivas</h3>
+        <table class="grade-table">
+            <thead>
+                <tr>
+                    <th>Característica</th>
+                    <th>Gastrostomía</th>
+                    <th>Yeyunostomía</th>
+                    <th>Ileostomía</th>
+                    <th>Colostomía</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Función principal</strong></td>
+                    <td>Alimentación</td>
+                    <td>Alimentación</td>
+                    <td>Derivación</td>
+                    <td>Derivación / Descompresión</td>
+                </tr>
+                <tr>
+                    <td><strong>Carácter</strong></td>
+                    <td>Temporal o definitiva</td>
+                    <td>Temporal</td>
+                    <td>Definitiva o Temporal</td>
+                    <td>Temporal o definitiva</td>
+                </tr>
+                <tr>
+                    <td><strong>Consistencia del contenido</strong></td>
+                    <td>Líquido (jugo gástrico)</td>
+                    <td>Líquido (quimo)</td>
+                    <td>Líquido / semilíquido</td>
+                    <td>Semilíquido a sólido</td>
+                </tr>
+                <tr>
+                    <td><strong>Riesgo de dermatitis</strong></td>
+                    <td>Bajo</td>
+                    <td>Moderado</td>
+                    <td>Alto</td>
+                    <td>Bajo a moderado</td>
+                </tr>
+                <tr>
+                    <td><strong>Técnicas principales</strong></td>
+                    <td>Stamm, Witzel, Janeway, PEG</td>
+                    <td>Witzel</td>
+                    <td>Brooke, Kock</td>
+                    <td>Asa, Hartmann, Rankin-Mikulicz</td>
+                </tr>
+                <tr>
+                    <td><strong>Complicación más frecuente</strong></td>
+                    <td>Deslizamiento de la sonda</td>
+                    <td>Obstrucción de la sonda</td>
+                    <td>Dermatitis periestomal</td>
+                    <td>Necrosis / retracción</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ANTIBIÓTICOS - INTRODUCCIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-antibioticos">
+        <h2>💊 Antibióticos en Cirugía</h2>
+
+        <h3>Definición y objetivos</h3>
+        <p><strong>Antibiótico:</strong> Sustancia química producida por microorganismos o sintetizada en laboratorio, que tiene la capacidad de inhibir el crecimiento o destruir bacterias a concentraciones bajas.</p>
+
+        <h4>Objetivos del uso correcto de antibióticos</h4>
+        <ul>
+            <li><strong>Eficacia:</strong> llegar al sitio de la infección y ser activo allí (considerar pH, irrigación, barreras).</li>
+            <li><strong>Origen de la infección:</strong> distinguir entre nosocomial (resistente) y comunitaria (sensible).</li>
+            <li><strong>Dosis:</strong> calcular según peso corporal para fármacos con margen terapéutico estrecho (aminoglucósidos).</li>
+            <li><strong>Duración:</strong> no exceder 14 días con un mismo antibiótico (riesgo de resistencia).</li>
+            <li><strong>Vía de administración:</strong> parenteral en infecciones graves o shock (absorción IM deficiente).</li>
+            <li><strong>Mapa microbiológico:</strong> conocer los gérmenes circulantes en el hospital y su sensibilidad.</li>
+            <li><strong>Resistencia:</strong> evitar el uso indiscriminado para prevenir selección de cepas resistentes.</li>
+            <li><strong>Reacciones adversas:</strong> monitorizar efectos secundarios (alergias, nefrotoxicidad, ototoxicidad).</li>
+            <li><strong>Costo:</strong> elegir el antibiótico más eficaz y económico disponible.</li>
+        </ul>
+        <hr>
+        <p style="color:#a06060; font-style:italic;">Selecciona un tema específico en el menú lateral para ver el detalle.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MECANISMOS DE ACCIÓN -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-mecanismos">
+        <h2>💊 Mecanismos de acción de los antibióticos</h2>
+
+        <h3>1. Inhibición de la síntesis de la pared bacteriana</h3>
+        <ul>
+            <li><strong>Betalactámicos:</strong> penicilinas, cefalosporinas, carbapenémicos, monobactámicos.</li>
+            <li><strong>Glucopéptidos:</strong> vancomicina, teicoplanina.</li>
+            <li><strong>Mecanismo:</strong> inhiben la transpeptidasa (proteína fijadora de penicilina), impidiendo la formación del peptidoglicano. La bacteria se lisa por presión osmótica.</li>
+        </ul>
+
+        <h3>2. Inhibición de la síntesis de proteínas (ribosoma bacteriano)</h3>
+        <ul>
+            <li><strong>Subunidad 30S:</strong> aminoglucósidos (lectura errónea del RNAm), tetraciclinas (bloqueo de la unión aminoacil-tRNA).</li>
+            <li><strong>Subunidad 50S:</strong> macrólidos, lincosánidos (clindamicina), cloranfenicol, oxazolidinonas (linezolid), estreptograminas.</li>
+        </ul>
+
+        <h3>3. Alteración de la membrana celular</h3>
+        <ul>
+            <li><strong>Polimixinas:</strong> actúan como detergentes, aumentan la permeabilidad.</li>
+            <li><strong>Antifúngicos:</strong> anfotericina B, nistatina (se unen a esteroles de la membrana).</li>
+        </ul>
+
+        <h3>4. Inhibición de la síntesis de ácidos nucleicos</h3>
+        <ul>
+            <li><strong>Quinolonas:</strong> inhiben la DNA girasa (impiden el superenrollamiento del DNA).</li>
+            <li><strong>Rifampicina:</strong> inhibe la RNA polimerasa dependiente de DNA.</li>
+        </ul>
+
+        <h3>5. Antimetabolitos</h3>
+        <ul>
+            <li><strong>Sulfamidas y trimetoprim:</strong> inhiben la síntesis de ácido fólico (bloquean la vía del PABA).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CLASIFICACIÓN DE ANTIBIÓTICOS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-clasificacion">
+        <h2>💊 Clasificación general de los antibióticos</h2>
+
+        <h3>A. Betalactámicos</h3>
+        <ul>
+            <li><strong>Penicilinas:</strong>
+                <ul>
+                    <li><strong>Naturales:</strong> Penicilina G (benzatínica, procaínica, cristalina).</li>
+                    <li><strong>Antiestafilocócicas:</strong> Nafcilina, Oxacilina, Dicloxacilina.</li>
+                    <li><strong>Aminopenicilinas:</strong> Ampicilina, Amoxicilina.</li>
+                    <li><strong>De amplio espectro (anti-Pseudomonas):</strong> Piperacilina, Ticarcilina.</li>
+                    <li><strong>Asociadas con inhibidores de betalactamasas:</strong> Ampicilina/Sulbactam, Amoxicilina/Clavulánico, Piperacilina/Tazobactam.</li>
+                </ul>
+            </li>
+            <li><strong>Cefalosporinas (generaciones):</strong>
+                <ul>
+                    <li><strong>1ª generación:</strong> Cefazolina, Cefalexina, Cefadroxilo.</li>
+                    <li><strong>2ª generación:</strong> Cefuroxima, Cefoxitina, Cefotetan, Cefaclor.</li>
+                    <li><strong>3ª generación:</strong> Ceftriaxona, Cefotaxima, Ceftazidima, Cefoperazona.</li>
+                    <li><strong>4ª generación:</strong> Cefepima, Cefpiroma.</li>
+                </ul>
+            </li>
+            <li><strong>Carbapenémicos:</strong> Imipenem, Meropenem, Ertapenem.</li>
+            <li><strong>Monobactámicos:</strong> Aztreonam.</li>
+        </ul>
+
+        <h3>B. Aminoglucósidos</h3>
+        <ul>
+            <li><strong>Clásicos:</strong> Estreptomicina, Neomicina, Kanamicina.</li>
+            <li><strong>Modernos:</strong> Gentamicina, Tobramicina, Amikacina, Netilmicina.</li>
+            <li><strong>Toxicidad:</strong> nefrotoxicidad, ototoxicidad.</li>
+        </ul>
+
+        <h3>C. Quinolonas</h3>
+        <ul>
+            <li><strong>1ª generación:</strong> Ácido nalidíxico.</li>
+            <li><strong>2ª generación (Fluoroquinolonas):</strong> Ciprofloxacino, Norfloxacino, Ofloxacino, Levofloxacino, Moxifloxacino.</li>
+        </ul>
+
+        <h3>D. Macrólidos</h3>
+        <ul>
+            <li><strong>Clásicos:</strong> Eritromicina.</li>
+            <li><strong>Nuevos:</strong> Claritromicina, Azitromicina, Roxitromicina.</li>
+        </ul>
+
+        <h3>E. Lincosánidos</h3>
+        <ul>
+            <li><strong>Clindamicina:</strong> cocos gram+, anaerobios (Bacteroides fragilis).</li>
+        </ul>
+
+        <h3>F. Tetraciclinas</h3>
+        <ul>
+            <li><strong>Clásicas:</strong> Tetraciclina, Oxitetraciclina.</li>
+            <li><strong>Modernas:</strong> Doxiciclina, Minociclina.</li>
+        </ul>
+
+        <h3>G. Glucopéptidos</h3>
+        <ul>
+            <li><strong>Vancomicina, Teicoplanina:</strong> cocos gram+ multirresistentes (MRSA, Enterococcus).</li>
+        </ul>
+
+        <h3>H. Nitroimidazoles</h3>
+        <ul>
+            <li><strong>Metronidazol, Tinidazol:</strong> anaerobios y protozoos.</li>
+        </ul>
+
+        <h3>I. Sulfonamidas y Trimetoprim</h3>
+        <ul>
+            <li><strong>Trimetoprim/Sulfametoxazol (TMP-SMX).</strong></li>
+        </ul>
+
+        <h3>J. Cloranfenicol</h3>
+        <ul>
+            <li>Toxicidad: aplasia medular. Uso restringido.</li>
+        </ul>
+
+        <h3>K. Nuevas familias</h3>
+        <ul>
+            <li><strong>Oxazolidinonas (Linezolid):</strong> gram+ resistentes (MRSA, VRE).</li>
+            <li><strong>Estreptograminas (Quinupristina/Dalfopristina):</strong> gram+ resistentes.</li>
+            <li><strong>Lipopéptidos (Daptomicina):</strong> gram+.</li>
+            <li><strong>Tigeciclina:</strong> amplio espectro.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROFILAXIS PERIOPERATORIA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-profilaxis">
+        <h2>💊 Profilaxis perioperatoria</h2>
+
+        <h3>Principios fundamentales</h3>
+        <ul>
+            <li>El antibiótico debe ser de <strong>amplio espectro</strong>, cubriendo los gérmenes probables según el tipo de cirugía.</li>
+            <li>La <strong>vida media</strong> debe ser suficiente para cubrir el periodo de riesgo (duración de la cirugía).</li>
+            <li>Administrar <strong>30-60 minutos antes de la incisión</strong> (idealmente en la inducción anestésica).</li>
+            <li>Repetir la dosis si la cirugía dura <strong>más de 4 horas</strong> o si hay <strong>pérdida hemática &gt;1500 ml</strong>.</li>
+            <li>Suspender la profilaxis <strong>dentro de las 24 horas posteriores</strong> a la cirugía (riesgo de resistencia).</li>
+            <li>El beneficio debe ser mayor que el riesgo (toxicidad, resistencia, reacciones alérgicas).</li>
+        </ul>
+
+        <h3>Indicaciones según tipo de cirugía</h3>
+        <table class="grade-table">
+            <thead>
+                <tr>
+                    <th>Tipo de cirugía</th>
+                    <th>Clasificación</th>
+                    <th>Profilaxis</th>
+                    <th>Régimen recomendado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Cirugía limpia</strong></td>
+                    <td>Limpia</td>
+                    <td><strong>No</strong> (excepto si hay prótesis)</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><strong>Cirugía limpia con prótesis</strong></td>
+                    <td>Limpia</td>
+                    <td><strong>Sí</strong></td>
+                    <td>Cefazolina 1-2g IV</td>
+                </tr>
+                <tr>
+                    <td><strong>Cirugía limpia-contaminada</strong></td>
+                    <td>Limpia-contaminada</td>
+                    <td><strong>Sí</strong></td>
+                    <td>Cefazolina + metronidazol o cefoxitina</td>
+                </tr>
+                <tr>
+                    <td><strong>Cirugía contaminada</strong></td>
+                    <td>Contaminada</td>
+                    <td><strong>Sí</strong> (tratamiento empírico)</td>
+                    <td>Ceftriaxona + metronidazol o piperacilina/tazobactam</td>
+                </tr>
+                <tr>
+                    <td><strong>Cirugía sucia</strong></td>
+                    <td>Sucia</td>
+                    <td><strong>Sí</strong> (tratamiento curativo)</td>
+                    <td>Antibiótico según cultivo o imipenem</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TRATAMIENTO EMPÍRICO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-empirico">
+        <h2>💊 Tratamiento empírico según foco infeccioso</h2>
+
+        <h3>A. Infección intraabdominal</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Comunitaria (leve-moderada):</strong> Ceftriaxona 2g IV c/24h + Metronidazol 500mg IV c/8h.</li>
+                <li><strong>Comunitaria (grave):</strong> Piperacilina/Tazobactam 4.5g IV c/6h.</li>
+                <li><strong>Nosocomial (grave):</strong> Imipenem 500mg IV c/6h o Meropenem 1g IV c/8h.</li>
+                <li><strong>Alérgico a penicilina:</strong> Aztreonam + Clindamicina + Metronidazol.</li>
+            </ul>
+        </div>
+
+        <h3>B. Sepsis de origen biliar</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Leve-moderada:</strong> Ceftriaxona 2g IV c/24h + Metronidazol 500mg IV c/8h.</li>
+                <li><strong>Grave:</strong> Piperacilina/Tazobactam 4.5g IV c/6h o Imipenem 500mg IV c/6h.</li>
+                <li><strong>Si hay sospecha de Enterococcus:</strong> añadir Ampicilina 2g IV c/6h.</li>
+            </ul>
+        </div>
+
+        <h3>C. Apendicitis aguda</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>No perforada:</strong> Cefazolina 2g IV + Metronidazol 500mg IV.</li>
+                <li><strong>Perforada:</strong> Piperacilina/Tazobactam 4.5g IV c/6h o Imipenem 500mg IV c/6h.</li>
+            </ul>
+        </div>
+
+        <h3>D. Infección de partes blandas</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Comunitaria:</strong> Cefazolina 2g IV c/8h o Ampicilina/Sulbactam 3g IV c/6h.</li>
+                <li><strong>Con riesgo de MRSA:</strong> Vancomicina 15-20mg/kg IV c/8-12h.</li>
+                <li><strong>Infección necrotizante:</strong> Piperacilina/Tazobactam 4.5g IV c/6h + Clindamicina 900mg IV c/8h.</li>
+            </ul>
+        </div>
+
+        <h3>E. Infección urinaria (pielonefritis)</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Comunitaria:</strong> Ceftriaxona 2g IV c/24h o Ciprofloxacino 400mg IV c/12h.</li>
+                <li><strong>Nosocomial:</strong> Piperacilina/Tazobactam 4.5g IV c/6h o Imipenem 500mg IV c/6h.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- REACCIONES ADVERSAS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-toxicidad">
+        <h2>💊 Reacciones adversas y toxicidad</h2>
+
+        <table class="grade-table">
+            <thead>
+                <tr>
+                    <th>Antibiótico</th>
+                    <th>Efecto adverso principal</th>
+                    <th>Manejo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Penicilinas</strong></td>
+                    <td>Reacciones alérgicas (rash, anafilaxia), diarrea</td>
+                    <td>Evitar en alérgicos, usar alternativas (macrólidos, clindamicina)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cefalosporinas</strong></td>
+                    <td>Alergia cruzada (5-10% con penicilinas), colitis por C. difficile</td>
+                    <td>Precaución en alérgicos a penicilina</td>
+                </tr>
+                <tr>
+                    <td><strong>Aminoglucósidos</strong></td>
+                    <td>Nefrotoxicidad, ototoxicidad</td>
+                    <td>Monitorizar niveles séricos, ajustar según función renal</td>
+                </tr>
+                <tr>
+                    <td><strong>Vancomicina</strong></td>
+                    <td>Nefrotoxicidad, síndrome del hombre rojo</td>
+                    <td>Monitorizar niveles, infundir en &gt;60 minutos</td>
+                </tr>
+                <tr>
+                    <td><strong>Clindamicina</strong></td>
+                    <td>Colitis por Clostridium difficile</td>
+                    <td>Suspender si hay diarrea, tratar con metronidazol o vancomicina oral</td>
+                </tr>
+                <tr>
+                    <td><strong>Quinolonas</strong></td>
+                    <td>Rotura de tendones, fotosensibilidad, arritmias (QT prolongado)</td>
+                    <td>Evitar en deportistas, ancianos</td>
+                </tr>
+                <tr>
+                    <td><strong>Cloranfenicol</strong></td>
+                    <td>Aplasia medular</td>
+                    <td>Uso restringido</td>
+                </tr>
+                <tr>
+                    <td><strong>Metronidazol</strong></td>
+                    <td>Disulfiram (con alcohol), neuropatía periférica</td>
+                    <td>Evitar alcohol, suspender si hay neuropatía</td>
+                </tr>
+                <tr>
+                    <td><strong>Linezolid</strong></td>
+                    <td>Mielosupresión, neuropatía, síndrome serotoninérgico</td>
+                    <td>Monitorizar hemograma semanal</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- RESISTENCIA BACTERIANA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-ab-resistencia">
+        <h2>💊 Resistencia bacteriana y medidas de control</h2>
+
+        <h3>Mecanismos de resistencia</h3>
+        <ul>
+            <li><strong>Producción de enzimas:</strong> betalactamasas (destruyen penicilinas y cefalosporinas).</li>
+            <li><strong>Bombas de eflujo:</strong> expulsan el antibiótico al exterior (quinolonas, tetraciclinas).</li>
+            <li><strong>Modificación del sitio diana:</strong> alteración de las proteínas fijadoras de penicilina (MRSA).</li>
+            <li><strong>Alteración de la permeabilidad:</strong> disminución de porinas (Pseudomonas).</li>
+            <li><strong>Enzimas modificadoras:</strong> acetiltransferasas, fosfotransferasas (aminoglucósidos).</li>
+        </ul>
+
+        <h3>Medidas para prevenir la resistencia</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Política de antibióticos:</strong> establecer guías institucionales basadas en el mapa microbiológico.</li>
+                <li><strong>Cultivos antes de iniciar:</strong> tomar muestras para cultivo y antibiograma antes de la primera dosis.</li>
+                <li><strong>Desescalamiento:</strong> ajustar la antibioticoterapia a las 48-72h según los resultados de cultivos.</li>
+                <li><strong>Duración limitada:</strong> no prolongar más de lo necesario (7-14 días, según infección).</li>
+                <li><strong>Evitar combinaciones innecesarias:</strong> usar monoterapia cuando sea posible.</li>
+                <li><strong>Rotación de antibióticos:</strong> cambiar periódicamente los antibióticos de primera línea.</li>
+                <li><strong>Control de infecciones:</strong> medidas de aislamiento para pacientes con gérmenes multirresistentes.</li>
+            </ul>
+        </div>
+
+        <h3>Gérmenes multirresistentes de interés quirúrgico</h3>
+        <ul>
+            <li><strong>MRSA:</strong> vancomicina, linezolid, daptomicina.</li>
+            <li><strong>VRE:</strong> linezolid, tigeciclina, daptomicina.</li>
+            <li><strong>ESBL:</strong> carbapenémicos (imipenem, meropenem).</li>
+            <li><strong>KPC:</strong> colistina, tigeciclina, fosfomicina.</li>
+            <li><strong>Pseudomonas multirresistente:</strong> colistina, ceftazidima/avibactam, meropenem/vaborbactam.</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    // ================================================================
+    // NAVEGACIÓN CON SUBMENÚS DESPLEGABLES
+    // ================================================================
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+    const parentButtons = document.querySelectorAll('.parent-btn');
+
+    // ===== FUNCIÓN PARA MOSTRAR UNA SECCIÓN =====
+    function showSection(targetId) {
+        // Ocultar todas las secciones
+        sections.forEach(sec => sec.classList.remove('active'));
+
+        // Mostrar la sección objetivo
+        const target = document.getElementById('sec-' + targetId);
+        if (target) {
+            target.classList.add('active');
+        } else {
+            console.warn('⚠️ Sección no encontrada: sec-' + targetId);
+            const inicio = document.getElementById('sec-inicio');
+            if (inicio) inicio.classList.add('active');
+        }
+
+        // Actualizar botones activos
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+
+        // Scroll al inicio
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    // ===== TOGGLE DE SUBMENÚS =====
+    parentButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const targetId = this.dataset.target;
+            const submenuId = this.dataset.toggle;
+
+            // Si tiene submenú, alternar
+            if (submenuId) {
+                const submenu = document.getElementById(submenuId);
+                if (submenu) {
+                    this.classList.toggle('open');
+                    submenu.classList.toggle('open');
+                }
+            }
+
+            // Navegar a la sección principal
+            if (targetId) {
+                showSection(targetId);
+            }
+        });
+    });
+
+    // ===== BOTONES NORMALES Y SUB-BOTONES =====
+    buttons.forEach(btn => {
+        // Ignorar botones padre (ya tienen su propio listener)
+        if (btn.classList.contains('parent-btn')) return;
+
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) {
+                showSection(target);
+
+                // Si es un sub-botón, asegurar que su submenú esté abierto
+                const submenu = this.closest('.submenu');
+                if (submenu) {
+                    submenu.classList.add('open');
+                    const parentBtn = document.querySelector(`[data-toggle="${submenu.id}"]`);
+                    if (parentBtn) parentBtn.classList.add('open');
+                }
+            }
+        });
+    });
+
+    // ===== INICIALIZACIÓN =====
+    showSection('inicio');
+
+    // ===== ABRIR SUBMENÚ ACTIVO AL CARGAR (si aplica) =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const activeInSubmenu = document.querySelector('.submenu .nav-btn.active');
+        if (activeInSubmenu) {
+            const submenu = activeInSubmenu.closest('.submenu');
+            if (submenu) {
+                submenu.classList.add('open');
+                const parentBtn = document.querySelector(`[data-toggle="${submenu.id}"]`);
+                if (parentBtn) parentBtn.classList.add('open');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

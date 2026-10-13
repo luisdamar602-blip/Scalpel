@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cirugía Menor - Técnicas Quirúrgicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdf8f0;
+            color: #2a1a0a;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 320px;
+            background: #8a4a10;
+            color: #fff5e6;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #b06a2a;
+            letter-spacing: 0.5px;
+            color: #fff5e6;
+        }
+        .sidebar h2 span { font-weight: 700; color: #ffb84d; }
+        .nav-group-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #ffd9a0;
+            padding: 10px 20px 4px 20px;
+            font-weight: 600;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #fff5e6;
+            padding: 8px 20px 8px 28px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover {
+            background: #a05a20;
+            color: #ffffff;
+            border-left-color: #ffb84d;
+        }
+        .nav-btn.active {
+            background: #b06a20;
+            color: #ffffff;
+            border-left-color: #ffb84d;
+            font-weight: 500;
+        }
+        .nav-btn.sub {
+            padding-left: 40px;
+            font-size: 0.82rem;
+            color: #ffe0b8;
+        }
+        .nav-btn.sub:hover { background: #a05a20; }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 40px 50px 40px;
+            background: white;
+        }
+        .main h1 {
+            font-size: 2.1rem;
+            color: #8a4a10;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #b06a20;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0e0c0;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-section h2 {
+            color: #8a4a10;
+            border-left: 6px solid #d48020;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .content-section h3 {
+            color: #a05a10;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f0e0c0;
+            padding-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .content-section h4 {
+            color: #b06a20;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .content-section h5 {
+            color: #c07a30;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+            font-weight: 600;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; }
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .content-section li { margin-bottom: 5px; }
+
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 22px 0;
+            font-size: 0.9rem;
+        }
+        .grade-table th {
+            background: #8a4a10;
+            color: white;
+            padding: 9px 10px;
+            text-align: left;
+            border: 1px solid #8a4a10;
+        }
+        .grade-table td {
+            border: 1px solid #e8d8c0;
+            padding: 9px 10px;
+            vertical-align: top;
+            background: #fdfaf5;
+        }
+        .grade-table tr:nth-child(even) td { background: #faf2e5; }
+
+        .badge {
+            display: inline-block;
+            background: #d48020;
+            color: white;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+
+        .surg-box, .clin-box, .note-box {
+            padding: 14px 22px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .surg-box { background: #fdf2e0; border-left: 5px solid #d48020; }
+        .clin-box { background: #faf5e8; border-left: 5px solid #e6a017; }
+        .note-box { background: #f5f0e5; border-left: 5px solid #b08a50; }
+
+        hr { margin: 30px 0; border: 0; height: 1px; background: #f0e0c0; }
+
+        /* ===== GALERÍA DE FOTOS ===== */
+        .photo-gallery {
+            margin: 20px 0 30px 0;
+            padding: 16px;
+            background: #fdf8f0;
+            border-radius: 12px;
+            border: 1px solid #f0e0c0;
+        }
+        .photo-gallery h4 {
+            color: #8a4a10;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .photo-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(138, 74, 16, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: 1px solid #f0e0c0;
+        }
+        .photo-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(138, 74, 16, 0.2);
+        }
+        .photo-item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+            background: #f5ede0;
+        }
+        .photo-caption {
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            color: #6a4a20;
+            text-align: center;
+            background: #fdf8f0;
+            font-weight: 500;
+        }
+        .photo-missing {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 140px;
+            background: #f5ede0;
+            color: #b09070;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 10px;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .photo-missing .icon {
+            font-size: 2rem;
+        }
+
+        /* Modal lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(255, 184, 77, 0.3);
+        }
+        .lightbox .caption {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 20px;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
+            .main { padding: 20px; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
+
+        @media print {
+            .content-section { display: block !important; page-break-inside: avoid; }
+            .content-section * { display: block !important; visibility: visible !important; opacity: 1 !important; }
+            .surg-box, .clin-box, .note-box { break-inside: avoid; page-break-inside: avoid; }
+            .grade-table { break-inside: avoid; page-break-inside: avoid; }
+            .sidebar, .nav-group, .nav-btn, .lightbox { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>🔪 <span>Cirugía</span> Menor</h2>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Introducción</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+        <button class="nav-btn" data-target="generalidades">📖 Generalidades</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Punciones y Drenajes</div>
+        <button class="nav-btn" data-target="paracentesis">💧 Paracentesis</button>
+        <button class="nav-btn" data-target="pleurocentesis">🫁 Pleurocentesis</button>
+        <button class="nav-btn" data-target="toracostomia">🔧 Toracostomía por sonda</button>
+        <button class="nav-btn" data-target="seldinger">🩸 Técnica de Seldinger</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Disección y Exéresis</div>
+        <button class="nav-btn" data-target="diseccion-vena">🩸 Disección venosa (safena/tibial)</button>
+        <button class="nav-btn" data-target="lipoma">🔘 Lipoma</button>
+        <button class="nav-btn" data-target="abscesos">🦠 Abscesos de partes blandas</button>
+        <button class="nav-btn" data-target="quistes">🟡 Quistes sebáceos</button>
+        <button class="nav-btn" data-target="biopsia-adenopatias">🔬 Biopsia de adenopatías</button>
+        <button class="nav-btn" data-target="granulomas">⚠️ Granulomas por sutura</button>
+        <button class="nav-btn" data-target="reseca-bloque">🗡️ Resección en bloque (ántrax/tumores)</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Incisiones Abdominales</div>
+        <button class="nav-btn" data-target="inc-media">➖ Incisión media</button>
+        <button class="nav-btn" data-target="inc-paramediana">➖ Incisión paramediana</button>
+        <button class="nav-btn" data-target="inc-mcburney">➖ Incisión de McBurney</button>
+        <button class="nav-btn" data-target="inc-subcostal">➖ Incisión subcostal derecha</button>
+        <button class="nav-btn" data-target="inc-pfannenstiel">➖ Incisión de Pfannenstiel</button>
+        <button class="nav-btn" data-target="inc-kehr">➖ Incisión de Kehr</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Urología</div>
+        <button class="nav-btn" data-target="varicocele">🔵 Varicocele</button>
+        <button class="nav-btn" data-target="hidrocele">🔵 Hidrocele</button>
+        <button class="nav-btn" data-target="circuncision">🔵 Circuncisión</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Vascular y Tejidos</div>
+        <button class="nav-btn" data-target="fasciotomia">🩹 Fasciotomía (gangrena)</button>
+        <button class="nav-btn" data-target="colgajos">🎨 Colgajos</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Vía Aérea</div>
+        <button class="nav-btn" data-target="entubacion">🫁 Entubación endotraqueal</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Suturas</div>
+        <button class="nav-btn" data-target="suturas-piel">🧵 Puntos de sutura en piel</button>
+        <button class="nav-btn" data-target="suturas-intestinal">🧵 Puntos de sutura intestinal</button>
+    </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div class="main" id="mainContent">
+
+    <!-- ===== INICIO ===== -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>🔪 Cirugía Menor</h1>
+        <div class="subtitle">Técnicas quirúrgicas detalladas para procedimientos con anestesia local</div>
+
+        <p style="font-size:1.05rem; margin-bottom:16px;">Bienvenido al manual de <strong>Cirugía Menor</strong>. Esta aplicación reúne los procedimientos más frecuentes realizados en la consulta, sala de urgencias o quirófano ambulatorio bajo anestesia local.</p>
+
+        <div class="note-box">
+            <p><strong>📸 Sobre las fotos:</strong> Cada procedimiento cuenta con una galería de hasta 5 fotos que deberás colocar en la carpeta <code>recursos</code>. Los nombres deben seguir el formato <code>[nombre-procedimiento]-1.jpg</code>, <code>[nombre-procedimiento]-2.jpg</code>, etc.</p>
+        </div>
+
+        <h3>Contenido</h3>
+        <ul>
+            <li><strong>Punciones y drenajes:</strong> Paracentesis, pleurocentesis, toracostomía, Seldinger.</li>
+            <li><strong>Disección y exéresis:</strong> Disección venosa, lipoma, abscesos, quistes, biopsias, granulomas, resección en bloque.</li>
+            <li><strong>Incisiones abdominales:</strong> Media, paramediana, McBurney, subcostal, Pfannenstiel, Kehr.</li>
+            <li><strong>Urología:</strong> Varicocele, hidrocele, circuncisión.</li>
+            <li><strong>Vascular y tejidos:</strong> Fasciotomía, colgajos.</li>
+            <li><strong>Vía aérea:</strong> Entubación endotraqueal.</li>
+            <li><strong>Suturas:</strong> Puntos en piel y puntos intestinales.</li>
+        </ul>
+    </div>
+
+    <!-- ===== GENERALIDADES ===== -->
+    <div class="content-section" id="sec-generalidades">
+        <h2>📖 Generalidades de la Cirugía Menor</h2>
+
+        <h3>Definición</h3>
+        <p>La cirugía menor comprende procedimientos quirúrgicos sencillos, de corta duración, realizados generalmente bajo anestesia local, que no requieren ingreso hospitalario y que se practican sobre tejidos superficiales o cavidades accesibles.</p>
+
+        <h3>Principios fundamentales</h3>
+        <ul>
+            <li><strong>Asepsia y antisepsia:</strong> Lavado quirúrgico de manos, guantes estériles, campos estériles, antisepsia de la piel con povidona yodada o clorhexidina.</li>
+            <li><strong>Anestesia local:</strong> Lidocaína al 1% o 2% sin/con epinefrina. Dosis máxima: 7 mg/kg sin epinefrina, 4 mg/kg con epinefrina.</li>
+            <li><strong>Instrumental básico:</strong> Mango de bisturí #3 con hoja #15, pinzas de Adson con y sin dientes, tijeras de Metzenbaum y Mayo, porta-agujas, separadores de Farabeuf, gasas estériles.</li>
+            <li><strong>Hemostasia:</strong> Pinzas hemostáticas, electrocoagulación, ligaduras.</li>
+            <li><strong>Sutura:</strong> Seda 3-0/4-0, Nylon 3-0/4-0, Vicryl 3-0/4-0 según el caso.</li>
+            <li><strong>Documentación:</strong> Consentimiento informado, nota operatoria completa.</li>
+        </ul>
+
+        <h3>Contraindicaciones relativas</h3>
+        <ul>
+            <li>Infección activa en el sitio quirúrgico.</li>
+            <li>Coagulopatías no corregidas.</li>
+            <li>Alergia a anestésicos locales.</li>
+            <li>Paciente no colaborador.</li>
+            <li>Lesiones sospechosas de malignidad que requieran estudio oncológico.</li>
+        </ul>
+
+        <div class="note-box">
+            <p><strong>Regla de oro:</strong> "Si no puedes ver, no puedes curar". La exposición adecuada es esencial para una cirugía segura.</p>
+        </div>
+    </div>
+
+    <!-- ===== PARACENTESIS ===== -->
+    <div class="content-section" id="sec-paracentesis">
+        <h2>💧 Paracentesis (Punción Abdominal)</h2>
+
+        <h3>Definición</h3>
+        <p>Procedimiento que consiste en la punción de la cavidad peritoneal para extraer líquido ascítico con fines diagnósticos o terapéuticos.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Diagnósticas:</strong> Ascitis de causa desconocida, sospecha de peritonitis bacteriana espontánea, estudio citológico (carcinomatosis), estudio bioquímico.</li>
+            <li><strong>Terapéuticas:</strong> Ascitis a tensión con compromiso respiratorio, ascitis refractaria, instalación de diálisis peritoneal.</li>
+        </ul>
+
+        <h3>Contraindicaciones</h3>
+        <ul>
+            <li>Coagulopatía severa (INR >2, plaquetas <50,000).</li>
+            <li>Infección de la pared abdominal en el sitio de punción.</li>
+            <li>Íleo paralítico o distensión intestinal.</li>
+            <li>Embarazo (relativa; usar sitio alternativo).</li>
+            <li>Cicatrices quirúrgicas previas (riesgo de lesión intestinal).</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes estériles, campos estériles, gasas.</li>
+            <li>Solución antiséptica (povidona yodada o clorhexidina).</li>
+            <li>Lidocaína al 1% o 2% sin epinefrina.</li>
+            <li>Aguja 22G o 25G para anestesia.</li>
+            <li>Aguja 18G o catéter 14-16G para punción.</li>
+            <li>Jeringa de 20 ml y de 50 ml.</li>
+            <li>Tubos estériles para muestras (bioquímica, citología, cultivo).</li>
+            <li>Sistema de recolección (bolsa o frasco) para paracentesis terapéutica.</li>
+            <li>Apósito estéril.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Paciente en decúbito supino, semisentado a 30-45°, con la vejiga vacía (sonda vesical o micción previa).</li>
+                <li><strong>Selección del sitio:</strong>
+                    <ul>
+                        <li><strong>Cuadrante inferior izquierdo:</strong> 2-3 cm por dentro y arriba de la espina ilíaca anterosuperior (sitio de elección).</li>
+                        <li><strong>Línea media infraumbilical:</strong> 2-3 cm por debajo del ombligo (evitando cicatrices).</li>
+                    </ul>
+                </li>
+                <li><strong>Antisepsia:</strong> Limpieza amplia con solución antiséptica en círculos concéntricos.</li>
+                <li><strong>Anestesia local:</strong> Infiltración de piel, tejido subcutáneo y peritoneo parietal con lidocaína al 1% (5-10 ml).</li>
+                <li><strong>Punción:</strong> Introducir la aguja o catéter perpendicular a la piel, aspirando suavemente. Se percibe un "chasquido" al atravesar el peritoneo.</li>
+                <li><strong>Aspiración:</strong> Extraer líquido lentamente. Para diagnóstico: 20-50 ml en tubos. Para terapéutico: conectar a sistema de recolección.</li>
+                <li><strong>Retiro:</strong> Retirar la aguja, comprimir el sitio 2-3 min, colocar apósito estéril.</li>
+            </ol>
+        </div>
+
+        <h3>Análisis del líquido ascítico</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Parámetro</th><th>Normal</th><th>Interpretación</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Recuento de neutrófilos</td><td>&lt;250/mm³</td><td>&gt;250 = peritonitis bacteriana espontánea</td></tr>
+                <tr><td>Proteínas totales</td><td>&lt;2.5 g/dL</td><td>Hipertensión portal vs. carcinomatosis</td></tr>
+                <tr><td>Gradiente albúmina</td><td>&lt;1.1 g/dL</td><td>Hipertensión portal</td></tr>
+                <tr><td>Glucosa</td><td>Similar a la sérica</td><td>Baja en TBC o carcinomatosis</td></tr>
+                <tr><td>LDH</td><td>&lt;200 UI/L</td><td>Alto en peritonitis</td></tr>
+                <tr><td>Citología</td><td>Negativa</td><td>Positiva en carcinomatosis</td></tr>
+                <tr><td>Cultivo</td><td>Negativo</td><td>Positivo en peritonitis</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia (lesión de vasos epigástricos).</li>
+            <li>Perforación intestinal.</li>
+            <li>Infección de la pared abdominal.</li>
+            <li>Fuga persistente de líquido ascítico.</li>
+            <li>Hipotensión (por extracción rápida de grandes volúmenes).</li>
+            <li>Hiponatremia, hipoalbuminemia (en paracentesis terapéutica masiva).</li>
+        </ul>
+
+        <!-- GALERÍA DE FOTOS -->
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-paracentesis"></div>
+        </div>
+    </div>
+
+    <!-- ===== PLEUROCENTESIS ===== -->
+    <div class="content-section" id="sec-pleurocentesis">
+        <h2>🫁 Pleurocentesis (Toracocentesis)</h2>
+
+        <h3>Definición</h3>
+        <p>Punción de la cavidad pleural para extraer líquido pleural con fines diagnósticos o terapéuticos.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li><strong>Diagnósticas:</strong> Derrame pleural de causa desconocida, estudio bioquímico, citológico, microbiológico.</li>
+            <li><strong>Terapéuticas:</strong> Derrame pleural a tensión con compromiso respiratorio, empiema, hemotórax.</li>
+        </ul>
+
+        <h3>Contraindicaciones</h3>
+        <ul>
+            <li>Coagulopatía severa.</li>
+            <li>Infección de la pared torácica en el sitio de punción.</li>
+            <li>Ventilación mecánica con PEEP alto (relativa).</li>
+            <li>Derrame muy pequeño (&lt;1 cm en decúbito lateral).</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes estériles, campos estériles, gasas.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Aguja 22G para anestesia, aguja 18G o catéter 16G para punción.</li>
+            <li>Jeringa de 20 ml y de 50 ml, llave de tres vías.</li>
+            <li>Tubos estériles para muestras.</li>
+            <li>Sistema de recolección para pleurocentesis terapéutica.</li>
+            <li>Apósito estéril.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Paciente sentado en el borde de la cama, con los brazos apoyados sobre una mesa o almohada. Alternativa: decúbito lateral con el lado afectado hacia arriba.</li>
+                <li><strong>Selección del sitio:</strong> Generalmente en el 7º-8º espacio intercostal, línea axilar posterior o media, sobre el borde superior de la costilla inferior (para evitar el paquete vasculonervioso intercostal). Confirmar con ecografía o radiografía.</li>
+                <li><strong>Antisepsia:</strong> Limpieza amplia en círculos concéntricos.</li>
+                <li><strong>Anestesia local:</strong> Infiltración de piel, tejido subcutáneo, músculo intercostal, periostio y pleura parietal (5-10 ml de lidocaína al 1%).</li>
+                <li><strong>Punción:</strong> Introducir la aguja o catéter lentamente sobre el borde superior de la costilla, aspirando suavemente. Se percibe un "chasquido" al atravesar la pleura parietal.</li>
+                <li><strong>Aspiración:</strong> Extraer líquido lentamente. Para diagnóstico: 20-50 ml. Para terapéutico: no extraer más de 1000-1500 ml por sesión (riesgo de edema pulmonar por reexpansión).</li>
+                <li><strong>Retiro:</strong> Retirar la aguja, comprimir, colocar apósito estéril. Radiografía de control post-procedimiento.</li>
+            </ol>
+        </div>
+
+        <h3>Análisis del líquido pleural</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Parámetro</th><th>Transudado</th><th>Exudado</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Proteínas (g/dL)</td><td>&lt;3</td><td>&gt;3</td></tr>
+                <tr><td>LDH (UI/L)</td><td>&lt;200</td><td>&gt;200</td></tr>
+                <tr><td>Glucosa</td><td>Normal</td><td>Baja (&lt;60)</td></tr>
+                <tr><td>pH</td><td>&gt;7.30</td><td>&lt;7.30</td></tr>
+                <tr><td>Células</td><td>Escasas</td><td>Abundantes</td></tr>
+                <tr><td>Criterios de Light</td><td>No cumple</td><td>Cumple: proteínas/LDH ratio &gt;0.5</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Neumotórax (el más frecuente, especialmente si se punciona el pulmón).</li>
+            <li>Hemorragia (lesión de vasos intercostales).</li>
+            <li>Infección (empiema).</li>
+            <li>Edema pulmonar por reexpansión (si se extrae demasiado líquido).</li>
+            <li>Hipotensión o síncope.</li>
+            <li>Lesión hepática o esplénica (si el sitio es demasiado bajo).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-pleurocentesis"></div>
+        </div>
+    </div>
+
+    <!-- ===== TORACOSTOMIA ===== -->
+    <div class="content-section" id="sec-toracostomia">
+        <h2>🔧 Toracostomía por Sonda (Pleurostomía)</h2>
+
+        <h3>Definición</h3>
+        <p>Inserción de un tubo de drenaje en la cavidad pleural para evacuar aire (neumotórax) o líquido (hemotórax, empiema).</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Neumotórax a tensión (después de la descompresión con aguja).</li>
+            <li>Neumotórax abierto.</li>
+            <li>Hemotórax.</li>
+            <li>Empiema pleural.</li>
+            <li>Quilotórax.</li>
+            <li>Postoperatorio de cirugía torácica.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes estériles, campos estériles, gasas.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Tubo de tórax 28-36 Fr.</li>
+            <li>Bisturí #10 o #11.</li>
+            <li>Pinza de Kelly curva, pinza de Pean.</li>
+            <li>Sistema de sello de agua y aspiración.</li>
+            <li>Punto de fijación (seda 2/0) y gasa vaselinada.</li>
+            <li>Apósito estéril.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Paciente en decúbito supino, con el brazo ipsilateral elevado y flexionado. Alternativa: semisentado.</li>
+                <li><strong>Selección del sitio:</strong>
+                    <ul>
+                        <li><strong>Neumotórax:</strong> 2º-3er EIC, línea medioclavicular, sobre el borde superior de la costilla inferior.</li>
+                        <li><strong>Hemotórax/empiema:</strong> 5º-6º EIC, línea axilar media o anterior.</li>
+                    </ul>
+                </li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel, tejido subcutáneo, músculo intercostal, periostio y pleura parietal con lidocaína al 1% (10-15 ml).</li>
+                <li><strong>Incisión:</strong> Incisión transversa de 2-3 cm en el sitio seleccionado.</li>
+                <li><strong>Disección:</strong> Disección roma con pinza de Kelly curva, separando las fibras musculares, hasta la pleura parietal.</li>
+                <li><strong>Penetración pleural:</strong> Con la punta de la pinza cerrada, penetrar la pleura parietal con un movimiento controlado, evitando lesionar el pulmón.</li>
+                <li><strong>Exploración digital:</strong> Introducir el dedo en la cavidad pleural para confirmar la ausencia de adherencias y dirigir el tubo.</li>
+                <li><strong>Introducción del tubo:</strong> Fijar el tubo con una pinza y dirigirlo hacia el vértice (neumotórax) o hacia la base (hemotórax).</li>
+                <li><strong>Fijación:</strong> Suturar el tubo a la piel con un punto de seda 2/0 en "U" y anudar alrededor del tubo.</li>
+                <li><strong>Conexión:</strong> Conectar el tubo a un sistema de sello de agua con aspiración continua (-15 a -20 cm H₂O).</li>
+                <li><strong>Control radiológico:</strong> Radiografía de tórax para confirmar la posición y la reexpansión pulmonar.</li>
+            </ol>
+        </div>
+
+        <h3>Cuidados postoperatorios</h3>
+        <ul>
+            <li><strong>Control del débito:</strong> medir y registrar el volumen drenado.</li>
+            <li><strong>Control de fuga aérea:</strong> observar burbujeo en el sello de agua.</li>
+            <li><strong>Control del dolor:</strong> analgesia con AINEs o infiltración intercostal.</li>
+            <li><strong>Movilización precoz:</strong> evitar el decúbito prolongado.</li>
+            <li><strong>Kinesioterapia respiratoria:</strong> incentivo espirométrico.</li>
+        </ul>
+
+        <h3>Retiro del tubo</h3>
+        <ul>
+            <li>Sin fuga aérea (&lt;24h).</li>
+            <li>Débito &lt;100 ml/día.</li>
+            <li>Pulmón reexpandido en radiografía.</li>
+            <li>Técnica: pinzar el tubo, desconectar, retirar con un movimiento rápido y firme mientras el paciente realiza una espiración forzada o maniobra de Valsalva. Colocar apósito oclusivo.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-toracostomia"></div>
+        </div>
+    </div>
+
+    <!-- ===== SELDINGER ===== -->
+    <div class="content-section" id="sec-seldinger">
+        <h2>🩸 Técnica de Seldinger</h2>
+
+        <h3>Definición</h3>
+        <p>Técnica de acceso vascular percutáneo que utiliza una guía metálica flexible para la introducción de catéteres en vasos sanguíneos u otras cavidades.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Colocación de catéteres venosos centrales.</li>
+            <li>Cateterización arterial (para monitorización o angiografía).</li>
+            <li>Drenaje de colecciones (abscesos, quistes, pleural, pericárdico).</li>
+            <li>Nefrostomía, colecistostomía.</li>
+            <li>Colocación de catéteres de diálisis peritoneal o pleural.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes estériles, campos estériles, gasas.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Aguja de punción (18G o 20G).</li>
+            <li>Guía metálica flexible (de 0.035" o similar).</li>
+            <li>Dilatador.</li>
+            <li>Catéter (según el procedimiento).</li>
+            <li>Bisturí #11.</li>
+            <li>Punto de fijación (seda 2/0) y apósito estéril.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según el sitio de acceso (Trendelenburg para vena yugular, decúbito supino para femoral, etc.).</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia y anestesia local (lidocaína al 1%).</li>
+                <li><strong>Punción inicial:</strong> Introducir la aguja con el bisel hacia arriba, aspirando suavemente, hasta obtener reflujo de sangre (o líquido).</li>
+                <li><strong>Introducción de la guía:</strong> Retirar la jeringa, introducir la guía metálica flexible a través de la aguja. La guía debe avanzar sin resistencia; si hay resistencia, retirar y reposicionar la aguja.</li>
+                <li><strong>Retiro de la aguja:</strong> Retirar la aguja dejando la guía en su lugar. Presionar el sitio para evitar sangrado.</li>
+                <li><strong>Dilatación:</strong> Realizar una pequeña incisión en la piel con el bisturí #11 a lo largo de la guía. Introducir el dilatador sobre la guía y dilatar el trayecto.</li>
+                <li><strong>Introducción del catéter:</strong> Retirar el dilatador e introducir el catéter sobre la guía hasta la profundidad deseada.</li>
+                <li><strong>Retiro de la guía:</strong> Retirar la guía, comprobar el reflujo de sangre (o líquido), y fijar el catéter a la piel con un punto de seda 2/0.</li>
+                <li><strong>Conexión:</strong> Conectar el catéter a la vía correspondiente (monitor, drenaje, etc.).</li>
+                <li><strong>Control:</strong> Radiografía de control si es necesario.</li>
+            </ol>
+        </div>
+
+        <h3>Accesos venosos más frecuentes</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Vena</th><th>Referencias anatómicas</th><th>Complicaciones</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Yugular interna</strong></td><td>Entre los dos haces del ECM, a nivel del cartílago cricoides, lateral a la arteria carótida.</td><td>Punción arterial, neumotórax, hematoma.</td></tr>
+                <tr><td><strong>Subclavia</strong></td><td>Por debajo del tercio medio de la clavícula, en el punto de unión del tercio interno y medio.</td><td>Neumotórax, punción arterial, trombosis.</td></tr>
+                <tr><td><strong>Femoral</strong></td><td>Por dentro de la arteria femoral, 1 cm por debajo del ligamento inguinal.</td><td>Punción arterial, hematoma, infección.</td></tr>
+                <tr><td><strong>Basílica (PICC)</strong></td><td>En el brazo, en el surco bicipital interno.</td><td>Flebitis, trombosis.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia y hematoma.</li>
+            <li>Neumotórax (subclavia, yugular).</li>
+            <li>Punción arterial.</li>
+            <li>Infección del sitio de inserción.</li>
+            <li>Trombosis venosa.</li>
+            <li>Embolia aérea.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-seldinger"></div>
+        </div>
+    </div>
+
+    <!-- ===== DISECCIÓN VENOSA ===== -->
+    <div class="content-section" id="sec-diseccion-vena">
+        <h2>🩸 Disección Venosa (Safena y Tibial)</h2>
+
+        <h3>Definición</h3>
+        <p>Exposición quirúrgica de una vena para su canulación, ligadura, reparación o extracción (bypass, injerto, etc.).</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Acceso venoso para bypass coronario o vascular periférico.</li>
+            <li>Canulación venosa para diálisis.</li>
+            <li>Reparación de lesiones venosas.</li>
+            <li>Ligadura de venas varicosas.</li>
+            <li>Extracción de vena para injerto.</li>
+        </ul>
+
+        <h3>Vena Safena Magna</h3>
+        <div class="surg-box">
+            <h4>Localización y referencias</h4>
+            <ul>
+                <li>Asciende por la cara medial de la pierna y el muslo.</li>
+                <li>En el tobillo: 1-2 cm por delante y por encima del maléolo medial.</li>
+                <li>En la rodilla: por detrás y medial al cóndilo femoral medial.</li>
+                <li>En la ingle: desemboca en la vena femoral común, a 2-3 cm por debajo del ligamento inguinal.</li>
+            </ul>
+
+            <h4>Técnica de disección</h4>
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino, con la pierna en rotación externa y ligera flexión de la rodilla.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia y anestesia local (lidocaína al 1%).</li>
+                <li><strong>Incisión:</strong> Incisión longitudinal o transversa sobre el trayecto de la vena, según la longitud necesaria.</li>
+                <li><strong>Disección:</strong> Disección roma con tijeras de Metzenbaum, identificando la vena (color azulado, pared delgada, no pulsátil).</li>
+                <li><strong>Aislamiento:</strong> Pasar una cinta de Rumel o una pinza por debajo de la vena, con cuidado de no lesionar la vena safena ni sus colaterales.</li>
+                <li><strong>Ligadura o canulación:</strong> Según el objetivo (ligadura con seda 2/0 o canulación con catéter).</li>
+                <li><strong>Cierre:</strong> Cierre por planos con Vicryl 2/0 y piel con Nylon 3/0.</li>
+            </ol>
+        </div>
+
+        <h3>Vena Tibial Anterior</h3>
+        <div class="surg-box">
+            <h4>Localización y referencias</h4>
+            <ul>
+                <li>Asciende por la cara anterior de la pierna.</li>
+                <li>En el tobillo: por delante del maléolo medial, medial a la arteria tibial anterior.</li>
+                <li>Trayecto: entre el tibial anterior y el extensor largo del dedo gordo.</li>
+            </ul>
+
+            <h4>Técnica de disección</h4>
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino, con la pierna extendida.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia y anestesia local.</li>
+                <li><strong>Incisión:</strong> Incisión longitudinal sobre el trayecto de la vena, con cuidado de no lesionar la arteria tibial anterior.</li>
+                <li><strong>Disección:</strong> Identificar la vena por su color azulado y pared delgada. Usar disección roma con tijeras de Metzenbaum.</li>
+                <li><strong>Aislamiento:</strong> Pasar una cinta de Rumel por debajo de la vena.</li>
+                <li><strong>Canulación o ligadura:</strong> Según el objetivo.</li>
+                <li><strong>Cierre:</strong> Por planos con Vicryl 2/0 y piel con Nylon 3/0.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia.</li>
+            <li>Lesión de la vena (desgarro).</li>
+            <li>Lesión del nervio safeno (safena magna).</li>
+            <li>Lesión de la arteria tibial anterior (tibial anterior).</li>
+            <li>Infección de la herida.</li>
+            <li>Trombosis venosa.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-diseccion-vena"></div>
+        </div>
+    </div>
+
+    <!-- ===== LIPOMA ===== -->
+    <div class="content-section" id="sec-lipoma">
+        <h2>🔘 Lipoma</h2>
+
+        <h3>Definición</h3>
+        <p>Tumor benigno del tejido adiposo subcutáneo, de crecimiento lento, generalmente asintomático.</p>
+
+        <h3>Indicaciones quirúrgicas</h3>
+        <ul>
+            <li>Lipoma sintomático (dolor, compresión).</li>
+            <li>Crecimiento rápido o cambio de características.</li>
+            <li>Sospecha de malignidad (liposarcoma).</li>
+            <li>Razones estéticas.</li>
+            <li>Lipoma &gt;5 cm o de localización profunda.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Bisturí #15 con mango #3.</li>
+            <li>Pinzas de Adson con y sin dientes.</li>
+            <li>Tijeras de Metzenbaum.</li>
+            <li>Porta-agujas, seda 3-0/4-0, Nylon 3-0.</li>
+            <li>Gasas estériles.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización del lipoma.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel y tejido subcutáneo con lidocaína al 1% (5-10 ml).</li>
+                <li><strong>Incisión:</strong> Incisión lineal sobre el lipoma, siguiendo las líneas de tensión de la piel. Puede ser transversa o longitudinal según la localización.</li>
+                <li><strong>Disección:</strong> Disección roma con tijeras de Metzenbaum, identificando la cápsula del lipoma. El lipoma se separa fácilmente del tejido circundante.</li>
+                <li><strong>Extirpación:</strong> Traccionar del lipoma con una pinza de Adson con dientes y liberar las adherencias con tijeras o disección roma.</li>
+                <li><strong>Hemostasia:</strong> Pinzar y ligar los vasos sangrantes con Vicryl 3-0 o electrocoagular.</li>
+                <li><strong>Verificación:</strong> Comprobar que no quedan restos de cápsula.</li>
+                <li><strong>Cierre:</strong> Cierre del tejido subcutáneo con Vicryl 3-0 y piel con Nylon 3-0 o seda 3-0.</li>
+                <li><strong>Apósito:</strong> Compresivo durante 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hematoma.</li>
+            <li>Seroma.</li>
+            <li>Infección de la herida.</li>
+            <li>Recidiva (si no se extirpa la cápsula completa).</li>
+            <li>Lesión de estructuras vecinas (nervios, vasos).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-lipoma"></div>
+        </div>
+    </div>
+
+    <!-- ===== ABSCESOS ===== -->
+    <div class="content-section" id="sec-abscesos">
+        <h2>🦠 Abscesos de Partes Blandas</h2>
+
+        <h3>Definición</h3>
+        <p>Colección de pus en el tejido subcutáneo o profundo, secundaria a infección bacteriana.</p>
+
+        <h3>Indicaciones de drenaje</h3>
+        <ul>
+            <li>Absceso mayor de 1-2 cm.</li>
+            <li>Signos de flogosis (rubor, calor, dolor, tumor).</li>
+            <li>Fiebre o adenopatías regionales.</li>
+            <li>Falta de respuesta a antibióticos.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2% (o anestesia general si es muy grande).</li>
+            <li>Bisturí #11 o #15.</li>
+            <li>Pinza de Kelly curva.</li>
+            <li>Gasas estériles, solución salina.</li>
+            <li>Drenaje (Penrose o sonda de Nélaton).</li>
+            <li>Antibióticos según cultivo.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización del absceso.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia. Infiltración de la piel y tejido subcutáneo, evitando inyectar en el absceso (riesgo de diseminación).</li>
+                <li><strong>Incisión:</strong> Incisión amplia sobre la zona de mayor fluctuación, siguiendo las líneas de tensión de la piel.</li>
+                <li><strong>Drenaje:</strong> Evacuar el pus, tomar muestra para cultivo. Romper las loculaciones con el dedo o pinza de Kelly.</li>
+                <li><strong>Lavado:</strong> Lavado de la cavidad con solución salina tibia.</li>
+                <li><strong>Colocación de drenaje:</strong> Colocar un drenaje de Penrose o una sonda de Nélaton en la cavidad para permitir la salida continua de secreciones.</li>
+                <li><strong>Cierre:</strong> No cerrar completamente la herida (dejar drenar). Cierre parcial con puntos separados si es necesario.</li>
+                <li><strong>Apósito:</strong> Apósito estéril, cambiar cada 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Antibióticos</h3>
+        <ul>
+            <li><strong>Comunitarios:</strong> Cefazolina 1g IV o Amoxicilina/Clavulánico 875/125 mg VO c/12h.</li>
+            <li><strong>Nosocomiales:</strong> Piperacilina/Tazobactam 4.5g IV c/6h o Vancomicina si sospecha de MRSA.</li>
+            <li><strong>Duración:</strong> 5-7 días (según evolución).</li>
+        </ul>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Diseminación de la infección (si se manipula antes de tiempo).</li>
+            <li>Bacteriemia, sepsis.</li>
+            <li>Celulitis extensa.</li>
+            <li>Recidiva (si no se drena completamente).</li>
+            <li>Fístula (si el absceso está en relación con una víscera).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-abscesos"></div>
+        </div>
+    </div>
+
+    <!-- ===== QUISTES SEBÁCEOS ===== -->
+    <div class="content-section" id="sec-quistes">
+        <h2>🟡 Quistes Sebáceos</h2>
+
+        <h3>Definición</h3>
+        <p>Tumor benigno de la glándula sebácea, de contenido caseoso, generalmente localizado en cuero cabelludo, cara, cuello y espalda.</p>
+
+        <h3>Indicaciones quirúrgicas</h3>
+        <ul>
+            <li>Quiste sintomático (dolor, inflamación).</li>
+            <li>Infección recurrente.</li>
+            <li>Razones estéticas.</li>
+            <li>Crecimiento rápido o cambio de características.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Bisturí #15 con mango #3.</li>
+            <li>Pinzas de Adson con y sin dientes.</li>
+            <li>Tijeras de Metzenbaum.</li>
+            <li>Porta-agujas, Nylon 3-0/4-0.</li>
+            <li>Gasas estériles.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización del quiste.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel y tejido subcutáneo con lidocaína al 1% (5-10 ml).</li>
+                <li><strong>Incisión:</strong> Incisión elíptica sobre el quiste, incluyendo el orificio (comodón sebáceo).</li>
+                <li><strong>Disección:</strong> Disección roma con tijeras de Metzenbaum, identificando la cápsula del quiste.</li>
+                <li><strong>Extirpación:</strong> Traccionar del quiste con una pinza y liberar las adherencias. Evitar romper la cápsula (riesgo de recidiva).</li>
+                <li><strong>Hemostasia:</strong> Pinzar y ligar los vasos sangrantes con Vicryl 3-0 o electrocoagular.</li>
+                <li><strong>Cierre:</strong> Cierre del tejido subcutáneo con Vicryl 3-0 y piel con Nylon 3-0 o seda 3-0.</li>
+                <li><strong>Apósito:</strong> Compresivo durante 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hematoma.</li>
+            <li>Infección de la herida.</li>
+            <li>Recidiva (si no se extirpa la cápsula completa).</li>
+            <li>Lesión de estructuras vecinas (nervios, vasos).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-quistes"></div>
+        </div>
+    </div>
+
+    <!-- ===== BIOPSIA DE ADENOPATÍAS ===== -->
+    <div class="content-section" id="sec-biopsia-adenopatias">
+        <h2>🔬 Biopsia de Adenopatías</h2>
+
+        <h3>Definición</h3>
+        <p>Extirpación total o parcial de un ganglio linfático para estudio histopatológico, con fines diagnósticos.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Adenopatía de causa desconocida.</li>
+            <li>Sospecha de neoplasia (linfoma, metástasis).</li>
+            <li>Infección (tuberculosis, micobacterias atípicas).</li>
+            <li>Adenopatía persistente &gt;4 semanas sin respuesta a antibióticos.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Bisturí #15 con mango #3.</li>
+            <li>Pinzas de Adson con y sin dientes.</li>
+            <li>Tijeras de Metzenbaum.</li>
+            <li>Porta-agujas, seda 3-0, Nylon 3-0.</li>
+            <li>Frasco con formol para muestra.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización de la adenopatía.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel y tejido subcutáneo con lidocaína al 1% (5-10 ml).</li>
+                <li><strong>Incisión:</strong> Incisión lineal sobre la adenopatía, siguiendo las líneas de tensión de la piel.</li>
+                <li><strong>Disección:</strong> Disección roma y cortante con tijeras de Metzenbaum, identificando la cápsula del ganglio.</li>
+                <li><strong>Extirpación:</strong> Liberar el ganglio de las estructuras vecinas (vasos, nervios). Extirparlo en bloque, evitando romper la cápsula.</li>
+                <li><strong>Envío a anatomía patológica:</strong> Colocar la muestra en formol al 10%.</li>
+                <li><strong>Hemostasia:</strong> Pinzar y ligar los vasos sangrantes.</li>
+                <li><strong>Cierre:</strong> Cierre del tejido subcutáneo con Vicryl 3-0 y piel con Nylon 3-0.</li>
+                <li><strong>Apósito:</strong> Compresivo durante 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia.</li>
+            <li>Infección de la herida.</li>
+            <li>Lesión de estructuras vecinas (nervios, vasos).</li>
+            <li>Fístula linfática.</li>
+            <li>Diseminación tumoral (si se manipula demasiado).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-biopsia-adenopatias"></div>
+        </div>
+    </div>
+
+    <!-- ===== GRANULOMAS ===== -->
+    <div class="content-section" id="sec-granulomas">
+        <h2>⚠️ Granulomas de Heridas por Suturas</h2>
+
+        <h3>Definición</h3>
+        <p>Reacción inflamatoria crónica del tejido a un cuerpo extraño (hilo de sutura, generalmente seda o material no absorbible).</p>
+
+        <h3>Cuadro clínico</h3>
+        <ul>
+            <li>Nódulo indurado en el sitio de la sutura.</li>
+            <li>Dolor local, eritema.</li>
+            <li>Supuración crónica intermitente.</li>
+            <li>Puede aparecer meses o años después de la cirugía.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2%.</li>
+            <li>Bisturí #11 o #15.</li>
+            <li>Pinzas de Adson con dientes.</li>
+            <li>Tijeras de Metzenbaum.</li>
+            <li>Porta-agujas, Nylon 3-0.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización del granuloma.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel y tejido subcutáneo.</li>
+                <li><strong>Incisión:</strong> Incisión lineal sobre el granuloma.</li>
+                <li><strong>Disección:</strong> Disección roma y cortante hasta identificar el hilo de sutura.</li>
+                <li><strong>Extracción del cuerpo extraño:</strong> Retirar el hilo de sutura con pinza de Adson. A veces es necesario resecar el trayecto fistuloso.</li>
+                <li><strong>Lavado:</strong> Lavado de la cavidad con solución salina.</li>
+                <li><strong>Cierre:</strong> Cierre por planos con Vicryl 3-0 y piel con Nylon 3-0. Si hay infección, dejar drenar.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Recidiva (si no se extirpa todo el material de sutura).</li>
+            <li>Infección de la herida.</li>
+            <li>Fístula persistente.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-granulomas"></div>
+        </div>
+    </div>
+
+    <!-- ===== RESECCION EN BLOQUE ===== -->
+    <div class="content-section" id="sec-reseca-bloque">
+        <h2>🗡️ Resección en Bloque (Ántrax y Tumores)</h2>
+
+        <h3>Definición</h3>
+        <p>Extirpación quirúrgica de una lesión (ántrax, tumor benigno o maligno) junto con un margen de tejido sano circundante, en un solo bloque.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Ántrax (infección necrotizante del tejido subcutáneo).</li>
+            <li>Tumores benignos de partes blandas.</li>
+            <li>Tumores malignos de piel o subcutáneos (con margen oncológico).</li>
+            <li>Lesiones con sospecha de malignidad.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Guantes y campos estériles.</li>
+            <li>Solución antiséptica.</li>
+            <li>Lidocaína al 1% o 2% (o anestesia general si es extenso).</li>
+            <li>Bisturí #10 o #15.</li>
+            <li>Pinzas de Adson con y sin dientes.</li>
+            <li>Tijeras de Metzenbaum y Mayo.</li>
+            <li>Porta-agujas, seda 2-0/3-0, Vicryl 2-0/3-0, Nylon 3-0.</li>
+            <li>Drenaje (Penrose o Jackson-Pratt).</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización de la lesión.</li>
+                <li><strong>Antisepsia y anestesia:</strong> Limpieza amplia, infiltración de piel y tejido subcutáneo con lidocaína al 1% (10-20 ml). En lesiones extensas, considerar anestesia general.</li>
+                <li><strong>Marcación del margen:</strong> Marcar con rotulador el borde de la lesión y un margen de seguridad de 1-2 cm (o más en casos oncológicos).</li>
+                <li><strong>Incisión:</strong> Incisión elíptica alrededor del margen marcado, en dirección de las líneas de tensión de la piel.</li>
+                <li><strong>Disección:</strong> Disección en bloque de la lesión con su margen, en un solo plano, con tijeras de Mayo o bisturí.</li>
+                <li><strong>Hemostasia:</strong> Pinzar y ligar los vasos sangrantes con Vicryl 2-0 o electrocoagular.</li>
+                <li><strong>Envío a anatomía patológica:</strong> Enviar la pieza en formol al 10% (marcar los bordes con tinta china).</li>
+                <li><strong>Cierre:</strong> Cierre por planos con Vicryl 2-0/3-0 y piel con Nylon 3-0 o seda 3-0. En lesiones extensas, puede requerir colgajo o injerto.</li>
+                <li><strong>Drenaje:</strong> Colocar drenaje si hay espacio muerto.</li>
+                <li><strong>Apósito:</strong> Compresivo durante 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia.</li>
+            <li>Infección de la herida.</li>
+            <li>Dehiscencia.</li>
+            <li>Recidiva (si el margen es insuficiente).</li>
+            <li>Lesión de estructuras vecinas.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-reseca-bloque"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN MEDIA ===== -->
+    <div class="content-section" id="sec-inc-media">
+        <h2>➖ Incisión Media (Laparotomía Media)</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión vertical en la línea media del abdomen, desde el apéndice xifoides hasta la sínfisis del pubis (o parcial).</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Laparotomía exploradora.</li>
+            <li>Trauma abdominal.</li>
+            <li>Cirugía gástrica, intestinal, hepática, etc.</li>
+            <li>Acceso a ambos lados de la cavidad abdominal.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino, con los brazos extendidos.</li>
+                <li><strong>Antisepsia y campos estériles:</strong> Limpieza amplia desde el xifoides hasta los muslos.</li>
+                <li><strong>Incisión:</strong> Incisión vertical en la línea media, desde el apéndice xifoides hasta la sínfisis del pubis (o según la necesidad).</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Línea alba (aponeurosis).</li>
+                        <li>Peritoneo parietal.</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal:</strong> Pinzar el peritoneo con dos pinzas de Kelly, levantar y cortar con tijeras, cuidando de no lesionar el intestino.</li>
+                <li><strong>Exploración:</strong> Realizar la cirugía correspondiente.</li>
+                <li><strong>Cierre:</strong> Cierre por planos:
+                    <ul>
+                        <li>Peritoneo con Vicryl 2/0 o 3/0 (sutura continua).</li>
+                        <li>Aponeurosis con PDS 1 o Vicryl 1 (sutura continua o puntos separados).</li>
+                        <li>Tejido subcutáneo con Vicryl 3/0.</li>
+                        <li>Piel con Nylon 3/0 o grapas.</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Acceso amplio a toda la cavidad abdominal, rápida, versátil.</li>
+            <li><strong>Desventajas:</strong> Mayor riesgo de eventración, peor resultado estético.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-media"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN PARAMEDIANA ===== -->
+    <div class="content-section" id="sec-inc-paramediana">
+        <h2>➖ Incisión Paramediana</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión vertical paralela a la línea media, 2-3 cm lateral a ella, sobre el borde del músculo recto anterior.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Cirugía gástrica, biliar, intestinal.</li>
+            <li>Cuando se necesita un abordaje lateral a la línea media.</li>
+            <li>Alternativa a la incisión media.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión vertical 2-3 cm lateral a la línea media, sobre el borde del músculo recto.</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Vaina anterior del recto.</li>
+                        <li>Músculo recto (separar las fibras).</li>
+                        <li>Vaina posterior del recto.</li>
+                        <li>Peritoneo parietal.</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal.</strong></li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Menor riesgo de eventración que la incisión media (el músculo recto protege).</li>
+            <li><strong>Desventajas:</strong> Menor exposición que la incisión media.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-paramediana"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN MCBURNEY ===== -->
+    <div class="content-section" id="sec-inc-mcburney">
+        <h2>➖ Incisión de McBurney</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión oblicua en la fosa ilíaca derecha, sobre el punto de McBurney, utilizada clásicamente para la apendicectomía.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Apendicectomía.</li>
+            <li>Drenaje de abscesos apendiculares.</li>
+            <li>Cirugía del ciego.</li>
+        </ul>
+
+        <h3>Punto de McBurney</h3>
+        <p>Punto situado en la unión del tercio externo con los dos tercios internos de la línea que une la espina ilíaca anterosuperior derecha con el ombligo.</p>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión oblicua de 5-7 cm sobre el punto de McBurney, paralela a la línea espino-umbilical.</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Aponeurosis del oblicuo mayor (en dirección de sus fibras).</li>
+                        <li>Músculo oblicuo menor (en dirección de sus fibras).</li>
+                        <li>Músculo transverso (en dirección de sus fibras).</li>
+                        <li>Peritoneo parietal.</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal.</strong></li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Menor dolor postoperatorio, menor riesgo de eventración, mejor resultado estético.</li>
+            <li><strong>Desventajas:</strong> Exposición limitada, difícil de extender si se necesita más campo.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-mcburney"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN SUBCOSTAL ===== -->
+    <div class="content-section" id="sec-inc-subcostal">
+        <h2>➖ Incisión Subcostal Derecha (Kocher)</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión oblicua paralela al borde costal derecho, utilizada para cirugía biliar, hepática y duodenal.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Colecistectomía abierta.</li>
+            <li>Cirugía de vías biliares.</li>
+            <li>Cirugía hepática.</li>
+            <li>Cirugía duodenal.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino, con el brazo derecho elevado.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión oblicua de 10-15 cm, 2-3 cm por debajo y paralela al borde costal derecho, desde la línea media hasta la línea axilar anterior.</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Aponeurosis del oblicuo mayor.</li>
+                        <li>Músculo oblicuo menor.</li>
+                        <li>Músculo transverso.</li>
+                        <li>Peritoneo parietal.</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal.</strong></li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Excelente exposición de la vía biliar y el hígado.</li>
+            <li><strong>Desventajas:</strong> Mayor dolor postoperatorio, riesgo de lesión del nervio intercostal.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-subcostal"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN PFANNENSTIEL ===== -->
+    <div class="content-section" id="sec-inc-pfannenstiel">
+        <h2>➖ Incisión de Pfannenstiel</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión transversa suprapúbica, utilizada en cirugía ginecológica y obstétrica.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Cesárea.</li>
+            <li>Histerectomía abdominal.</li>
+            <li>Cirugía de ovario y trompas.</li>
+            <li>Cirugía urológica (vejiga, próstata).</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión transversa de 10-15 cm, 2-3 cm por encima de la sínfisis del pubis, siguiendo las líneas de tensión de la piel.</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Aponeurosis (incisión transversa).</li>
+                        <li>Músculos rectos (separar de la línea media).</li>
+                        <li>Peritoneo parietal (incisión vertical).</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal.</strong></li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Excelente resultado estético, menor dolor postoperatorio, menor riesgo de eventración.</li>
+            <li><strong>Desventajas:</strong> Exposición limitada, difícil de extender.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-pfannenstiel"></div>
+        </div>
+    </div>
+
+    <!-- ===== INCISIÓN DE KEHR ===== -->
+    <div class="content-section" id="sec-inc-kehr">
+        <h2>➖ Incisión de Kehr</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión subcostal bilateral (en forma de "V" o "chevron"), utilizada para cirugía biliar compleja, hepática o pancreática.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Cirugía biliar compleja (colangiocarcinoma, estenosis).</li>
+            <li>Cirugía hepática (resección).</li>
+            <li>Cirugía pancreática (Whipple).</li>
+            <li>Trauma hepático.</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino, con los brazos extendidos.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión subcostal bilateral, desde la línea axilar anterior derecha hasta la línea axilar anterior izquierda, pasando 2-3 cm por debajo del apéndice xifoides.</li>
+                <li><strong>Disección por planos:</strong>
+                    <ul>
+                        <li>Piel y tejido subcutáneo.</li>
+                        <li>Aponeurosis y músculos.</li>
+                        <li>Peritoneo parietal.</li>
+                    </ul>
+                </li>
+                <li><strong>Apertura peritoneal.</strong></li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Ventajas y desventajas</h3>
+        <ul>
+            <li><strong>Ventajas:</strong> Excelente exposición del hígado, vías biliares y páncreas.</li>
+            <li><strong>Desventajas:</strong> Mayor dolor postoperatorio, riesgo de lesión de nervios intercostales.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-inc-kehr"></div>
+        </div>
+    </div>
+
+    <!-- ===== VARICOCELE ===== -->
+    <div class="content-section" id="sec-varicocele">
+        <h2>🔵 Varicocele</h2>
+
+        <h3>Definición</h3>
+        <p>Dilatación varicosa del plexo venoso pampiniforme, más frecuente del lado izquierdo.</p>
+
+        <h3>Indicaciones quirúrgicas</h3>
+        <ul>
+            <li>Dolor testicular.</li>
+            <li>Infertilidad (oligospermia, astenospermia).</li>
+            <li>Atrofia testicular.</li>
+            <li>Varicocele grado III o sintomático.</li>
+        </ul>
+
+        <h3>Técnica paso a paso (Varicocelectomía)</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión inguinal oblicua de 3-4 cm, paralela al ligamento inguinal.</li>
+                <li><strong>Disección:</strong> Identificar el cordón espermático y aislarlo con una cinta de Rumel.</li>
+                <li><strong>Identificación de las venas:</strong> Disectar las venas del plexo pampiniforme, preservando la arteria testicular y el conducto deferente.</li>
+                <li><strong>Ligadura:</strong> Ligar las venas varicosas con seda 2/0 o 3/0. Se pueden ligar todas las venas excepto una (para preservar el drenaje).</li>
+                <li><strong>Hemostasia:</strong> Revisar la hemostasia.</li>
+                <li><strong>Cierre:</strong> Cierre por planos con Vicryl 2/0 y piel con Nylon 3/0.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hematoma.</li>
+            <li>Infección de la herida.</li>
+            <li>Lesión de la arteria testicular (atrofia testicular).</li>
+            <li>Lesión del conducto deferente.</li>
+            <li>Hidrocele postoperatorio.</li>
+            <li>Recidiva.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-varicocele"></div>
+        </div>
+    </div>
+
+    <!-- ===== HIDROCELE ===== -->
+    <div class="content-section" id="sec-hidrocele">
+        <h2>🔵 Hidrocele</h2>
+
+        <h3>Definición</h3>
+        <p>Acumulación de líquido en la túnica vaginal del testículo.</p>
+
+        <h3>Indicaciones quirúrgicas</h3>
+        <ul>
+            <li>Hidrocele sintomático (dolor, pesadez).</li>
+            <li>Hidrocele grande que interfiere con la vida diaria.</li>
+            <li>Hidrocele congénito (en niños).</li>
+        </ul>
+
+        <h3>Técnica paso a paso (Hidrocelectomía)</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Incisión:</strong> Incisión escrotal transversa de 3-4 cm o incisión inguinal.</li>
+                <li><strong>Disección:</strong> Identificar la túnica vaginal y abrirla, evacuando el líquido.</li>
+                <li><strong>Eversión de la túnica:</strong> Evertir la túnica vaginal y suturarla por detrás del testículo (técnica de Jaboulay) o resecarla (técnica de Lord).</li>
+                <li><strong>Hemostasia:</strong> Revisar la hemostasia.</li>
+                <li><strong>Cierre:</strong> Cierre por planos con Vicryl 3/0 y piel con Nylon 3/0.</li>
+                <li><strong>Drenaje:</strong> Colocar drenaje si hay mucho líquido.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hematoma.</li>
+            <li>Infección de la herida.</li>
+            <li>Recidiva.</li>
+            <li>Lesión del epidídimo.</li>
+            <li>Atrofia testicular (raro).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-hidrocele"></div>
+        </div>
+    </div>
+
+    <!-- ===== CIRCUNCISIÓN ===== -->
+    <div class="content-section" id="sec-circuncision">
+        <h2>🔵 Circuncisión</h2>
+
+        <h3>Definición</h3>
+        <p>Resección quirúrgica del prepucio que cubre el glande.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Fimosis.</li>
+            <li>Parafimosis recurrente.</li>
+            <li>Balanitis recurrente.</li>
+            <li>Razones culturales o religiosas.</li>
+            <li>Prevención de ITS (según evidencia).</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Anestesia:</strong> Bloqueo del nervio dorsal del pene o anestesia local en anillo.</li>
+                <li><strong>Tracción:</strong> Traccionar el prepucio y separar las adherencias con una pinza.</li>
+                <li><strong>Marcado:</strong> Marcar el nivel de resección (2-3 mm por detrás del surco balanoprepucial).</li>
+                <li><strong>Incisión:</strong> Realizar dos incisiones circulares, una en la piel y otra en la mucosa, y resecar el prepucio.</li>
+                <li><strong>Hemostasia:</strong> Ligar los vasos del frenillo y del prepucio con Vicryl 4/0.</li>
+                <li><strong>Sutura:</strong> Suturar la piel a la mucosa con puntos separados de Vicryl 4/0.</li>
+                <li><strong>Apósito:</strong> Apósito compresivo con gasa vaselinada.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Hemorragia.</li>
+            <li>Infección.</li>
+            <li>Estenosis del meato.</li>
+            <li>Fimosis secundaria (si se reseca poco prepucio).</li>
+            <li>Lesión del glande (raro).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-circuncision"></div>
+        </div>
+    </div>
+
+    <!-- ===== FASCIOTOMIA ===== -->
+    <div class="content-section" id="sec-fasciotomia">
+        <h2>🩹 Fasciotomía (Gangrena)</h2>
+
+        <h3>Definición</h3>
+        <p>Incisión de la fascia muscular para liberar la presión en un compartimento muscular (síndrome compartimental) o para drenar una fascitis necrotizante.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Síndrome compartimental agudo (trauma, fractura, quemadura).</li>
+            <li>Fascitis necrotizante.</li>
+            <li>Gangrena gaseosa.</li>
+            <li>Mordedura de serpiente.</li>
+        </ul>
+
+        <h3>Técnica paso a paso (Fasciotomía de pierna)</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Decúbito supino.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Anestesia:</strong> General o regional (la anestesia local puede no ser suficiente).</li>
+                <li><strong>Incisión:</strong> Incisión longitudinal en la cara anterolateral de la pierna, desde la rodilla hasta el tobillo.</li>
+                <li><strong>Disección:</strong> Incidir la fascia muscular longitudinalmente, liberando los compartimentos anterior y lateral.</li>
+                <li><strong>Segunda incisión:</strong> Incisión posteromedial para liberar los compartimentos posterior superficial y profundo.</li>
+                <li><strong>Verificación:</strong> Comprobar que los músculos protruyen (liberación de la presión).</li>
+                <li><strong>Desbridamiento:</strong> Resecar el tejido necrótico.</li>
+                <li><strong>Cierre:</strong> No cerrar la piel (dejar abierta para drenaje). Colocar apósito estéril húmedo.</li>
+                <li><strong>Reintervención:</strong> A las 48-72h para revisar y, si es posible, cerrar o injertar.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Infección.</li>
+            <li>Necrosis muscular.</li>
+            <li>Amputación (si no se realiza a tiempo).</li>
+            <li>Lesión nerviosa.</li>
+            <li>Dehiscencia de la herida.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-fasciotomia"></div>
+        </div>
+    </div>
+
+    <!-- ===== COLGAJOS ===== -->
+    <div class="content-section" id="sec-colgajos">
+        <h2>🎨 Colgajos</h2>
+
+        <h3>Definición</h3>
+        <p>Tejido (piel, grasa, músculo, fascia) que se moviliza con su vascularización desde un sitio donante a un sitio receptor para cubrir un defecto.</p>
+
+        <h3>Tipos de colgajos</h3>
+        <ul>
+            <li><strong>Por vascularización:</strong> pediculado (mantiene su pedículo) o libre (se anastomosa a vasos del sitio receptor).</li>
+            <li><strong>Por composición:</strong> cutáneo, fasciocutáneo, musculocutáneo, muscular, fascial, óseo.</li>
+            <li><strong>Por movimiento:</strong> de avance, de rotación, de transposición, de interpolación.</li>
+        </ul>
+
+        <h3>Técnica paso a paso (Colgajo de rotación)</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Según la localización del defecto.</li>
+                <li><strong>Antisepsia y campos estériles.</strong></li>
+                <li><strong>Diseño:</strong> Diseñar el colgajo en la vecindad del defecto, teniendo en cuenta el eje vascular.</li>
+                <li><strong>Incisión:</strong> Incidir la piel y el tejido subcutáneo siguiendo el diseño del colgajo.</li>
+                <li><strong>Elevación:</strong> Elevar el colgajo con su pedículo vascular, cuidando de no lesionarlo.</li>
+                <li><strong>Rotación:</strong> Rotar el colgajo hasta cubrir el defecto.</li>
+                <li><strong>Sutura:</strong> Suturar el colgajo a los bordes del defecto con Nylon 3/0 o seda 3/0.</li>
+                <li><strong>Drenaje:</strong> Colocar drenaje si es necesario.</li>
+                <li><strong>Apósito:</strong> Compresivo durante 24-48h.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Necrosis del colgajo (por compromiso vascular).</li>
+            <li>Infección.</li>
+            <li>Dehiscencia.</li>
+            <li>Seroma o hematoma.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-colgajos"></div>
+        </div>
+    </div>
+
+    <!-- ===== ENTUBACIÓN ===== -->
+    <div class="content-section" id="sec-entubacion">
+        <h2>🫁 Entubación Endotraqueal</h2>
+
+        <h3>Definición</h3>
+        <p>Introducción de un tubo en la tráquea para asegurar la vía aérea y permitir la ventilación mecánica.</p>
+
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Insuficiencia respiratoria aguda.</li>
+            <li>Paro cardiorrespiratorio.</li>
+            <li>Cirugía con anestesia general.</li>
+            <li>Protección de la vía aérea (coma, trauma facial).</li>
+            <li>Ventilación mecánica prolongada.</li>
+        </ul>
+
+        <h3>Material necesario</h3>
+        <ul>
+            <li>Laringoscopio con hojas curva (Macintosh) y recta (Miller).</li>
+            <li>Tubo endotraqueal (7.0-8.0 mm para adultos).</li>
+            <li>Jeringa de 10 ml para inflar el balón.</li>
+            <li>Estetoscopio.</li>
+            <li>Fuente de oxígeno y bolsa de ventilación.</li>
+            <li>Aspirador.</li>
+            <li>Fijación (cinta o cordón).</li>
+            <li>Capnógrafo (ideal).</li>
+        </ul>
+
+        <h3>Técnica paso a paso</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Posición:</strong> Paciente en decúbito supino, con la cabeza en posición de "olfateo" (almohada bajo la cabeza, extensión del cuello).</li>
+                <li><strong>Preoxigenación:</strong> Ventilar con oxígeno al 100% durante 3-5 minutos.</li>
+                <li><strong>Laringoscopia:</strong> Introducir el laringoscopio con la mano izquierda, desplazando la lengua hacia la izquierda, hasta visualizar la epiglotis y las cuerdas vocales.</li>
+                <li><strong>Introducción del tubo:</strong> Introducir el tubo endotraqueal con la mano derecha, pasando entre las cuerdas vocales.</li>
+                <li><strong>Inflado del balón:</strong> Inflar el balón con 5-10 ml de aire.</li>
+                <li><strong>Confirmación:</strong> Auscultar los campos pulmonares (simétricos) y el epigastrio (sin ruidos). Confirmar con capnografía (gold standard).</li>
+                <li><strong>Fijación:</strong> Fijar el tubo a la piel con cinta o cordón.</li>
+                <li><strong>Radiografía de control:</strong> Confirmar la posición del tubo (2-3 cm por encima de la carina).</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Lesión de las cuerdas vocales.</li>
+            <li>Intubación esofágica.</li>
+            <li>Intubación selectiva (bronquio derecho).</li>
+            <li>Neumotórax.</li>
+            <li>Hemorragia.</li>
+            <li>Estenosis traqueal (tardía).</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-entubacion"></div>
+        </div>
+    </div>
+
+    <!-- ===== SUTURAS EN PIEL ===== -->
+    <div class="content-section" id="sec-suturas-piel">
+        <h2>🧵 Puntos de Sutura en Piel</h2>
+
+        <h3>Tipos de puntos</h3>
+
+        <h4>1. Punto simple (interrumpido)</h4>
+        <p>Punto básico de sutura. Se introduce la aguja perpendicular a la piel, a 3-5 mm del borde, saliendo por el lado opuesto a la misma distancia.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Sencillo, seguro, permite retirar puntos selectivamente.</li>
+            <li><strong>Desventajas:</strong> Más tiempo, mayor número de nudos.</li>
+        </ul>
+
+        <h4>2. Punto continuo (colchonero simple)</h4>
+        <p>Sutura continua que se realiza sin cortar el hilo en cada punto.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Rápido, buen sellado.</li>
+            <li><strong>Desventajas:</strong> Si se rompe un punto, se suelta toda la sutura.</li>
+        </ul>
+
+        <h4>3. Punto de colchonero vertical (Donatti)</h4>
+        <p>Se introduce la aguja en un lado, se saca en el opuesto, y se vuelve a introducir en el mismo lado, pero más profundo, para luego salir en el lado opuesto.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Eversión de los bordes, hemostasia.</li>
+            <li><strong>Desventajas:</strong> Puede dejar cicatriz más marcada.</li>
+        </ul>
+
+        <h4>4. Punto de colchonero horizontal</h4>
+        <p>Se introducen dos puntos paralelos entre sí, con el hilo externo.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Buen afrontamiento, hemostasia.</li>
+            <li><strong>Desventajas:</strong> Puede causar isquemia en los bordes.</li>
+        </ul>
+
+        <h4>5. Punto intradérmico</h4>
+        <p>Sutura continua dentro de la dermis, sin atravesar la epidermis.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Excelente resultado estético, no requiere retirar puntos (si es reabsorbible).</li>
+            <li><strong>Desventajas:</strong> Técnica más difícil.</li>
+        </ul>
+
+        <h4>6. Punto de Blair-Donatti (en U)</h4>
+        <p>Variante del colchonero vertical, con el nudo en un extremo.</p>
+
+        <h4>7. Grapas quirúrgicas</h4>
+        <p>Alternativa a la sutura, rápidas de colocar y retirar.</p>
+
+        <h3>Técnica general de sutura</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Antisepsia:</strong> Limpiar la herida y la piel circundante.</li>
+                <li><strong>Anestesia:</strong> Infiltrar lidocaína al 1% en los bordes de la herida.</li>
+                <li><strong>Desbridamiento:</strong> Resecar los bordes necróticos o contusos.</li>
+                <li><strong>Hemostasia:</strong> Pinzar y ligar los vasos sangrantes.</li>
+                <li><strong>Afrontamiento:</strong> Aproximar los bordes de la herida sin tensión.</li>
+                <li><strong>Sutura:</strong> Elegir el tipo de punto según la localización y el tipo de herida.</li>
+                <li><strong>Nudo:</strong> Realizar un nudo seguro (cuadrado o de cirujano).</li>
+                <li><strong>Apósito:</strong> Colocar apósito estéril.</li>
+            </ol>
+        </div>
+
+        <h3>Retiro de puntos</h3>
+        <ul>
+            <li><strong>Cara:</strong> 3-5 días.</li>
+            <li><strong>Cuero cabelludo:</strong> 7-10 días.</li>
+            <li><strong>Tronco y extremidades:</strong> 10-14 días.</li>
+            <li><strong>Espalda:</strong> 14-21 días.</li>
+            <li><strong>Articulaciones:</strong> 14 días.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-suturas-piel"></div>
+        </div>
+    </div>
+
+    <!-- ===== SUTURAS INTESTINALES ===== -->
+    <div class="content-section" id="sec-suturas-intestinal">
+        <h2>🧵 Puntos de Sutura Intestinal</h2>
+
+        <h3>Principios generales</h3>
+        <ul>
+            <li><strong>Aposición:</strong> Aproximar los bordes sin tensión.</li>
+            <li><strong>Hemostasia:</strong> Controlar el sangrado sin comprometer la vascularización.</li>
+            <li><strong>Estanqueidad:</strong> Evitar fugas.</li>
+            <li><strong>Sin tensión:</strong> No estrangular los tejidos.</li>
+            <li><strong>Material:</strong> Vicryl o PDS (absorbible) 3-0 o 4-0.</li>
+            <li><strong>Dos planos:</strong> Mucoso + seromuscular.</li>
+        </ul>
+
+        <h3>Tipos de puntos</h3>
+
+        <h4>1. Punto de Connell (invaginante)</h4>
+        <p>Sutura continua que se realiza pasando la aguja desde la mucosa hacia la serosa en un lado, y desde la serosa hacia la mucosa en el otro.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Invagina los bordes, buen sellado.</li>
+            <li><strong>Desventajas:</strong> Puede estrechar la luz.</li>
+        </ul>
+
+        <h4>2. Punto de Cushing</h4>
+        <p>Similar al Connell, pero sin atravesar la mucosa (solo seromuscular).</p>
+        <ul>
+            <li><strong>Ventajas:</strong> No contamina la sutura.</li>
+            <li><strong>Desventajas:</strong> Menos hemostático.</li>
+        </ul>
+
+        <h4>3. Punto de Lembert (seromuscular)</h4>
+        <p>Punto en "U" que invagina la serosa.</p>
+        <ul>
+            <li><strong>Ventajas:</strong> Refuerza la sutura mucosa, invagina.</li>
+            <li><strong>Desventajas:</strong> No es hemostático por sí solo.</li>
+        </ul>
+
+        <h4>4. Punto de Halstead</h4>
+        <p>Punto en "U" horizontal, similar al Lembert pero más amplio.</p>
+
+        <h4>5. Punto de Schmieden (sutura en bolsa de tabaco)</h4>
+        <p>Sutura circular que se anuda y se invagina.</p>
+        <ul>
+            <li><strong>Usos:</strong> Cierre del muñón apendicular, cierre de perforaciones pequeñas.</li>
+        </ul>
+
+        <h4>6. Sutura en dos planos (técnica de Albert-Lembert)</h4>
+        <ul>
+            <li><strong>Primer plano:</strong> Punto de Connell (mucoso).</li>
+            <li><strong>Segundo plano:</strong> Punto de Lembert (seromuscular).</li>
+        </ul>
+
+        <h3>Técnica general de anastomosis</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Aproximación:</strong> Aproximar los cabos intestinales sin tensión.</li>
+                <li><strong>Primer plano:</strong> Sutura mucosa (Connell o puntos separados) con Vicryl 3-0 o 4-0.</li>
+                <li><strong>Segundo plano:</strong> Sutura seromuscular (Lembert) con Vicryl 2-0 o 3-0.</li>
+                <li><strong>Verificación:</strong> Comprobar la estanqueidad (inyectar suero o aire).</li>
+                <li><strong>Comprobación de la luz:</strong> Verificar que la anastomosis no esté estenosada.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <ul>
+            <li>Fuga anastomótica.</li>
+            <li>Estenosis.</li>
+            <li>Hemorragia.</li>
+            <li>Infección.</li>
+            <li>Fístula.</li>
+        </ul>
+
+        <div class="photo-gallery">
+            <h4>📸 Fotos del procedimiento</h4>
+            <div class="photo-grid" id="gallery-suturas-intestinal"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== LIGHTBOX PARA FOTOS ===== -->
+<div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
+    <img id="lightboxImg" src="" alt="">
+    <div class="caption" id="lightboxCaption"></div>
+</div>
+
+<script>
+    // ================================================================
+    // CONFIGURACIÓN DE FOTOS
+    // ================================================================
+    // Carpeta donde están las fotos
+    const CARPETA_FOTOS = 'recursos/';
+
+    // Estructura de fotos por procedimiento
+    // Cada procedimiento tiene 5 fotos: [nombre]-1.jpg, [nombre]-2.jpg, etc.
+    const procedimientos = {
+        'paracentesis': {
+            nombre: 'Paracentesis',
+            fotos: ['paracentesis-1.jpg', 'paracentesis-2.jpg', 'paracentesis-3.jpg', 'paracentesis-4.jpg'],
+            captions: []
+            },
+        'pleurocentesis': {
+            nombre: 'Pleurocentesis',
+            fotos: ['pleurocentesis-1.jpg', 'pleurocentesis-2.jpg', 'pleurocentesis-3.jpg', 'pleurocentesis-4.jpg', 'pleurocentesis-5.jpg'],
+            captions: []
+        },
+        'toracostomia': {
+            nombre: 'Toracostomía',
+            fotos: ['toracostomia-1.jpg', 'toracostomia-2.jpg', 'toracostomia-3.jpg', 'toracostomia-4.jpg', 'toracostomia-5.jpg'],
+            captions: []},
+        'seldinger': {
+            nombre: 'Técnica de Seldinger',
+            fotos: ['seldinger-1.jpg', 'seldinger-2.jpg', 'seldinger-3.jpg', 'seldinger-4.jpg', 'seldinger-5.jpg'],
+            captions: []
+        },
+        'diseccion-vena': {
+            nombre: 'Disección Venosa',
+            fotos: ['diseccion-vena-1.jpg', 'diseccion-vena-2.jpg', 'diseccion-vena-3.jpg', 'diseccion-vena-4.jpg', 'diseccion-vena-5.jpg'],
+            captions: []
+        },
+        'lipoma': {
+            nombre: 'Lipoma',
+            fotos: ['lipoma-1.jpg', 'lipoma-2.jpg', 'lipoma-3.jpg', 'lipoma-4.jpg', 'lipoma-5.jpg'],
+            captions: []
+        },
+        'abscesos': {
+            nombre: 'Abscesos',
+            fotos: ['abscesos-1.jpg', 'abscesos-2.jpg', 'abscesos-3.jpg', 'abscesos-4.jpg', 'abscesos-5.jpg'],
+            captions: []
+        },
+        'quistes': {
+            nombre: 'Quistes Sebáceos',
+            fotos: ['quistes-1.jpg', 'quistes-2.jpg', 'quistes-3.jpg', 'quistes-4.jpg', 'quistes-5.jpg'],
+            captions: []
+        },
+        'biopsia-adenopatias': {
+            nombre: 'Biopsia de Adenopatías',
+            fotos: ['biopsia-adenopatias-1.jpg', 'biopsia-adenopatias-2.jpg', 'biopsia-adenopatias-3.jpg', 'biopsia-adenopatias-4.jpg', 'biopsia-adenopatias-5.jpg'],
+            captions: []
+        },
+        'granulomas': {
+            nombre: 'Granulomas',
+            fotos: ['granulomas-1.jpg', 'granulomas-2.jpg', 'granulomas-3.jpg', 'granulomas-4.jpg', 'granulomas-5.jpg'],
+            captions: []
+        },
+        'reseca-bloque': {
+            nombre: 'Resección en Bloque',
+            fotos: ['reseca-bloque-1.jpg', 'reseca-bloque-2.jpg', 'reseca-bloque-3.jpg', 'reseca-bloque-4.jpg', 'reseca-bloque-5.jpg'],
+            captions: []
+        },
+        'inc-media': {
+            nombre: 'Incisión Media',
+            fotos: ['inc-media-1.jpg', 'inc-media-2.jpg', 'inc-media-3.jpg', 'inc-media-4.jpg', 'inc-media-5.jpg'],
+            captions: []
+        },
+        'inc-paramediana': {
+            nombre: 'Incisión Paramediana',
+            fotos: ['inc-paramediana-1.jpg', 'inc-paramediana-2.jpg', 'inc-paramediana-3.jpg', 'inc-paramediana-4.jpg', 'inc-paramediana-5.jpg'],
+            captions: []
+        },
+        'inc-mcburney': {
+            nombre: 'Incisión de McBurney',
+            fotos: ['inc-mcburney-1.jpg', 'inc-mcburney-2.jpg', 'inc-mcburney-3.jpg', 'inc-mcburney-4.jpg', 'inc-mcburney-5.jpg'],
+            captions: []
+        },
+        'inc-subcostal': {
+            nombre: 'Incisión Subcostal',
+            fotos: ['inc-subcostal-1.jpg', 'inc-subcostal-2.jpg', 'inc-subcostal-3.jpg', 'inc-subcostal-4.jpg', 'inc-subcostal-5.jpg'],
+            captions: []
+        },
+        'inc-pfannenstiel': {
+            nombre: 'Incisión de Pfannenstiel',
+            fotos: ['inc-pfannenstiel-1.jpg', 'inc-pfannenstiel-2.jpg', 'inc-pfannenstiel-3.jpg', 'inc-pfannenstiel-4.jpg', 'inc-pfannenstiel-5.jpg'],
+            captions: []
+        },
+        'inc-kehr': {
+            nombre: 'Incisión de Kehr',
+            fotos: ['inc-kehr-1.jpg', 'inc-kehr-2.jpg', 'inc-kehr-3.jpg', 'inc-kehr-4.jpg', 'inc-kehr-5.jpg'],
+            captions: []
+        },
+        'varicocele': {
+            nombre: 'Varicocele',
+            fotos: ['varicocele-1.jpg', 'varicocele-2.jpg', 'varicocele-3.jpg', 'varicocele-4.jpg', 'varicocele-5.jpg'],
+            captions: []
+        },
+        'hidrocele': {
+            nombre: 'Hidrocele',
+            fotos: ['hidrocele-1.jpg', 'hidrocele-2.jpg', 'hidrocele-3.jpg', 'hidrocele-4.jpg', 'hidrocele-5.jpg'],
+            captions: []
+        },
+        'circuncision': {
+            nombre: 'Circuncisión',
+            fotos: ['circuncision-1.jpg', 'circuncision-2.jpg', 'circuncision-3.jpg', 'circuncision-4.jpg', 'circuncision-5.jpg'],
+            captions: []
+        },
+        'fasciotomia': {
+            nombre: 'Fasciotomía',
+            fotos: ['fasciotomia-1.jpg', 'fasciotomia-2.jpg', 'fasciotomia-3.jpg', 'fasciotomia-4.jpg', 'fasciotomia-5.jpg'],
+            captions: []
+        },
+        'colgajos': {
+            nombre: 'Colgajos',
+            fotos: ['colgajos-1.jpg', 'colgajos-2.jpg', 'colgajos-3.jpg', 'colgajos-4.jpg', 'colgajos-5.jpg'],
+            captions: []
+        },
+        'entubacion': {
+            nombre: 'Entubación Endotraqueal',
+            fotos: ['entubacion-1.jpg', 'entubacion-2.jpg', 'entubacion-3.jpg', 'entubacion-4.jpg', 'entubacion-5.jpg'],
+            captions: []
+        },
+        'suturas-piel': {
+            nombre: 'Suturas en Piel',
+            fotos: ['suturas-piel-1.jpg', 'suturas-piel-2.jpg', 'suturas-piel-3.jpg', 'suturas-piel-4.jpg', 'suturas-piel-5.jpg'],
+            captions: []
+        },
+        'suturas-intestinal': {
+            nombre: 'Suturas Intestinales',
+            fotos: ['suturas-intestinal-1.jpg', 'suturas-intestinal-2.jpg', 'suturas-intestinal-3.jpg', 'suturas-intestinal-4.jpg', 'suturas-intestinal-5.jpg'],
+            captions: []
+        }
+    };
+
+    // ================================================================
+    // FUNCIONES DE GALERÍA DE FOTOS
+    // ================================================================
+    function cargarGaleria(procedimientoKey) {
+        const galleryId = 'gallery-' + procedimientoKey;
+        const galleryContainer = document.getElementById(galleryId);
+        if (!galleryContainer) return;
+
+        const proc = procedimientos[procedimientoKey];
+        if (!proc) {
+            galleryContainer.innerHTML = '<p style="color:#b09070;">No hay fotos configuradas.</p>';
+            return;
+        }
+
+        galleryContainer.innerHTML = '';
+
+        proc.fotos.forEach((foto, index) => {
+            const photoItem = document.createElement('div');
+            photoItem.className = 'photo-item';
+
+            const rutaCompleta = CARPETA_FOTOS + foto;
+            const caption = proc.captions[index] || 'Foto ' + (index + 1);
+
+            photoItem.innerHTML = `
+                <img src="${rutaCompleta}"
+                     alt="${caption}"
+                     onerror="this.parentElement.innerHTML='<div class=\\'photo-missing\\'><div class=\\'icon\\'>📷</div><div>${foto}</div></div>'"
+                     onclick="abrirLightbox('${rutaCompleta}', '${caption}')"
+                     style="cursor: zoom-in;">
+                <div class="photo-caption">${caption}</div>
+            `;
+
+            galleryContainer.appendChild(photoItem);
+        });
+    }
+
+    function abrirLightbox(src, caption) {
+        const lightbox = document.getElementById('lightbox');
+        const img = document.getElementById('lightboxImg');
+        const cap = document.getElementById('lightboxCaption');
+        img.src = src;
+        cap.textContent = caption;
+        lightbox.classList.add('active');
+    }
+
+    function cerrarLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+
+    // Cerrar lightbox con Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarLightbox();
+    });
+
+    // ================================================================
+    // NAVEGACIÓN
+    // ================================================================
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+
+        // Cargar galería si existe para esta sección
+        if (procedimientos[targetId]) {
+            cargarGaleria(targetId);
+        }
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    // ================================================================
+    // INICIALIZACIÓN
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cargar galería de la sección activa (inicio no tiene galería)
+        // Las galerías se cargan al navegar a cada sección
+    });
+
+    // Mostrar inicio por defecto
+    showSection('inicio');
+</script>
+
+</body>
+</html>

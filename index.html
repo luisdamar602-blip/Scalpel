@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Centro de Cirugía General</title>
+    <style>
+        /* ----- RESET Y ESTILOS GLOBALES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- HEADER ----- */
+        .header {
+            background: linear-gradient(135deg, #0b2b4a 0%, #1a5276 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .header h1 span {
+            color: #7ab7e0;
+        }
+
+        .header .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        .header .badge-count {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ----- CONTENEDOR PRINCIPAL ----- */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px 40px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ----- GRILLA DE TARJETAS ----- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            flex: 1;
+            align-content: start;
+        }
+
+        .app-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px 24px;
+            border: 1px solid #e2edf7;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .app-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+            border-color: #1a5276;
+        }
+
+        .app-card .icon {
+            font-size: 2.6rem;
+        }
+        .app-card .title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0b2b4a;
+        }
+        .app-card .desc {
+            font-size: 0.92rem;
+            color: #4a5a6e;
+            line-height: 1.5;
+            flex: 1;
+        }
+        .app-card .status {
+            margin-top: 4px;
+            font-size: 0.8rem;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .app-card .btn-abrir {
+            margin-top: 8px;
+            background: #1a5276;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            font-family: inherit;
+            width: 100%;
+            text-align: center;
+        }
+        .app-card .btn-abrir:hover {
+            background: #0b3b55;
+            transform: scale(1.02);
+        }
+
+        .app-card .order-number {
+            font-size: 0.7rem;
+            color: #8a9aa8;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ----- PIE DE PÁGINA ----- */
+        .footer-note {
+            padding: 20px 30px 10px 30px;
+            text-align: center;
+            color: #6a7a8e;
+            font-size: 0.9rem;
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 760px) {
+            .header {
+                padding: 14px 20px;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .main-container {
+                padding: 16px;
+            }
+            .cards-grid {
+                gap: 16px;
+                grid-template-columns: 1fr;
+            }
+            .app-card {
+                padding: 20px 18px;
+            }
+        }
+
+        @media print {
+            .header {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div>
+            <h1>📚 <span>Cirugía</span> General</h1>
+            <div class="subtitle">Centro de recursos para el Residente de Cirugía General</div>
+        </div>
+        <div class="badge-count">
+            📌 <span id="appCounter">0</span> aplicaciones disponibles
+        </div>
+    </header>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <div class="main-container">
+
+        <!-- GRILLA DE TARJETAS -->
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Las tarjetas se generan con JS -->
+        </div>
+
+        <div class="footer-note">
+            💡 Haz clic en "Abrir aplicación" o en la tarjeta para abrirla en una nueva ventana.
+            <br>✅ Cada aplicación incluirá automáticamente un botón flotante para volver al inicio.
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  DATOS DE LAS APLICACIONES (EN EL ORDEN SOLICITADO)
+        // ================================================================
+        const apps = [{
+            id: 'generales-hernia',
+            nombre: 'Generalidades, Abdomen Agudo y Hernia',
+            descripcion: 'Hernias, abdomen agudo, equilibrio hidroelectrolítico, ostomías, antibióticos.',
+            icono: '📕',
+            archivo: 'Generalidades, Abdomen Agudo y Hernia.html',
+            color: '#b34a3a',
+            orden: 1
+        }, {
+            id: 'trauma',
+            nombre: 'Trauma Quirúrgico',
+            descripcion: 'TCE, trauma torácico, abdominal, vascular, control de daños.',
+            icono: '📘',
+            archivo: 'Trauma.html',
+            color: '#1a5276',
+            orden: 2
+        }, {
+            id: 'abdomen',
+            nombre: 'Cirugía Abdominal Electiva',
+            descripcion: 'Vía biliar, hígado, páncreas, bazo, estómago y más.',
+            icono: '📙',
+            archivo: 'Abdomen Electivo.html',
+            color: '#e68a2e',
+            orden: 3
+        }, {
+            id: 'toracica',
+            nombre: 'Cirugía Torácica y Esofágica',
+            descripcion: 'Anatomía torácica, toracotomías, cáncer de esófago, tumores de mediastino, empiema pleural.',
+            icono: '📗',
+            archivo: 'Cirugía Torácica.html',
+            color: '#1f5f33',
+            orden: 4
+        }, {
+            id: 'cuello-mama-gineco',
+            nombre: 'Cuello, Mama, Ginecología y Angiología',
+            descripcion: 'Tiroides, parótidas, mama, histerectomías, TVP, pie diabético.',
+            icono: '📔',
+            archivo: 'Cuello, Mama, Ginecología y Angiología.html',
+            color: '#7b4bb5',
+            orden: 5
+        }, {
+    id: 'leyes-cirugia',
+    nombre: 'Las 15 Leyes de la Cirugía',
+    descripcion: 'Aforismos y principios fundamentales para la formación del residente de Cirugía General.',
+    icono: '📜',
+    archivo: 'Las 15 Leyes de la Cirugía.html',
+    color: '#1a5276',
+    orden: 6
+},{
+    id: 'cirugia-menor',
+    nombre: 'Cirugía Menor',
+    descripcion: 'Descripción de técnicas quirúrgicas en cirugía menor',
+    icono: '🔪',
+    archivo: 'Cirugía Menor.html',
+    color: '#2c7be5',
+    orden: 7
+},{
+    id: 'anestesia-toolkit',
+    nombre: 'Anesthesia Toolkit',
+    descripcion: 'Calculadoras, dosis, emergencias y farmacopea para anestesia.',
+    icono: '🩺',
+    archivo: 'Anestesia Toolkit.html',
+    color: '#2c7be5',
+    orden: 8
+},{
+    id: 'zerotosurgeon',
+    nombre: 'Zero to Surgeon',
+    descripcion: 'Juego IDLE sobre gestion de la residencia, evolucionando al servicio de Cirugía de hospital Carlos Manuel de Cespedes de Bayamo',
+    icono: '🏥',
+    archivo: 'Zero to Surgeon.html',
+    color: '#2c7be5',
+    orden: 9
+}
+];
+
+        // ================================================================
+        //  REFERENCIAS DOM
+        // ================================================================
+        const cardsGrid = document.getElementById('cardsGrid');
+        const appCounter = document.getElementById('appCounter');
+
+        // ================================================================
+        //  FUNCIONES
+        // ================================================================
+
+        /** Actualiza el contador de apps */
+        function actualizarContador() {
+            appCounter.textContent = apps.length;
+        }
+
+        /** Genera las tarjetas de inicio en el orden definido */
+        function generarTarjetas() {
+            cardsGrid.innerHTML = '';
+
+            const appsOrdenadas = [...apps].sort((a, b) => a.orden - b.orden);
+
+            appsOrdenadas.forEach((app) => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.dataset.appId = app.id;
+                card.innerHTML = `
+                    <div class="order-number">${String(app.orden).padStart(2, '0')}.</div>
+                    <div class="icon">${app.icono}</div>
+                    <div class="title">${app.nombre}</div>
+                    <div class="desc">${app.descripcion}</div>
+                    <div class="status">✅ Listo para usar</div>
+                    <button class="btn-abrir" style="background:${app.color};">🚀 Abrir aplicación</button>
+                `;
+                cardsGrid.appendChild(card);
+
+                // Evento: Abrir en nueva ventana con botón inyectado
+                card.querySelector('.btn-abrir').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    abrirConBotonDeVuelta(app);
+                });
+
+                card.addEventListener('click', () => {
+                    abrirConBotonDeVuelta(app);
+                });
+            });
+        }
+
+        /**
+         * Abre la aplicación en una nueva ventana e inyecta un botón flotante
+         * para volver al lanzador principal.
+         */
+        function abrirConBotonDeVuelta(app) {
+            // Abrir la aplicación en una nueva ventana
+            const nuevaVentana = window.open(app.archivo, '_blank');
+
+            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
+                alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
+                return;
+            }
+
+            // Esperar a que la ventana cargue completamente
+            // e inyectar el botón "Volver al inicio" con un estilo fijo
+            const ventana = nuevaVentana;
+            const interval = setInterval(() => {
+                try {
+                    // Verificar si la ventana ya tiene el documento cargado
+                    if (ventana.document && ventana.document.body) {
+                        // Evitar inyectar múltiples veces
+                        if (ventana.document.getElementById('btn-volver-inicio')) {
+                            clearInterval(interval);
+                            return;
+                        }
+
+                        // Crear el botón
+                        const btn = ventana.document.createElement('div');
+                        btn.id = 'btn-volver-inicio';
+                        btn.innerHTML = `
+                            <button onclick="window.close()" style="
+                                position: fixed;
+                                top: 16px;
+                                left: 16px;
+                                background: rgba(11, 43, 74, 0.92);
+                                color: white;
+                                border: none;
+                                padding: 12px 22px;
+                                border-radius: 30px;
+                                font-size: 0.95rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-family: 'Segoe UI', sans-serif;
+                                box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+                                transition: 0.2s;
+                                z-index: 99999;
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                backdrop-filter: blur(4px);
+                            "
+                            onmouseover="this.style.transform='scale(1.05)'; this.style.background='#1a5276';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(11,43,74,0.92)';"
+                            >
+                            <span style="font-size:1.4rem;">←</span> Volver al inicio
+                            </button>
+                        `;
+                        ventana.document.body.appendChild(btn);
+
+                        // Añadir también un atajo de teclado (Alt + Flecha izquierda)
+                        ventana.document.addEventListener('keydown', (e) => {
+                            if (e.altKey && e.key === 'ArrowLeft') {
+                                ventana.close();
+                            }
+                        });
+
+                        clearInterval(interval);
+                    }
+                } catch (e) {
+                    // Si la ventana se cerró o no es accesible, detener el intervalo
+                    if (ventana.closed) {
+                        clearInterval(interval);
+                    }
+                }
+            }, 300);
+
+            // Timeout de seguridad: detener después de 10 segundos si no se pudo inyectar
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 10000);
+
+            ventana.focus();
+        }
+
+        /** Inicializa la aplicación */
+        function init() {
+            actualizarContador();
+            generarTarjetas();
+        }
+
+        // ================================================================
+        //  EJECUTAR
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>

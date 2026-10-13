@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traumatología Quirúrgica - Técnicas Abdominales Ampliadas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef2f7;
+            color: #1a2a3a;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 320px;
+            background: #0b2b4a;
+            color: white;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #2a4f6b;
+            letter-spacing: 0.5px;
+        }
+        .sidebar h2 span { font-weight: 700; color: #7ab7e0; }
+        .nav-group { margin-top: 8px; }
+        .nav-group-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #89b9d9;
+            padding: 10px 20px 4px 20px;
+            font-weight: 600;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #dce8f2;
+            padding: 8px 20px 8px 28px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover { background: #1a405c; color: white; border-left-color: #7ab7e0; }
+        .nav-btn.active { background: #1f4e72; color: white; border-left-color: #7ab7e0; font-weight: 500; }
+        .nav-btn.sub { padding-left: 40px; font-size: 0.82rem; color: #c0d4e6; }
+        .nav-btn.sub:hover { background: #1a405c; }
+
+      .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px 40px 50px 40px;
+    background: white; /* <-- Asegurar que sea blanco */
+}
+        .main h1 {
+            font-size: 2.1rem;
+            color: #0a2942;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #3d6a8c;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2edf7;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-section h2 {
+            color: #144a6b;
+            border-left: 6px solid #287bb5;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .content-section h3 {
+            color: #1b4f72;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #dce6ef;
+            padding-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .content-section h4 {
+            color: #235d85;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; }
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .content-section li { margin-bottom: 5px; }
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 22px 0;
+            font-size: 0.9rem;
+        }
+        .grade-table th {
+            background: #1a5276;
+            color: white;
+            padding: 9px 10px;
+            text-align: left;
+            border: 1px solid #1a5276;
+        }
+        .grade-table td {
+            border: 1px solid #d4dce6;
+            padding: 9px 10px;
+            vertical-align: top;
+            background: #fbfdff;
+        }
+        .grade-table tr:nth-child(even) td { background: #f4f8fc; }
+        .badge {
+            display: inline-block;
+            background: #287bb5;
+            color: white;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .surg-box, .clin-box, .note-box {
+            padding: 14px 22px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .surg-box { background: #eaf3fa; border-left: 5px solid #1f6e9c; }
+        .clin-box { background: #fef7e8; border-left: 5px solid #e6a017; }
+        .note-box { background: #eef4f9; border-left: 5px solid #6b8da6; }
+        hr { margin: 30px 0; border: 0; height: 1px; background: #dce6ef; }
+        .back-top { display: inline-block; margin-top: 20px; color: #1f6e9c; font-weight: 500; cursor: pointer; }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
+            .main { padding: 20px; }
+        }
+        /* Botón PDF */
+.pdf-btn-container {
+    position: sticky;
+    top: 10px;
+    z-index: 20;
+    text-align: right;
+    margin-bottom: 10px;
+}
+.pdf-btn {
+    background: #1a5276;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(26, 82, 118, 0.3);
+    transition: 0.2s;
+    font-family: inherit;
+}
+.pdf-btn:hover {
+    background: #0b3b55;
+    transform: scale(1.02);
+}
+.pdf-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Estilos para el PDF (se aplican al imprimir) */
+/* Estilos para el PDF - garantizar visibilidad */
+@media print {
+    .content-section {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    .content-section * {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    .surg-box, .clin-box, .note-box {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .grade-table {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    /* Ocultar elementos no deseados en el PDF */
+    .pdf-btn-container, .sidebar, .nav-group, .nav-btn {
+        display: none !important;
+    }
+}
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>📘 <span>Trauma</span>Quirúrgico</h2>
+    <div class="nav-group">
+        <div class="nav-group-title">General</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+        <button class="nav-btn" data-target="partes-blandas">Partes blandas</button>
+        <button class="nav-btn" data-target="politrauma">Politraumatizado</button>
+        <button class="nav-btn" data-target="hemorragia">Hemorragia (grados)</button>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Craneoencefálico</div>
+        <button class="nav-btn" data-target="tce">TCE</button>
+        <button class="nav-btn sub" data-target="tce-clasif">Clasificación</button>
+        <button class="nav-btn sub" data-target="tce-glasgow">Escala Glasgow</button>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Raquimedular</div>
+        <button class="nav-btn" data-target="raquimedular">Trauma raquimedular</button>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Tórax</div>
+        <button class="nav-btn" data-target="torax">Trauma torácico</button>
+        <button class="nav-btn sub" data-target="torax-simple">Traumas simples</button>
+        <button class="nav-btn sub" data-target="torax-complejo">Traumas complejos</button>
+        <button class="nav-btn sub" data-target="torax-cardiaco">Trauma cardíaco</button>
+        <button class="nav-btn sub" data-target="torax-esofago">Trauma esofágico</button>
+        <button class="nav-btn sub" data-target="torax-traquea">Trauma traqueobronquial</button>
+    </div>
+    <div class="nav-group">
+    <div class="nav-group-title">Abdomen</div>
+    <button class="nav-btn" data-target="abdomen">Trauma abdominal</button>
+    <button class="nav-btn sub" data-target="abdomen-higado">Hígado</button>
+    <button class="nav-btn sub" data-target="abdomen-bazo">Bazo</button>
+    <button class="nav-btn sub" data-target="abdomen-rinon">Riñón</button>
+    <button class="nav-btn sub" data-target="abdomen-colon">Colon</button>
+    <button class="nav-btn sub" data-target="abdemen-duodeno">Duodeno</button>
+    <button class="nav-btn sub" data-target="abdomen-pancreas">Páncreas</button>
+    <!-- NUEVOS BOTONES -->
+    <button class="nav-btn sub" data-target="abdomen-estomago">Estómago</button>
+    <button class="nav-btn sub" data-target="abdomen-viasbiliares">Vías biliares</button>
+    <button class="nav-btn sub" data-target="abdomen-vejiga">Vejiga</button>
+    <button class="nav-btn sub" data-target="abdomen-vasos">Vasos</button>
+    <button class="nav-btn sub" data-target="abdomen-retroperitoneal">Hematoma retroperitoneal</button>
+    <button class="nav-btn sub" data-target="abdomen-pelvis">Trauma de pelvis</button>
+    <button class="nav-btn sub" data-target="abdomen-control">Control daños</button>
+    <button class="nav-btn sub" data-target="abdomen-sca">SCA</button>
+</div>
+    <div class="nav-group">
+        <div class="nav-group-title">Cuello</div>
+        <button class="nav-btn" data-target="cuello">Trauma de cuello</button>
+        <button class="nav-btn sub" data-target="cuello-vascular">Lesiones vasculares</button>
+        <button class="nav-btn sub" data-target="cuello-laringe">Laringe y tráquea</button>
+        <button class="nav-btn sub" data-target="cuello-esofago">Esófago cervical</button>
+    </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div class="main" id="mainContent">
+
+    <!-- INICIO -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>📘 Traumatología Quirúrgica</h1>
+        <div class="subtitle">Técnicas quirúrgicas ampliadas para trauma abdominal y torácico</div>
+        <p style="font-size:1.05rem; margin-bottom:16px;">Selecciona un tema en el menú lateral. Las secciones de abdomen incluyen:</p>
+        <ul style="font-size:1.05rem;">
+            <li><strong>Clasificación</strong> por grados (AAST) y tipos.</li>
+            <li><strong>Clínica</strong> característica con signos y síntomas.</li>
+            <li><strong>Tratamiento</strong> según grado y estabilidad hemodinámica.</li>
+            <li><strong>Técnicas quirúrgicas</strong> completas: abordajes, maniobras, suturas, resecciones, anastomosis, drenajes y control de daños.</li>
+        </ul>
+        <hr>
+        <p style="color:#3a5e7a;">Énfasis en técnicas quirúrgicas abdominales paso a paso, incluyendo maniobras de movilización, suturas especiales y procedimientos de control de daños.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PARTES BLANDAS -->
+    <div class="content-section" id="sec-partes-blandas">
+        <h2>Traumatismo de partes blandas</h2>
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Cerradas:</strong> Conmoción y Contusión.</li>
+            <li><strong>Abiertas:</strong> Superficiales (excoriación, desgarro, avulsión) y Profundas (penetrantes, perforantes).</li>
+        </ul>
+        <h3>Clínica</h3>
+        <ul>
+            <li>Dolor, hemorragia subcutánea (equímosis/hematoma).</li>
+            <li>Derrame de Morell-Lavallée, impotencia funcional.</li>
+        </ul>
+        <h3>Técnica quirúrgica</h3>
+        <div class="surg-box">
+            <h4>Desbridamiento y sutura</h4>
+            <ol>
+                <li>Exploración y valoración de la profundidad.</li>
+                <li>Anestesia local con lidocaína al 1% + epinefrina.</li>
+                <li>Lavado con 3-5 L de solución salina a presión.</li>
+                <li>Resección en bloque de tejidos desvitalizados.</li>
+                <li>Hemostasia con ligadura de vasos (Vicryl 3/0) o electrocoagulación.</li>
+                <li>Cierre por planos con Vicryl 2/0 y piel con seda 3/0 o grapas.</li>
+                <li>Profilaxis antitetánica y antibióticos.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- POLITRAUMA -->
+    <div class="content-section" id="sec-politrauma">
+        <h2>Atención inicial al politraumatizado</h2>
+        <p><strong>Definición:</strong> 2 o más lesiones simultáneas que afectan órganos de distintos sistemas.</p>
+        <h3>Revisión primaria (ABCDE)</h3>
+        <ul>
+            <li><strong>A</strong> Vía aérea + columna cervical.</li>
+            <li><strong>B</strong> Ventilación.</li>
+            <li><strong>C</strong> Circulación + control de hemorragia.</li>
+            <li><strong>D</strong> Déficit neurológico (Glasgow).</li>
+            <li><strong>E</strong> Exposición y prevención de hipotermia.</li>
+        </ul>
+        <h3>Triage</h3>
+        <ul>
+            <li><span class="badge">🔴 ROJO</span> Prioridad absoluta.</li>
+            <li><span class="badge">🟡 AMARILLO</span> Grave estable.</li>
+            <li><span class="badge">🟢 VERDE</span> Estable, diferible.</li>
+            <li><span class="badge">🔵 AZUL</span> Expectante.</li>
+            <li><span class="badge">⚫ NEGRA</span> Fallecidos.</li>
+        </ul>
+    </div>
+
+    <!-- HEMORRAGIA -->
+    <div class="content-section" id="sec-hemorragia">
+        <h2>Grados de hemorragia aguda</h2>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Pérdida (mL)</th><th>Pulso</th><th>PA</th><th>Respiración</th><th>Estado mental</th><th>Reemplazo</th></tr></thead>
+            <tbody>
+                <tr><td>I (≤15%)</td><td>&lt;750</td><td>&lt;100</td><td>Normal</td><td>14-20</td><td>Ligera ansiedad</td><td>Cristaloides</td></tr>
+                <tr><td>II (15-30%)</td><td>750-1500</td><td>&gt;100</td><td>Normal</td><td>20-30</td><td>Moderada ansiedad</td><td>Cristaloides</td></tr>
+                <tr><td>III (30-40%)</td><td>1550-2000</td><td>&gt;120</td><td>Disminuida</td><td>30-40</td><td>Ansioso/confundido</td><td>Cristaloides + sangre</td></tr>
+                <tr><td>IV (+40%)</td><td>&gt;2000</td><td>&gt;140</td><td>Disminuida</td><td>&gt;40</td><td>Confundido/letárgico</td><td>Cristaloides + sangre</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TCE -->
+    <div class="content-section" id="sec-tce">
+        <h2>Traumatismo craneoencefálico (TCE)</h2>
+        <p><strong>PIC normal:</strong> 10 mmHg. &gt;20 = anormal; &gt;40 = grave.<br>
+        <strong>PPC:</strong> PAM – PIC. &lt;70 mmHg se asocia a mala evolución.</p>
+        <h3>Mecanismos</h3>
+        <ul>
+            <li>Impacto/aceleración, desaceleración, compresión craneal, penetración/perforación.</li>
+        </ul>
+        <h3>Lesiones primarias y secundarias</h3>
+        <ul>
+            <li><strong>Primarias:</strong> contusión, laceración, ruptura de vasos.</li>
+            <li><strong>Secundarias:</strong> edema, hematomas epidurales/subdurales/intracerebrales.</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-tce-clasif">
+        <h2>TCE - Clasificación</h2>
+        <ul>
+            <li><strong>Leve:</strong> Glasgow 15, reposo domiciliario.</li>
+            <li><strong>Moderado:</strong> Glasgow 13-14, observación 24h.</li>
+            <li><strong>Importante:</strong> Glasgow &lt;13, déficit motor, remitir a neurotrauma.</li>
+        </ul>
+        <h3>Hematoma epidural: técnica quirúrgica</h3>
+        <div class="surg-box">
+            <ol>
+                <li>Incisión en herradura o bicoronal.</li>
+                <li>Craneotomía para exponer el hematoma.</li>
+                <li>Evacuación del coágulo y lavado.</li>
+                <li>Hemostasia de la arteria meníngea media.</li>
+                <li>Cierre con fijación del colgajo óseo y drenaje subgaleal.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="content-section" id="sec-tce-glasgow">
+        <h2>Escala de Glasgow</h2>
+        <table class="grade-table">
+            <thead><tr><th>Ocular</th><th>Pts</th><th>Verbal</th><th>Pts</th><th>Motora</th><th>Pts</th></tr></thead>
+            <tbody>
+                <tr><td>Espontánea</td><td>4</td><td>Orientado</td><td>5</td><td>Obedece órdenes</td><td>6</td></tr>
+                <tr><td>Al llamado</td><td>3</td><td>Desorientado</td><td>4</td><td>Localiza dolor</td><td>5</td></tr>
+                <tr><td>Al dolor</td><td>2</td><td>Palabras inapropiadas</td><td>3</td><td>Retirada en flexión</td><td>4</td></tr>
+                <tr><td>Ninguna</td><td>1</td><td>Sonidos incomprensibles</td><td>2</td><td>Flexión anormal</td><td>3</td></tr>
+                <tr><td></td><td></td><td>Ninguna</td><td>1</td><td>Extensión</td><td>2</td></tr>
+                <tr><td></td><td></td><td></td><td></td><td>Ninguna</td><td>1</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- RAQUIMEDULAR -->
+    <div class="content-section" id="sec-raquimedular">
+        <h2>Traumatismo raquimedular (TRM)</h2>
+        <h3>Clínica</h3>
+        <ul>
+            <li>Cuadriplejia, paraplejia, trastornos sensitivos y esfinterianos.</li>
+        </ul>
+        <h3>Tratamiento médico</h3>
+        <ul>
+            <li>Metilprednisolona 30 mg/kg bolo + 5.4 mg/kg/h 24h.</li>
+            <li>Manitol al 20%: 100 ml IV cada 4h.</li>
+        </ul>
+        <h3>Técnica de descompresión y estabilización</h3>
+        <div class="surg-box">
+            <ol>
+                <li>Abordaje cervical anterior (derecho) para C3-C7.</li>
+                <li>Laminectomía para descomprimir el cordón.</li>
+                <li>Discectomía y corporectomía si hay fragmento óseo.</li>
+                <li>Instrumentación con tornillos pediculares y barras, o placa cervical anterior con injerto óseo.</li>
+                <li>Drenaje subcutáneo y cierre.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TÓRAX -->
+    <div class="content-section" id="sec-torax">
+        <h2>Traumatismo torácico</h2>
+        <p><strong>Clasificación:</strong> simples (sin lesión de órganos internos) y complejos (con lesión de órganos internos).</p>
+        <h3>Fisiopatología clave</h3>
+        <ul>
+            <li>Presión negativa intrapleural (3-6 cm H₂O espiración; 9-12 cm inspiración).</li>
+        </ul>
+    </div>
+
+    <div class="content-section" id="sec-torax-simple">
+        <h2>Traumas torácicos simples</h2>
+        <h3>Fracturas costales</h3>
+        <ul>
+            <li>Más frecuentes 4ª-10ª. Tratamiento: analgésicos, infiltración con procaína, bloqueo intercostal.</li>
+        </ul>
+        <h3>Fractura de esternón</h3>
+        <ul>
+            <li>Reducción y fijación quirúrgica con alambre de acero o placas.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+<!-- TRAUMA TORÁCICO COMPLEJO (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-torax-complejo">
+    <h2>Traumas torácicos complejos</h2>
+    <p><strong>Definición:</strong> Lesiones torácicas que afectan los órganos intratorácicos (pulmón, pleura, corazón, grandes vasos, esófago, diafragma) y que comprometen la función respiratoria, hemodinámica o ambas.</p>
+
+    <!-- ============================================================ -->
+    <!-- NEUMOTÓRAX -->
+    <!-- ============================================================ -->
+
+    <h3>Neumotórax</h3>
+
+    <h4>Definición</h4>
+    <p>Presencia de aire en la cavidad pleural, proveniente del parénquima pulmonar o del exterior, que produce colapso pulmonar y alteración de la mecánica respiratoria.</p>
+
+    <h4>Clasificación</h4>
+    <ul>
+        <li><strong>Por mecanismo:</strong>
+            <ul>
+                <li><strong>Cerrado (espontáneo o traumático):</strong> el aire proviene del parénquima pulmonar a través de una lesión de la pleura visceral.</li>
+                <li><strong>Abierto:</strong> comunicación directa de la cavidad pleural con el exterior a través de una herida de la pared torácica.</li>
+                <li><strong>A tensión (válvula):</strong> el aire entra en la cavidad pleural pero no puede salir, aumentando progresivamente la presión intrapleural. Puede ser por válvula interna (parenquimatosa) o externa (pared torácica).</li>
+            </ul>
+        </li>
+        <li><strong>Por extensión:</strong>
+            <ul>
+                <li><strong>Parcial (&lt;25%):</strong> colapso pulmonar mínimo, generalmente asintomático.</li>
+                <li><strong>Moderado (25-50%):</strong> colapso significativo con disnea leve-moderada.</li>
+                <li><strong>Total (100%):</strong> colapso completo del pulmón, disnea severa.</li>
+            </ul>
+        </li>
+        <li><strong>Por localización:</strong> unilateral o bilateral.</li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Dolor torácico:</strong> punzante, repentino, que empeora con la inspiración profunda.</li>
+            <li><strong>Disnea:</strong> de intensidad variable, proporcional al grado de colapso pulmonar.</li>
+            <li><strong>Tos:</strong> seca o con expectoración (si hay hemorragia asociada).</li>
+            <li><strong>En neumotórax a tensión:</strong>
+                <ul>
+                    <li>Disnea severa, cianosis, taquicardia, hipotensión.</li>
+                    <li>Desviación de la tráquea hacia el lado contralateral.</li>
+                    <li>Ingurgitación yugular, pulso paradójico.</li>
+                    <li>Ausencia de murmullo vesicular e hipersonoridad a la percusión.</li>
+                </ul>
+            </li>
+            <li><strong>En neumotórax abierto:</strong>
+                <ul>
+                    <li>Traumatopnea (entrada y salida de aire por la herida).</li>
+                    <li>Sonido soplante o de borboteo en la herida durante la respiración.</li>
+                    <li>Bamboleo mediastínico (desplazamiento del mediastino con cada respiración).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax (AP y lateral):</strong>
+            <ul>
+                <li>Línea pleural (borde del pulmón colapsado).</li>
+                <li>Radiotransparencia en el hemitórax afectado.</li>
+                <li>Desplazamiento mediastínico (en neumotórax a tensión).</li>
+                <li>Signo del surco profundo (en decúbito supino).</li>
+            </ul>
+        </li>
+        <li><strong>TAC de tórax:</strong> para neumotórax pequeños o encamados, o para evaluar lesiones asociadas.</li>
+        <li><strong>Ecografía (FAST):</strong> puede detectar neumotórax en el punto pulmonar (signo del pulmón deslizante).</li>
+        <li><strong>Gasometría:</strong> hipoxemia, hipercapnia en casos severos.</li>
+    </ul>
+
+    <h4>Tratamiento quirúrgico</h4>
+
+    <h5>1. Neumotórax a tensión — DESCOMPRESIÓN INMEDIATA</h5>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Punción descompresiva:</strong> aguja 14G o 16G en el 2º-3er espacio intercostal, línea medioclavicular, sobre el borde superior de la costilla inferior.</li>
+            <li><strong>Confirmación:</strong> salida de aire a presión (sonido sibilante).</li>
+            <li><strong>Convertir en pleurostomía:</strong> colocar tubo de drenaje en el mismo sitio o en 5º-6º EIC línea axilar media.</li>
+        </ol>
+    </div>
+
+    <h5>2. Neumotórax abierto — CONVERSIÓN A CERRADO</h5>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Aposito oclusivo:</strong> cubrir la herida con un apósito estéril fijado por tres lados (válvula de Heimlich improvisada).</li>
+            <li><strong>Si se convierte en neumotórax a tensión:</strong> ventilar el apósito o colocar pleurostomía.</li>
+            <li><strong>Pleurostomía definitiva:</strong> en 5º-6º EIC línea axilar media.</li>
+            <li><strong>Desbridamiento quirúrgico:</strong> de la herida de la pared torácica.</li>
+        </ol>
+    </div>
+
+    <h5>3. Neumotórax cerrado — PLEUROSTOMÍA MÍNIMA</h5>
+    <div class="surg-box">
+        <h6>Técnica de pleurostomía (pasos detallados)</h6>
+        <ol>
+            <li><strong>Posición:</strong> paciente en decúbito supino o semisentado, brazo ipsilateral elevado y rotado externamente.</li>
+            <li><strong>Anestesia:</strong> local con lidocaína al 1% (o 2%) con epinefrina, infiltrando piel, tejido subcutáneo, músculo intercostal y pleura.</li>
+            <li><strong>Punción de prueba:</strong> con aguja 18G en el sitio de inserción para confirmar la presencia de aire.</li>
+            <li><strong>Sitio de inserción:</strong>
+                <ul>
+                    <li><strong>Para neumotórax:</strong> 2º-3er EIC, línea medioclavicular (sitio de elección).</li>
+                    <li><strong>Para hemotórax o hemoneumotórax:</strong> 5º-6º EIC, línea axilar media o anterior.</li>
+                </ul>
+            </li>
+            <li><strong>Incisión:</strong> de 2-3 cm a lo largo del borde superior de la costilla inferior, en el sitio elegido.</li>
+            <li><strong>Disección:</strong> con pinza hemostática curva hasta la pleura, abriendo la pinza para penetrar en la cavidad pleural.</li>
+            <li><strong>Introducir el tubo:</strong>
+                <ul>
+                    <li><strong>Tamaño:</strong> 28-32 Fr para neumotórax, 32-36 Fr para hemotórax.</li>
+                    <li><strong>Dirección:</strong> dirigido hacia el vértice para neumotórax, hacia la base para hemotórax.</li>
+                    <li><strong>Profundidad:</strong> 10-15 cm en la cavidad pleural.</li>
+                </ul>
+            </li>
+            <li><strong>Fijación:</strong> con puntos de seda 2/0 en la piel.</li>
+            <li><strong>Conexión:</strong> a frasco con sello de agua (con o sin aspiración continua a -15 a -20 cm H₂O).</li>
+            <li><strong>Control radiográfico:</strong> post-inserción para confirmar la posición y la reexpansión pulmonar.</li>
+        </ol>
+    </div>
+
+    <h5>4. Neumotórax persistente o recurrente</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> fuga de aire >5 días, pulmón no reexpandido, o fuga >72h en paciente ventilado.</li>
+            <li><strong>Toracoscopia (VATS):</strong>
+                <ul>
+                    <li>Exploración de la cavidad pleural.</li>
+                    <li>Búsqueda de la fuga con instilación de suero.</li>
+                    <li>Resección de la lesión con grapadora endoscópica (endo-GIA).</li>
+                    <li>Pleurodesis química (talco, tetraciclina) si es necesario.</li>
+                </ul>
+            </li>
+            <li><strong>Toracotomía:</strong>
+                <ul>
+                    <li>Abordaje posterolateral.</li>
+                    <li>Resección en cuña del pulmón con grapadora.</li>
+                    <li>Sutura de la lesión con Vicryl 3/0 si es pequeña.</li>
+                    <li>Pleurodesis mecánica (abrasión pleural) o química.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HEMOTÓRAX -->
+    <!-- ============================================================ -->
+
+    <h3>Hemotórax</h3>
+
+    <h4>Definición</h4>
+    <p>Acumulación de sangre en la cavidad pleural por lesión de vasos intercostales, mamarios, pulmonares, diafragmáticos o de los grandes vasos del mediastino.</p>
+
+    <h4>Clasificación</h4>
+    <ul>
+        <li><strong>Por volumen:</strong>
+            <ul>
+                <li><strong>Pequeño (&lt;500 mL):</strong> generalmente asintomático, se resuelve con punción.</li>
+                <li><strong>Mediano (500-1500 mL):</strong> disnea moderada, requiere pleurostomía.</li>
+                <li><strong>Grande o masivo (&gt;1500 mL):</strong> shock hemorrágico, requiere toracotomía urgente.</li>
+            </ul>
+        </li>
+        <li><strong>Por origen:</strong>
+            <ul>
+                <li><strong>Pulmonar:</strong> generalmente se autolimita (baja presión).</li>
+                <li><strong>Vascular sistémico:</strong> alta presión, sangrado continuo (intercostales, mamarias).</li>
+                <li><strong>Cardíaco o de grandes vasos:</strong> exanguinante, alta mortalidad.</li>
+            </ul>
+        </li>
+        <li><strong>Por evolución:</strong>
+            <ul>
+                <li><strong>Agudo:</strong> sangrado activo en las primeras horas.</li>
+                <li><strong>Tardío:</strong> sangrado recurrente después de 24-72h.</li>
+                <li><strong>Retenido o coagulado:</strong> sangre coagulada en la cavidad pleural (requiere toracotomía).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Dolor torácico:</strong> en el lado afectado.</li>
+            <li><strong>Disnea:</strong> progresiva, proporcional al volumen de sangre.</li>
+            <li><strong>Signos de shock hipovolémico:</strong> taquicardia, hipotensión, palidez, sudoración fría.</li>
+            <li><strong>Signos de derrame pleural:</strong> matidez a la percusión, disminución del murmullo vesicular, ausencia de vibraciones vocales.</li>
+            <li><strong>En hemotórax masivo:</strong> ingurgitación yugular, desviación de la tráquea, shock refractario.</li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax (AP y lateral):</strong>
+            <ul>
+                <li>Opacidad homogénea en el hemitórax afectado.</li>
+                <li>Nivel hidroaéreo (si se asocia a neumotórax).</li>
+                <li>En decúbito supino: velamiento difuso sin nivel.</li>
+            </ul>
+        </li>
+        <li><strong>Ecografía (FAST):</strong> puede detectar líquido pleural (signo del "murciélago").</li>
+        <li><strong>TAC de tórax:</strong> para evaluar lesiones asociadas y hemotórax encamados.</li>
+        <li><strong>Hemograma:</strong> descenso de hemoglobina y hematocrito.</li>
+    </ul>
+
+    <h4>Tratamiento quirúrgico</h4>
+
+    <h5>1. Hemotórax pequeño (&lt;500 mL) — PUNCIÓN EVACUADORA</h5>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Sitio:</strong> 7º-8º EIC, línea axilar posterior (zona declive).</li>
+            <li><strong>Técnica:</strong> toracocentesis con aguja 18G o catéter de drenaje.</li>
+            <li><strong>Control:</strong> radiográfico y hematimétrico seriado.</li>
+            <li><strong>Si recidiva:</strong> colocar pleurostomía.</li>
+        </ol>
+    </div>
+
+    <h5>2. Hemotórax mediano (500-1500 mL) — PLEUROSTOMÍA BAJA</h5>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Sitio:</strong> 5º-6º EIC, línea axilar media o posterior.</li>
+            <li><strong>Técnica:</strong> igual a la pleurostomía descrita en neumotórax.</li>
+            <li><strong>Conectar:</strong> a sello de agua con aspiración (-15 a -20 cm H₂O).</li>
+            <li><strong>Monitorizar:</strong> débito de sangre en las primeras 24h.</li>
+            <li><strong>Si el débito es >200 mL/h durante 2-3h:</strong> indicación de toracotomía.</li>
+        </ol>
+    </div>
+
+    <h5>3. Hemotórax masivo (&gt;1500 mL) — TORACOTOMÍA DE URGENCIA</h5>
+    <div class="surg-box">
+        <h6>Indicaciones para toracotomía urgente</h6>
+        <ul>
+            <li><strong>Absolutas:</strong>
+                <ul>
+                    <li>Drenaje inicial &gt;1500 mL de sangre.</li>
+                    <li>Débito continuo &gt;200-300 mL/h durante 2-3 horas.</li>
+                    <li>Inestabilidad hemodinámica a pesar de la reanimación.</li>
+                    <li>Hemotórax masivo con taponamiento cardíaco asociado.</li>
+                </ul>
+            </li>
+            <li><strong>Relativas:</strong>
+                <ul>
+                    <li>Hemotórax retenido (coágulos) con atelectasia.</li>
+                    <li>Falla en la reexpansión pulmonar.</li>
+                    <li>Sospecha de lesión de grandes vasos.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h6>Técnica de toracotomía anterolateral (la más rápida)</h6>
+        <ol>
+            <li><strong>Posición:</strong> decúbito supino con brazo ipsilateral abducido y rotado externamente.</li>
+            <li><strong>Incisión:</strong> desde el borde esternal hasta la línea axilar posterior, en el 4º-5º EIC.</li>
+            <li><strong>Sección de músculos:</strong> pectoral mayor, serrato anterior, músculos intercostales.</li>
+            <li><strong>Apertura de la pleura:</strong> con pinza o tijera, extendiendo con los dedos.</li>
+            <li><strong>Evacuación:</strong> aspirar la sangre y evacuar los coágulos manualmente.</li>
+            <li><strong>Inspección:</strong>
+                <ul>
+                    <li><strong>Vasos intercostales:</strong> ligadura o electrocoagulación.</li>
+                    <li><strong>Arteria mamaria interna:</strong> ligadura con seda 0 o clips.</li>
+                    <li><strong>Pulmón:</strong> sutura o resección en cuña si hay lesión.</li>
+                    <li><strong>Corazón y grandes vasos:</strong> reparación si es necesario.</li>
+                    <li><strong>Diafragma:</strong> sutura si hay lesión.</li>
+                </ul>
+            </li>
+            <li><strong>Cierre:</strong>
+                <ul>
+                    <li>Colocar 1-2 tubos de tórax (32-36 Fr) en la cavidad pleural.</li>
+                    <li>Cerrar los músculos intercostales con catgut crómico 2/0.</li>
+                    <li>Cerrar el pectoral y serrato con Vicryl 1.</li>
+                    <li>Cerrar la piel con seda 2/0 o grapas.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <h5>4. Hemotórax retenido o coagulado</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> coágulos en la cavidad pleural, atelectasia, fiebre, o derrame pleural persistente.</li>
+            <li><strong>Toracoscopia (VATS):</strong>
+                <ul>
+                    <li>Evacuación de coágulos y lavado de la cavidad.</li>
+                    <li>Desbridamiento de la pleura.</li>
+                    <li>Colocación de tubos de tórax con aspiración.</li>
+                </ul>
+            </li>
+            <li><strong>Toracotomía:</strong>
+                <ul>
+                    <li>Abordaje posterolateral.</li>
+                    <li>Evacuación manual de coágulos y decorticación pleural.</li>
+                    <li>Colocación de 2 tubos de tórax.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HEMONEUMOTÓRAX -->
+    <!-- ============================================================ -->
+
+    <h3>Hemoneumotórax</h3>
+
+    <h4>Definición</h4>
+    <p>Presencia simultánea de aire (neumotórax) y sangre (hemotórax) en la cavidad pleural.</p>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li>Dolor torácico, disnea.</li>
+            <li>Signos de neumotórax (hipersonoridad) en la parte superior y de hemotórax (matidez) en la parte inferior.</li>
+            <li>Nivel hidroaéreo visible en la radiografía.</li>
+            <li>Shock si el hemotórax es significativo.</li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax (en bipedestación):</strong> nivel hidroaéreo (aire arriba, sangre abajo).</li>
+        <li><strong>TAC de tórax:</strong> para evaluar lesiones asociadas.</li>
+    </ul>
+
+    <h4>Tratamiento</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Pleurostomía baja:</strong> en 5º-6º EIC línea axilar media con tubo de 32-36 Fr.</li>
+            <li><strong>Si es necesario:</strong> colocar un segundo tubo en el 2º-3er EIC para el aire (si el tubo bajo no drena bien el neumotórax).</li>
+            <li><strong>Monitorizar:</strong> débito de sangre y fuga de aire.</li>
+            <li><strong>Si el sangrado es >200 mL/h o la fuga de aire es persistente:</strong> toracotomía o VATS.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TÓRAX BATIENTE (VOLET COSTAL) -->
+    <!-- ============================================================ -->
+
+    <h3>Tórax batiente (volet costal)</h3>
+
+    <h4>Definición</h4>
+    <p>Fractura de 3 o más costillas en dos o más líneas, creando un segmento costal móvil y aislado ("ventana" o "postigo") que se mueve paradójicamente durante la respiración.</p>
+
+    <h4>Clasificación</h4>
+    <ul>
+        <li><strong>Por localización:</strong>
+            <ul>
+                <li><strong>Anterior:</strong> afecta los arcos costales anteriores y el esternón.</li>
+                <li><strong>Lateral:</strong> afecta los arcos costales laterales.</li>
+                <li><strong>Posterior:</strong> afecta los arcos costales posteriores (menos frecuente, mejor estabilizado por la musculatura).</li>
+                <li><strong>Bilateral:</strong> afecta ambos hemitórax.</li>
+            </ul>
+        </li>
+        <li><strong>Por extensión:</strong>
+            <ul>
+                <li><strong>Pequeño:</strong> 3-4 costillas fracturadas.</li>
+                <li><strong>Extenso:</strong> 5 o más costillas fracturadas.</li>
+            </ul>
+        </li>
+        <li><strong>Por gravedad:</strong>
+            <ul>
+                <li><strong>Leve:</strong> sin compromiso respiratorio significativo.</li>
+                <li><strong>Moderado:</strong> con hipoxia y necesidad de oxígeno suplementario.</li>
+                <li><strong>Severo:</strong> con insuficiencia respiratoria que requiere ventilación mecánica.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Fisiopatología</h4>
+    <ul>
+        <li><strong>Movimiento paradójico:</strong> el segmento fracturado se hunde durante la inspiración (presión positiva atmosférica) y se abomba durante la espiración.</li>
+        <li><strong>Aire péndulo:</strong> el aire se mueve del pulmón afectado al sano durante la inspiración y viceversa durante la espiración.</li>
+        <li><strong>Bamboleo mediastínico:</strong> desplazamiento del mediastino hacia el lado sano en la inspiración y hacia el afectado en la espiración.</li>
+        <li><strong>Contusión pulmonar:</strong> subyacente al trauma, que empeora la hipoxia.</li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Movimiento paradójico visible:</strong> observación directa de la pared torácica.</li>
+            <li><strong>Dolor torácico intenso:</strong> que limita la respiración.</li>
+            <li><strong>Disnea:</strong> progresiva, con hipoxia.</li>
+            <li><strong>Cianosis:</strong> en casos severos.</li>
+            <li><strong>Signos de contusión pulmonar:</strong> hemoptisis, estertores húmedos, hipoxia.</li>
+            <li><strong>Fracturas asociadas:</strong> de esternón, clavícula, escapula.</li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax:</strong> fracturas costales múltiples, enfisema subcutáneo, hemotórax/neumotórax asociado.</li>
+        <li><strong>TAC de tórax con reconstrucción 3D:</strong> visualiza el número exacto de fracturas y el segmento libre.</li>
+        <li><strong>Gasometría:</strong> hipoxemia (PaO₂ &lt;60 mmHg), hipercapnia en casos severos.</li>
+    </ul>
+
+    <h4>Tratamiento quirúrgico</h4>
+
+    <h5>1. Estabilización externa (para casos leves-moderados)</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Fijación con apósitos:</strong> compresas fijadas con esparadrapo sobre el volet.</li>
+            <li><strong>Tracción externa:</strong>
+                <ul>
+                    <li>Pinzas de campo (erinas) en partes blandas o en costillas.</li>
+                    <li>Alambres pericostales con tracción de 2-3 kg.</li>
+                    <li>Sistema de polea y contrapeso.</li>
+                </ul>
+            </li>
+            <li><strong>Posición:</strong> decúbito sobre el lado afectado para estabilizar la pared.</li>
+        </ul>
+    </div>
+
+    <h5>2. Ventilación mecánica con PEEP (para casos severos)</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> PaO₂ &lt;60 mmHg, trabajo respiratorio excesivo, fatiga muscular.</li>
+            <li><strong>PEEP:</strong> 5-10 cm H₂O para estabilizar la pared torácica internamente.</li>
+            <li><strong>Ventilación:</strong> controlada o asistida hasta la consolidación de las fracturas (7-14 días).</li>
+        </ul>
+    </div>
+
+    <h5>3. Osteosíntesis quirúrgica (fijación interna) — indicada en casos severos</h5>
+    <div class="surg-box">
+        <h6>Indicaciones</h6>
+        <ul>
+            <li>Volet costal extenso (&gt;5 costillas).</li>
+            <li>Falla en la ventilación mecánica (no se puede destetar).</li>
+            <li>Deformidad torácica significativa.</li>
+            <li>Fracturas desplazadas con dolor crónico.</li>
+            <li>Lesión asociada que requiere toracotomía.</li>
+        </ul>
+
+        <h6>Técnica quirúrgica</h6>
+        <ol>
+            <li><strong>Abordaje:</strong> incisión sobre el área del volet (posterolateral, axilar o anterior).</li>
+            <li><strong>Exposición:</strong> disección de los músculos hasta exponer las costillas fracturadas.</li>
+            <li><strong>Reducción:</strong> alinear los fragmentos óseos anatómicamente.</li>
+            <li><strong>Fijación:</strong>
+                <ul>
+                    <li><strong>Placas de titanio o acero inoxidable:</strong> atornilladas a las costillas.</li>
+                    <li><strong>Agrafes de Judet:</strong> clips de metal que abrazan la costilla.</li>
+                    <li><strong>Cerclaje perióstico:</strong> con alambre de acero o sutura de polipropileno.</li>
+                    <li><strong>Varillas intramedulares:</strong> para costillas con fractura conminuta.</li>
+                </ul>
+            </li>
+            <li><strong>Revisión:</strong> comprobar la estabilidad de la fijación y la ausencia de lesiones subyacentes.</li>
+            <li><strong>Drenaje:</strong> colocar tubo de tórax si se abrió la pleura.</li>
+            <li><strong>Cierre:</strong> por planos, con drenaje subcutáneo.</li>
+        </ol>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PULMÓN HÚMEDO TRAUMÁTICO (CONTUSIÓN PULMONAR) -->
+    <!-- ============================================================ -->
+
+    <h3>Pulmón húmedo traumático (contusión pulmonar)</h3>
+
+    <h4>Definición</h4>
+    <p>Lesión parenquimatosa pulmonar por trauma cerrado o abierto, caracterizada por edema, hemorragia alveolar e intersticial, sin solución de continuidad de la pleura visceral.</p>
+
+    <h4>Fisiopatología</h4>
+    <ul>
+        <li><strong>Fase aguda (0-6h):</strong> hemorragia intraalveolar e intersticial, edema, formación de radicales libres.</li>
+        <li><strong>Fase intermedia (6-72h):</strong> aumento de la permeabilidad capilar, edema progresivo, pérdida de surfactante, atelectasia.</li>
+        <li><strong>Fase tardía (&gt;72h):</strong> fibrosis, neumonía, SDRA (Síndrome de Distrés Respiratorio Agudo) en casos severos.</li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Tos:</strong> húmeda, productiva (hemoptisis).</li>
+            <li><strong>Disnea:</strong> progresiva, de inicio generalmente tardío (2-6h después del trauma).</li>
+            <li><strong>Dolor torácico:</strong> por fracturas asociadas.</li>
+            <li><strong>Signos auscultatorios:</strong> estertores húmedos, sibilancias, roncus.</li>
+            <li><strong>Hipoxia:</strong> PaO₂ &lt;60 mmHg, que empeora con el tiempo.</li>
+            <li><strong>Fiebre:</strong> en fases avanzadas (neumonía).</li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax:</strong>
+            <ul>
+                <li>Inicialmente puede ser normal (las primeras 6h).</li>
+                <li>Opacidades parcheadas, moteado difuso, consolidación lobar o segmentaria.</li>
+                <li>Sin nivel hidroaéreo (diferencia con hemotórax).</li>
+            </ul>
+        </li>
+        <li><strong>TAC de tórax:</strong> más sensible que la Rx, muestra áreas de vidrio esmerilado, consolidación, atelectasia.</li>
+        <li><strong>Gasometría:</strong> hipoxemia (PaO₂ &lt;60 mmHg), acidosis respiratoria.</li>
+        <li><strong>Ecografía pulmonar:</strong> puede mostrar áreas de consolidación y derrame pleural asociado.</li>
+    </ul>
+
+    <h4>Tratamiento</h4>
+    <div class="surg-box">
+        <h5>1. Medidas generales (manejo conservador)</h5>
+        <ul>
+            <li><strong>Analgesia:</strong> control del dolor para evitar la hipoventilación (opioides, bloqueos intercostales, epidural).</li>
+            <li><strong>Oxigenoterapia:</strong> suplementaria con mascarilla o cánula nasal (objetivo SpO₂ >92%).</li>
+            <li><strong>Fisioterapia respiratoria:</strong> incentivo espirométrico, tos asistida, drenaje postural.</li>
+            <li><strong>Aerosoles:</strong> broncodilatadores, mucolíticos, antibióticos nebulizados.</li>
+            <li><strong>Balance hídrico:</strong> restricción de líquidos (evitar sobrecarga) y diuréticos si es necesario.</li>
+            <li><strong>Antibióticos:</strong> profilácticos si hay lesiones asociadas o drenajes.</li>
+        </ul>
+
+        <h5>2. Ventilación mecánica (para casos severos)</h5>
+        <ul>
+            <li><strong>Indicaciones:</strong> PaO₂ &lt;60 mmHg con FiO₂ >0.5, acidosis respiratoria, fatiga muscular, o empeoramiento radiológico.</li>
+            <li><strong>Modalidades:</strong>
+                <ul>
+                    <li><strong>PEEP (presión positiva al final de la espiración):</strong> 5-10 cm H₂O para reclutar alvéolos.</li>
+                    <li><strong>Ventilación protectora:</strong> volúmenes corrientes bajos (6-8 mL/kg) para evitar barotrauma.</li>
+                    <li><strong>Decúbito prono:</strong> mejora la oxigenación en casos refractarios.</li>
+                </ul>
+            </li>
+            <li><strong>Monitorización:</strong> gasometrías seriadas, radiografías de tórax diarias.</li>
+        </ul>
+
+        <h5>3. Tratamiento quirúrgico (casos excepcionales)</h5>
+        <ul>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Hematoma intrapulmonar que no se resuelve.</li>
+                    <li>Absceso pulmonar por sobreinfección.</li>
+                    <li>Fístula broncopleural persistente.</li>
+                </ul>
+            </li>
+            <li><strong>Técnica:</strong>
+                <ul>
+                    <li><strong>Resección en cuña:</strong> con grapadora endoscópica o abierta.</li>
+                    <li><strong>Lobectomía:</strong> si hay necrosis extensa.</li>
+                    <li><strong>VATS:</strong> para drenaje de abscesos o decorticación.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUILOTÓRAX -->
+    <!-- ============================================================ -->
+
+    <h3>Quilotórax</h3>
+
+    <h4>Definición</h4>
+    <p>Acumulación de linfa (quilo) en la cavidad pleural, por ruptura del conducto torácico o de sus ramas, generalmente por trauma cerrado o penetrante, o iatrogénico (cirugía torácica).</p>
+
+    <h4>Etiología</h4>
+    <ul>
+        <li><strong>Traumático (50%):</strong>
+            <ul>
+                <li><strong>Cerrado:</strong> por hiperextensión o compresión (caídas, accidentes).</li>
+                <li><strong>Penetrante:</strong> arma blanca o de fuego.</li>
+                <li><strong>Iatrogénico:</strong> cirugía esofágica, torácica, cervical (tiroidectomía, discectomía).</li>
+            </ul>
+        </li>
+        <li><strong>No traumático (50%):</strong> maligno (linfoma, metástasis), infeccioso (tuberculosis), o idiopático.</li>
+    </ul>
+
+    <h4>Fisiopatología</h4>
+    <ul>
+        <li><strong>Conducto torácico:</strong> drena la linfa de todo el cuerpo excepto el lado derecho de la cabeza, cuello y extremidad superior derecha.</li>
+        <li><strong>Nivel de ruptura:</strong>
+            <ul>
+                <li><strong>Por encima de T5:</strong> quilotórax <strong>izquierdo</strong> (el conducto cruza de derecha a izquierda a este nivel).</li>
+                <li><strong>Por debajo de T5:</strong> quilotórax <strong>derecho</strong>.</li>
+            </ul>
+        </li>
+        <li><strong>Pérdida nutricional:</strong> 1.5-2.5 L/día de linfa rica en grasas (triglicéridos), proteínas, electrolitos, linfocitos, inmunoglobulinas.</li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Inicio insidioso:</strong> generalmente 2-10 días después del trauma.</li>
+            <li><strong>Disnea:</strong> progresiva por derrame pleural masivo.</li>
+            <li><strong>Dolor torácico:</strong> opresivo o sordo.</li>
+            <li><strong>Signos de derrame pleural:</strong> matidez, abolición del murmullo vesicular.</li>
+            <li><strong>Signos de depleción nutricional:</strong> pérdida de peso, debilidad, edema, inmunosupresión (infecciones recurrentes).</li>
+        </ul>
+    </div>
+
+    <h4>Diagnóstico</h4>
+    <ul>
+        <li><strong>Rx de tórax:</strong> derrame pleural masivo o moderado (generalmente unilateral).</li>
+        <li><strong>TAC de tórax:</strong> derrame pleural, puede mostrar el trayecto del conducto torácico.</li>
+        <li><strong>Toracocentesis:</strong>
+            <ul>
+                <li><strong>Aspecto:</strong> líquido lechoso (en ayunas) o serohemático.</li>
+                <li><strong>Análisis:</strong>
+                    <ul>
+                        <li><strong>Triglicéridos:</strong> >110 mg/dL (criterio diagnóstico).</li>
+                        <li><strong>Colesterol:</strong> generalmente &lt;200 mg/dL.</li>
+                        <li><strong>Relación quilomicrones/HDL:</strong> positiva en el 90%.</li>
+                        <li><strong>Células:</strong> predominantemente linfocitos.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Linfangiografía o linfogammagrafía:</strong> para localizar la fuga (rara vez necesaria).</li>
+    </ul>
+
+    <h4>Tratamiento</h4>
+
+    <h5>1. Tratamiento conservador (inicial)</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Drenaje pleural:</strong> colocar tubo de tórax (28-32 Fr) con aspiración continua (-15 a -20 cm H₂O).</li>
+            <li><strong>Dieta baja en grasas (MCT):</strong> triglicéridos de cadena media se absorben directamente al torrente sanguíneo, disminuyendo la producción de linfa.</li>
+            <li><strong>Nutrición parenteral:</strong> si la dieta enteral no es suficiente o el débito es >500 mL/día.</li>
+            <li><strong>Octeotride (análogo de somatostatina):</strong> 50-100 µg subcutáneo cada 8h, reduce la producción de linfa en un 50-70%.</li>
+            <li><strong>Control:</strong> medir el débito de quilo diariamente.</li>
+            <li><strong>Si el débito disminuye (&lt;200 mL/día en 5-7 días):</strong> retirar el drenaje y reintroducir dieta oral progresivamente.</li>
+        </ul>
+    </div>
+
+    <h5>2. Tratamiento quirúrgico (cuando falla el conservador)</h5>
+    <div class="surg-box">
+        <h6>Indicaciones</h6>
+        <ul>
+            <li>Débito &gt;500 mL/día durante 5 días consecutivos.</li>
+            <li>Débito &gt;1000 mL/día durante 3 días.</li>
+            <li>Falla en la disminución del débito con el tratamiento médico (10-14 días).</li>
+            <li>Complicaciones nutricionales o inmunológicas.</li>
+        </ul>
+
+        <h6>Técnica quirúrgica (ligadura del conducto torácico)</h6>
+        <ol>
+            <li><strong>Abordaje:</strong>
+                <ul>
+                    <li><strong>Derecho:</strong> toracotomía posterolateral derecha (para lesiones en el tercio inferior).</li>
+                    <li><strong>Izquierdo:</strong> toracotomía posterolateral izquierda (para lesiones en el tercio superior).</li>
+                    <li><strong>VATS (toracoscopia):</strong> mínimamente invasivo, cada vez más utilizado.</li>
+                </ul>
+            </li>
+            <li><strong>Preparación:</strong> administrar 100-200 mL de leche o aceite de oliva a través de sonda nasogástrica 2-3 horas antes de la cirugía para visualizar el conducto (coloración blanca o amarilla).</li>
+            <li><strong>Exposición del conducto torácico:</strong>
+                <ul>
+                    <li>Incidir la pleura mediastínica posterior, entre la vena ácigos (derecha) y la aorta (izquierda).</li>
+                    <li>El conducto torácico se encuentra entre la columna vertebral y el esófago.</li>
+                </ul>
+            </li>
+            <li><strong>Identificación:</strong>
+                <ul>
+                    <li>Buscar la fuga de linfa (leche).</li>
+                    <li>Si no se encuentra la fuga, realizar ligadura en bloque por encima del diafragma (a nivel de T8-T10).</li>
+                </ul>
+            </li>
+            <li><strong>Ligadura:</strong>
+                <ul>
+                    <li>Disecar el conducto torácico y las estructuras adyacentes.</li>
+                    <li>Ligar con seda 2/0 o clips de titanio (por encima y por debajo de la fuga).</li>
+                    <li>Seccionar el conducto entre las ligaduras.</li>
+                </ul>
+            </li>
+            <li><strong>Refuerzo:</strong> si es posible, cubrir la zona con un colgajo de pleura o de músculo intercostal.</li>
+            <li><strong>Drenaje:</strong> colocar tubo de tórax (28-32 Fr) y conectar a sello de agua con aspiración.</li>
+            <li><strong>Cierre:</strong> por planos, con drenaje subcutáneo.</li>
+        </ol>
+    </div>
+
+    <h5>3. Manejo postoperatorio</h5>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Dieta baja en grasas (MCT)</strong> durante 5-7 días.</li>
+            <li><strong>Control del débito:</strong> medir el quilo drenado diariamente.</li>
+            <li><strong>Si el débito es &lt;50-100 mL/día:</strong> retirar el tubo de tórax.</li>
+            <li><strong>Si el débito persiste (&gt;200 mL/día):</strong> repetir la ligadura o considerar pleurodesis química.</li>
+            <li><strong>Antibióticos:</strong> profilácticos.</li>
+            <li><strong>Rehabilitación:</strong> progresión a dieta normal.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SÍNDROME DE BAMBOLEO MEDIASTÍNICO -->
+    <!-- ============================================================ -->
+
+    <h3>Bamboleo mediastínico</h3>
+
+    <h4>Definición</h4>
+    <p>Desplazamiento del mediastino de un lado a otro durante los movimientos respiratorios, secundario a un neumotórax abierto o a un tórax batiente.</p>
+
+    <h4>Fisiopatología</h4>
+    <ul>
+        <li><strong>Inspiración:</strong> presión negativa en el hemitórax sano → el mediastino se desplaza hacia el lado sano.</li>
+        <li><strong>Espiración:</strong> presión positiva en el hemitórax sano → el mediastino se desplaza hacia el lado afectado.</li>
+        <li><strong>Consecuencias:</strong> compresión del pulmón sano, angulación de los grandes vasos (vena cava), disminución del retorno venoso, hipoxia, shock.</li>
+    </ul>
+
+    <h4>Clínica</h4>
+    <div class="clin-box">
+        <ul>
+            <li>Disnea severa, cianosis, taquicardia, hipotensión.</li>
+            <li>Ingurgitación yugular, pulso paradójico.</li>
+            <li>Movimiento paradójico del mediastino visible en la radiografía.</li>
+        </ul>
+    </div>
+
+    <h4>Tratamiento</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Neumotórax abierto:</strong> cubrir la herida con apósito oclusivo para convertir en neumotórax cerrado.</li>
+            <li><strong>Pleurostomía:</strong> en 5º-6º EIC para evacuar el aire y la sangre.</li>
+            <li><strong>Toracotomía:</strong> si el bamboleo mediastínico persiste o hay lesión asociada.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ALGORITMO DE DECISIÓN TERAPÉUTICA -->
+    <!-- ============================================================ -->
+
+    <h3>Algoritmo de decisión terapéutica en trauma torácico complejo</h3>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Neumotórax &lt;25%, asintomático:</strong> Observación y oxigenoterapia.</li>
+            <li><strong>Neumotórax >25% o sintomático:</strong> Pleurostomía (2º-3er EIC).</li>
+            <li><strong>Neumotórax a tensión:</strong> Punción descompresiva + pleurostomía.</li>
+            <li><strong>Neumotórax abierto:</strong> Apósito oclusivo + pleurostomía.</li>
+            <li><strong>Hemotórax &lt;500 mL:</strong> Punción evacuadora.</li>
+            <li><strong>Hemotórax 500-1500 mL:</strong> Pleurostomía baja.</li>
+            <li><strong>Hemotórax >1500 mL o débito >200 mL/h:</strong> Toracotomía urgente.</li>
+            <li><strong>Hemoneumotórax:</strong> Pleurostomía baja (5º-6º EIC) con tubo grueso.</li>
+            <li><strong>Tórax batiente:</strong> Analgesia + oxigenoterapia; si es severo, ventilación mecánica u osteosíntesis.</li>
+            <li><strong>Contusión pulmonar:</strong> Oxigenoterapia + analgesia + fisioterapia; si es severo, ventilación mecánica.</li>
+            <li><strong>Quilotórax:</strong> Dieta baja en grasas + drenaje; si falla, ligadura del conducto torácico.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA CARDÍACO (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-torax-cardiaco">
+    <h2>Trauma cardíaco (técnicas ampliadas)</h2>
+
+    <h3>Clasificación de lesiones cardíacas</h3>
+    <ul>
+        <li><strong>Contusión cardíaca (grado I):</strong> lesión por trauma cerrado sin ruptura de la pared. Puede causar arritmias, elevación de enzimas (CPK-MB, troponina).</li>
+        <li><strong>Ruptura cardíaca (grado II):</strong> desgarro de la pared del corazón (aurícula, ventrículo, tabique). Clasificación:
+            <ul>
+                <li><strong>Tipo A:</strong> ruptura de aurícula derecha (la más frecuente).</li>
+                <li><strong>Tipo B:</strong> ruptura de ventrículo derecho.</li>
+                <li><strong>Tipo C:</strong> ruptura de ventrículo izquierdo (la más letal).</li>
+                <li><strong>Tipo D:</strong> ruptura de aurícula izquierda.</li>
+                <li><strong>Tipo E:</strong> ruptura de tabique interventricular o válvulas.</li>
+            </ul>
+        </li>
+        <li><strong>Herida penetrante (grado III):</strong> por arma blanca (cuchillo, punzón) o arma de fuego (baja o alta velocidad).</li>
+        <li><strong>Lesión de vasos coronarios (grado IV):</strong> sección o laceración de una arteria coronaria (riesgo de infarto).</li>
+        <li><strong>Taponamiento cardíaco (grado V):</strong> acumulación de sangre en el pericardio que comprime el corazón.</li>
+    </ul>
+
+    <h3>Clínica del trauma cardíaco</h3>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Contusión:</strong> dolor torácico, arritmias (taquicardia, fibrilación auricular, extrasístoles), hipotensión, elevación de troponina.</li>
+            <li><strong>Ruptura/Herida:</strong> shock hemorrágico, hipotensión severa, ingurgitación yugular (si hay taponamiento), disminución de ruidos cardíacos.</li>
+            <li><strong>Taponamiento:</strong> <strong>Triada de Beck:</strong> hipotensión arterial, ingurgitación yugular, ruidos cardíacos apagados. Pulso paradójico (disminución &gt;10 mmHg en la presión sistólica durante la inspiración).</li>
+            <li><strong>Herida penetrante:</strong> sangrado profuso por la herida torácica o abdominal (si es toracoabdominal).</li>
+            <li><strong>Disociación electromecánica:</strong> actividad eléctrica sin pulso (signo de taponamiento o ruptura masiva).</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Ecocardiograma (FAST o transesofágico):</strong> GOLD STANDARD para taponamiento y lesiones valvulares.</li>
+        <li><strong>Rx de tórax:</strong> ensanchamiento mediastínico, silueta cardíaca aumentada (hemopericardio).</li>
+        <li><strong>ECG:</strong> arritmias, alteraciones del ST (isquemia o contusión).</li>
+        <li><strong>Enzimas cardíacas:</strong> troponina, CPK-MB (elevadas en contusión).</li>
+        <li><strong>TAC con contraste:</strong> si el paciente está estable, evalúa lesiones asociadas.</li>
+        <li><strong>Angiografía coronaria:</strong> si se sospecha lesión de coronarias.</li>
+    </ul>
+
+    <h3>Tratamiento quirúrgico del trauma cardíaco (técnicas detalladas)</h3>
+
+    <h4>1. Taponamiento cardíaco — Pericardiocentesis</h4>
+    <div class="surg-box">
+        <h5>Vía de Marfán (inferior, la más segura)</h5>
+        <ol>
+            <li><strong>Posición:</strong> paciente en decúbito supino, tórax elevado 30° (posición de Fowler).</li>
+            <li><strong>Anestesia:</strong> local con lidocaína al 1% en el ángulo entre el cartílago de la 7ª costilla izquierda y el apéndice xifoides.</li>
+            <li><strong>Punción:</strong> aguja 18G o 16G de 10-15 cm, con inclinación de 25° hacia el hombro derecho, aspirando constantemente.</li>
+            <li><strong>Confirmación:</strong> se obtiene sangre que no coagula (por la fibrina del pericardio). Si coagula, se ha puncionado una cavidad cardíaca.</li>
+            <li><strong>Evacuación:</strong> aspirar lentamente hasta obtener un alivio clínico (mejoría de la TA y disminución de la ingurgitación yugular).</li>
+            <li><strong>Dejar catéter:</strong> si es posible, colocar un catéter intrapericárdico para drenaje continuo (conectado a sello de agua).</li>
+            <li><strong>Si no mejora:</strong> pasar a toracotomía de urgencia.</li>
+        </ol>
+        <h5>Vía anterior (paraesternal izquierda)</h5>
+        <ul>
+            <li>Punción en el 5º EIC, 2-3 cm por fuera del borde esternal, dirigiendo la aguja hacia la punta del corazón.</li>
+            <li>Menos utilizada por riesgo de lesionar la arteria mamaria interna o coronarias.</li>
+        </ul>
+    </div>
+
+    <h4>2. Ventana pericárdica subxifoidea (para drenaje y diagnóstico)</h4>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Incisión:</strong> vertical de 4-5 cm desde el apéndice xifoides hacia el ombligo.</li>
+            <li><strong>Disección:</strong> separar el recto anterior, exponer el xifoides y resecarlo (si es necesario).</li>
+            <li><strong>Apertura del pericardio:</strong> incidir el pericardio en la unión con el diafragma, aspirar la sangre.</li>
+            <li><strong>Drenaje:</strong> colocar un tubo de drenaje (24 Fr) en el pericardio y conectarlo a sello de agua.</li>
+            <li><strong>Cierre:</strong> cerrar la fascia y la piel, dejar el drenaje exteriorizado.</li>
+            <li><strong>Indicación:</strong> si el paciente está inestable y no se puede realizar pericardiocentesis, o como paso previo a la toracotomía.</li>
+        </ol>
+    </div>
+
+    <h4>3. Toracotomía de urgencia (esternotomía media o toracotomía anterolateral)</h4>
+    <div class="surg-box">
+        <h5>Abordaje: Toracotomía anterolateral izquierda (la más rápida)</h5>
+        <ol>
+            <li><strong>Incisión:</strong> en el 4º-5º EIC, desde el borde esternal hasta la línea axilar media (o posterior).</li>
+            <li><strong>Sección:</strong> del músculo pectoral mayor, serrato anterior e intercostales.</li>
+            <li><strong>Apertura:</strong> de la pleura y el pericardio (por delante del nervio frénico).</li>
+            <li><strong>Exposición:</strong> el corazón se expone y se evacua el hemopericardio.</li>
+            <li><strong>Si el paciente está en paro:</strong> se realiza masaje cardíaco directo y desfibrilación interna (si es necesario).</li>
+        </ol>
+
+        <h5>Abordaje: Esternotomía media (para lesiones complejas o bilaterales)</h5>
+        <ol>
+            <li><strong>Incisión:</strong> desde la horquilla esternal hasta el apéndice xifoides.</li>
+            <li><strong>Sección del esternón:</strong> con sierra eléctrica o esternotomo.</li>
+            <li><strong>Apertura:</strong> con separador de esternón, exponer el mediastino anterior y el pericardio.</li>
+            <li><strong>Incidir el pericardio:</strong> longitudinalmente por delante del nervio frénico, evacuar la sangre.</li>
+        </ol>
+
+        <h5>Maniobra de control de la hemorragia</h5>
+        <ul>
+            <li><strong>Compresión digital:</strong> el cirujano introduce un dedo en la herida cardíaca para taponar temporalmente mientras se prepara la sutura.</li>
+            <li><strong>Pinza de Satinsky:</strong> si la lesión es pequeña y accesible, se coloca una pinza vascular tangencial para controlar el sangrado.</li>
+            <li><strong>Si la lesión es en la cara posterior:</strong> se moviliza el corazón con cuidado (riesgo de arritmias) para exponer la lesión.</li>
+        </ul>
+
+        <h5>Sutura de la herida cardíaca</h5>
+        <ul>
+            <li><strong>Material:</strong> prolene 4/0 o 5/0 con aguja atraumática (no reabsorbible).</li>
+            <li><strong>Técnica:</strong> puntos separados, simples o en "U" verticales, que abarquen todo el espesor de la pared (incluyendo el endocardio).</li>
+            <li><strong>No incluir vasos coronarios:</strong> si la herida está cerca de una coronaria, se sutura por debajo de ella (puntos paralelos a la arteria).</li>
+            <li><strong>Si la herida es grande (&gt;2 cm):</strong> se pueden colocar puntos de tracción (seda 2/0) para aproximar los bordes y luego suturar con prolene.</li>
+            <li><strong>Refuerzo:</strong> si el tejido es friable, se puede reforzar la sutura con un parche de pericardio o de Dacron.</li>
+            <li><strong>Prueba de estanqueidad:</strong> irrigar con suero tibio para comprobar que no hay fugas.</li>
+        </ul>
+
+        <h5>Manejo de lesiones específicas</h5>
+        <ul>
+            <li><strong>Aurícula:</strong> se sutura con puntos de prolene 4/0 o con grapadora vascular (si es posible).</li>
+            <li><strong>Ventrículo derecho:</strong> pared más delgada, se sutura con prolene 4/0 con puntos separados.</li>
+            <li><strong>Ventrículo izquierdo:</strong> mayor presión, se sutura con prolene 5/0 con puntos en "U" reforzados con Teflon (para evitar que la sutura corte).</li>
+            <li><strong>Lesión de coronarias:</strong> si es una rama pequeña, se liga con prolene 6/0. Si es una arteria principal (descendente anterior, circunfleja, derecha), se realiza un bypass coronario (injerto de vena safena) si el paciente está estable.</li>
+            <li><strong>Ruptura de tabique interventricular:</strong> se repara con parche de Dacron o pericardio, con prolene 4/0, bajo circulación extracorpórea (si es posible).</li>
+            <li><strong>Lesión valvular:</strong> se repara con sutura o se reemplaza la válvula (en un segundo tiempo si el paciente está inestable).</li>
+        </ul>
+
+        <h5>Cierre del pericardio y del tórax</h5>
+        <ul>
+            <li><strong>Pericardio:</strong> se cierra parcialmente (dejando un drenaje) para evitar el taponamiento recurrente. Se fija con puntos de Vicryl 2/0.</li>
+            <li><strong>Drenaje:</strong> colocar un tubo de tórax (28-32 Fr) en el hemitórax izquierdo, conectado a sello de agua. Se puede colocar un segundo tubo en el mediastino.</li>
+            <li><strong>Cierre del tórax:</strong> se aproximan las costillas con puntos de catgut crómico, se suturan los músculos (pectoral, serrato) con Vicryl 1, y la piel con seda 2/0 o grapas.</li>
+            <li><strong>Si se realizó esternotomía:</strong> se cierra el esternón con alambre de acero (8-10 puntos) y se suturan los planos.</li>
+        </ul>
+    </div>
+
+    <h4>4. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI:</strong> monitorización hemodinámica invasiva (PVC, presión arterial invasiva), ECG continuo.</li>
+            <li><strong>Drenajes:</strong> control del débito (sangre, serosidad). Si el sangrado es &gt;200 mL/h durante 2 horas, se considera reintervención.</li>
+            <li><strong>Antibióticos:</strong> cefalosporina de 1ª-2ª generación profiláctica.</li>
+            <li><strong>Ecocardiograma de control:</strong> a las 24-48h para descartar taponamiento recurrente o lesiones valvulares.</li>
+            <li><strong>Arritmias:</strong> manejo con amiodarona o lidocaína si es necesario.</li>
+            <li><strong>Si el paciente desarrolla taponamiento recurrente:</strong> se realiza ventana pericárdica o reoperación.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA ESOFÁGICO TORÁCICO (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-torax-esofago">
+    <h2>Trauma esofágico (torácico) — técnicas ampliadas</h2>
+
+    <h3>Clasificación detallada</h3>
+
+    <h4>1. Por localización anatómica</h4>
+    <ul>
+        <li><strong>Cervical:</strong> desde el esfínter esofágico superior hasta la entrada al tórax (T1).</li>
+        <li><strong>Torácica superior:</strong> desde T1 hasta el cayado aórtico.</li>
+        <li><strong>Torácica media:</strong> desde el cayado aórtico hasta la vena pulmonar inferior.</li>
+        <li><strong>Torácica inferior:</strong> desde la vena pulmonar inferior hasta el hiato diafragmático.</li>
+        <li><strong>Abdominal:</strong> porción intraabdominal (2-4 cm).</li>
+    </ul>
+
+    <h4>2. Por mecanismo de lesión</h4>
+    <ul>
+        <li><strong>Iatrogénica (intraluminal):</strong> endoscopia, dilatación, colocación de sonda nasogástrica, intubación.</li>
+        <li><strong>Perforación por cuerpo extraño:</strong> espina de pescado, hueso, objetos ingeridos.</li>
+        <li><strong>Trauma cerrado (contusión):</strong> por desaceleración, compresión o estallido (raro, 5-10% de las perforaciones).</li>
+        <li><strong>Trauma abierto (extraluminal):</strong> arma blanca (punzante/cortante), arma de fuego (baja/alta velocidad), fragmentos de metralla.</li>
+        <li><strong>Química:</strong> ingestión de cáusticos (sosa, ácidos) — produce necrosis y perforación tardía.</li>
+        <li><strong>Espontánea (síndrome de Boerhaave):</strong> ruptura por vómitos violentos (tercio inferior izquierdo).</li>
+    </ul>
+
+    <h4>3. Clasificación de Urschel (por extensión y gravedad)</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Grado</th><th>Descripción</th><th>Mortalidad estimada</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="badge">I</span></td><td>Perforación contenida en el mediastino, sin derrame a cavidades.</td><td>&lt;10%</td></tr>
+            <tr><td><span class="badge">II</span></td><td>Perforación con derrame a cavidad pleural o peritoneal localizado.</td><td>10-30%</td></tr>
+            <tr><td><span class="badge">III</span></td><td>Perforación con derrame a cavidades y mediastinitis franca.</td><td>30-50%</td></tr>
+            <tr><td><span class="badge">IV</span></td><td>Perforación con sepsis grave, shock séptico o fallo multiorgánico.</td><td>&gt;50%</td></tr>
+        </tbody>
+    </table>
+
+    <h4>4. Clasificación de la Sociedad Europea de Cirugía Torácica (ESTS)</h4>
+    <ul>
+        <li><strong>Tipo A:</strong> Perforación cervical (por encima de la horquilla esternal).</li>
+        <li><strong>Tipo B:</strong> Perforación torácica superior (T1-T4).</li>
+        <li><strong>Tipo C:</strong> Perforación torácica media (T5-T8).</li>
+        <li><strong>Tipo D:</strong> Perforación torácica inferior (T9-T12).</li>
+        <li><strong>Tipo E:</strong> Perforación abdominal.</li>
+    </ul>
+
+    <h4>5. Clasificación de la Asociación Americana de Cirugía del Trauma (AAST) para esófago</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Grado</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="badge">I</span></td><td>Contusión o hematoma intramural, sin perforación.</td></tr>
+            <tr><td><span class="badge">II</span></td><td>Laceración o perforación &lt;50% de la circunferencia.</td></tr>
+            <tr><td><span class="badge">III</span></td><td>Laceración o perforación &gt;50% de la circunferencia.</td></tr>
+            <tr><td><span class="badge">IV</span></td><td>Perforación con pérdida de tejido &lt;2 cm.</td></tr>
+            <tr><td><span class="badge">V</span></td><td>Perforación con pérdida de tejido &gt;2 cm o lesión vascular asociada.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Dolor:</strong> retroesternal o cervical, irradiado a la espalda (interescapular), que empeora con la deglución o la tos.</li>
+            <li><strong>Disfagia y odinofagia:</strong> dificultad y dolor al tragar.</li>
+            <li><strong>Enfisema subcutáneo cervical</strong> (crepitación en cuello y cara).</li>
+            <li><strong>Signos de mediastinitis:</strong> fiebre alta (&gt;38.5°C), taquicardia, leucocitosis, irritabilidad, shock séptico.</li>
+            <li><strong>Signos de derrame pleural:</strong> disnea, matidez a la percusión, abolición del murmullo vesicular (neumotórax, derrame pleural, hidroneumotórax).</li>
+            <li><strong>Signo de Hamman:</strong> crepitación mediastinal sincrónica con el latido cardíaco (neumomediastino).</li>
+            <li><strong>En perforación al mediastino:</strong> dolor cervical, disfonía (por irritación del nervio recurrente).</li>
+            <li><strong>En síndrome de Boerhaave:</strong> dolor torácico violento tras vómitos, enfisema subcutáneo, shock.</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Rx de tórax y cuello:</strong> enfisema mediastínico, neumotórax, derrame pleural, ensanchamiento mediastínico, neumomediastino, nivel hidroaéreo en el mediastino.</li>
+        <li><strong>Esofagograma con contraste hidrosoluble (Gastrografín):</strong> <strong>NUNCA con bario</strong> (produce mediastinitis grave). Sensibilidad ~90%.</li>
+        <li><strong>TAC de tórax con contraste oral y endovenoso:</strong> confirma la perforación, muestra el trayecto, abscesos, derrame, enfisema mediastínico.</li>
+        <li><strong>Endoscopia digestiva alta:</strong> útil en lesiones iatrogénicas o cuerpos extraños. <strong>Precaución:</strong> puede ampliar la perforación, debe ser realizada por un endoscopista experto.</li>
+        <li><strong>Broncoscopía:</strong> para descartar lesión traqueobronquial asociada (frecuente en traumas penetrantes).</li>
+        <li><strong>Ecografía:</strong> puede mostrar derrame pleural o pericárdico.</li>
+    </ul>
+
+    <h3>Tratamiento quirúrgico (técnicas detalladas)</h3>
+
+    <h4>1. Reparación primaria (indicada en &lt;6h, lesión limpia, sin mediastinitis franca)</h4>
+    <div class="surg-box">
+        <h5>Abordaje según localización</h5>
+        <ul>
+            <li><strong>Tercio superior (T1-T4):</strong> cervicotomía izquierda (borde anterior del ECM) o toracotomía posterolateral derecha.</li>
+            <li><strong>Tercio medio (T5-T8):</strong> toracotomía posterolateral derecha (la más usada).</li>
+            <li><strong>Tercio inferior (T9-T12) y abdominal:</strong> toracotomía posterolateral izquierda o laparotomía + toracofrenotomía (acceso combinado).</li>
+        </ul>
+
+        <h5>Pasos quirúrgicos</h5>
+        <ol>
+            <li><strong>Incisión:</strong> toracotomía posterolateral derecha (si es tercio medio). Se seccionan los músculos dorsal ancho, serrato anterior y romboides. Se abre la pleura en el 5º-6º EIC.</li>
+            <li><strong>Exposición del esófago:</strong> incisión de la pleura mediastínica sobre el esófago. Se moviliza el esófago con disección roma (cuidando los nervios recurrentes y el conducto torácico).</li>
+            <li><strong>Identificación de la perforación:</strong> se busca el punto de fuga (aire, burbujas, contenido gastrointestinal). Se puede inyectar suero con azul de metileno a través de sonda nasogástrica para localizar la lesión.</li>
+            <li><strong>Desbridamiento:</strong> resección de los bordes contusos, necróticos o muy contaminados hasta llegar a tejido sano (margen de 2-3 mm).</li>
+            <li><strong>Sutura en dos planos:</strong>
+                <ul>
+                    <li><strong>Plano mucoso:</strong> Vicryl 4/0 o PDS 4/0 en puntos separados (o sutura continua) con aguja atraumática.</li>
+                    <li><strong>Plano muscular:</strong> Vicryl 3/0 en puntos separados de Lembert, invaginando la mucosa.</li>
+                    <li><strong>Orientación:</strong> transversal para evitar estenosis (si es posible).</li>
+                </ul>
+            </li>
+            <li><strong>Refuerzo (pedículo o colgajo):</strong>
+                <ul>
+                    <li><strong>Colgajo de pleura:</strong> se toma un colgajo de pleura mediastínica y se sutura sobre la línea de sutura.</li>
+                    <li><strong>Colgajo muscular:</strong> músculo intercostal, diafragma (si es distal) o músculo serrato anterior.</li>
+                    <li><strong>Colgajo de epiplón:</strong> si se aborda por laparotomía, se moviliza el epiplón a través del hiato diafragmático.</li>
+                </ul>
+            </li>
+            <li><strong>Prueba de estanqueidad:</strong> se inyecta suero o aire a través de sonda nasogástrica para comprobar la sutura (sin fugas).</li>
+            <li><strong>Drenaje:</strong>
+                <ul>
+                    <li><strong>Pleural:</strong> tubo de tórax (28-32 Fr) en el hemitórax ipsilateral, conectado a sello de agua con aspiración continua (-15 a -20 cm H₂O).</li>
+                    <li><strong>Mediastínico:</strong> drenaje de Jackson-Pratt o Penrose en el mediastino, cerca de la sutura.</li>
+                    <li><strong>Retroperitoneal:</strong> si la lesión es abdominal, drenaje peri esofágico.</li>
+                </ul>
+            </li>
+            <li><strong>Nutrición enteral:</strong> colocar sonda nasoyeyunal (o yeyunostomía) para iniciar alimentación precoz (24-48h).</li>
+            <li><strong>Cierre:</strong> cerrar la pleura si es posible, luego los planos musculares y la piel con grapas o seda 2/0.</li>
+        </ol>
+    </div>
+
+    <h4>2. Esofagectomía o derivación (si la lesión es >6h, muy extensa, o hay mediastinitis franca)</h4>
+    <div class="surg-box">
+        <h5>Esofagectomía transhiatal o torácica</h5>
+        <ul>
+            <li>Se reseca el esófago lesionado y se realiza una anastomosis esófago-gástrica en el cuello (esofagectomía transhiatal) o en el tórax (según el nivel).</li>
+            <li><strong>Indicada:</strong> cuando la lesión es muy extensa, con pérdida de sustancia, o hay necrosis esofágica.</li>
+            <li><strong>Técnica:</strong> se disecciona el esófago desde el hiato hasta el cuello, se reseca y se realiza anastomosis esófago-gástrica cervical (con sutura en dos planos).</li>
+        </ul>
+
+        <h5>Exclusión esofágica con drenaje (T-tube)</h5>
+        <ul>
+            <li>Se realiza una esofagostomía cervical (abocar el cabo proximal) y se cierra el cabo distal por debajo de la lesión.</li>
+            <li>Se coloca un drenaje T-tube (sonda de Kehr) en la luz esofágica a través de la perforación para derivar la saliva y el contenido gástrico.</li>
+            <li>Gastrostomía o yeyunostomía para alimentación.</li>
+            <li>La reparación definitiva se difiere para un segundo tiempo (3-6 meses después).</li>
+        </ul>
+
+        <h5>Drenaje mediastínico y pleural abierto</h5>
+        <ul>
+            <li>Colocar drenajes de gran calibre (tubos de tórax de 36 Fr) en el mediastino y la cavidad pleural (dos tubos si es necesario).</li>
+            <li>Irrigación continua con solución salina a través de uno de los drenajes (lavado mediastinal) y aspiración por el otro.</li>
+            <li>Antibioticoterapia de amplio espectro (cefalosporina de 3ª generación + metronidazol o fluconazol).</li>
+            <li>Dejar la herida abierta (toracostomía abierta) si la mediastinitis es severa, para permitir el drenaje y la curación por segunda intención.</li>
+        </ul>
+    </div>
+
+    <h4>3. Tratamiento endoscópico (para lesiones pequeñas y seleccionadas)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> perforaciones iatrogénicas pequeñas (&lt;1 cm), estables, sin mediastinitis, en pacientes de alto riesgo quirúrgico.</li>
+            <li><strong>Colocación de prótesis esofágica (stent) cubierta:</strong> se coloca un stent metálico autoexpandible cubierto (SEM) que ocluye la perforación.</li>
+            <li><strong>Clip endoscópico (Over-the-scope clip, OTSC):</strong> para perforaciones pequeñas y bien delimitadas.</li>
+            <li><strong>Drenaje percutáneo de colecciones:</strong> guiado por TAC o ecografía para abscesos mediastínicos o pleurales.</li>
+            <li><strong>Nutrición enteral:</strong> por sonda nasoyeyunal o gastrostomía.</li>
+            <li><strong>Antibióticos:</strong> de amplio espectro durante 7-10 días.</li>
+            <li><strong>Control:</strong> esofagograma a los 5-7 días para comprobar el sellado.</li>
+        </ul>
+    </div>
+
+    <h4>4. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI:</strong> durante 24-48h. Monitorización de signos vitales, diuresis, drenajes, equilibrio hidroelectrolítico.</li>
+            <li><strong>Nutrición enteral precoz:</strong> por sonda nasoyeyunal (iniciar a las 24-48h) con fórmulas elementales o semielementales.</li>
+            <li><strong>Esofagograma de control:</strong> al 5º-7º día postoperatorio para comprobar la ausencia de fugas antes de iniciar la vía oral.</li>
+            <li><strong>Antibióticos:</strong> por 7-10 días (o hasta que los drenajes estén limpios y la fiebre haya cedido).</li>
+            <li><strong>Drenajes:</strong> retirar cuando el débito sea &lt;50 mL/día y el esofagograma de control sea normal.</li>
+            <li><strong>Si hay fuga:</strong> mantener drenaje, nutrientes parenterales, y considerar reintervención si la fuga es significativa (&gt;30% de la sutura).</li>
+            <li><strong>Si hay estenosis:</strong> dilataciones endoscópicas seriadas (a partir de la 3ª semana).</li>
+            <li><strong>Rehabilitación:</strong> inicio de vía oral con líquidos claros, progresando a dieta blanda según tolerancia.</li>
+        </ul>
+    </div>
+
+    <h3>Complicaciones y su manejo</h3>
+    <div class="note-box">
+        <ul>
+            <li><strong>Fuga anastomótica:</strong> la más frecuente (10-30%). Se maneja con drenaje, nutrición parenteral, stent endoscópico o reintervención.</li>
+            <li><strong>Mediastinitis:</strong> requiere drenaje quirúrgico amplio y antibioticoterapia agresiva.</li>
+            <li><strong>Estenosis esofágica:</strong> se maneja con dilataciones endoscópicas seriadas (balón o bougies).</li>
+            <li><strong>Fístula esofagopleural o esofagocutánea:</strong> se maneja con drenaje prolongado, stent o reintervención.</li>
+            <li><strong>Sepsis y fallo multiorgánico:</strong> manejo en UCI con soporte hemodinámico y ventilatorio.</li>
+            <li><strong>Quilotórax:</strong> si se lesiona el conducto torácico, se maneja con drenaje, dieta baja en grasas (MCT) o ligadura quirúrgica.</li>
+        </ul>
+    </div>
+</div>
+
+    <!-- TRAQUEA Y BRONQUIOS -->
+    <div class="content-section" id="sec-torax-traquea">
+        <h2>Trauma traqueobronquial</h2>
+        <h3>Clasificación</h3>
+        <ul>
+            <li>Cerrado (desaceleración/compresión) o abierto (arma blanca/fuego).</li>
+            <li>Por extensión: laceración &lt;1/3, &gt;1/3, o sección completa.</li>
+        </ul>
+        <h3>Clínica</h3>
+        <ul>
+            <li>Disnea, estridor, hemoptisis, enfisema subcutáneo cervical y mediastínico.</li>
+            <li>Neumotórax a tensión o persistente.</li>
+        </ul>
+        <h3>Técnica de reparación traqueobronquial</h3>
+        <div class="surg-box">
+            <ol>
+                <li><strong>Abordaje:</strong> cervicotomía horizontal (cervical), esternotomía media o toracotomía derecha (torácica).</li>
+                <li><strong>Exposición:</strong> movilización de la traquea, identificación de nervios recurrentes y esófago.</li>
+                <li><strong>Desbridamiento:</strong> resección de bordes necróticos.</li>
+                <li><strong>Sutura:</strong> con Vicryl 4/0 o PDS 4/0, puntos separados extramucosos.</li>
+                <li><strong>Si &gt;1/3:</strong> resección segmentaria y anastomosis término-terminal con puntos de tracción de seda 2/0.</li>
+                <li><strong>Refuerzo:</strong> colgajo de pleura, pericárdico o músculo intercostal.</li>
+                <li><strong>Drenaje:</strong> tubo pleural.</li>
+                <li><strong>Traqueostomía:</strong> si la sutura está en tensión.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABDOMEN - GENERAL -->
+    <div class="content-section" id="sec-abdomen">
+        <h2>Traumatismo abdominal</h2>
+        <p><strong>Clasificación:</strong> abiertos (penetrantes o no) y cerrados (contusiones). Lesiones de pared, vísceras huecas (perforación → peritonitis), vísceras sólidas (hemorragia), vasos/mesos.</p>
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Clínica:</strong> dolor, defensa abdominal, contractura, neumoperitoneo, matidez declive.</li>
+            <li><strong>Lavado peritoneal diagnóstico (LPD):</strong> positivo si >100.000 hematíes/mL, >500 leucocitos/mL, bilis, bacterias.</li>
+            <li><strong>Imagen:</strong> Rx simple, ecografía FAST, TAC, urograma descendente, cistografía.</li>
+        </ul>
+        <h3>Principios quirúrgicos generales</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Incisión:</strong> laparotomía media xifopubiana (la más versátil).</li>
+                <li><strong>Control de hemorragia:</strong> compresión directa, empaquetamiento, clampaje temporal.</li>
+                <li><strong>Control de contaminación:</strong> sutura de perforaciones, resección de segmentos no viables, exteriorización.</li>
+                <li><strong>Toilette peritoneal:</strong> lavado con 5-10 L de solución salina tibia.</li>
+                <li><strong>Drenaje:</strong> colocar drenajes de Penrose, Jackson-Pratt o tubulares en zonas de riesgo (subhepático, pelviano, retroperitoneal).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HÍGADO (AMPLIADO) -->
+    <div class="content-section" id="sec-abdomen-higado">
+        <h2>Traumatismo hepático</h2>
+        <h3>Clasificación (AAST)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Hematoma subcapsular &lt;10%, laceración &lt;1 cm</td><td>Dolor HD, estable</td></tr>
+                <tr><td>II</td><td>Hematoma 10-50%, laceración 1-3 cm</td><td>Dolor persistente, taquicardia</td></tr>
+                <tr><td>III</td><td>Hematoma &gt;50% en expansión, laceración &gt;3 cm</td><td>Hipotensión, defensa abdominal</td></tr>
+                <tr><td>IV</td><td>Hematoma central roto, destrucción 25-75% lóbulo</td><td>Shock, abdomen distendido</td></tr>
+                <tr><td>V</td><td>Destrucción &gt;75%, lesión de venas hepáticas o cava</td><td>Shock severo, exanguinación</td></tr>
+                <tr><td>VI</td><td>Avulsión hepática</td><td>Muerte casi inmediata</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento</h3>
+        <ul>
+            <li><strong>Grados I-II:</strong> Expectante (reposo, monitorización).</li>
+            <li><strong>Grados III-IV:</strong> Laparotomía, hemostasia, desbridamiento, sutura.</li>
+            <li><strong>Grados V-VI:</strong> Control de daños, empaquetamiento, resección hepática mayor.</li>
+        </ul>
+
+        <h4>Técnica quirúrgica detallada (grados III-IV)</h4>
+        <div class="surg-box">
+            <h5>1. Abordaje e incisión</h5>
+            <ul>
+                <li>Laparotomía media xifopubiana (desde apéndice xifoides hasta sínfisis púbica).</li>
+                <li>Si la lesión es en lóbulo derecho y se necesita acceso a venas hepáticas, prolongar la incisión hacia el tórax derecho (toracofrenolaparotomía por 7º-8º EIC) o esternotomía media.</li>
+                <li>Colocar separadores de Balfour o Finochietto para una exposición amplia.</li>
+            </ul>
+            <h5>2. Maniobra de Pringle</h5>
+            <ul>
+                <li>Ocluir el pedículo hepático (arteria hepática + vena porta) con una pinza vascular (Satinsky) o cinta de Rumel en el hiato de Winslow.</li>
+                <li><strong>Máximo 20 minutos</strong> de isquemia caliente. Repetir tras 5 minutos de reperfusión.</li>
+                <li>Si el sangrado persiste a pesar de Pringle, sospechar lesión de venas hepáticas o vena cava.</li>
+            </ul>
+            <h5>3. Digitoclasia y hemostasia selectiva</h5>
+            <ul>
+                <li>Fracturar el parénquima hepático con el dedo o con pinza de Mixter siguiendo los planos segmentarios.</li>
+                <li>Identificar y ligar por separado arterias, venas y conductos biliares con Vicryl 2/0 o 3/0.</li>
+                <li>Para vasos más pequeños, usar electrocoagulación o clips de titanio.</li>
+            </ul>
+            <h5>4. Sutura del parénquima</h5>
+            <ul>
+                <li>En lesiones superficiales: sutura con catgut crómico 0 o Vicryl 2/0 en puntos separados, abarcando todo el espesor de la herida.</li>
+                <li>En lesiones profundas: usar puntos en "U" horizontales con Vicryl 2/0 sobre una tira de epiplón o Surgicel para evitar que corten el parénquima.</li>
+                <li>Aplicar hemostáticos locales (Surgicel, Gelfoam, Tachosil) sobre la superficie.</li>
+            </ul>
+            <h5>5. Resección hepática mayor (lobectomía o segmentectomía)</h5>
+            <ul>
+                <li><strong>Lobectomía derecha:</strong> ligadura de la arteria hepática derecha, vena porta derecha y conducto hepático derecho. Sección del parénquima siguiendo la línea de Cantlie (desde la vesícula biliar hasta la vena cava).</li>
+                <li><strong>Lobectomía izquierda:</strong> ligadura de la arteria hepática izquierda, vena porta izquierda y conducto hepático izquierdo. Sección por la falciforme.</li>
+                <li>Usar grapadora vascular Endo-GIA para la sección del parénquima y pedículos.</li>
+            </ul>
+            <h5>6. Empacamiento (packing)</h5>
+            <ul>
+                <li>Si el sangrado persiste a pesar de Pringle y sutura, colocar gasas estériles comprimiendo el hígado contra el diafragma y la pared abdominal.</li>
+                <li>Fijar las gasas con puntos de Vicryl 2/0 al diafragma o epiplón para evitar desplazamiento.</li>
+                <li>Cerrar la piel con puntos separados (no la fascia) o colocar bolsa de Bogotá. Reintervenir a las 48-72h.</li>
+            </ul>
+            <h5>7. Drenaje y cierre</h5>
+            <ul>
+                <li>Colocar tubos de Jackson-Pratt (drenaje cerrado) o Penrose en zona subhepática, periesplénica y en el lecho de resección.</li>
+                <li>Si se abrió la vía biliar, colocar sonda en T de Kehr.</li>
+                <li>Cierre por planos: peritoneo con Vicryl 2/0, fascia con Vicryl 1, piel con seda 3/0 o grapas.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BAZO (AMPLIADO) -->
+    <div class="content-section" id="sec-abdomen-bazo">
+        <h2>Traumatismo esplénico</h2>
+        <h3>Clasificación (AAST)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Hematoma subcapsular &lt;10%, laceración &lt;1 cm</td><td>Dolor HI, estable</td></tr>
+                <tr><td>II</td><td>Hematoma 10-50%, laceración 1-3 cm</td><td>Dolor, taquicardia</td></tr>
+                <tr><td>III</td><td>Hematoma &gt;50% en expansión, laceración &gt;3 cm</td><td>Hipotensión, defensa abdominal</td></tr>
+                <tr><td>IV</td><td>Laceración de vasos segmentarios o 25% del órgano</td><td>Shock, distensión</td></tr>
+                <tr><td>V</td><td>Bazo despedazado, lesión del hilio</td><td>Exanguinación</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento</h3>
+        <ul>
+            <li><strong>Grados I-II:</strong> Expectante.</li>
+            <li><strong>Grados III-V:</strong> Esplenectomía o esplenorrafia si conservable.</li>
+        </ul>
+
+        <h4>Técnica quirúrgica detallada</h4>
+        <div class="surg-box">
+            <h5>1. Esplenectomía</h5>
+            <ol>
+                <li><strong>Abordaje:</strong> laparotomía media o subcostal izquierda.</li>
+                <li><strong>Exposición:</strong> movilizar el epiplón mayor y el colon izquierdo hacia la línea media.</li>
+                <li><strong>Ligadura de vasos cortos gástricos:</strong> seccionar el ligamento gastroesplénico entre ligaduras con Vicryl 2/0.</li>
+                <li><strong>Ligadura del pedículo esplénico:</strong> identificar la arteria y vena esplénicas en el hilio, ligar por separado con seda 0 o Vicryl 1, y seccionar.</li>
+                <li><strong>Sección del ligamento esplenorrenal:</strong> liberar el bazo de sus adherencias posteriores.</li>
+                <li><strong>Extracción:</strong> retirar el bazo y revisar la hemostasia del lecho.</li>
+                <li><strong>Cierre:</strong> drenaje de Jackson-Pratt en el lecho y cierre por planos.</li>
+            </ol>
+            <h5>2. Esplenorrafia (conservación)</h5>
+            <ol>
+                <li><strong>Exposición:</strong> movilizar el bazo y exteriorizarlo con una gasa.</li>
+                <li><strong>Compresión:</strong> aplicar compresión con gasas durante 5-10 minutos para controlar el sangrado.</li>
+                <li><strong>Hemostáticos locales:</strong> aplicar Surgicel o Gelfoam sobre la laceración.</li>
+                <li><strong>Malla reabsorbible:</strong> envolver el bazo con una malla de poliglactina (Vicryl) y fijar con puntos de Vicryl 2/0 para mantener la compresión.</li>
+                <li><strong>Sutura directa:</strong> en laceraciones lineales, usar puntos en U con catgut crómico 0 o Vicryl 2/0 sobre una tira de Surgicel.</li>
+                <li><strong>Autotrasplante:</strong> si la esplenectomía es inevitable, implantar fragmentos de bazo (1x1 cm) en el epiplón mayor para preservar función inmunológica.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- RIÑÓN (AMPLIADO) -->
+    <div class="content-section" id="sec-abdomen-rinon">
+        <h2>Traumatismo renal</h2>
+        <h3>Clasificación (AAST)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Contusión o hematoma subcapsular</td><td>Hematuria microscópica</td></tr>
+                <tr><td>II</td><td>Hematoma perirrenal, laceración cortical &lt;1 cm</td><td>Hematuria, dolor lumbar</td></tr>
+                <tr><td>III</td><td>Laceración cortical &gt;1 cm sin sistema colector</td><td>Hematuria franca, hipotensión</td></tr>
+                <tr><td>IV</td><td>Laceración con sistema colector o vasos segmentarios</td><td>Shock, irritación peritoneal</td></tr>
+                <tr><td>V</td><td>Riñón destrozado, avulsión del hilio</td><td>Shock hemorrágico, anuria</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento</h3>
+        <ul>
+            <li><strong>Grados I-II:</strong> Conservador.</li>
+            <li><strong>Grado III:</strong> Observación estricta o exploración quirúrgica.</li>
+            <li><strong>Grados IV-V:</strong> Nefrorrafia, resección parcial o nefrectomía.</li>
+        </ul>
+
+        <h4>Técnica quirúrgica detallada</h4>
+        <div class="surg-box">
+            <h5>1. Abordaje renal</h5>
+            <ul>
+                <li><strong>Vía de elección:</strong> laparotomía media con movilización del colon ascendente (derecho) o descendente (izquierdo).</li>
+                <li>Alternativa: lumbotomía (incisión en el flanco) en pacientes estables.</li>
+                <li>Incidir el peritoneo parietal posterior (línea de Toldt) y reflejar el colon medialmente.</li>
+                <li>Exponer la fascia de Gerota y abrirla para visualizar el riñón.</li>
+            </ul>
+            <h5>2. Control vascular</h5>
+            <ul>
+                <li>Identificar el pedículo renal (arteria y vena) y colocar cintas de Rumel o pinzas vasculares para clampaje temporal.</li>
+                <li><strong>Tiempo de isquemia:</strong> máximo 30 minutos en normotermia, hasta 60 minutos si se usa solución de preservación (Custodiol) con hipotermia local con hielo.</li>
+            </ul>
+            <h5>3. Nefrorrafia</h5>
+            <ul>
+                <li>En lesiones corticales superficiales: sutura con catgut crómico 3/0 o Vicryl 3/0 en puntos separados, anudando sobre una tira de Surgicel o tejido graso para evitar que corten el parénquima.</li>
+                <li>Si la lesión es profunda y afecta el sistema colector, suturar el defecto de la pelvis renal con Vicryl 4/0 y luego cerrar el parénquima.</li>
+            </ul>
+            <h5>4. Resección parcial (nefrectomía parcial)</h5>
+            <ul>
+                <li><strong>Indicada:</strong> lesiones polares (superior o inferior) o segmentarias en pacientes estables.</li>
+                <li><strong>Técnica:</strong> clampaje del pedículo, isquemia fría con hielo, resección del segmento lesionado con bisturí frío.</li>
+                <li>Cerrar el sistema colector si está abierto, luego suturar el parénquima con puntos en U de Vicryl 2/0 sobre una tira de Surgicel o cápsula renal.</li>
+                <li>Colocar un drenaje de Jackson-Pratt en la fosa renal.</li>
+            </ul>
+            <h5>5. Nefrectomía</h5>
+            <ul>
+                <li><strong>Indicada:</strong> riñón destrozado (grado V), lesión vascular irreparable, o paciente inestable con sangrado incontrolable.</li>
+                <li>Ligadura de la arteria renal con seda 0 y la vena renal con seda 0 (por separado).</li>
+                <li>Sección del pedículo y extracción del riñón.</li>
+                <li>Revisar la hemostasia del lecho y colocar drenaje.</li>
+            </ul>
+        </div>
+    </div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA GÁSTRICO (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-abdomen-estomago">
+    <h2>Traumatismo gástrico</h2>
+
+    <h3>Clasificación (AAST)</h3>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="badge">I</span></td><td>Contusión o hematoma intramural sin perforación.</td><td>Dolor epigástrico, náuseas, vómitos.</td></tr>
+            <tr><td><span class="badge">II</span></td><td>Laceración o perforación &lt;2 cm de la mucosa, sin compromiso de la serosa.</td><td>Dolor intenso, signos de peritonitis localizada.</td></tr>
+            <tr><td><span class="badge">III</span></td><td>Perforación de 2-5 cm en la cara anterior o posterior.</td><td>Peritonitis difusa, neumoperitoneo, shock séptico.</td></tr>
+            <tr><td><span class="badge">IV</span></td><td>Perforación &gt;5 cm, lesión de la unión gastroesofágica o del píloro.</td><td>Shock, peritonitis grave, hemorragia digestiva.</td></tr>
+            <tr><td><span class="badge">V</span></td><td>Avulsión o desvascularización del estómago (lesión de los vasos gástricos principales).</td><td>Exanguinación, necrosis gástrica, fallo multiorgánico.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li>Dolor epigástrico intenso que se irradia al tórax o espalda.</li>
+            <li>Náuseas, vómitos (contenido gástrico o bilioso).</li>
+            <li>Hematemesis (si hay lesión vascular o mucosa).</li>
+            <li>Signos de peritonitis: defensa abdominal, contractura, desaparición de la matidez hepática (neumoperitoneo).</li>
+            <li>Shock hipovolémico o séptico en grados avanzados.</li>
+        </ul>
+    </div>
+
+    <h3>Tratamiento quirúrgico</h3>
+
+    <h4>1. Sutura primaria (grados II-III)</h4>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Abordaje:</strong> laparotomía media xifopubiana.</li>
+            <li><strong>Exposición:</strong> movilizar el estómago y explorar ambas caras (anterior y posterior).</li>
+            <li><strong>Desbridamiento:</strong> resección de bordes contusos o necróticos (margen de 2-3 mm).</li>
+            <li><strong>Sutura:</strong> en dos planos — mucoso con Vicryl 4/0 y seromuscular con Vicryl 3/0 en puntos separados (Lembert).</li>
+            <li><strong>Orientación:</strong> transversal para evitar estenosis (especialmente cerca del píloro).</li>
+            <li><strong>Probar:</strong> inyectar suero a través de sonda nasogástrica para comprobar la sutura.</li>
+            <li><strong>Drenaje:</strong> drenaje de Jackson-Pratt en la zona peri gástrica.</li>
+            <li><strong>Sonda nasogástrica:</strong> dejar colocada para descompresión gástrica durante 48-72h.</li>
+        </ol>
+    </div>
+
+    <h4>2. Gastrectomía parcial (grado IV-V)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicada:</strong> lesiones extensas (&gt;5 cm), necrosis, o lesiones cerca del píloro o de la unión gastroesofágica.</li>
+            <li><strong>Gastrectomía distal (tipo Billroth I o II):</strong> se reseca el antro y el píloro, se realiza anastomosis gastroduodenal (Billroth I) o gastroyeyunal (Billroth II) en Y de Roux.</li>
+            <li><strong>Gastrectomía subtotal:</strong> si la lesión es muy extensa, se reseca el 75-80% del estómago.</li>
+            <li><strong>Gastrectomía total:</strong> si la lesión afecta todo el estómago o hay necrosis extensa. Se realiza esofagoyeyunostomía en Y de Roux.</li>
+            <li><strong>Drenaje:</strong> colocar drenaje peri-anastomótico.</li>
+            <li><strong>Nutrición:</strong> sonda nasoyeyunal para alimentación precoz.</li>
+        </ul>
+    </div>
+
+    <h4>3. Sutura de la unión gastroesofágica</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Abordaje:</strong> si la lesión es alta, se puede realizar una toracofrenolaparotomía (acceso transdiafragmático).</li>
+            <li><strong>Sutura:</strong> con Vicryl 3/0 en dos planos, cuidando de no comprometer el cardias.</li>
+            <li><strong>Refuerzo:</strong> cubrir con epiplón o colgajo de diafragma.</li>
+            <li><strong>Drenaje:</strong> subfrénico y peri-esofágico.</li>
+            <li><strong>Sonda nasogástrica:</strong> mantenerla con aspiración suave durante 5-7 días.</li>
+        </ul>
+    </div>
+
+    <h4>4. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI:</strong> monitorización hemodinámica, control de drenajes.</li>
+            <li><strong>Nutrición:</strong> inicio de vía oral a los 5-7 días (previa comprobación con esofagograma o TAC si se sospecha fuga).</li>
+            <li><strong>Antibióticos:</strong> profilaxis con cefalosporina de 2ª-3ª generación + metronidazol.</li>
+            <li><strong>Control de drenajes:</strong> retirar cuando el débito sea &lt;30 mL/día.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA VESICAL (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-abdomen-vejiga">
+    <h2>Traumatismo vesical</h2>
+
+    <h3>Clasificación</h3>
+    <ul>
+        <li><strong>Contusión (grado I):</strong> hematoma intramural o contusión de la mucosa, sin perforación.</li>
+        <li><strong>Ruptura intraperitoneal (grado II):</strong> perforación de la cúpula vesical, con extravasación de orina a la cavidad peritoneal. Más frecuente en vejiga llena.</li>
+        <li><strong>Ruptura extraperitoneal (grado III):</strong> perforación de la pared anterior o lateral, con extravasación al espacio perivesical (retroperitoneal). Asociada a fractura de pelvis (80%).</li>
+        <li><strong>Ruptura combinada (grado IV):</strong> lesión intra y extraperitoneal.</li>
+        <li><strong>Lesión del cuello vesical o uretra (grado V):</strong> compromiso del esfínter o de la uretra posterior.</li>
+    </ul>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li>Hematuria (macroscópica o microscópica).</li>
+            <li>Dolor suprapúbico, dificultad para orinar (retención urinaria).</li>
+            <li>Signos de peritonitis en ruptura intraperitoneal: dolor difuso, defensa abdominal, signo de Guéneau de Mussy.</li>
+            <li>Signos de extravasación retroperitoneal: dolor en fosa ilíaca, edema perineal, ingurgitación venosa.</li>
+            <li>Shock hipovolémico si hay sangrado asociado (fractura de pelvis).</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Cistografía:</strong> GOLD STANDARD. Se realiza con contraste hidrosoluble (Gastrografín) a través de sonda vesical. Se toman radiografías en AP, oblicuas y post-evacuación.</li>
+        <li><strong>TAC con cistografía:</strong> si se realiza TAC abdominal, se puede hacer cistografía TAC con contraste intravesical.</li>
+        <li><strong>Uretrografía:</strong> si se sospecha lesión de uretra (fractura de pelvis, sangre en el meato).</li>
+        <li><strong>Ecografía:</strong> puede mostrar líquido libre en la cavidad peritoneal o en el retroperitoneo.</li>
+    </ul>
+
+    <h3>Tratamiento quirúrgico</h3>
+
+    <h4>1. Ruptura intraperitoneal (grado II)</h4>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Abordaje:</strong> laparotomía media infraumbilical o laparotomía exploradora.</li>
+            <li><strong>Exposición:</strong> movilizar el peritoneo y exponer la vejiga.</li>
+            <li><strong>Desbridamiento:</strong> resección de bordes contusos o necróticos.</li>
+            <li><strong>Sutura:</strong> en dos planos con Vicryl 3/0 o PDS 3/0 (mucosa y muscular). Puntos separados, sin incluir el urotelio.</li>
+            <li><strong>Prueba de estanqueidad:</strong> inyectar suero a través de la sonda vesical para comprobar la sutura.</li>
+            <li><strong>Sonda vesical:</strong> dejar sonda Foley de 18-20 Fr durante 7-10 días para descompresión.</li>
+            <li><strong>Drenaje:</strong> drenaje de Jackson-Pratt en el espacio de Retzius (prevesical).</li>
+            <li><strong>Toilette peritoneal:</strong> lavado con suero tibio para eliminar la orina extravasada.</li>
+        </ol>
+    </div>
+
+    <h4>2. Ruptura extraperitoneal (grado III)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Manejo conservador:</strong> si la lesión es pequeña (&lt;2 cm) y no hay sangrado activo, se maneja con sonda vesical durante 10-14 días y antibióticos.</li>
+            <li><strong>Si la lesión es extensa o hay coágulos:</strong> se realiza exploración quirúrgica extraperitoneal (incisión suprapúbica), desbridamiento y sutura con Vicryl 3/0. Drenaje del espacio prevesical.</li>
+        </ul>
+    </div>
+
+    <h4>3. Ruptura combinada (grado IV)</h4>
+    <div class="surg-box">
+        <ul>
+            <li>Se repara tanto la porción intraperitoneal como la extraperitoneal, siguiendo las técnicas descritas.</li>
+            <li>Sonda vesical y drenaje pélvico.</li>
+        </ul>
+    </div>
+
+    <h4>4. Lesión del cuello vesical o uretra (grado V)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Cuello vesical:</strong> sutura con Vicryl 3/0, cuidando de no comprometer el esfínter. Colocar sonda Foley con tracción suave para aproximar los cabos.</li>
+            <li><strong>Uretra posterior:</strong> si hay sección, se coloca una sonda de Foley por vía retrógrada (a través de la herida) o se realiza cistostomía suprapúbica (talla vesical) y se difiere la reparación para un segundo tiempo (3-6 meses).</li>
+            <li><strong>Cistostomía suprapúbica:</strong> se coloca un tubo de Pezzer o Foley en la vejiga a través de una incisión suprapúbica, para derivar la orina.</li>
+        </ul>
+    </div>
+
+    <h4>5. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Antibióticos:</strong> profilaxis con cefalosporina de 2ª-3ª generación.</li>
+            <li><strong>Sonda vesical:</strong> mantenerla hasta que la cistografía de control (7-10 días) confirme la ausencia de fuga.</li>
+            <li><strong>Drenaje:</strong> retirar cuando el débito sea &lt;20 mL/día.</li>
+            <li><strong>Si hay fuga:</strong> prolongar el uso de sonda vesical y considerar reintervención si la fuga es significativa.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA DUODENOPANCREÁTICO (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-abdemen-duodeno">
+    <h2>Traumatismo duodenal</h2>
+
+    <h3>Clasificación (AAST)</h3>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="badge">I</span></td><td>Hematoma intramural</td><td>Dolor epigástrico, vómitos</td></tr>
+            <tr><td><span class="badge">II</span></td><td>Perforación &lt;50%</td><td>Peritonitis temprana</td></tr>
+            <tr><td><span class="badge">III</span></td><td>Perforación &gt;50% o lesión de ampolla</td><td>Peritonitis severa, shock</td></tr>
+            <tr><td><span class="badge">IV</span></td><td>Lesión combinada duodeno-pancreática</td><td>Shock, elevación de amilasa</td></tr>
+            <tr><td><span class="badge">V</span></td><td>Separación duodeno-pancreática</td><td>Exanguinación</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li>Dolor epigástrico intenso que se irradia a la espalda (dolor en barra).</li>
+            <li>Vómitos biliosos, hematemesis (si hay lesión vascular).</li>
+            <li>Signos de peritonitis: defensa abdominal, contractura, neumoperitoneo.</li>
+            <li>En perforación retroperitoneal: dolor lumbar, crepitación en región lumbar (aire retroperitoneal).</li>
+            <li>Elevación de amilasa y lipasa séricas (en lesión pancreática asociada).</li>
+            <li>Shock hipovolémico o séptico en grados avanzados.</li>
+        </ul>
+    </div>
+
+    <h3>Tratamiento quirúrgico</h3>
+
+    <h4>1. Maniobra de Kocher (movilización duodenal)</h4>
+    <div class="surg-box">
+        <ul>
+            <li>Incidir el peritoneo a lo largo del borde lateral derecho del duodeno (desde el píloro hasta la flexura duodeno-yeyunal).</li>
+            <li>Movilizar el duodeno medialmente para exponer su cara posterior y la cabeza del páncreas.</li>
+            <li>Permite visualizar perforaciones retroperitoneales y lesiones de la segunda y tercera porción.</li>
+        </ul>
+    </div>
+
+    <h4>2. Sutura primaria del duodeno (grados I-II)</h4>
+    <div class="surg-box">
+        <ol>
+            <li>Regularización de bordes con bisturí.</li>
+            <li>Sutura en dos planos: mucosa con Vicryl 4/0 (puntos separados) y seromuscular con Vicryl 3/0 (puntos de Lembert).</li>
+            <li>Orientación transversal de la sutura para evitar estenosis.</li>
+            <li>Colocar sonda de descompresión duodenal (nasoyeyunal o a través de una yeyunostomía) para reducir la presión intraluminal.</li>
+            <li>Drenaje peri duodenal con tubos de Jackson-Pratt.</li>
+        </ol>
+    </div>
+
+    <h4>3. Derivación pilórica (exclusión pilórica) para grados III-IV</h4>
+    <div class="surg-box">
+        <ol>
+            <li>Seccionar el píloro con grapadora lineal (GIA) o suturar con Vicryl 2/0.</li>
+            <li>Realizar una gastroyeyunostomía en Y de Roux (asa yeyunal de 40-50 cm) para derivar el contenido gástrico.</li>
+            <li>Colocar sonda nasoyeyunal más allá de la anastomosis para nutrición precoz.</li>
+            <li>Drenaje peri duodenal con tubos de Jackson-Pratt.</li>
+        </ol>
+    </div>
+
+    <h4>4. Duodenoyeyunostomía (para grados III-IV)</h4>
+    <div class="surg-box">
+        <ul>
+            <li>Resecar el segmento duodenal lesionado (márgenes de seguridad de 2-3 cm).</li>
+            <li>Anastomosar el duodeno a un asa yeyunal en Y de Roux o en T-T con Vicryl 3/0 en dos planos.</li>
+            <li>Colocar sonda de descompresión en el asa aferente.</li>
+            <li>Drenaje peri anastomótico.</li>
+        </ul>
+    </div>
+
+    <h4>5. Duodenopancreatectomía cefálica (técnica de Whipple) para grado V</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> grado V o lesiones combinadas duodeno-pancreáticas irreparables.</li>
+            <li><strong>Pacientes estables</strong> (sin acidosis ni hipotermia).</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li>Resección de la cabeza del páncreas, duodeno, segmento distal del colédoco y vesícula biliar.</li>
+                    <li>Reconstrucción: anastomosis pancreático-yeyunal (o pancreaticogastrostomía), hepaticoyeyunostomía, y gastroyeyunostomía (en Y de Roux).</li>
+                    <li>Drenaje amplio de la zona quirúrgica.</li>
+                </ol>
+            </li>
+            <li>En pacientes inestables: control de daños (empaquetamiento, ligadura de vasos, cierre temporal) y reintervenir para Whipple cuando se estabilice.</li>
+        </ul>
+    </div>
+
+    <h4>6. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI:</strong> monitorización hemodinámica, control de drenajes, balance hidroelectrolítico.</li>
+            <li><strong>Nutrición:</strong> inicio de nutrición enteral por sonda nasoyeyunal a las 24-48h.</li>
+            <li><strong>Control de amilasa y lipasa:</strong> para detectar pancreatitis postraumática.</li>
+            <li><strong>Antibióticos:</strong> cefalosporina de 3ª generación + metronidazol.</li>
+            <li><strong>Drenajes:</strong> retirar cuando el débito sea &lt;30 mL/día y el aspecto sea claro.</li>
+            <li><strong>Esofagograma o TAC de control:</strong> para descartar fugas anastomóticas.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- HEMATOMA RETROPERITONEAL (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-abdomen-retroperitoneal">
+    <h2>Hematoma retroperitoneal</h2>
+
+    <h3>Clasificación por zonas (Feliciano)</h3>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Zona</th><th>Descripción</th><th>Contenido</th><th>Conducta</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Zona I (central)</strong></td><td>Medial, desde el hiato aórtico hasta el promontorio.</td><td>Aorta, vena cava, arteria ilíaca proximal, páncreas, duodeno, uréteres.</td><td><strong>Siempre explorar</strong> (alto riesgo de lesión vascular).</td></tr>
+            <tr><td><strong>Zona II (flancos)</strong></td><td>Lateral, desde los pilares del diafragma hasta la cresta ilíaca.</td><td>Riñones, glándulas suprarrenales, uréteres, colon ascendente/descendente.</td><td>Explorar si: herida de arma de fuego, hematoma expansivo, hematuria franca, o TAC no disponible.</td></tr>
+            <tr><td><strong>Zona III (pélvica)</strong></td><td>Pelvis, desde el promontorio hasta el suelo pélvico.</td><td>Arterias ilíacas, venas ilíacas, vejiga, recto, útero, anejos.</td><td><strong>No explorar</strong> (salvo que sea pulsátil o expansivo). Se maneja con estabilización pélvica y embolización.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li>Hematoma retroperitoneal puede ser asintomático o presentar dolor abdominal/vascular.</li>
+            <li>Signos de hemorragia: taquicardia, hipotensión, anemia, shock.</li>
+            <li>Signos de lesión vascular: soplo abdominal, déficit de pulsos femorales, hematoma expansivo.</li>
+            <li>Signos de lesión de órganos: hematuria (riñón), amilasa elevada (páncreas), hematemesis (duodeno).</li>
+            <li>En fractura de pelvis: hematoma retroperitoneal pélvico (zona III) — NO se explora quirúrgicamente.</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>TAC con contraste:</strong> el estudio de elección. Muestra la extensión del hematoma, la posible lesión vascular (extravasación de contraste) y lesiones de órganos.</li>
+        <li><strong>Ecografía FAST:</strong> puede detectar líquido libre en la cavidad peritoneal (no retroperitoneal).</li>
+        <li><strong>Urograma descendente:</strong> si se sospecha lesión renal o ureteral.</li>
+        <li><strong>Arteriografía:</strong> si hay sospecha de sangrado activo y el paciente está estable.</li>
+        <li><strong>Lavado peritoneal diagnóstico (LPD):</strong> puede ser negativo en hematomas retroperitoneales puros (ya que la sangre no llega al peritoneo).</li>
+    </ul>
+
+    <h3>Tratamiento quirúrgico</h3>
+
+    <h4>Zona I (central) — exploración obligatoria</h4>
+    <div class="surg-box">
+        <ol>
+            <li><strong>Abordaje:</strong> laparotomía media, movilización del intestino delgado hacia la derecha.</li>
+            <li><strong>Exposición:</strong> incisión del peritoneo posterior sobre la aorta (desde el hiato aórtico hasta la bifurcación).</li>
+            <li><strong>Control vascular:</strong> clampaje de la aorta por encima y por debajo del hematoma con pinzas de DeBakey o Satinsky.</li>
+            <li><strong>Evacuación:</strong> aspiración de coágulos y sangre.</li>
+            <li><strong>Reparación:</strong> sutura de la lesión vascular (aorta, cava, ilíacas) con prolene 4/0 o 5/0 en puntos separados.</li>
+            <li><strong>Si no se encuentra lesión vascular:</strong> revisar páncreas, duodeno y uréteres.</li>
+            <li><strong>Drenaje:</strong> colocar drenaje retroperitoneal (Jackson-Pratt o Penrose).</li>
+        </ol>
+    </div>
+
+    <h4>Zona II (flancos) — exploración selectiva</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicada si:</strong> herida de arma de fuego, hematoma expansivo, hematuria macroscópica, o TAC muestra lesión renal.</li>
+            <li><strong>Técnica:</strong> movilizar el colon (derecho o izquierdo) y exponer el riñón. Clampaje del pedículo renal si sangra.</li>
+            <li><strong>Reparación:</strong> nefrorrafia, resección parcial o nefrectomía según el grado de lesión renal (AAST).</li>
+            <li><strong>Drenaje:</strong> fosa renal con drenaje tubular.</li>
+        </ul>
+    </div>
+
+    <h4>Zona III (pélvica) — NO explorar (regla de oro)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Razón:</strong> la exploración rompe el taponamiento retroperitoneal y puede causar hemorragia exanguinante.</li>
+            <li><strong>Manejo:</strong>
+                <ul>
+                    <li><strong>Estabilización pélvica:</strong> fijador externo o sábana pélvica (binders) para reducir el volumen pélvico.</li>
+                    <li><strong>Resucitación:</strong> transfusión masiva (protocolo de hemorragia masiva), corrección de coagulopatía con plasma y plaquetas.</li>
+                    <li><strong>Embolización:</strong> arteriografía pélvica y embolización de arterias sangrantes (iliaca interna, glútea, pudenda) con coils o partículas.</li>
+                    <li><strong>Si el paciente es inestable y no hay embolización disponible:</strong> se puede realizar empaquetamiento pélvico (gasas en el espacio retroperitoneal) y cierre temporal de la pared abdominal.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA DE PELVIS ÓSEA (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-abdomen-pelvis">
+    <h2>Trauma de pelvis ósea</h2>
+
+    <h3>Clasificación de Tile (estabilidad pélvica)</h3>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Tipo</th><th>Descripción</th><th>Mecanismo</th><th>Estabilidad</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Tipo A</strong></td><td>Fractura estable (A1: avulsión, A2: ala ilíaca, A3: sacra transversa).</td><td>Trauma de baja energía.</td><td>Estable.</td></tr>
+            <tr><td><strong>Tipo B</strong></td><td>Fractura rotacionalmente inestable, verticalmente estable (B1: apertura en libro, B2: compresión lateral ipsilateral, B3: compresión lateral contralateral).</td><td>Trauma de energía media.</td><td>Inestable rotacionalmente.</td></tr>
+            <tr><td><strong>Tipo C</strong></td><td>Fractura rotacional y verticalmente inestable (C1: unilateral, C2: bilateral, C3: asociada a fractura acetabular).</td><td>Trauma de alta energía (caídas, accidentes).</td><td>Inestable completa.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Clasificación de la AO/OTA</h3>
+    <ul>
+        <li><strong>A:</strong> Fracturas estables (A1, A2, A3).</li>
+        <li><strong>B:</strong> Fracturas inestables rotacionalmente (B1, B2, B3).</li>
+        <li><strong>C:</strong> Fracturas inestables rotacional y verticalmente (C1, C2, C3).</li>
+    </ul>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li>Dolor pélvico intenso, impotencia funcional de las extremidades inferiores.</li>
+            <li>Inestabilidad pélvica al examen físico (movilidad anormal al comprimir las crestas ilíacas).</li>
+            <li>Hematoma perineal, escrotal o en flancos (signo de Grey Turner).</li>
+            <li>Sangrado uretral (sospechar lesión de uretra).</li>
+            <li>Shock hemorrágico por sangrado retroperitoneal (pérdida de 2-4 L de sangre).</li>
+            <li>Lesiones asociadas: vejiga, recto, uretra, nervios (ciático, lumbosacros), órganos genitales.</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Rx de pelvis (AP, entrada y salida):</strong> evalúa la integridad del anillo pélvico.</li>
+        <li><strong>TAC de pelvis con contraste:</strong> evalúa fracturas, hematoma retroperitoneal, lesiones vasculares y de órganos pélvicos.</li>
+        <li><strong>Arteriografía:</strong> si hay sospecha de sangrado activo (hematoma expansivo, inestabilidad hemodinámica).</li>
+        <li><strong>Uretrografía retrógrada:</strong> si hay sangre en el meato uretral (descartar lesión de uretra).</li>
+        <li><strong>Cistografía:</strong> si se sospecha lesión vesical.</li>
+    </ul>
+
+    <h3>Tratamiento</h3>
+
+    <h4>1. Medidas iniciales (ATLS)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Inmovilización:</strong> sábana pélvica (binder) o fijador externo de emergencia para reducir el volumen pélvico y disminuir el sangrado.</li>
+            <li><strong>Resucitación:</strong> transfusión masiva (protocolo de hemorragia masiva), corrección de coagulopatía con plasma y plaquetas.</li>
+            <li><strong>Control de daños:</strong> si el paciente está inestable, se realiza empaquetamiento pélvico (gasas en el espacio retroperitoneal) y cierre temporal de la pared abdominal.</li>
+        </ul>
+    </div>
+
+    <h4>2. Tratamiento quirúrgico según tipo de fractura</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Tipo A (estable):</strong> manejo conservador (reposo, analgesia, movilización precoz).</li>
+            <li><strong>Tipo B (inestable rotacional):</strong> fijación externa (anterior) o fijación percutánea con tornillos iliosacros.</li>
+            <li><strong>Tipo C (inestable completa):</strong> fijación externa + fijación interna (placas y tornillos) o fijación iliosacra percutánea. Cirugía definitiva cuando el paciente esté estable (24-72h).</li>
+        </ul>
+    </div>
+
+    <h4>3. Técnicas quirúrgicas específicas</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Fijador externo:</strong> se colocan dos o tres tornillos en cada cresta ilíaca (espina ilíaca anterosuperior y superior) y se conectan a una barra externa.</li>
+            <li><strong>Fijación iliosacra percutánea:</strong> tornillos canulados desde el ala ilíaca hacia el cuerpo de S1 o S2, bajo control fluoroscópico.</li>
+            <li><strong>Placa y tornillos:</strong> abordaje anterior (Pfannenstiel) para fijación del anillo pélvico anterior.</li>
+            <li><strong>Empaquetamiento pélvico:</strong> si el sangrado es incontrolable, se colocan gasas en el espacio retroperitoneal a través de una incisión abdominal baja.</li>
+            <li><strong>Embolización:</strong> si hay sangrado activo de la arteria ilíaca interna o de sus ramas, se realiza embolización con coils o partículas.</li>
+        </ul>
+    </div>
+
+    <h4>4. Manejo de lesiones asociadas</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Vejiga:</strong> sutura primaria + sonda vesical (ver sección de trauma vesical).</li>
+            <li><strong>Uretra:</strong> si hay sección, se coloca cistostomía suprapúbica y se difiere la reparación (3-6 meses).</li>
+            <li><strong>Recto:</strong> si hay perforación, colostomía proximal + drenaje.</li>
+            <li><strong>Nervios (ciático, lumbosacros):</strong> exploración y descompresión si hay déficit neurológico.</li>
+            <li><strong>Vasos ilíacos:</strong> si hay lesión, se repara con sutura vascular o injerto.</li>
+        </ul>
+    </div>
+
+    <h4>5. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI:</strong> monitorización hemodinámica, control de drenajes, prevención de trombosis venosa profunda.</li>
+            <li><strong>Antibióticos:</strong> profilaxis con cefalosporina de 2ª-3ª generación.</li>
+            <li><strong>Movilización:</strong> inicio de movilización pasiva precoz (24-48h), luego activa según tolerancia.</li>
+            <li><strong>Control radiográfico:</strong> a las 24h y luego periódicamente para evaluar la consolidación de la fractura.</li>
+            <li><strong>Rehabilitación:</strong> fisioterapia para recuperación de la marcha y funcionalidad.</li>
+        </ul>
+    </div>
+</div>
+    <!-- ============================================================ -->
+    <!-- COLON (AMPLIADO) -->
+    <div class="content-section" id="sec-abdomen-colon">
+        <h2>Traumatismo de colon</h2>
+        <h3>Clasificación (Moore & Flint)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Lesión de serosa</td><td>Dolor localizado</td></tr>
+                <tr><td>II</td><td>Lesión de pared única</td><td>Dolor, sensibilidad local</td></tr>
+                <tr><td>III</td><td>&lt;25% de pared, perforación única</td><td>Peritonitis localizada</td></tr>
+                <tr><td>IV</td><td>&gt;25% o múltiples perforaciones</td><td>Peritonitis difusa, sepsis</td></tr>
+                <tr><td>V</td><td>Compromiso vascular o pérdida de continuidad</td><td>Shock séptico, gangrena</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento según localización</h3>
+        <ul>
+            <li><strong>Colon derecho:</strong> sutura primaria o resección con anastomosis ileotransversa.</li>
+            <li><strong>Colon izquierdo:</strong> colostomía en cañón de escopeta o Hartmann.</li>
+            <li><strong>Recto intraperitoneal:</strong> sutura primaria + colostomía de protección.</li>
+            <li><strong>Recto extraperitoneal:</strong> colostomía proximal + drenaje isquiorrectal.</li>
+        </ul>
+
+        <h4>Técnicas quirúrgicas detalladas</h4>
+        <div class="surg-box">
+            <h5>1. Sutura primaria del colon</h5>
+            <ul>
+                <li><strong>Indicación:</strong> colon derecho, lesiones limpias (<6h), colon vacío, paciente estable.</li>
+                <li>Regularización de bordes con bisturí.</li>
+                <li>Sutura en dos planos: plano mucoso con Vicryl 3/0 en puntos separados (o sutura continua), y plano seromuscular con Vicryl 2/0 en puntos separados de Lembert.</li>
+                <li>Probar la sutura con inyección de suero o aire a través de sonda rectal para descartar fugas.</li>
+                <li>Cubrir la sutura con epiplón para reforzar.</li>
+            </ul>
+            <h5>2. Resección y anastomosis término-terminal</h5>
+            <ul>
+                <li><strong>Indicación:</strong> lesiones extensas, múltiples perforaciones en un segmento corto, o desvascularización.</li>
+                <li>Movilizar el segmento lesionado y resecar con márgenes de seguridad (3-5 cm de tejido sano).</li>
+                <li>Usar grapadora circular (EEA) o sutura manual con Vicryl 2/0 en dos planos.</li>
+                <li>Si la anastomosis es en colon izquierdo y hay factores de riesgo (contaminación, shock), proteger con colostomía en asa.</li>
+            </ul>
+            <h5>3. Colostomía en cañón de escopeta</h5>
+            <ul>
+                <li><strong>Indicación:</strong> colon izquierdo, lesiones con contaminación fecal, >6h de evolución.</li>
+                <li>Movilizar el asa colónica y llevarla a la pared abdominal a través de una incisión separada.</li>
+                <li>Fijar el asa al peritoneo y a la piel con puntos de seda 2/0.</li>
+                <li>Abrir el asa longitudinalmente en el acto quirúrgico (colostomía a cielo abierto) o a las 48h.</li>
+                <li>Colocar bolsa de colostomía.</li>
+            </ul>
+            <h5>4. Operación de Hartmann</h5>
+            <ul>
+                <li><strong>Indicación:</strong> colon izquierdo o recto superior con lesiones irreparables.</li>
+                <li>Resecar el segmento lesionado.</li>
+                <li>Cerrar el muñón distal (rectal) con grapadora lineal (TA) o sutura manual en dos planos.</li>
+                <li>Abocar el cabo proximal (colon descendente o sigmoides) como colostomía terminal.</li>
+                <li>Fijar el muñón distal al sacro o a la fascia para evitar retracción.</li>
+            </ul>
+            <h5>5. Drenaje pelviano y colostomía de protección en recto</h5>
+            <ul>
+                <li>En lesiones de recto intraperitoneal, realizar sutura primaria y colostomía del transverso derecho o sigmoides en asa.</li>
+                <li>En lesiones extraperitoneales, colocar drenaje isquiorrectal (a través de incisión perineal) y colostomía proximal.</li>
+                <li>Realizar dilatación anal postoperatoria para evitar estenosis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DUODENO (AMPLIADO) -->
+    <div class="content-section" id="sec-abdemen-duodeno">
+        <h2>Traumatismo duodenal</h2>
+        <h3>Clasificación (AAST)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Hematoma intramural</td><td>Dolor epigástrico, vómitos</td></tr>
+                <tr><td>II</td><td>Perforación &lt;50%</td><td>Peritonitis temprana</td></tr>
+                <tr><td>III</td><td>Perforación &gt;50% o lesión de ampolla</td><td>Peritonitis severa, shock</td></tr>
+                <tr><td>IV</td><td>Lesión combinada duodeno-pancreática</td><td>Shock, elevación de amilasa</td></tr>
+                <tr><td>V</td><td>Separación duodeno-pancreática</td><td>Exanguinación</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento</h3>
+        <ul>
+            <li><strong>Grado I:</strong> Conservador (sonda nasogástrica).</li>
+            <li><strong>Grado II:</strong> Sutura primaria + sonda de descompresión duodenal.</li>
+            <li><strong>Grado III-IV:</strong> Resección y anastomosis, derivación pilórica, o duodenoyeyunostomía.</li>
+            <li><strong>Grado V:</strong> Whipple en estables; control de daños en inestables.</li>
+        </ul>
+
+        <h4>Técnicas quirúrgicas detalladas</h4>
+        <div class="surg-box">
+            <h5>1. Maniobra de Kocher (movilización duodenal)</h5>
+            <ul>
+                <li>Incidir el peritoneo a lo largo del borde lateral derecho del duodeno (desde el píloro hasta la flexura duodeno-yeyunal).</li>
+                <li>Movilizar el duodeno medialmente para exponer su cara posterior y la cabeza del páncreas.</li>
+                <li>Permite visualizar perforaciones retroperitoneales y lesiones de la segunda y tercera porción.</li>
+            </ul>
+            <h5>2. Sutura primaria del duodeno</h5>
+            <ul>
+                <li>Regularización de bordes con bisturí.</li>
+                <li>Sutura en dos planos: mucosa con Vicryl 4/0 (puntos separados) y seromuscular con Vicryl 3/0 (puntos de Lembert).</li>
+                <li>Orientación transversal de la sutura para evitar estenosis.</li>
+                <li>Colocar sonda de descompresión duodenal (nasoyeyunal o a través de una yeyunostomía) para reducir la presión intraluminal.</li>
+            </ul>
+            <h5>3. Derivación pilórica (exclusión pilórica)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> lesiones complejas (grados III-IV) donde la sutura duodenal está en tensión.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Seccionar el píloro con grapadora lineal (GIA) o suturar con Vicryl 2/0.</li>
+                        <li>Realizar una gastroyeyunostomía en Y de Roux (asa yeyunal de 40-50 cm) para derivar el contenido gástrico.</li>
+                        <li>Colocar sonda nasoyeyunal más allá de la anastomosis para nutrición precoz.</li>
+                        <li>Drenaje peri duodenal con tubos de Jackson-Pratt.</li>
+                    </ol>
+                </li>
+            </ul>
+            <h5>4. Duodenoyeyunostomía</h5>
+            <ul>
+                <li><strong>Indicación:</strong> lesiones extensas que requieren resección del duodeno.</li>
+                <li>Resecar el segmento duodenal lesionado (márgenes de seguridad de 2-3 cm).</li>
+                <li>Anastomosar el duodeno a un asa yeyunal en Y de Roux o en T-T con Vicryl 3/0 en dos planos.</li>
+                <li>Colocar sonda de descompresión en el asa aferente.</li>
+                <li>Drenaje peri anastomótico.</li>
+            </ul>
+            <h5>5. Duodenopancreatectomía cefálica (técnica de Whipple)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> grado V o lesiones combinadas duodeno-pancreáticas irreparables.</li>
+                <li><strong>Pacientes estables</strong> (sin acidosis ni hipotermia).</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Resección de la cabeza del páncreas, duodeno, segmento distal del colédoco y vesícula biliar.</li>
+                        <li>Reconstrucción: anastomosis pancreático-yeyunal (o pancreaticogastrostomía), hepaticoyeyunostomía, y gastroyeyunostomía (en Y de Roux).</li>
+                        <li>Drenaje amplio de la zona quirúrgica.</li>
+                    </ol>
+                </li>
+                <li>En pacientes inestables: control de daños (empaquetamiento, ligadura de vasos, cierre temporal) y reintervenir para Whipple cuando se estabilice.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PÁNCREAS (AMPLIADO) -->
+    <div class="content-section" id="sec-abdomen-pancreas">
+        <h2>Traumatismo pancreático</h2>
+        <h3>Clasificación (AAST)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Clínica</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Hematoma subcapsular, contusión</td><td>Dolor epigástrico, amilasa normal</td></tr>
+                <tr><td>II</td><td>Laceración superficial sin conducto</td><td>Dolor en barra, amilasa elevada</td></tr>
+                <tr><td>III</td><td>Laceración profunda con conducto (cuerpo/cola)</td><td>Dolor irradiado, peritonitis</td></tr>
+                <tr><td>IV</td><td>Laceración en cabeza con conducto o ampolla</td><td>Shock, ictericia</td></tr>
+                <tr><td>V</td><td>Destrucción masiva de cabeza o combinada</td><td>Shock hemorrágico, fallo multiorgánico</td></tr>
+            </tbody>
+        </table>
+        <h3>Tratamiento</h3>
+        <ul>
+            <li><strong>Grado I:</strong> Conservador.</li>
+            <li><strong>Grado II:</strong> Sutura + drenaje.</li>
+            <li><strong>Grado III:</strong> Pancreatectomía distal con esplenectomía.</li>
+            <li><strong>Grado IV:</strong> Resección cefálica o Whipple.</li>
+            <li><strong>Grado V:</strong> Control de daños, empaquetamiento, drenaje.</li>
+        </ul>
+
+        <h4>Técnicas quirúrgicas detalladas</h4>
+        <div class="surg-box">
+            <h5>1. Pancreatectomía distal</h5>
+            <ol>
+                <li><strong>Abordaje:</strong> laparotomía media, movilización del epiplón mayor y sección del ligamento gastrocolónico.</li>
+                <li><strong>Exposición:</strong> exponer el páncreas desde la cola hasta el cuerpo.</li>
+                <li><strong>Disección del borde inferior:</strong> identificar la vena mesentérica superior y la arteria mesentérica superior.</li>
+                <li><strong>Sección del páncreas:</strong> en el cuerpo (a la izquierda de la vena mesentérica superior). Usar bisturí frío o electrobisturí.</li>
+                <li><strong>Ligadura del conducto pancreático:</strong> identificar y ligar con Vicryl 4/0 o sutura en bolsa.</li>
+                <li><strong>Hemostasia del muñón:</strong> suturar los vasos transversos con Vicryl 3/0 y aplicar Surgicel.</li>
+                <li><strong>Esplenectomía asociada:</strong> si la lesión está cerca del hilio esplénico, resecar el bazo (ligadura de la arteria y vena esplénicas).</li>
+                <li><strong>Drenaje:</strong> colocar un drenaje de Jackson-Pratt cerca del muñón pancreático.</li>
+            </ol>
+            <h5>2. Resección cefálica con preservación duodenal (técnica de Beger o Frey)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> lesiones de la cabeza del páncreas que no comprometen el duodeno.</li>
+                <li><strong>Técnica:</strong> resección de la cabeza del páncreas, preservando el duodeno, la vía biliar y el estómago. Reconstrucción con anastomosis pancreático-yeyunal.</li>
+            </ul>
+            <h5>3. Duodenopancreatectomía cefálica (Whipple)</h5>
+            <ul>
+                <li><strong>Indicación:</strong> grado IV-V con lesión combinada duodeno-pancreática.</li>
+                <li>Ver técnica en sección de duodeno.</li>
+            </ul>
+            <h5>4. Control de daños en páncreas</h5>
+            <ul>
+                <li><strong>Indicación:</strong> pacientes inestables con grado IV-V.</li>
+                <li>Empaquetamiento con gasas en la transcavidad de los epiplones.</li>
+                <li>Ligadura de vasos sangrantes (arteria gastroduodenal, arteria esplénica).</li>
+                <li>Colocar drenaje amplio y cerrar temporalmente la pared.</li>
+                <li>Reintervenir a las 48-72h para realizar la resección definitiva.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VÍAS BILIARES -->
+    <div class="content-section" id="sec-abdomen-viasbiliares">
+        <h2>Traumatismo de vías biliares</h2>
+        <ul>
+            <li><strong>Vesícula:</strong> colecistectomía (abierta o laparoscópica) si perforación o avulsión.</li>
+            <li><strong>Colédoco:</strong> sutura lateral sobre sonda de Kehr con Vicryl 5/0. Si sección completa: anastomosis término-terminal o hepaticoyeyunostomía en Y de Roux.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica de hepaticoyeyunostomía</h4>
+            <ol>
+                <li>Movilizar el conducto hepático proximal (disecar hasta el hilio).</li>
+                <li>Preparar un asa yeyunal en Y de Roux (50-60 cm).</li>
+                <li>Anastomosis término-lateral del conducto hepático al yeyuno con Vicryl 5/0 o PDS 5/0, puntos separados.</li>
+                <li>Colocar sonda transanastomótica si se desea (tubo de Kehr o sonda de Foley).</li>
+                <li>Drenaje subhepático con Jackson-Pratt.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VASOS -->
+    <div class="content-section" id="sec-abdomen-vasos">
+        <h2>Lesiones vasculares abdominales</h2>
+        <ul>
+            <li><strong>Aorta:</strong> clampaje por encima y debajo, sutura con prolene 4/0 o interposición de injerto de Dacron.</li>
+            <li><strong>Vena cava:</strong> sutura lateral con prolene 5/0 o ligadura (tolerable si se reponen fluidos).</li>
+            <li><strong>Vasos mesentéricos:</strong> reparación primaria o ligadura; si isquemia intestinal, resección del segmento afectado.</li>
+            <li><strong>Retroperitoneo:</strong> explorar hematomas pulsátiles. Hematomas pélvicos por fractura de pelvis → estabilización pélvica y embolización.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica de reparación aórtica</h4>
+            <ol>
+                <li>Exposición de la aorta mediante laparotomía o abordaje retroperitoneal izquierdo.</li>
+                <li>Clampaje proximal y distal con pinzas de DeBakey o Satinsky.</li>
+                <li>Si la lesión es <50% de la circunferencia: sutura lateral con prolene 4/0 en puntos separados.</li>
+                <li>Si es >50%: resección del segmento lesionado e interposición de injerto de Dacron (anastomosis término-terminal con prolene 4/0).</li>
+                <li>Revisión de la hemostasia, cierre de la retroperitoneo y pared.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CONTROL DE DAÑOS -->
+    <div class="content-section" id="sec-abdomen-control">
+        <h2>Control de daños (Damage Control)</h2>
+        <h3>Indicaciones</h3>
+        <ul>
+            <li>Acidosis metabólica (pH &lt;7.2).</li>
+            <li>Hipotermia (&lt;34°C).</li>
+            <li>Coagulopatía (sangrado difuso).</li>
+            <li>Lesiones exanguinantes (hígado, bazo, vasos mayores).</li>
+            <li>Pacientes inestables en centros sin capacidad compleja.</li>
+        </ul>
+        <h3>Fases</h3>
+        <ul>
+            <li><strong>Fase 1:</strong> Laparotomía abreviada (<90 min). Empaquetamiento, clampaje, resección de órganos no viables, cierre temporal (bolsa de Bogotá o malla).</li>
+            <li><strong>Fase 2:</strong> Reanimación en UCI (corrección de acidosis, hipotermia, coagulopatía con plasma y plaquetas).</li>
+            <li><strong>Fase 3:</strong> Reoperación definitiva a las 24-48h.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnicas de control de daños</h4>
+            <ul>
+                <li><strong>Empaquetamiento hepático:</strong> gasas comprimiendo el hígado contra el diafragma. Fijar con puntos de Vicryl 2/0.</li>
+                <li><strong>Clampaje de la aorta torácica:</strong> si no se controla la hemorragia abdominal, toracotomía izquierda y clampaje de la aorta torácica descendente.</li>
+                <li><strong>Resección de órganos no viables:</strong> esplenectomía, nefrectomía, resección intestinal.</li>
+                <li><strong>Cierre temporal:</strong> bolsa de Bogotá (sutura de una bolsa de suero al peritoneo), malla de polipropileno, o sistema ABRA.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCA -->
+    <div class="content-section" id="sec-abdomen-sca">
+        <h2>Síndrome Compartimental Abdominal (SCA)</h2>
+        <h3>Grados (PIA)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>PIA (cm H₂O)</th><th>Conducta</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>10-15</td><td>Observación</td></tr>
+                <tr><td>II</td><td>16-25</td><td>Observación estrecha, evitar sobrecarga hídrica</td></tr>
+                <tr><td>III</td><td>26-35</td><td>Descompresión quirúrgica</td></tr>
+                <tr><td>IV</td><td>&gt;35</td><td>Descompresión inmediata</td></tr>
+            </tbody>
+        </table>
+        <div class="surg-box">
+            <h4>Técnica de descompresión</h4>
+            <ol>
+                <li>Laparotomía descompresiva: incisión media desde xifoides al pubis.</li>
+                <li>Abrir toda la pared, evacuar líquidos, retirar gasas.</li>
+                <li>Cerrar temporalmente con malla de polipropileno, bolsa de Bogotá o sistema ABRA.</li>
+                <li>Manejo en UCI con control de PIA y soporte ventilatorio/renal.</li>
+                <li>Cierre definitivo cuando PIA &lt;15 cm H₂O y el paciente esté estable.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CUELLO -->
+    <div class="content-section" id="sec-cuello">
+        <h2>Traumatismo de cuello</h2>
+        <h3>Anatomía y zonas</h3>
+        <ul>
+            <li><strong>Zona I:</strong> tórax-clavículas (vasos subclavios, esófago, tráquea, cúpulas pleurales).</li>
+            <li><strong>Zona II:</strong> clavículas-ángulo mandibular (grandes vasos, tiroides, cartílagos laríngeos).</li>
+            <li><strong>Zona III:</strong> ángulo mandibular-base cráneo (carótidas distales, nervios craneales IX-XII).</li>
+        </ul>
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Cerrados:</strong> Grupo 1-4 (hematoma, edema, fractura, disrupción).</li>
+            <li><strong>Penetrantes:</strong> Grado 1-4 (desde no penetrante hasta exanguinante).</li>
+        </ul>
+        <h3>Manejo inicial</h3>
+        <ul>
+            <li>Asegurar vía aérea (intubación o cricotiroidotomía).</li>
+            <li>Compresión directa de la hemorragia (NO pinzamiento a ciegas).</li>
+            <li>Sonda de balón (Foley) con 30 ml de suero para tamponar.</li>
+        </ul>
+    </div>
+
+    <!-- CUELLO VASCULAR -->
+    <div class="content-section" id="sec-cuello-vascular">
+        <h2>Lesiones vasculares del cuello</h2>
+        <h3>Clínica</h3>
+        <ul>
+            <li>Hematoma expansivo, hemorragia externa activa, soplo, déficit de pulso carotídeo.</li>
+            <li>Déficit neurológico ipsilateral (hemiparesia, afasia).</li>
+            <li>Síndrome de Horner (lesión del ganglio estrellado).</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica de abordaje vascular (zona II)</h4>
+            <ol>
+                <li><strong>Incisión:</strong> a lo largo del borde anterior del ECM, desde la mastoides hasta la horquilla esternal.</li>
+                <li><strong>Disección:</strong> separar el ECM, exponer la vaina carotídea (arteria carótida, vena yugular, nervio vago).</li>
+                <li><strong>Control proximal y distal:</strong> colocar cintas de Rumel o pinzas vasculares.</li>
+                <li><strong>Reparación arterial:</strong> si <50% de la circunferencia: sutura lateral con prolene 5/0 o 6/0. Si >50%: resección y anastomosis o interposición de injerto de vena safena.</li>
+                <li><strong>Vena yugular:</strong> sutura lateral si es pequeña; ligadura si es extensa (seguro ligar una, no ambas).</li>
+                <li><strong>Drenaje:</strong> Penrose o Jackson-Pratt.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- CUELLO LARINGE/TRÁQUEA -->
+    <div class="content-section" id="sec-cuello-laringe">
+        <h2>Lesiones de laringe y tráquea cervical</h2>
+        <h3>Clínica</h3>
+        <ul>
+            <li>Disfonía/afonía, estridor, enfisema subcutáneo, hemoptisis, dificultad respiratoria.</li>
+        </ul>
+        <div class="surg-box">
+            <h4>Técnica de reparación laringotraqueal</h4>
+            <ol>
+                <li><strong>Vía aérea:</strong> intubación orotraqueal o cricotiroidotomía de urgencia.</li>
+                <li><strong>Abordaje:</strong> cervicotomía horizontal (Kocher) o vertical.</li>
+                <li><strong>Exploración:</strong> exponer la laringe y tráquea, identificar nervios recurrentes.</li>
+                <li><strong>Desbridamiento:</strong> resección de bordes contusos o necróticos.</li>
+                <li><strong>Sutura:</strong> con Vicryl 3/0 o PDS 4/0, puntos separados extramucosos.</li>
+                <li><strong>Traqueostomía:</strong> si la sutura está en tensión.</li>
+                <li><strong>Drenaje:</strong> Penrose en espacio pretraqueal.</li>
+            </ol>
+        </div>
+    </div>
+
+<!-- ============================================================ -->
+<!-- TRAUMA ESOFÁGICO CERVICAL (SECCIÓN AMPLIADA) -->
+<!-- ============================================================ -->
+
+<div class="content-section" id="sec-cuello-esofago">
+    <h2>Lesiones esofágicas cervicales (técnicas ampliadas)</h2>
+
+    <h3>Clasificación detallada</h3>
+
+    <h4>1. Por mecanismo de lesión</h4>
+    <ul>
+        <li><strong>Iatrogénica (intraluminal):</strong> endoscopia (la más frecuente), dilatación esofágica, colocación de sonda nasogástrica, intubación difícil, cirugía cervical (tiroidectomía, discectomía).</li>
+        <li><strong>Perforación por cuerpo extraño:</strong> espina de pescado, hueso de pollo, objetos ingeridos (monedas, pilas), especialmente en niños o ancianos.</li>
+        <li><strong>Trauma abierto (extraluminal):</strong> arma blanca (cuchillo, punzón), arma de fuego (baja o alta velocidad), fragmentos de metralla, mordedura animal.</li>
+        <li><strong>Trauma cerrado (contusión):</strong> por golpe directo en el cuello, estrangulamiento, hiperextensión cervical (raro, <5% de las perforaciones).</li>
+        <li><strong>Química:</strong> ingestión de cáusticos (sosa, ácidos) — produce necrosis y perforación tardía (48-72h).</li>
+    </ul>
+
+    <h4>2. Por localización anatómica en el cuello</h4>
+    <ul>
+        <li><strong>Esófago cervical superior (C1-C4):</strong> por detrás de la laringe, desde el esfínter esofágico superior hasta el cartílago cricoides.</li>
+        <li><strong>Esófago cervical medio (C5-C6):</strong> a nivel de la glándula tiroides, relacionado con la tráquea y los nervios recurrentes.</li>
+        <li><strong>Esófago cervical inferior (C7-T1):</strong> en la entrada al tórax, relacionado con la cúpula pleural y los vasos subclavios.</li>
+    </ul>
+
+    <h4>3. Clasificación de la Asociación Americana de Cirugía del Trauma (AAST) para esófago cervical</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Grado</th><th>Descripción</th><th>Manejo sugerido</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="badge">I</span></td><td>Contusión o hematoma intramural, sin perforación.</td><td>Observación, reposo esofágico, antibióticos.</td></tr>
+            <tr><td><span class="badge">II</span></td><td>Perforación o laceración &lt;50% de la circunferencia, sin pérdida de tejido.</td><td>Sutura primaria en dos planos + drenaje.</td></tr>
+            <tr><td><span class="badge">III</span></td><td>Perforación o laceración &gt;50% de la circunferencia, sin pérdida de tejido.</td><td>Sutura primaria + refuerzo + drenaje.</td></tr>
+            <tr><td><span class="badge">IV</span></td><td>Perforación con pérdida de tejido &lt;2 cm (segmento).</td><td>Resección y anastomosis primaria.</td></tr>
+            <tr><td><span class="badge">V</span></td><td>Perforación con pérdida de tejido &gt;2 cm o lesión vascular asociada.</td><td>Esofagostomía cervical + drenaje + gastrostomía/yeyunostomía. Reparación diferida.</td></tr>
+        </tbody>
+    </table>
+
+    <h4>4. Clasificación según el tiempo de evolución</h4>
+    <ul>
+        <li><strong>Perforación temprana (&lt;6h):</strong> mayor probabilidad de reparación primaria exitosa.</li>
+        <li><strong>Perforación intermedia (6-24h):</strong> riesgo de infección local, requiere desbridamiento y drenaje.</li>
+        <li><strong>Perforación tardía (&gt;24h):</strong> alto riesgo de mediastinitis, absceso, sepsis; se prefiere esofagostomía y drenaje.</li>
+    </ul>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Dolor cervical:</strong> anterior o retrofaríngeo, que empeora con la deglución (odinofagia).</li>
+            <li><strong>Disfagia:</strong> dificultad para tragar saliva o alimentos.</li>
+            <li><strong>Salida de saliva, alimentos o líquidos por la herida</strong> (en heridas abiertas).</li>
+            <li><strong>Enfisema subcutáneo cervical</strong> (crepitación en el cuello y cara) — signo patognomónico de perforación esofágica.</li>
+            <li><strong>Dolor a la palpación cervical</strong> (especialmente en la región retrofaríngea).</li>
+            <li><strong>Signos de sepsis:</strong> fiebre (&gt;38°C), taquicardia, leucocitosis, escalofríos.</li>
+            <li><strong>Si la perforación se extiende al mediastino:</strong> dolor retroesternal, disnea, disfonía (por irritación del nervio recurrente), shock séptico.</li>
+            <li><strong>Signo de Hamman:</strong> crepitación mediastinal sincrónica con el latido cardíaco (si hay neumomediastino).</li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Rx de cuello (AP y lateral):</strong> enfisema prevertebral (aumento del espacio prevertebral >5 mm a nivel de C5-C6), aire retrofaríngeo, cuerpo extraño radioopaco.</li>
+        <li><strong>Esofagograma con contraste hidrosoluble (Gastrografín):</strong> <strong>NUNCA con bario</strong> (produce mediastinitis grave). Sensibilidad ~90%. Se realizan radiografías en AP y lateral, con el paciente en decúbito lateral derecho e izquierdo.</li>
+        <li><strong>TAC de cuello con contraste oral y endovenoso:</strong> muestra el trayecto de la perforación, abscesos, enfisema mediastínico, compromiso de estructuras vecinas.</li>
+        <li><strong>Endoscopia digestiva alta:</strong> útil en iatrogénica o cuerpos extraños; realizada por experto. Permite visualizar la lesión, extraer cuerpos extraños y evaluar la extensión.</li>
+        <li><strong>Ecografía:</strong> puede detectar colecciones líquidas o abscesos en el espacio retrofaríngeo.</li>
+        <li><strong>Laboratorio:</strong> hemograma (leucocitosis), PCR, procalcitonina (elevados en infección), hemocultivos.</li>
+    </ul>
+
+    <h3>Tratamiento quirúrgico (técnicas detalladas)</h3>
+
+    <h4>1. Reparación primaria (indicada en &lt;6h, lesión limpia, sin infección franca, grados II-III)</h4>
+    <div class="surg-box">
+        <h5>Abordaje (cervicotomía izquierda, la más utilizada)</h5>
+        <ol>
+            <li><strong>Incisión:</strong> de 5-7 cm a lo largo del borde anterior del músculo esternocleidomastoideo (ECM) izquierdo (derecho si la lesión está en ese lado). Se extiende desde la apófisis mastoides hasta la horquilla esternal.</li>
+            <li><strong>Disección:</strong> separar el ECM y retraerlo lateralmente. Identificar la vaina carotídea (arteria carótida, vena yugular interna, nervio vago) y retirarla lateralmente.</li>
+            <li><strong>Exposición del esófago:</strong> identificar el esófago a la izquierda de la tráquea, en el espacio retrofaríngeo. Movilizar con disección roma, cuidando el <strong>nervio recurrente</strong> (que se encuentra en el surco traqueoesofágico).</li>
+            <li><strong>Identificación de la perforación:</strong> se busca el punto de fuga con burbujas de aire o con inyección de suero con azul de metileno a través de sonda nasogástrica.</li>
+            <li><strong>Desbridamiento:</strong> resección de bordes contusos o necróticos hasta tejido sano (margen de 2-3 mm).</li>
+            <li><strong>Sutura en dos planos:</strong>
+                <ul>
+                    <li><strong>Plano mucoso:</strong> Vicryl 4/0 o PDS 4/0 en puntos separados (o sutura continua) con aguja atraumática.</li>
+                    <li><strong>Plano muscular:</strong> Vicryl 3/0 en puntos separados de Lembert, invaginando la mucosa.</li>
+                    <li><strong>Orientación:</strong> transversal si es posible (para evitar estenosis).</li>
+                </ul>
+            </li>
+            <li><strong>Refuerzo:</strong> cubrir la sutura con un colgajo de músculo esternocleidomastoideo (se toma una porción del ECM y se rota sobre la sutura) o de tiroides.</li>
+            <li><strong>Prueba de estanqueidad:</strong> inyección de suero a través de sonda nasogástrica para comprobar la sutura (sin fugas).</li>
+            <li><strong>Drenaje:</strong> colocar un drenaje de Penrose o Jackson-Pratt en el espacio periesofágico (retrofaríngeo).</li>
+            <li><strong>Nutrición:</strong> sonda nasoyeyunal (o nasogástrica si la sutura es baja) para nutrición enteral precoz.</li>
+            <li><strong>Cierre:</strong> por planos (fascia, ECM, tejido subcutáneo) con Vicryl 2/0 y piel con grapas o seda 3/0.</li>
+        </ol>
+    </div>
+
+    <h4>2. Esofagostomía cervical (indicada en &gt;6h, infección, mediastinitis, pérdida de tejido, grados IV-V)</h4>
+    <div class="surg-box">
+        <h5>Técnica de esofagostomía cervical</h5>
+        <ol>
+            <li><strong>Abordaje:</strong> el mismo que para la reparación primaria (cervicotomía izquierda).</li>
+            <li><strong>Exposición del esófago:</strong> se aísla el esófago y se identifica la perforación.</li>
+            <li><strong>Esofagostomía:</strong> se aboca el cabo proximal del esófago a la piel (esofagostomía cervical) para derivar la saliva y el contenido gástrico. Se fija a la piel con puntos de seda 2/0.</li>
+            <li><strong>Cierre del cabo distal:</strong> se sutura el cabo distal con Vicryl 3/0 y se fija a la fascia prevertebral para evitar retracción (cierre de Hartmann).</li>
+            <li><strong>Drenaje:</strong> drenaje amplio del espacio periesofágico y retrofaríngeo con tubos de Penrose o Jackson-Pratt (2-3 drenajes).</li>
+            <li><strong>Gastrostomía o yeyunostomía:</strong> para alimentación enteral (sonda de Pezzer o Foley en el estómago, o yeyunostomía en asa).</li>
+            <li><strong>La reparación definitiva (reanastomosis) se realizará en un segundo tiempo (3-6 meses)</strong> cuando la infección haya cedido y el paciente esté estable.</li>
+        </ol>
+    </div>
+
+    <h4>3. Drenaje cervical y mediastínico en caso de fuga o absceso</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Drenaje abierto:</strong> si hay un absceso retrofaríngeo o mediastínico, se realiza un drenaje abierto con tubos de gran calibre (24-28 Fr) y se deja la herida abierta (secundaria) para permitir la salida de material purulento.</li>
+            <li><strong>Irrigación continua:</strong> con solución salina a través de uno de los drenajes (lavado) y aspiración por el otro (sistema cerrado).</li>
+            <li><strong>Antibióticos de amplio espectro:</strong> cefalosporina de 3ª generación (ceftriaxona) + metronidazol + antifúngico (fluconazol) si es necesario, basado en cultivos.</li>
+            <li><strong>Nutrición parenteral:</strong> si no se puede usar la vía enteral.</li>
+            <li><strong>Control:</strong> TAC de control a los 7-10 días para evaluar la resolución del absceso.</li>
+        </ul>
+    </div>
+
+    <h4>4. Tratamiento endoscópico (para lesiones pequeñas y seleccionadas)</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Indicación:</strong> perforaciones iatrogénicas pequeñas (&lt;1 cm), estables, sin mediastinitis, en pacientes de alto riesgo quirúrgico.</li>
+            <li><strong>Colocación de stent esofágico cubierto (SEM):</strong> se coloca un stent metálico autoexpandible que ocluye la perforación.</li>
+            <li><strong>Clip endoscópico (OTSC o clips convencionales):</strong> para perforaciones pequeñas y bien delimitadas.</li>
+            <li><strong>Drenaje percutáneo:</strong> guiado por TAC o ecografía para abscesos o colecciones.</li>
+            <li><strong>Nutrición enteral:</strong> por sonda nasoyeyunal.</li>
+            <li><strong>Antibióticos:</strong> de amplio espectro durante 7-10 días.</li>
+            <li><strong>Control:</strong> esofagograma a los 5-7 días para comprobar el sellado.</li>
+        </ul>
+    </div>
+
+    <h4>5. Manejo postoperatorio</h4>
+    <div class="surg-box">
+        <ul>
+            <li><strong>UCI o unidad de cuidados intermedios:</strong> monitorización de signos vitales, diuresis, drenajes, equilibrio hidroelectrolítico.</li>
+            <li><strong>Nutrición enteral precoz:</strong> por sonda nasoyeyunal (iniciar a las 24-48h) con fórmulas elementales o semielementales.</li>
+            <li><strong>Esofagograma de control:</strong> al 5º-7º día postoperatorio para comprobar la ausencia de fugas antes de iniciar la vía oral.</li>
+            <li><strong>Antibióticos:</strong> por 7-10 días (o hasta que los drenajes estén limpios y la fiebre haya cedido).</li>
+            <li><strong>Drenajes:</strong> retirar cuando el débito sea &lt;30 mL/día y el esofagograma de control sea normal.</li>
+            <li><strong>Si hay fuga:</strong> mantener drenaje, nutrientes parenterales, y considerar reintervención si la fuga es significativa (>30% de la sutura).</li>
+            <li><strong>Si hay estenosis:</strong> dilataciones endoscópicas seriadas (a partir de la 3ª semana).</li>
+            <li><strong>Rehabilitación:</strong> inicio de vía oral con líquidos claros, progresando a dieta blanda según tolerancia.</li>
+        </ul>
+    </div>
+
+    <h3>Complicaciones y su manejo</h3>
+    <div class="note-box">
+        <ul>
+            <li><strong>Fuga anastomótica:</strong> la más frecuente (10-30%). Se maneja con drenaje, nutrición parenteral, stent endoscópico o reintervención quirúrgica.</li>
+            <li><strong>Mediastinitis:</strong> requiere drenaje quirúrgico amplio (cervical y mediastínico) y antibioticoterapia agresiva.</li>
+            <li><strong>Estenosis esofágica:</strong> se maneja con dilataciones endoscópicas seriadas (balón o bougies) en 2-3 sesiones.</li>
+            <li><strong>Fístula esofagocutánea o esofagopleural:</strong> se maneja con drenaje prolongado, stent o reintervención.</li>
+            <li><strong>Sepsis y fallo multiorgánico:</strong> manejo en UCI con soporte hemodinámico y ventilatorio, antibióticos de amplio espectro.</li>
+            <li><strong>Lesión del nervio recurrente:</strong> ronquera, disfonía. Se maneja con observación (recuperación en 6-12 semanas) o logopedia.</li>
+            <li><strong>Absceso retrofaríngeo:</strong> requiere drenaje quirúrgico abierto y antibioticoterapia.</li>
+        </ul>
+    </div>
+
+    <h3>Algoritmo de decisión terapéutica</h3>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Perforación &lt;6h, sin infección, grado I-II:</strong> Reparación primaria + drenaje.</li>
+            <li><strong>Perforación &lt;6h, grado III:</strong> Reparación primaria + refuerzo + drenaje.</li>
+            <li><strong>Perforación 6-24h, sin mediastinitis:</strong> Reparación primaria + drenaje + antibióticos.</li>
+            <li><strong>Perforación &gt;24h, con mediastinitis o absceso:</strong> Esofagostomía + drenaje + gastrostomía/yeyunostomía.</li>
+            <li><strong>Perforación con pérdida de tejido (grado IV-V):</strong> Esofagostomía + drenaje + reparación diferida.</li>
+            <li><strong>Paciente de alto riesgo quirúrgico:</strong> Stent endoscópico + drenaje percutáneo + antibióticos.</li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<script>
+    // Navegación
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    showSection('inicio');
+// ===== GENERAR PDF (ALTERNATIVA CON IMPRESIÓN) =====
+function generarPDFAlternativo() {
+    // Mostrar todas las secciones temporalmente
+    const allSections = document.querySelectorAll('.content-section');
+    const originalDisplay = [];
+    allSections.forEach((sec, i) => {
+        originalDisplay[i] = sec.style.display;
+        sec.style.display = 'block';
+        sec.classList.add('active');
+    });
+
+    // Ocultar el botón PDF temporalmente
+    const pdfContainer = document.querySelector('.pdf-btn-container');
+    if (pdfContainer) pdfContainer.style.display = 'none';
+
+    // Usar window.print() para generar PDF
+    window.print();
+
+    // Restaurar todo
+    setTimeout(() => {
+        allSections.forEach((sec, i) => {
+            sec.style.display = originalDisplay[i] || 'none';
+            if (!sec.classList.contains('active')) {
+                // Solo mantener activa la que estaba antes
+            }
+        });
+        if (pdfContainer) pdfContainer.style.display = 'block';
+    }, 1000);
+}
+
+// Agregar un segundo botón para la alternativa
+document.addEventListener('DOMContentLoaded', function() {
+    const pdfBtn = document.getElementById('pdfBtn');
+    if (pdfBtn) {
+        // También permitir generar PDF con Ctrl+P
+        pdfBtn.addEventListener('dblclick', function() {
+            generarPDFAlternativo();
+        });
+    }
+});
+</script>
+
+</body>
+</html>

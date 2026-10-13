@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🩺 Anesthesia ToolKit Pro</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef2f7;
+            padding: 16px;
+            color: #1a2a3a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .app {
+            max-width: 620px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            padding: 20px 20px 10px;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e8edf4;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #0a2942;
+        }
+        .header .sub {
+            font-size: 13px;
+            color: #5a7a8a;
+            margin-top: 2px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin: 16px 0 14px;
+        }
+        .menu button {
+            padding: 10px 4px;
+            border: none;
+            border-radius: 12px;
+            background: #eef4fa;
+            color: #1a3a5c;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            line-height: 1.2;
+        }
+        .menu button span {
+            font-size: 22px;
+        }
+        .menu button:hover {
+            background: #dce6f0;
+        }
+        .menu button.active {
+            background: #2c7be5;
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 123, 229, 0.3);
+        }
+
+        .seccion {
+            display: none;
+            animation: fade 0.25s ease;
+        }
+        .seccion.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: #f8faff;
+            border-radius: 16px;
+            padding: 18px 18px 20px;
+            margin-bottom: 14px;
+            border: 1px solid #e8edf4;
+        }
+        .card h2 {
+            font-size: 17px;
+            color: #0a2942;
+            border-bottom: 2px solid #dce6f0;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h2 span {
+            font-size: 22px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 13px;
+            display: block;
+            margin: 8px 0 4px;
+            color: #2c3e50;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+            transition: 0.15s;
+        }
+        input:focus,
+        select:focus {
+            border-color: #2c7be5;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.15);
+        }
+        input[readonly] {
+            background: #f0f4f8;
+            color: #1a3a5c;
+        }
+
+        .row2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .row3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .row4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+        }
+
+        button.btn {
+            width: 100%;
+            padding: 12px;
+            background: #2c7be5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 2px;
+        }
+        button.btn:hover {
+            background: #1a5bbf;
+            transform: scale(1.01);
+        }
+        button.btn.secondary {
+            background: #6c7a8a;
+        }
+        button.btn.secondary:hover {
+            background: #4a5a6a;
+        }
+        button.btn.green {
+            background: #27ae60;
+        }
+        button.btn.green:hover {
+            background: #1e8449;
+        }
+
+        .result-box {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #eef4fa;
+            border-radius: 10px;
+            font-weight: 500;
+            color: #0a2942;
+            border-left: 4px solid #2c7be5;
+            word-break: break-word;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        .result-box.emergency {
+            border-left-color: #d63031;
+            background: #fde8e8;
+        }
+        .result-box.success {
+            border-left-color: #27ae60;
+            background: #eafaf1;
+        }
+        .result-box.warning {
+            border-left-color: #f39c12;
+            background: #fef9e7;
+        }
+
+        .mallampati-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .mallampati-item {
+            background: #f2f6fc;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .mallampati-item:hover {
+            border-color: #2c7be5;
+        }
+        .mallampati-item.selected {
+            border-color: #2c7be5;
+            background: #dce6f0;
+        }
+        .mallampati-item .grado {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a2942;
+        }
+        .mallampati-item .desc {
+            font-size: 12px;
+            color: #4a6a8a;
+            margin-top: 4px;
+        }
+
+        .farmaco-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .farmaco-item {
+            background: #f2f6fc;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            border-left: 3px solid #2c7be5;
+        }
+        .farmaco-item .dosis {
+            font-weight: 700;
+            color: #0a2942;
+        }
+        .farmaco-item .via {
+            color: #4a6a8a;
+            font-size: 12px;
+        }
+        .farmaco-item .grupo {
+            font-size: 10px;
+            background: #dce6f0;
+            padding: 1px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #7a8a9a;
+            margin-top: 12px;
+            padding: 8px 0 4px;
+            border-top: 1px solid #e8edf4;
+        }
+
+        .tabla-peso {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .tabla-peso th {
+            background: #dce6f0;
+            padding: 6px 8px;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+        }
+        .tabla-peso td {
+            padding: 5px 8px;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+        }
+        .tabla-peso tr:nth-child(even) {
+            background: #f2f6fc;
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 4px;
+            }
+            .menu button {
+                font-size: 10px;
+                padding: 8px 2px;
+            }
+            .menu button span {
+                font-size: 18px;
+            }
+            .row2,
+            .row3,
+            .row4 {
+                grid-template-columns: 1fr;
+            }
+            .farmaco-grid {
+                grid-template-columns: 1fr;
+            }
+            .mallampati-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <div class="header">
+            <h1>🩺 Anesthesia ToolKit</h1>
+            <div class="sub">Asistente local · Emergencias · Farmacología</div>
+        </div>
+
+        <div class="menu" id="menu">
+            <button class="active" data-seccion="calculos"><span>📊</span> Cálculos</button>
+            <button data-seccion="dosis"><span>💉</span> Dosis</button>
+            <button data-seccion="emergencias"><span>🚨</span> Emergencias</button>
+            <button data-seccion="farmacopea"><span>📋</span> Farmacopea</button>
+        </div>
+
+        <!-- ==================== SECCIÓN 1: CÁLCULOS ==================== -->
+        <div class="seccion active" id="seccion-calculus">
+
+            <!-- IMC -->
+            <div class="card">
+                <h2><span>📏</span> IMC</h2>
+                <div class="row2">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="peso" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Talla (m)</label>
+                        <input type="number" id="talla" placeholder="Ej: 1.75" step="0.01">
+                    </div>
+                </div>
+                <label>Edad</label>
+                <select id="edadIMC">
+                    <option value="adulto">Adulto (≥18 años)</option>
+                    <option value="anciano">Anciano (>65 años)</option>
+                    <option value="nino">Niño (2-17 años)</option>
+                </select>
+                <button class="btn" onclick="calcularIMC()">Calcular IMC</button>
+                <div class="result-box" id="resultadoIMC">Esperando datos...</div>
+            </div>
+
+            <!-- Cálculo de Sangre -->
+            <div class="card">
+                <h2><span>🩸</span> Cálculo de sangre</h2>
+                <div class="row2">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoSangre" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Edad</label>
+                        <select id="edadSangre">
+                            <option value="adulto">Adulto</option>
+                            <option value="anciano">Anciano</option>
+                            <option value="nino">Niño</option>
+                            <option value="neonato">Neonato</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div>
+                        <label>Hematocrito</label>
+                        <input type="number" id="hematocrito" placeholder="Ej: 45" step="0.1" value="0.45">
+                    </div>
+                    <div>
+                        <label>Hematocrito mínimo deseado (%)</label>
+                        <input type="number" id="hctMinimo" placeholder="Ej: 30" step="0.1" value="0.30">
+                    </div>
+                </div>
+                <button class="btn" onclick="calcularSangre()">Calcular</button>
+                <div class="result-box" id="resultadoSangre">Esperando datos...</div>
+            </div>
+
+            <!-- Conversor perfusión -->
+            <div class="card">
+                <h2><span>⚡</span> Conversor perfusión (mcg/kg/min → ml/h)</h2>
+                <div class="row3">
+                    <div>
+                        <label>Dosis (mcg/kg/min)</label>
+                        <input type="number" id="dosisMcg" placeholder="Ej: 5" step="0.1">
+                    </div>
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoConv" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Conc. (mcg/ml)</label>
+                        <input type="number" id="concentracion" placeholder="Ej: 4000" step="0.1">
+                    </div>
+                </div>
+                <button class="btn" onclick="convertir()">Calcular ml/h</button>
+                <div class="result-box" id="resultadoConv">Esperando datos...</div>
+            </div>
+
+            <!-- Líquidos perioperatorios -->
+            <div class="card">
+                <h2><span>💧</span> Líquidos perioperatorios</h2>
+                <div class="row3">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoLiquidos" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Horas de ayuno</label>
+                        <input type="number" id="horasAyuno" placeholder="Ej: 8" step="0.5">
+                    </div>
+                    <div>
+                        <label>Edad</label>
+                        <select id="edadLiquidos">
+                            <option value="adulto">Adulto</option>
+                            <option value="anciano">Anciano</option>
+                            <option value="nino">Niño (4-2-1)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn" onclick="calcularLiquidos()">Calcular</button>
+                <div class="result-box" id="resultadoLiquidos">Esperando datos...</div>
+            </div>
+
+            <!-- Escala de Glasgow -->
+            <div class="card">
+                <h2><span>🧠</span> Escala de Glasgow</h2>
+                <div class="row2">
+                    <div>
+                        <label>Apertura ocular</label>
+                        <select id="glasgowOjos">
+                            <option value="1">1 - No abre</option>
+                            <option value="2">2 - Al dolor</option>
+                            <option value="3">3 - Al habla</option>
+                            <option value="4" selected>4 - Espontánea</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Respuesta verbal</label>
+                        <select id="glasgowVerbal">
+                            <option value="1">1 - No emite</option>
+                            <option value="2">2 - Sonidos incomprensibles</option>
+                            <option value="3">3 - Palabras inapropiadas</option>
+                            <option value="4">4 - Desorientado</option>
+                            <option value="5" selected>5 - Orientado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div>
+                        <label>Respuesta motora</label>
+                        <select id="glasgowMotor">
+                            <option value="1">1 - No responde</option>
+                            <option value="2">2 - Extensión al dolor</option>
+                            <option value="3">3 - Flexión al dolor</option>
+                            <option value="4">4 - Retirada al dolor</option>
+                            <option value="5">5 - Localiza dolor</option>
+                            <option value="6" selected>6 - Obedece órdenes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Versión</label>
+                        <select id="glasgowVersion">
+                            <option value="adulto">Adulto</option>
+                            <option value="pediatrico">Pediátrico (≤4 años)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn" onclick="calcularGlasgow()">Calcular</button>
+                <div class="result-box" id="resultadoGlasgow">Puntuación total: 15 (normal)</div>
+            </div>
+
+            <!-- Score de Aldrete -->
+            <div class="card">
+                <h2><span>🏥</span> Score de Aldrete (recuperación)</h2>
+                <div class="row2">
+                    <div>
+                        <label>Actividad</label>
+                        <select id="aldreteActividad">
+                            <option value="2">2 - Mueve 4 extremidades</option>
+                            <option value="1">1 - Mueve 2 extremidades</option>
+                            <option value="0">0 - No mueve</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Respiración</label>
+                        <select id="aldreteRespiracion">
+                            <option value="2">2 - Respira profundamente</option>
+                            <option value="1">1 - Disnea o respiración superficial</option>
+                            <option value="0">0 - Apnea</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div>
+                        <label>Circulación</label>
+                        <select id="aldreteCirculacion">
+                            <option value="2">2 - PA ± 20% de basal</option>
+                            <option value="1">1 - PA ± 20-50% de basal</option>
+                            <option value="0">0 - PA ± >50% de basal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Conciencia</label>
+                        <select id="aldreteConciencia">
+                            <option value="2">2 - Completamente despierto</option>
+                            <option value="1">1 - Despertable al llamado</option>
+                            <option value="0">0 - No responde</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Saturación O₂</label>
+                    <select id="aldreteSatO2">
+                        <option value="2">2 - >92% con aire ambiente</option>
+                        <option value="1">1 - Necesita O₂ para >90%</option>
+                        <option value="0">0 - <90% incluso con O₂</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="calcularAldrete()">Calcular score</button>
+                <div class="result-box" id="resultadoAldrete">Esperando datos...</div>
+            </div>
+
+            <!-- Score de Mallampati -->
+            <div class="card">
+                <h2><span>👄</span> Score de Mallampati</h2>
+                <p style="font-size:14px; color:#4a6a8a; margin-bottom:10px;">Selecciona la clasificación visual de la vía aérea</p>
+                <div class="mallampati-grid">
+                    <div class="mallampati-item" data-grado="1" onclick="seleccionarMallampati(this)">
+                        <div class="grado">I</div>
+                        <div class="desc">Úvula, pilares y paladar blando visibles</div>
+                    </div>
+                    <div class="mallampati-item" data-grado="2" onclick="seleccionarMallampati(this)">
+                        <div class="grado">II</div>
+                        <div class="desc">Úvula y pilares parcialmente visibles</div>
+                    </div>
+                    <div class="mallampati-item" data-grado="3" onclick="seleccionarMallampati(this)">
+                        <div class="grado">III</div>
+                        <div class="desc">Solo base de la úvula visible</div>
+                    </div>
+                    <div class="mallampati-item" data-grado="4" onclick="seleccionarMallampati(this)">
+                        <div class="grado">IV</div>
+                        <div class="desc">Paladar blando solo visible</div>
+                    </div>
+                </div>
+                <div class="result-box" id="resultadoMallampati">Selecciona un grado para ver la interpretación</div>
+            </div>
+
+            <!-- Tablas de peso pediátrico -->
+            <div class="card">
+                <h2><span>👶</span> Tabla de peso pediátrico</h2>
+                <label>Edad del niño</label>
+                <select id="edadPesoPediatrico" onchange="mostrarPesoPediatrico()">
+                    <option value="neonato">Neonato (0-1 mes)</option>
+                    <option value="lactante">Lactante (1-12 meses)</option>
+                    <option value="infante">Infante (1-3 años)</option>
+                    <option value="preescolar">Preescolar (4-5 años)</option>
+                    <option value="escolar">Escolar (6-12 años)</option>
+                    <option value="adolescente">Adolescente (13-17 años)</option>
+                </select>
+                <div id="contenedorPesoPediatrico"></div>
+                <div class="result-box" id="resultadoPesoPediatrico">Selecciona una edad para ver los percentiles</div>
+            </div>
+
+            <!-- RSI -->
+            <div class="card">
+                <h2><span>⏱️</span> Secuencia rápida de intubación</h2>
+                <button class="btn" onclick="mostrarRSI()">Mostrar pasos RSI</button>
+                <div class="result-box emergency" id="resultadoRSI">Presiona el botón para ver los pasos</div>
+            </div>
+        </div>
+
+        <!-- ==================== SECCIÓN 2: DOSIS ==================== -->
+        <div class="seccion" id="seccion-dosis">
+
+            <!-- Dosis inducción (CORREGIDO) -->
+            <div class="card">
+                <h2><span>💉</span> Dosis de inducción</h2>
+                <div class="row2">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoDosis" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Edad</label>
+                        <select id="edadInduccion" onchange="actualizarOpcionesInduccion()">
+                            <option value="adulto">Adulto</option>
+                            <option value="anciano">Anciano (>65 años)</option>
+                            <option value="nino">Niño</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Fármaco</label>
+                <select id="farmaco">
+                    <option value="propofol">Propofol</option>
+                    <option value="etomidato">Etomidato</option>
+                    <option value="ketamina">Ketamina</option>
+                    <option value="midazolam">Midazolam</option>
+                    <option value="tio">Tiopental</option>
+                </select>
+                <button class="btn" onclick="calcularDosisInduccion()">Calcular dosis</button>
+                <div class="result-box" id="resultadoDosis">Esperando datos...</div>
+            </div>
+
+            <!-- Relajantes musculares (CORREGIDO) -->
+            <div class="card">
+                <h2><span>💪</span> Relajantes musculares</h2>
+                <div class="row2">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoRelajante" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Edad</label>
+                        <select id="edadRelajante" onchange="actualizarOpcionesRelajante()">
+                            <option value="adulto">Adulto</option>
+                            <option value="anciano">Anciano</option>
+                            <option value="nino">Niño</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Relajante</label>
+                <select id="relajanteSelect">
+                    <option value="sux">Succinilcolina</option>
+                    <option value="rocu">Rocuronio</option>
+                    <option value="vecuronio">Vecuronio</option>
+                    <option value="atracurio">Atracurio</option>
+                    <option value="cisatracurio">Cisatracurio</option>
+                </select>
+                <button class="btn" onclick="calcularRelajante()">Calcular dosis</button>
+                <div class="result-box" id="resultadoRelajante">Esperando datos...</div>
+            </div>
+
+            <!-- Dosis de rescate (CORREGIDO) -->
+            <div class="card">
+                <h2><span>🆘</span> Dosis de rescate (opioides / benzodiacepinas)</h2>
+                <div class="row2">
+                    <div>
+                        <label>Peso (kg)</label>
+                        <input type="number" id="pesoRescate" placeholder="Ej: 70" step="0.1">
+                    </div>
+                    <div>
+                        <label>Edad</label>
+                        <select id="edadRescate" onchange="actualizarOpcionesRescate()">
+                            <option value="adulto">Adulto</option>
+                            <option value="anciano">Anciano</option>
+                            <option value="nino">Niño</option>
+                        </select>
+                    </div>
+                </div>
+                <label>Fármaco de rescate</label>
+                <select id="rescateSelect">
+                    <option value="fentanilo">Fentanilo</option>
+                    <option value="morfina">Morfina</option>
+                    <option value="midazolam_rescate">Midazolam</option>
+                    <option value="naloxona">Naloxona</option>
+                    <option value="flumazenil">Flumazenil</option>
+                </select>
+                <button class="btn" onclick="calcularRescate()">Calcular dosis</button>
+                <div class="result-box" id="resultadoRescate">Esperando datos...</div>
+            </div>
+
+            <!-- Dosis pediátricas rápidas -->
+            <div class="card">
+                <h2><span>👶</span> Dosis rápidas pediátricas (Broselow simplificado)</h2>
+                <label>Peso estimado (kg)</label>
+                <input type="number" id="pesoBroselow" placeholder="Ej: 10" step="0.5">
+                <button class="btn green" onclick="calcularBroselow()">Mostrar dosis</button>
+                <div class="result-box" id="resultadoBroselow">Esperando datos...</div>
+            </div>
+        </div>
+
+        <!-- ==================== SECCIÓN 3: EMERGENCIAS ==================== -->
+        <div class="seccion" id="seccion-emergencias">
+            <div class="card">
+                <h2><span>🚨</span> Algoritmos de emergencia</h2>
+                <select id="algoritmoSelect">
+                    <option value="rcp">RCP (adulto)</option>
+                    <option value="rcp_pediatrico">RCP pediátrico</option>
+                    <option value="anafilaxia">Anafilaxia perioperatoria</option>
+                    <option value="laringoespasmo">Laringoespasmo</option>
+                    <option value="hipertermia">Hipertermia maligna</option>
+                    <option value="bradicardia">Bradicardia sintomática</option>
+                    <option value="hipotension">Hipotensión refractaria</option>
+                    <option value="paro">Paro por hipoxia/hipotensión</option>
+                    <option value="viaaerea">Vía aérea difícil</option>
+                    <option value="broncoespasmo">Broncoespasmo intraoperatorio</option>
+                    <option value="taquicardia">Taquicardia supraventricular</option>
+                </select>
+                <button class="btn" onclick="mostrarAlgoritmo()">Mostrar algoritmo</button>
+                <div class="result-box emergency" id="resultadoAlgoritmo">Selecciona una emergencia</div>
+            </div>
+        </div>
+
+        <!-- ==================== SECCIÓN 4: FARMACOPEA ==================== -->
+        <div class="seccion" id="seccion-farmacopea">
+            <div class="card">
+                <h2><span>🔍</span> Buscador de fármacos</h2>
+                <input type="text" id="buscadorFarmaco" placeholder="Buscar por nombre, dosis o vía..." oninput="filtrarFarmacopea()">
+                <div style="margin-top:10px; font-size:13px; color:#4a6a8a;">
+                    <span id="contadorFarmacos">0</span> fármacos encontrados
+                </div>
+                <div class="farmaco-grid" id="farmacopeaFiltrada"></div>
+            </div>
+        </div>
+
+        <div class="footer">⚠️ Herramienta de apoyo · La decisión clínica es responsabilidad del profesional</div>
+    </div>
+
+    <script>
+        // ================================================================
+        // NAVEGACIÓN
+        // ================================================================
+        const menuBtns = document.querySelectorAll('.menu button');
+        const secciones = {
+            calculos: document.getElementById('seccion-calculus'),
+            dosis: document.getElementById('seccion-dosis'),
+            emergencias: document.getElementById('seccion-emergencias'),
+            farmacopea: document.getElementById('seccion-farmacopea')
+        };
+
+        menuBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                menuBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const key = this.dataset.seccion;
+                Object.keys(secciones).forEach(k => {
+                    secciones[k].classList.toggle('active', k === key);
+                });
+            });
+        });
+
+        // ================================================================
+        // 1. IMC
+        // ================================================================
+        function calcularIMC() {
+            const peso = parseFloat(document.getElementById('peso').value);
+            const talla = parseFloat(document.getElementById('talla').value);
+            const edad = document.getElementById('edadIMC').value;
+            const out = document.getElementById('resultadoIMC');
+            if (!peso || !talla || talla <= 0) { out.textContent = '⚠️ Ingresa peso y talla válidos'; return; }
+            const imc = peso / (talla * talla);
+            let cat = '';
+            if (edad === 'nino') {
+                if (imc < 5) cat = 'Percentil <5 (bajo peso)';
+                else if (imc < 85) cat = 'Percentil 5-85 (normal)';
+                else if (imc < 95) cat = 'Percentil 85-95 (sobrepeso)';
+                else cat = 'Percentil >95 (obesidad)';
+            } else if (edad === 'anciano') {
+                if (imc < 22) cat = 'Bajo peso (riesgo)';
+                else if (imc < 27) cat = 'Normal (óptimo)';
+                else if (imc < 30) cat = 'Sobrepeso';
+                else cat = 'Obesidad';
+            } else {
+                if (imc < 18.5) cat = 'Bajo peso';
+                else if (imc < 25) cat = 'Normal';
+                else if (imc < 30) cat = 'Sobrepeso';
+                else if (imc < 35) cat = 'Obesidad I';
+                else if (imc < 40) cat = 'Obesidad II';
+                else cat = 'Obesidad III';
+            }
+            out.textContent = `IMC: ${imc.toFixed(1)} kg/m² · ${cat} (${edad === 'nino' ? 'pediátrico' : edad === 'anciano' ? 'anciano' : 'adulto'})`;
+        }
+
+        // ================================================================
+        // 2. Cálculo de Sangre
+        // ================================================================
+        function calcularSangre() {
+            const peso = parseFloat(document.getElementById('pesoSangre').value);
+            const edad = document.getElementById('edadSangre').value;
+            const hct = parseFloat(document.getElementById('hematocrito').value) || 0.45;
+            const hctMin = parseFloat(document.getElementById('hctMinimo').value) || 0.30;
+            const out = document.getElementById('resultadoSangre');
+
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            // Volumen sanguíneo estimado (ml/kg)
+            let vs = 0;
+            if (edad === 'neonato') vs = 85;
+            else if (edad === 'nino') vs = 75;
+            else if (edad === 'anciano') vs = 65;
+            else vs = 70;
+
+            const volTotal = peso * vs;
+            const volPerdido10 = volTotal * 0.10;
+            const volPerdido15 = volTotal * 0.15;
+            const volPerdido30 = volTotal * 0.30;
+
+            // Cálculo de transfusión
+            const factor = (hctMin - hct) * 3;
+            const volTransfusion = volTotal * factor;
+
+            out.textContent =
+                `📊 VOLUMEN SANGUÍNEO ESTIMADO:\n` +
+                `Volumen total: ${volTotal.toFixed(0)} ml (${vs} ml/kg × ${peso} kg)\n\n` +
+                `🩸 PÉRDIDA SANGUÍNEA:\n` +
+                `• 10% (umbral transfusión en sanos): ${volPerdido10.toFixed(0)} ml\n` +
+                `• 15% (umbral en ancianos/cardiopatías): ${volPerdido15.toFixed(0)} ml\n` +
+                `• 30% (pérdida grave): ${volPerdido30.toFixed(0)} ml\n\n` +
+                `💉 TRANSFUSIÓN (Hct ${hct}% → ${hctMin}%):\n` +
+                `Volumen a transfundir: ${volTransfusion.toFixed(0)} ml (${(volTransfusion/250).toFixed(1)} unidades aprox.)`;
+        }
+
+        // ================================================================
+        // 3. Conversor perfusión
+        // ================================================================
+        function convertir() {
+            const dosis = parseFloat(document.getElementById('dosisMcg').value);
+            const peso = parseFloat(document.getElementById('pesoConv').value);
+            const conc = parseFloat(document.getElementById('concentracion').value);
+            const out = document.getElementById('resultadoConv');
+            if (!dosis || !peso || !conc || conc <= 0) { out.textContent = '⚠️ Completa todos los campos'; return; }
+            const mlh = (dosis * peso * 60) / conc;
+            out.textContent = `Velocidad: ${mlh.toFixed(1)} ml/h · ${(mlh/60).toFixed(2)} ml/min · ${(mlh*24/1000).toFixed(1)} ml/24h`;
+        }
+
+        // ================================================================
+        // 4. Líquidos perioperatorios
+        // ================================================================
+        function calcularLiquidos() {
+            const peso = parseFloat(document.getElementById('pesoLiquidos').value);
+            const horas = parseFloat(document.getElementById('horasAyuno').value) || 0;
+            const edad = document.getElementById('edadLiquidos').value;
+            const out = document.getElementById('resultadoLiquidos');
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            let mlh = 0;
+            if (edad === 'nino' || peso <= 20) {
+                if (peso <= 10) mlh = peso * 4;
+                else if (peso <= 20) mlh = 40 + (peso - 10) * 2;
+                else mlh = 60 + (peso - 20) * 1;
+            } else if (edad === 'anciano') {
+                mlh = 20 + (peso * 0.8);
+            } else {
+                if (peso <= 10) mlh = peso * 4;
+                else if (peso <= 20) mlh = 40 + (peso - 10) * 2;
+                else mlh = 60 + (peso - 20) * 1;
+            }
+
+            const totalAyuno = mlh * horas;
+            const primeras2h = totalAyuno * 0.5;
+            const siguiente2h = totalAyuno * 0.25;
+            out.textContent =
+                `Mantenimiento: ${mlh.toFixed(0)} ml/h · Déficit ayuno (${horas}h): ${totalAyuno.toFixed(0)} ml\n` +
+                `1ª hora: ${(mlh + primeras2h).toFixed(0)} ml · 2ª hora: ${(mlh + primeras2h/2).toFixed(0)} ml\n` +
+                `3ª hora: ${(mlh + siguiente2h).toFixed(0)} ml · Total primeras 3h: ${(mlh*3 + totalAyuno).toFixed(0)} ml`;
+        }
+
+        // ================================================================
+        // 5. Escala de Glasgow
+        // ================================================================
+        function calcularGlasgow() {
+            const ojos = parseInt(document.getElementById('glasgowOjos').value);
+            const verbal = parseInt(document.getElementById('glasgowVerbal').value);
+            const motor = parseInt(document.getElementById('glasgowMotor').value);
+            const version = document.getElementById('glasgowVersion').value;
+            const total = ojos + verbal + motor;
+
+            let estado = '';
+            if (version === 'pediatrico') {
+                if (total >= 13) estado = '🟢 Lesión leve (observar)';
+                else if (total >= 9) estado = '🟡 Lesión moderada (TC craneal)';
+                else estado = '🔴 Lesión grave (UCI)';
+            } else {
+                if (total >= 13) estado = '🟢 Lesión leve';
+                else if (total >= 9) estado = '🟡 Lesión moderada';
+                else estado = '🔴 Lesión grave';
+            }
+            document.getElementById('resultadoGlasgow').textContent =
+                `Puntuación: ${total}/15 (O:${ojos} V:${verbal} M:${motor}) · ${estado} (${version === 'pediatrico' ? 'pediátrico' : 'adulto'})`;
+        }
+
+        // ================================================================
+        // 6. Score de Aldrete
+        // ================================================================
+        function calcularAldrete() {
+            const actividad = parseInt(document.getElementById('aldreteActividad').value);
+            const respiracion = parseInt(document.getElementById('aldreteRespiracion').value);
+            const circulacion = parseInt(document.getElementById('aldreteCirculacion').value);
+            const conciencia = parseInt(document.getElementById('aldreteConciencia').value);
+            const satO2 = parseInt(document.getElementById('aldreteSatO2').value);
+            const total = actividad + respiracion + circulacion + conciencia + satO2;
+
+            let interpretacion = '';
+            if (total >= 9) interpretacion = '✅ Alta segura de UCPA';
+            else if (total >= 7) interpretacion = '🟡 Requiere observación';
+            else interpretacion = '🔴 No apto para alta';
+
+            document.getElementById('resultadoAldrete').textContent =
+                `Score de Aldrete: ${total}/10 · ${interpretacion}\n` +
+                `(Actividad:${actividad} Resp:${respiracion} Circ:${circulacion} Conciencia:${conciencia} SatO₂:${satO2})`;
+        }
+
+        // ================================================================
+        // 7. Score de Mallampati
+        // ================================================================
+        let mallampatiSeleccionado = null;
+
+        function seleccionarMallampati(el) {
+            document.querySelectorAll('.mallampati-item').forEach(item => item.classList.remove('selected'));
+            el.classList.add('selected');
+            mallampatiSeleccionado = el.dataset.grado;
+            mostrarMallampati();
+        }
+
+        function mostrarMallampati() {
+            const out = document.getElementById('resultadoMallampati');
+            if (!mallampatiSeleccionado) {
+                out.textContent = 'Selecciona un grado para ver la interpretación';
+                return;
+            }
+            const grados = {
+                '1': '✅ GRADO I: Vía aérea fácil. Intubación sin dificultad esperada. \n📌 Mallampati I: Úvula, pilares amigdalinos y paladar blando completamente visibles.',
+                '2': '🟡 GRADO II: Dificultad leve-moderada. \n📌 Mallampati II: Úvula y pilares amigdalinos parcialmente visibles. \n⚠️ Considerar preparación para vía aérea difícil.',
+                '3': '🟠 GRADO III: Dificultad moderada-severa. \n📌 Mallampati III: Solo base de la úvula visible. \n🚨 Alta probabilidad de intubación difícil. Preparar equipo de vía aérea difícil.',
+                '4': '🔴 GRADO IV: Vía aérea muy difícil. \n📌 Mallampati IV: Paladar blando solo visible. \n🚨 MUY ALTA PROBABILIDAD de intubación difícil. Considerar intubación despierto o vía aérea quirúrgica.'
+            };
+            out.textContent = grados[mallampatiSeleccionado] || 'Selecciona un grado válido';
+        }
+
+        // ================================================================
+        // 8. Tabla de peso pediátrico
+        // ================================================================
+        function mostrarPesoPediatrico() {
+            const edad = document.getElementById('edadPesoPediatrico').value;
+            const contenedor = document.getElementById('contenedorPesoPediatrico');
+            const out = document.getElementById('resultadoPesoPediatrico');
+
+            const datos = {
+                neonato: { p3: 2.5, p10: 2.8, p50: 3.3, p90: 4.0, p97: 4.3, desc: 'Neonato (0-1 mes)' },
+                lactante: { p3: 4.5, p10: 5.0, p50: 6.0, p90: 7.5, p97: 8.0, desc: 'Lactante (1-12 meses)' },
+                infante: { p3: 8.5, p10: 9.5, p50: 11.5, p90: 13.5, p97: 14.5, desc: 'Infante (1-3 años)' },
+                preescolar: { p3: 13.0, p10: 14.5, p50: 17.0, p90: 20.0, p97: 21.5, desc: 'Preescolar (4-5 años)' },
+                escolar: { p3: 18.0, p10: 20.0, p50: 24.0, p90: 30.0, p97: 34.0, desc: 'Escolar (6-12 años)' },
+                adolescente: { p3: 38.0, p10: 42.0, p50: 50.0, p90: 60.0, p97: 68.0, desc: 'Adolescente (13-17 años)' }
+            };
+
+            const d = datos[edad];
+            if (!d) return;
+
+            contenedor.innerHTML = `
+                <table class="tabla-peso">
+                    <tr>
+                        <th>Percentil 3</th>
+                        <th>Percentil 10</th>
+                        <th>Percentil 50</th>
+                        <th>Percentil 90</th>
+                        <th>Percentil 97</th>
+                    </tr>
+                    <tr>
+                        <td>${d.p3} kg</td>
+                        <td>${d.p10} kg</td>
+                        <td>${d.p50} kg</td>
+                        <td>${d.p90} kg</td>
+                        <td>${d.p97} kg</td>
+                    </tr>
+                </table>
+            `;
+
+            out.textContent =
+                `📊 ${d.desc}\n` +
+                `Peso promedio (P50): ${d.p50} kg\n` +
+                `Rango normal (P10-P90): ${d.p10} - ${d.p90} kg\n` +
+                `Fórmula Broselow aproximada: peso(kg) ≈ (edad_años × 2) + 8 (para >1 año)`;
+        }
+
+        // ================================================================
+        // 9. RSI
+        // ================================================================
+        function mostrarRSI() {
+            const out = document.getElementById('resultadoRSI');
+            out.textContent =
+                '⏱️ RSI (Secuencia rápida):\n' +
+                '1. Preparación: equipo, aspirador, monitorización\n' +
+                '2. Preoxigenación con O2 100% 3-5 min (o 8 respiraciones profundas)\n' +
+                '3. Inducción (ej. Propofol 2 mg/kg + Fentanilo 2 mcg/kg)\n' +
+                '4. Relajante (Succinilcolina 1.5 mg/kg o Rocuronio 1.2 mg/kg)\n' +
+                '5. Intubación orotraqueal (máximo 30 seg)\n' +
+                '6. Confirmación: capnografía + auscultación\n' +
+                '7. Fijación del tubo y ventilación mecánica';
+        }
+
+        // ================================================================
+        // 10. DOSIS INDUCCIÓN (CORREGIDO)
+        // ================================================================
+        function actualizarOpcionesInduccion() {
+            // Solo actualiza la interfaz, los valores se calculan en la función
+        }
+
+        function calcularDosisInduccion() {
+            const peso = parseFloat(document.getElementById('pesoDosis').value);
+            const edad = document.getElementById('edadInduccion').value;
+            const farmaco = document.getElementById('farmaco').value;
+            const out = document.getElementById('resultadoDosis');
+
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            // Factores base por fármaco
+            const factores = {
+                propofol: { adulto: 2, anciano: 1.5, nino: 2.5, nombre: 'Propofol' },
+                etomidato: { adulto: 0.3, anciano: 0.2, nino: 0.35, nombre: 'Etomidato' },
+                ketamina: { adulto: 1, anciano: 0.8, nino: 2, nombre: 'Ketamina' },
+                midazolam: { adulto: 0.05, anciano: 0.03, nino: 0.1, nombre: 'Midazolam' },
+                tio: { adulto: 4.5, anciano: 3.5, nino: 5, nombre: 'Tiopental' }
+            };
+
+            const info = factores[farmaco];
+            if (!info) { out.textContent = '⚠️ Selecciona un fármaco válido'; return; }
+
+            const factor = info[edad] || info.adulto;
+            const total = peso * factor;
+            const rangoMin = peso * (factor * 0.85);
+            const rangoMax = peso * (factor * 1.15);
+
+            out.textContent =
+                `${info.nombre} (${edad === 'nino' ? 'pediátrico' : edad === 'anciano' ? 'anciano' : 'adulto'}) → ${total.toFixed(1)} mg\n` +
+                `(${factor} mg/kg × ${peso} kg)\n` +
+                `Rango recomendado: ${rangoMin.toFixed(1)} - ${rangoMax.toFixed(1)} mg`;
+        }
+
+        // ================================================================
+        // 11. RELAJANTES (CORREGIDO)
+        // ================================================================
+        function actualizarOpcionesRelajante() {}
+
+        function calcularRelajante() {
+            const peso = parseFloat(document.getElementById('pesoRelajante').value);
+            const edad = document.getElementById('edadRelajante').value;
+            const relajante = document.getElementById('relajanteSelect').value;
+            const out = document.getElementById('resultadoRelajante');
+
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            const factores = {
+                sux: { adulto: 1.5, anciano: 1.2, nino: 2, nombre: 'Succinilcolina', inicio: '45-60s', duracion: '5-10 min' },
+                rocu: { adulto: 0.6, anciano: 0.5, nino: 0.8, nombre: 'Rocuronio', inicio: '60-90s', duracion: '30-45 min' },
+                vecuronio: { adulto: 0.1, anciano: 0.08, nino: 0.12, nombre: 'Vecuronio', inicio: '2-3 min',
+                duracion: '30-40 min' },
+                atracurio: { adulto: 0.6, anciano: 0.5, nino: 0.7, nombre: 'Atracurio', inicio: '2-3 min',
+                    duracion: '30-40 min' },
+                cisatracurio: { adulto: 0.175, anciano: 0.15, nino: 0.2, nombre: 'Cisatracurio', inicio: '2-3 min',
+                    duracion: '30-45 min' }
+            };
+
+            const info = factores[relajante];
+            if (!info) { out.textContent = '⚠️ Selecciona un relajante válido'; return; }
+
+            const factor = info[edad] || info.adulto;
+            const total = peso * factor;
+
+            out.textContent =
+                `${info.nombre} (${edad === 'nino' ? 'pediátrico' : edad === 'anciano' ? 'anciano' : 'adulto'}) → ${total.toFixed(1)} mg\n` +
+                `(${factor} mg/kg × ${peso} kg)\n` +
+                `Inicio: ${info.inicio} · Duración: ${info.duracion}`;
+        }
+
+        // ================================================================
+        // 12. DOSIS DE RESCATE (CORREGIDO)
+        // ================================================================
+        function actualizarOpcionesRescate() {}
+
+        function calcularRescate() {
+            const peso = parseFloat(document.getElementById('pesoRescate').value);
+            const edad = document.getElementById('edadRescate').value;
+            const rescate = document.getElementById('rescateSelect').value;
+            const out = document.getElementById('resultadoRescate');
+
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            // Ajuste por edad (factor multiplicador)
+            const ajuste = { adulto: 1, anciano: 0.7, nino: 1.2 };
+
+            const datos = {
+                fentanilo: { dosis: 1.5, unidad: 'mcg/kg', nombre: 'Fentanilo', via: 'IV' },
+                morfina: { dosis: 0.075, unidad: 'mg/kg', nombre: 'Morfina', via: 'IV/IM' },
+                midazolam_rescate: { dosis: 0.075, unidad: 'mg/kg', nombre: 'Midazolam', via: 'IV' },
+                naloxona: { dosis: 0.2, unidad: 'mg', nombre: 'Naloxona', via: 'IV/IM' },
+                flumazenil: { dosis: 0.35, unidad: 'mg', nombre: 'Flumazenil', via: 'IV' }
+            };
+
+            const info = datos[rescate];
+            if (!info) { out.textContent = '⚠️ Selecciona un fármaco válido'; return; }
+
+            const factorAjuste = ajuste[edad] || 1;
+            const dosisAjustada = info.dosis * factorAjuste;
+            const total = info.unidad === 'mg' ? dosisAjustada : peso * dosisAjustada;
+
+            out.textContent =
+                `${info.nombre} (${edad === 'nino' ? 'pediátrico' : edad === 'anciano' ? 'anciano' : 'adulto'}) → ${total.toFixed(1)} ${info.unidad === 'mg' ? 'mg' : 'mcg'}\n` +
+                `Vía: ${info.via} · Dosis base: ${info.dosis} ${info.unidad}\n` +
+                `Ajuste por edad: ${edad === 'anciano' ? '⬇️ 30% reducido' : edad === 'nino' ? '⬆️ 20% aumentado' : 'estándar'}\n` +
+                `Factor: ${factorAjuste.toFixed(1)}x`;
+        }
+
+        // ================================================================
+        // 13. DOSIS BROSLOW (pediátrico)
+        // ================================================================
+        function calcularBroselow() {
+            const peso = parseFloat(document.getElementById('pesoBroselow').value);
+            const out = document.getElementById('resultadoBroselow');
+
+            if (!peso || peso <= 0) { out.textContent = '⚠️ Ingresa peso válido'; return; }
+
+            const dosis = {
+                'Adrenalina (1:10000)': `${(0.01 * peso).toFixed(2)} mg (${(0.1 * peso).toFixed(1)} ml)`,
+                'Atropina': `${(0.02 * peso).toFixed(2)} mg (${(0.02 * peso * 10).toFixed(1)} ml de 1mg/ml)`,
+                'Midazolam': `${(0.1 * peso).toFixed(1)} mg (${(0.1 * peso).toFixed(1)} ml de 1mg/ml)`,
+                'Ketamina': `${(2 * peso).toFixed(1)} mg (${(2 * peso * 0.1).toFixed(1)} ml de 10mg/ml)`,
+                'Succinilcolina': `${(2 * peso).toFixed(1)} mg (${(2 * peso * 0.1).toFixed(1)} ml de 10mg/ml)`,
+                'Rocuronio': `${(0.8 * peso).toFixed(1)} mg (${(0.8 * peso).toFixed(1)} ml de 1mg/ml)`,
+                'Lidocaína': `${(1.5 * peso).toFixed(1)} mg (${(1.5 * peso * 0.1).toFixed(1)} ml de 10mg/ml)`,
+                'Paracetamol': `${(15 * peso).toFixed(0)} mg (${(15 * peso * 0.05).toFixed(1)} ml de 20mg/ml)`
+            };
+
+            let texto = `👶 DOSIS PEDIÁTRICAS (${peso} kg):\n\n`;
+            for (const [med, dosisStr] of Object.entries(dosis)) {
+                texto += `• ${med}: ${dosisStr}\n`;
+            }
+            out.textContent = texto;
+        }
+
+        // ================================================================
+        // 14. Algoritmos
+        // ================================================================
+        function mostrarAlgoritmo() {
+            const select = document.getElementById('algoritmoSelect');
+            const out = document.getElementById('resultadoAlgoritmo');
+            const val = select.value;
+            const textos = {
+                rcp: '🚨 RCP ADULTO (AHA 2020):\n1. Reconocer paro y activar emergencia\n2. Compresiones (100-120/min, 5-6 cm prof.)\n3. Vía aérea y ventilaciones (30:2)\n4. Desfibrilación precoz (DEA)\n5. Adrenalina 1 mg c/3-5 min',
+                rcp_pediatrico: '🚨 RCP PEDIÁTRICO:\n1. Compresiones 100-120/min (1/3 del tórax)\n2. Relación 15:2 (2 reanimadores) o 30:2 (1 reanimador)\n3. Adrenalina 0.01 mg/kg (0.1 ml/kg 1:10000) c/3-5 min\n4. Atropina 0.02 mg/kg si bradicardia',
+                anafilaxia: '🚨 ANAFILAXIA PERIOPERATORIA:\n1. Suspender agente causal\n2. Adrenalina 0.01 mg/kg IM (0.3-0.5 mg adulto)\n3. Vía aérea + O2 alto flujo\n4. Rápido volumen IV (cristaloides)\n5. Difenhidramina 50 mg IV + Hidrocortisona 200 mg IV',
+                laringoespasmo: '🚨 LARINGOESPASMO:\n1. Suspender estímulo, O2 al 100%\n2. Maniobra de Jaw thrust + ventilación con mascarilla\n3. Si persiste: Propofol 0.5 mg/kg IV o Succinilcolina 0.5-1 mg/kg IV\n4. Considerar intubación',
+                hipertermia: '🚨 HIPERTERMIA MALIGNA:\n1. Suspender anestésicos desencadenantes (halotano, succinilcolina)\n2. Dantroleno 2.5 mg/kg IV (repetir hasta 10 mg/kg)\n3. Hiperventilación con O2 100%\n4. Bicarbonato 1-2 mEq/kg si acidosis\n5. Enfriamiento físico',
+                bradicardia: '🚨 BRADICARDIA SINTOMÁTICA:\n1. Atropina 0.5-1 mg IV (máx 3 mg)\n2. Si no responde: Adrenalina 2-10 mcg/min IV o Dopamina 2-10 mcg/kg/min\n3. Marcapasos externo si inestable',
+                hipotension: '🚨 HIPOTENSIÓN REFRACTARIA:\n1. Bolos de cristaloides 250-500 ml\n2. Vasopresor: Noradrenalina 0.05-0.5 mcg/kg/min\n3. Considerar cortisol (si sospecha insuficiencia suprarrenal)\n4. Reevaluar causa: hemorragia, neumotórax, anafilaxia',
+                paro: '🚨 PARO POR HIPOXIA / HIPOTENSIÓN:\n1. Ventilar con O2 100%, comprobar vía aérea\n2. Revisar tubo endotraqueal (capnografía)\n3. Expansión con cristaloides o sangre\n4. Vasopresores según causa\n5. Descartar neumotórax a tensión / taponamiento cardíaco',
+                viaaerea: '🫁 VÍA AÉREA DIFÍCIL (algoritmo DAS):\n1. Preoxigenación óptima (O2 100%)\n2. Posición óptima (alineación oral-faríngea)\n3. Intento de laringoscopia (máx 3 intentos)\n4. Si falla → Mascarilla laríngea (2ª vía)\n5. Si falla → Cricotiroidotomía / punción transtraqueal\n6. Considerar despertar si es posible y seguro',
+                broncoespasmo: '🚨 BRONCOESPASMO INTRAOPERATORIO:\n1. O2 100%, aumentar FiO2\n2. Salbutamol 2-4 inhalaciones o 0.5 mg nebulizado\n3. Adrenalina 0.1-0.3 mg IV si grave\n4. Hidrocortisona 100 mg IV\n5. Profundizar anestesia (Propofol, Ketamina)\n6. Considerar neumotórax si no mejora',
+                taquicardia: '🚨 TAQUICARDIA SUPRAVENTRICULAR (TSV):\n1. Maniobras vagales (Valsalva, masaje carotídeo)\n2. Adenosina 6 mg IV (segundo bolo 12 mg)\n3. Si inestable: Cardioversión sincronizada (0.5-1 J/kg)\n4. Amiodarona 150 mg IV (carga)'
+            };
+            out.textContent = textos[val] || 'Selecciona una opción';
+        }
+
+        // ================================================================
+        // 15. FARMACOPEA (más de 70 fármacos)
+        // ================================================================
+        const farmacosData = [
+            // ANESTÉSICOS INDUCCIÓN
+            { nombre: 'Propofol', dosis: '1.5-2.5 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Propofol (anciano)', dosis: '1-1.5 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Propofol (pediátrico)', dosis: '2-3 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Etomidato', dosis: '0.2-0.3 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Etomidato (anciano)', dosis: '0.15-0.2 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Ketamina', dosis: '1-2 mg/kg', via: 'IV/IM', grupo: 'Inducción' },
+            { nombre: 'Ketamina (pediátrico)', dosis: '2-3 mg/kg', via: 'IV/IM', grupo: 'Inducción' },
+            { nombre: 'Tiopental', dosis: '4-5 mg/kg', via: 'IV', grupo: 'Inducción' },
+            { nombre: 'Midazolam', dosis: '0.05-0.1 mg/kg', via: 'IV/IM', grupo: 'Ansiolíticos' },
+            { nombre: 'Midazolam (anciano)', dosis: '0.02-0.05 mg/kg', via: 'IV/IM', grupo: 'Ansiolíticos' },
+            { nombre: 'Diazepam', dosis: '0.1-0.2 mg/kg', via: 'IV', grupo: 'Ansiolíticos' },
+
+            // RELAJANTES
+            { nombre: 'Succinilcolina', dosis: '1-1.5 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Succinilcolina (pediátrico)', dosis: '2 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Rocuronio', dosis: '0.6-1.2 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Rocuronio (pediátrico)', dosis: '0.6-1 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Vecuronio', dosis: '0.08-0.1 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Atracurio', dosis: '0.5-0.6 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Cisatracurio', dosis: '0.15-0.2 mg/kg', via: 'IV', grupo: 'Relajantes' },
+            { nombre: 'Sugammadex', dosis: '2-16 mg/kg', via: 'IV', grupo: 'Reversores' },
+            { nombre: 'Neostigmina', dosis: '0.04-0.07 mg/kg', via: 'IV', grupo: 'Reversores' },
+            { nombre: 'Atropina', dosis: '0.01-0.02 mg/kg', via: 'IV', grupo: 'Reversores' },
+
+            // OPIOIDES
+            { nombre: 'Fentanilo', dosis: '1-3 mcg/kg', via: 'IV', grupo: 'Opioides' },
+            { nombre: 'Fentanilo (anciano)', dosis: '0.5-1.5 mcg/kg', via: 'IV', grupo: 'Opioides' },
+            { nombre: 'Fentanilo (pediátrico)', dosis: '1-3 mcg/kg', via: 'IV', grupo: 'Opioides' },
+            { nombre: 'Morfina', dosis: '0.05-0.1 mg/kg', via: 'IV/IM', grupo: 'Opioides' },
+            { nombre: 'Morfina (anciano)', dosis: '0.03-0.05 mg/kg', via: 'IV/IM', grupo: 'Opioides' },
+            { nombre: 'Remifentanilo', dosis: '0.05-0.2 mcg/kg/min', via: 'IV perf', grupo: 'Opioides' },
+            { nombre: 'Meperidina', dosis: '0.5-1 mg/kg', via: 'IV/IM', grupo: 'Opioides' },
+            { nombre: 'Naloxona', dosis: '0.04-0.4 mg', via: 'IV/IM', grupo: 'Antídotos' },
+
+            // VASOPRESORES / INOTRÓPICOS
+            { nombre: 'Adrenalina (bolo)', dosis: '0.01 mg/kg (1:10000)', via: 'IV/IO', grupo: 'Vasopresores' },
+            { nombre: 'Adrenalina (perfusión)', dosis: '0.05-0.5 mcg/kg/min', via: 'IV perf', grupo: 'Vasopresores' },
+            { nombre: 'Noradrenalina', dosis: '0.05-0.5 mcg/kg/min', via: 'IV perf', grupo: 'Vasopresores' },
+            { nombre: 'Dopamina', dosis: '2-20 mcg/kg/min', via: 'IV perf', grupo: 'Vasopresores' },
+            { nombre: 'Dobutamina', dosis: '2-20 mcg/kg/min', via: 'IV perf', grupo: 'Inotrópicos' },
+            { nombre: 'Fenilefrina', dosis: '0.1-0.5 mcg/kg/min', via: 'IV perf', grupo: 'Vasopresores' },
+            { nombre: 'Fenilefrina (bolo)', dosis: '50-100 mcg', via: 'IV', grupo: 'Vasopresores' },
+            { nombre: 'Efedrina', dosis: '5-10 mg', via: 'IV', grupo: 'Vasopresores' },
+
+            // ANTIARRÍTMICOS
+            { nombre: 'Atropina', dosis: '0.5-1 mg', via: 'IV', grupo: 'Antiarrítmicos' },
+            { nombre: 'Lidocaína', dosis: '1-1.5 mg/kg', via: 'IV', grupo: 'Antiarrítmicos' },
+            { nombre: 'Amiodarona', dosis: '150-300 mg', via: 'IV', grupo: 'Antiarrítmicos' },
+            { nombre: 'Adenosina', dosis: '6-12 mg', via: 'IV', grupo: 'Antiarrítmicos' },
+
+            // OTROS URGENCIAS
+            { nombre: 'Dantroleno', dosis: '2.5 mg/kg', via: 'IV', grupo: 'Hipertermia maligna' },
+            { nombre: 'Bicarbonato', dosis: '1-2 mEq/kg', via: 'IV', grupo: 'Electrolitos' },
+            { nombre: 'Calcio gluconato', dosis: '10-20 mg/kg', via: 'IV', grupo: 'Electrolitos' },
+            { nombre: 'Sulfato de magnesio', dosis: '2-4 g', via: 'IV', grupo: 'Electrolitos' },
+            { nombre: 'Dexametasona', dosis: '4-8 mg', via: 'IV', grupo: 'Antiinflamatorios' },
+            { nombre: 'Hidrocortisona', dosis: '100-200 mg', via: 'IV', grupo: 'Antiinflamatorios' },
+            { nombre: 'Difenhidramina', dosis: '25-50 mg', via: 'IV', grupo: 'Antihistamínicos' },
+            { nombre: 'Flumazenil', dosis: '0.2-0.5 mg', via: 'IV', grupo: 'Antídotos' },
+            { nombre: 'Tranexámico', dosis: '10-15 mg/kg', via: 'IV', grupo: 'Antifibrinolíticos' },
+            { nombre: 'Desmopresina', dosis: '0.3 mcg/kg', via: 'IV', grupo: 'Hemostáticos' },
+            { nombre: 'Vitamina K', dosis: '5-10 mg', via: 'IV', grupo: 'Hemostáticos' },
+            { nombre: 'Protamina', dosis: '1 mg/100 UI heparina', via: 'IV', grupo: 'Hemostáticos' },
+
+            // BRONCODILATADORES
+            { nombre: 'Salbutamol', dosis: '2-4 inhalaciones', via: 'Inhalación', grupo: 'Broncodilatadores' },
+            { nombre: 'Salbutamol IV', dosis: '0.05-0.1 mg/kg', via: 'IV', grupo: 'Broncodilatadores' },
+            { nombre: 'Aminofilina', dosis: '5-6 mg/kg', via: 'IV', grupo: 'Broncodilatadores' },
+
+            // ANESTÉSICOS LOCALES
+            { nombre: 'Lidocaína 1%', dosis: '7 mg/kg (máx)', via: 'Infiltración', grupo: 'Anestésicos locales' },
+            { nombre: 'Lidocaína 2%', dosis: '5 mg/kg (máx)', via: 'Infiltración', grupo: 'Anestésicos locales' },
+            { nombre: 'Bupivacaína 0.25%', dosis: '2 mg/kg (máx)', via: 'Infiltración', grupo: 'Anestésicos locales' },
+            { nombre: 'Ropivacaína 0.2%', dosis: '3 mg/kg (máx)', via: 'Infiltración', grupo: 'Anestésicos locales' },
+            { nombre: 'Mepivacaína 1%', dosis: '5 mg/kg (máx)', via: 'Infiltración', grupo: 'Anestésicos locales' },
+
+            // PARACETAMOL / AINES
+            { nombre: 'Paracetamol', dosis: '15-20 mg/kg', via: 'IV', grupo: 'Analgésicos' },
+            { nombre: 'Paracetamol (pediátrico)', dosis: '15 mg/kg', via: 'IV', grupo: 'Analgésicos' },
+            { nombre: 'Metamizol', dosis: '1-2 g', via: 'IV', grupo: 'Analgésicos' },
+            { nombre: 'Ibuprofeno', dosis: '5-10 mg/kg', via: 'IV', grupo: 'Analgésicos' },
+            { nombre: 'Dexametasona', dosis: '4-8 mg', via: 'IV', grupo: 'Analgésicos' },
+        ];
+
+        function cargarFarmacopea() {
+            const grid = document.getElementById('farmacopeaFiltrada');
+            grid.innerHTML = farmacosData.map(f =>
+                `<div class="farmaco-item">
+                        <span class="dosis">${f.dosis}</span> ${f.nombre} 
+                        <span class="via">· ${f.via}</span>
+                        <div class="grupo">${f.grupo}</div>
+                    </div>`
+            ).join('');
+            document.getElementById('contadorFarmacos').textContent = farmacosData.length;
+        }
+
+        function filtrarFarmacopea() {
+            const busqueda = document.getElementById('buscadorFarmaco').value.toLowerCase().trim();
+            const grid = document.getElementById('farmacopeaFiltrada');
+            const filtrados = farmacosData.filter(f =>
+                f.nombre.toLowerCase().includes(busqueda) ||
+                f.via.toLowerCase().includes(busqueda) ||
+                f.dosis.includes(busqueda) ||
+                f.grupo.toLowerCase().includes(busqueda)
+            );
+
+            if (filtrados.length === 0) {
+                grid.innerHTML =
+                    '<div style="grid-column:1/-1; text-align:center; color:#6a7a8a; padding:20px;">🔍 No se encontraron fármacos</div>';
+                document.getElementById('contadorFarmacos').textContent = '0';
+                return;
+            }
+
+            grid.innerHTML = filtrados.map(f =>
+                `<div class="farmaco-item">
+                        <span class="dosis">${f.dosis}</span> ${f.nombre} 
+                        <span class="via">· ${f.via}</span>
+                        <div class="grupo">${f.grupo}</div>
+                    </div>`
+            ).join('');
+            document.getElementById('contadorFarmacos').textContent = filtrados.length;
+        }
+
+        // ================================================================
+        // INICIALIZACIÓN
+        // ================================================================
+        cargarFarmacopea();
+        calcularGlasgow();
+        calcularAldrete();
+        mostrarRSI();
+        mostrarPesoPediatrico();
+
+        document.querySelectorAll('#glasgowOjos, #glasgowVerbal, #glasgowMotor, #glasgowVersion').forEach(el => {
+            el.addEventListener('change', calcularGlasgow);
+        });
+        document.querySelectorAll('#aldreteActividad, #aldreteRespiracion, #aldreteCirculacion, #aldreteConciencia, #aldreteSatO2')
+            .forEach(el => {
+                el.addEventListener('change', calcularAldrete);
+            });
+    </script>
+</body>
+</html>

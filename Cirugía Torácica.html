@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cirugía Torácica y Esofágica</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #eaf5ea;
+            color: #1a2a1a;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 320px;
+            background: #1b4d2a;
+            color: #e6f5e6;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #2d6b3f;
+            letter-spacing: 0.5px;
+            color: #e6f5e6;
+        }
+        .sidebar h2 span {
+            font-weight: 700;
+            color: #6fbf7f;
+        }
+        .nav-group-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #a8d8b8;
+            padding: 10px 20px 4px 20px;
+            font-weight: 600;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #e6f5e6;
+            padding: 8px 20px 8px 28px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover {
+            background: #2d6b3f;
+            color: #ffffff;
+            border-left-color: #6fbf7f;
+        }
+        .nav-btn.active {
+            background: #348a4a;
+            color: #ffffff;
+            border-left-color: #6fbf7f;
+            font-weight: 500;
+        }
+        .nav-btn.sub {
+            padding-left: 40px;
+            font-size: 0.82rem;
+            color: #cde6d4;
+        }
+        .nav-btn.sub:hover {
+            background: #2d6b3f;
+        }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 40px 50px 40px;
+            background: white;
+        }
+        .main h1 {
+            font-size: 2.1rem;
+            color: #0a2a14;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #2d6b3f;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2f0e6;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-section h2 {
+            color: #1a4d2a;
+            border-left: 6px solid #3a8a4f;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .content-section h3 {
+            color: #1f5f33;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #dce8e0;
+            padding-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .content-section h4 {
+            color: #267a3d;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; }
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .content-section li { margin-bottom: 5px; }
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 22px 0;
+            font-size: 0.9rem;
+        }
+        .grade-table th {
+            background: #1f5f33;
+            color: white;
+            padding: 9px 10px;
+            text-align: left;
+            border: 1px solid #1f5f33;
+        }
+        .grade-table td {
+            border: 1px solid #d4e0d8;
+            padding: 9px 10px;
+            vertical-align: top;
+            background: #fbfdfb;
+        }
+        .grade-table tr:nth-child(even) td { background: #f4f8f4; }
+        .badge {
+            display: inline-block;
+            background: #3a8a4f;
+            color: white;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .surg-box, .clin-box, .note-box {
+            padding: 14px 22px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .surg-box { background: #e8f2ea; border-left: 5px solid #2d7a42; }
+        .clin-box { background: #f5f9e8; border-left: 5px solid #7a9a3a; }
+        .note-box { background: #eef4f0; border-left: 5px solid #4a7a5a; }
+        hr { margin: 30px 0; border: 0; height: 1px; background: #dce8e0; }
+        .back-top { display: inline-block; margin-top: 20px; color: #2d7a42; font-weight: 500; cursor: pointer; }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
+            .main { padding: 20px; }
+        }
+        .pdf-btn-container {
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .pdf-btn {
+            background: #1f5f33;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(26, 82, 46, 0.3);
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .pdf-btn:hover {
+            background: #0b3b1f;
+            transform: scale(1.02);
+        }
+        .pdf-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media print {
+            .content-section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+            .content-section * {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            .surg-box, .clin-box, .note-box {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .grade-table {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .pdf-btn-container, .sidebar, .nav-group, .nav-btn {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>🫁 <span>Cirugía</span> Torácica y Esofágica</h2>
+    <div class="nav-group">
+        <div class="nav-group-title">Anatomía y Abordajes</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+        <button class="nav-btn" data-target="anatomia-torax">Anatomía del Tórax y Mediastino</button>
+        <button class="nav-btn" data-target="abordajes-torax">Vías de Abordaje (Toracotomías)</button>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Patología Esofágica</div>
+        <button class="nav-btn" data-target="cancer-esofago">Cáncer de Esófago</button>
+        <button class="nav-btn sub" data-target="tecnicas-cancer">Técnicas Quirúrgicas (Esofaguectomía)</button>
+        <button class="nav-btn" data-target="enfermedades-benignas">Enfermedades Benignas y Acalasia</button>
+        <button class="nav-btn sub" data-target="tecnicas-acalasia">Técnicas para Acalasia y Benignas</button>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Mediastino y Pleura</div>
+        <button class="nav-btn" data-target="tumores-mediastino">Tumores de Mediastino</button>
+        <button class="nav-btn" data-target="cancer-pulmon">Cancer de Pulmón</button>
+        <button class="nav-btn" data-target="empiema-pleural">Empiema Pleural</button>
+        <button class="nav-btn sub" data-target="tratamiento-empiema">Tratamiento del Empiema</button>
+        <button class="nav-btn sub" data-target="hamartoma-pleural">Hamartoma Pleural</button>
+        </div>
+        <div class="nav-group">
+        <div class="nav-group-title">Diafragma</div>
+        <button class="nav-btn sub" data-target="diafragma">Cirugía Diafragmatica</button>
+    </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div class="main" id="mainContent">
+
+    <!-- INICIO -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>🫁 Cirugía Torácica y Esofágica</h1>
+        <div class="subtitle">Resumen de temas quirúrgicos del tórax y esófago</div>
+        <p style="font-size:1.05rem; margin-bottom:16px;">Selecciona un tema en el menú lateral. Contenido resumido sobre:</p>
+        <ul style="font-size:1.05rem;">
+            <li><strong>Anatomía y Abordajes:</strong> Tórax, mediastino, toracotomías.</li>
+            <li><strong>Cáncer de Esófago:</strong> Estadificación, técnicas de esofaguectomía.</li>
+            <li><strong>Enfermedades Benignas:</strong> Acalasia, divertículos, reflujo.</li>
+            <li><strong>Tumores de Mediastino:</strong> Clasificación y manejo.</li>
+            <li><strong>Empiema Pleural:</strong> Diagnóstico, tratamiento médico y quirúrgico.</li>
+        </ul>
+        <hr>
+        <p style="color:#2d6b3f;">Basado en el plan de estudios de Cirugía Torácica y Esofágica.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ANATOMÍA QUIRÚRGICA DEL TÓRAX Y MEDIASTINO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-anatomia-torax">
+        <h2>Anatomía Quirúrgica del Tórax y Mediastino</h2>
+        
+        <h3>Topografía del Tórax</h3>
+        <ul>
+            <li><strong>Límites:</strong> 
+                <ul>
+                    <li><strong>Superior:</strong> Apertura torácica superior (orificio torácico) delimitada por el manubrio esternal, la 1ª costilla y la vértebra T1.</li>
+                    <li><strong>Inferior:</strong> Apertura torácica inferior (diafragma).</li>
+                    <li><strong>Pared anterior:</strong> Esternón y cartílagos costales.</li>
+                    <li><strong>Pared posterior:</strong> Vértebras torácicas y costillas.</li>
+                    <li><strong>Pared lateral:</strong> Costillas y músculos intercostales.</li>
+                </ul>
+            </li>
+            <li><strong>Contenido:</strong> Pulmones, corazón, grandes vasos, esófago, tráquea, timo, diafragma, nervios y vasos.</li>
+        </ul>
+
+        <h3>Mediastino</h3>
+        <ul>
+            <li><strong>División topográfica (clásica):</strong>
+                <ul>
+                    <li><strong>Mediastino Superior:</strong> Por encima de la bifurcación traqueal. Contiene el timo, la tráquea, el esófago, el cayado aórtico y sus ramas, la vena cava superior.</li>
+                    <li><strong>Mediastino Inferior:</strong> Dividido en anterior, medio y posterior.
+                        <ul>
+                            <li><strong>Anterior:</strong> Detrás del esternón, delante del pericardio. Contiene grasa, ganglios linfáticos y restos tímicos.</li>
+                            <li><strong>Medio:</strong> Contiene el corazón, el pericardio, la aorta ascendente, la vena cava superior, el cayado de la ácigos, la bifurcación traqueal y los ganglios hiliares.</li>
+                            <li><strong>Posterior:</strong> Detrás del pericardio y delante de la columna vertebral. Contiene el esófago, la aorta torácica, el conducto torácico, la vena ácigos y el nervio vago.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>División radiológica (Felson):</strong> Se divide en mediastino anterior, medio y posterior en una vista lateral. Es la más utilizada para la clasificación de tumores.</li>
+        </ul>
+
+        <h3>Estructuras Específicas de Interés Quirúrgico</h3>
+        <ul>
+            <li><strong>Tráquea y árbol bronquial:</strong> 
+                <ul>
+                    <li>La tráquea mide ~10-12 cm. Se bifurca en bronquios principales a la altura de T4-T5 (carina).</li>
+                    <li>El bronquio derecho es más corto, ancho y vertical que el izquierdo (favorece la aspiración de cuerpos extraños).</li>
+                </ul>
+            </li>
+            <li><strong>Esófago torácico:</strong> 
+                <ul>
+                    <li>Se extiende desde el hiato esofágico (T10) hasta la unión faringoesofágica (C6).</li>
+                    <li>Relaciones: Por detrás de la tráquea y el bronquio izquierdo, delante de la aorta torácica.</li>
+                    <li>Pasa a través del hiato esofágico (T10), junto con el nervio vago anterior y posterior.</li>
+                </ul>
+            </li>
+            <li><strong>Nervios vagos (X par craneal):</strong>
+                <ul>
+                    <li>El izquierdo desciende por delante del cayado aórtico y da la rama recurrente izquierda (que rodea el cayado).</li>
+                    <li>El derecho desciende por detrás del bronquio derecho y da la rama recurrente derecha (que rodea la subclavia).</li>
+                    <li>Ambos forman el plexo esofágico y se continúan como troncos vagales anterior y posterior en el abdomen.</li>
+                </ul>
+            </li>
+            <li><strong>Nervios frénicos (C3-C5):</strong>
+                <ul>
+                    <li>Descienden por delante de los hilios pulmonares y del pericardio.</li>
+                    <li>Inervan el diafragma. Su lesión causa parálisis diafragmática.</li>
+                </ul>
+            </li>
+            <li><strong>Conducto torácico:</strong> 
+                <ul>
+                    <li>Principal vaso linfático. Asciende desde la cisterna del quilo (T12-L2), cruza el diafragma, asciende por el mediastino posterior (entre la aorta y la vena ácigos), y desemboca en la unión de la vena yugular izquierda y la subclavia izquierda.</li>
+                    <li>Lesión quirúrgica → quilotórax.</li>
+                </ul>
+            </li>
+            <li><strong>Pulmones:</strong>
+                <ul>
+                    <li>Cada pulmón tiene lóbulos: derecho (3 lóbulos: superior, medio, inferior) e izquierdo (2 lóbulos: superior e inferior, con la língula).</li>
+                    <li>Hilio pulmonar: Contiene el bronquio principal, la arteria pulmonar, las venas pulmonares, los ganglios linfáticos y los vasos bronquiales.</li>
+                    <li>Pleura visceral y parietal (capa costal, diafragmática y mediastínica).</li>
+                    <li>El espacio pleural es virtual, con una pequeña cantidad de líquido (0.1-0.2 ml/kg).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Vascularización e Inervación Torácica</h3>
+        <ul>
+            <li><strong>Arterias intercostales:</strong> Nacen de la aorta torácica y de la arteria torácica interna.</li>
+            <li><strong>Venas ácigos y hemiácigos:</strong> Drenan la sangre de la pared torácica y del mediastino.</li>
+            <li><strong>Nervios intercostales:</strong> Ramas de los nervios espinales torácicos. Proporcionan inervación sensitiva y motora a la pared torácica.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VÍAS DE ABORDAJE DEL TÓRAX Y MEDIASTINO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-abordajes-torax">
+        <h2>Vías de Abordaje del Tórax y Mediastino</h2>
+        
+        <h3>Principios Generales</h3>
+        <ul>
+            <li>La elección de la vía de abordaje depende de:
+                <ul>
+                    <li>La localización y el tamaño de la lesión.</li>
+                    <li>El tipo de procedimiento (quirúrgico o diagnóstico).</li>
+                    <li>La estabilidad del paciente.</li>
+                    <li>La experiencia del cirujano.</li>
+                    <li>Los objetivos de la cirugía (curativa, paliativa, diagnóstica).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Toracotomías (Abordajes Quirúrgicos Abiertos)</h3>
+        <div class="surg-box">
+            <h4>1. Toracotomía Posterolateral</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Es la incisión más utilizada para acceder al tórax. Proporciona un excelente acceso al pulmón, al mediastino posterior y a la aorta.</li>
+                <li><strong>Indicaciones:</strong> Resecciones pulmonares (lobectomías, neumonectomías), cirugía del esófago (tercio medio y distal), tumores de mediastino posterior, cirugía de la aorta torácica.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito lateral (con rodillo bajo la axila).</li>
+                        <li>Incisión curvilínea: desde la apófisis espinosa de T4-T5, pasando por el ángulo de la escápula, hasta la línea axilar anterior.</li>
+                        <li>Sección de los músculos (trapecio, dorsal ancho, serrato anterior) y del espacio intercostal (generalmente el 5º o 6º).</li>
+                        <li>Separación de las costillas con un separador de Finochietto.</li>
+                        <li>La pleura se abre para acceder a la cavidad torácica.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Excelente exposición, versatilidad.</li>
+                <li><strong>Desventajas:</strong> Mayor dolor postoperatorio, recuperación más lenta, riesgo de afectación de la movilidad del hombro.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>2. Toracotomía Anterolateral</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Incisión en el espacio intercostal anterior, desde el borde esternal hasta la línea axilar anterior.</li>
+                <li><strong>Indicaciones:</strong> Cirugía cardíaca (válvulas), resecciones de la língula, tumores de mediastino anterior, pericardiectomía, reparación de heridas cardíacas.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito supino con rodillo bajo el hombro ipsilateral.</li>
+                        <li>Incisión submamaria horizontal o curvilínea (siguiendo el surco submamario).</li>
+                        <li>Sección del músculo pectoral mayor y del espacio intercostal (generalmente el 4º o 5º).</li>
+                        <li>Separación de las costillas.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Buen acceso al corazón y al mediastino anterior.</li>
+                <li><strong>Desventajas:</strong> Exposición limitada para el mediastino posterior y las estructuras retrocardíacas.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>3. Toracotomía Axilar</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Incisión en la axila, que sigue el borde inferior del músculo pectoral mayor.</li>
+                <li><strong>Indicaciones:</strong> Simpatectomía torácica, resección del primer arco costal (síndrome del desfiladero torácico), biopsias de ganglios axilares, neumonectomía en pacientes seleccionados.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito lateral con el brazo abducido y flexionado.</li>
+                        <li>Incisión en la axila, que sigue el borde inferior del pectoral mayor.</li>
+                        <li>Se diseca el espacio intercostal (2º o 3º) y se accede al ápex pulmonar.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Excelente resultado estético, menor dolor.</li>
+                <li><strong>Desventajas:</strong> Acceso limitado a estructuras inferiores del tórax.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>4. Toracotomía Media (E sternotomía)</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Incisión longitudinal a través del esternón (desde la escotadura yugular hasta el apéndice xifoides).</li>
+                <li><strong>Indicaciones:</strong> Cirugía cardíaca, trasplante pulmonar, timectomía, tumores de mediastino anterior, acceso a los grandes vasos.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito supino.</li>
+                        <li>Incisión media esternal con sierra oscilante.</li>
+                        <li>Separación de los bordes esternales con un separador.</li>
+                        <li>La pleura puede abrirse o no.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Excelente acceso al mediastino anterior y al corazón.</li>
+                <li><strong>Desventajas:</strong> Riesgo de dehiscencia esternal, mediastinitis, mayor tiempo de recuperación.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>5. Toracotomía Transversal (Clamshell)</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Incisión bilateral submamaria que se extiende transversalmente, con sección del esternón (en forma de "caparazón de almeja").</li>
+                <li><strong>Indicaciones:</strong> Trasplante pulmonar, resección de tumores bilaterales, acceso a la carina y a ambos hilios.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito supino.</li>
+                        <li>Incisión submamaria bilateral, que se une en la línea media.</li>
+                        <li>Sección del esternón transversalmente.</li>
+                        <li>Separación de ambos hemitorax.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Exposición máxima y bilateral.</li>
+                <li><strong>Desventajas:</strong> Dolor postoperatorio intenso, mayor riesgo de infección.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>6. Toracotomía de Cervicotomía (Abordaje Cervical)</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Incisión en el cuello, a lo largo del borde anterior del músculo esternocleidomastoideo.</li>
+                <li><strong>Indicaciones:</strong> Esofagectomía (por vía cervical), laringectomía, faringectomía, tumores del tercio superior del esófago.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Paciente en decúbito supino con la cabeza hiperextendida.</li>
+                        <li>Incisión a lo largo del borde anterior del ECM.</li>
+                        <li>Disección de los planos hasta el esófago cervical.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Evita la toracotomía, buen acceso al esófago cervical.</li>
+                <li><strong>Desventajas:</strong> Riesgo de lesión del nervio laríngeo recurrente.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>7. Toracotomía de Abordaje Transhiatal</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Acceso al esófago a través del hiato diafragmático (combinado con cervicotomía). No se abre el tórax.</li>
+                <li><strong>Indicaciones:</strong> Esofagectomía transhiatal (para tumores del tercio medio y superior).</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Cervicotomía izquierda (para movilizar el esófago cervical).</li>
+                        <li>Laparotomía media para movilizar el estómago y crear un conducto gástrico.</li>
+                        <li>Disección del esófago a través del hiato, con disección roma.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Evita la toracotomía, menor morbilidad pulmonar.</li>
+                <li><strong>Desventajas:</strong> Menor linfadenectomía (riesgo de recidiva), lesión del nervio laríngeo recurrente.</li>
+            </ul>
+        </div>
+
+        <h3>Cirugía Torácica Mínimamente Invasiva</h3>
+        <div class="surg-box">
+            <h4>Toracoscopia (VATS - Cirugía Torácica Videoasistida)</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Procedimiento que utiliza una cámara y puertos para acceder a la cavidad torácica sin abrir el tórax.</li>
+                <li><strong>Indicaciones:</strong> 
+                    <ul>
+                        <li>Diagnóstico: Biopsias pleurales, biopsias pulmonares, estadificación del cáncer.</li>
+                        <li>Terapéuticas: Resección de nódulos pulmonares (wedge resection), lobectomías, resección de bullas (neumotórax), pleurodesis, pericardiectomía, simpatectomía.</li>
+                        <li>Esofágicas: Esofagectomía (MIE), miotomía de Heller.</li>
+                    </ul>
+                </li>
+                <li><strong>Puertos:</strong> Generalmente 2-4 puertos de 5-12 mm.</li>
+                <li><strong>Ventajas:</strong> Menor dolor postoperatorio, recuperación más rápida, menor estancia hospitalaria, mejor resultado estético.</li>
+                <li><strong>Desventajas:</strong> Curva de aprendizaje, exposición limitada en procedimientos complejos, costo.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>Cirugía Torácica Robótica (RATS)</h4>
+            <ul>
+                <li><strong>Descripción:</strong> Utiliza brazos robóticos controlados por el cirujano desde una consola.</li>
+                <li><strong>Indicaciones:</strong> Las mismas que la VATS, pero permite mayor precisión en disecciones complejas (como la linfadenectomía mediastínica).</li>
+                <li><strong>Ventajas:</strong> Visión 3D, instrumentos articulados, mayor destreza para suturas y disecciones finas.</li>
+                <li><strong>Desventajas:</strong> Alto costo, necesidad de entrenamiento especializado.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CÁNCER DE ESÓFAGO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-cancer-esofago">
+        <h2>Cáncer de Esófago</h2>
+        
+        <h3>Epidemiología y Factores de Riesgo</h3>
+        <ul>
+            <li><strong>Incidencia:</strong> Alta en Asia (China, Japón, Irán), África y Sudamérica. Es el 8º cáncer más frecuente y la 6ª causa de muerte por cáncer en el mundo.</li>
+            <li><strong>Tipos histológicos principales:</strong>
+                <ul>
+                    <li><strong>Carcinoma de células escamosas (CCE):</strong> Más frecuente en Asia y África. Asociado a tabaco y alcohol. Predomina en los tercios superior y medio.</li>
+                    <li><strong>Adenocarcinoma:</strong> Más frecuente en países occidentales. Asociado a reflujo gastroesofágico (ERGE) y esófago de Barrett. Predomina en el tercio inferior (unión esofagogástrica).</li>
+                </ul>
+            </li>
+            <li><strong>Otros factores de riesgo:</strong> Obesidad, dieta pobre en frutas y verduras, ingesta de alimentos muy calientes, acalasia, estenosis cáustica, enfermedad celíaca.</li>
+        </ul>
+
+        <h3>Clasificación y Estadificación (TNM - 8ª edición)</h3>
+        <div class="surg-box">
+            <h4>Clasificación TNM</h4>
+            <ul>
+                <li><strong>T (Tumor primario):</strong>
+                    <ul>
+                        <li><strong>Tis:</strong> Carcinoma in situ (displasia de alto grado).</li>
+                        <li><strong>T1:</strong> Invade la lámina propia o submucosa.
+                            <ul>
+                                <li><strong>T1a:</strong> Lámina propia o muscularis mucosae.</li>
+                                <li><strong>T1b:</strong> Submucosa.</li>
+                            </ul>
+                        </li>
+                        <li><strong>T2:</strong> Invade la muscular propia.</li>
+                        <li><strong>T3:</strong> Invade la adventicia (tejido periesofágico).</li>
+                        <li><strong>T4:</strong> Invade estructuras adyacentes.
+                            <ul>
+                                <li><strong>T4a:</strong> Invade pleura, pericardio, vena ácigos, diafragma.</li>
+                                <li><strong>T4b:</strong> Invade aorta, tráquea, cuerpo vertebral.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>N (Ganglios linfáticos regionales):</strong>
+                    <ul>
+                        <li><strong>N0:</strong> Sin metástasis ganglionares.</li>
+                        <li><strong>N1:</strong> 1-2 ganglios afectados.</li>
+                        <li><strong>N2:</strong> 3-6 ganglios afectados.</li>
+                        <li><strong>N3:</strong> ≥7 ganglios afectados.</li>
+                    </ul>
+                </li>
+                <li><strong>M (Metástasis a distancia):</strong>
+                    <ul>
+                        <li><strong>M0:</strong> Sin metástasis.</li>
+                        <li><strong>M1:</strong> Metástasis a distancia (hígado, pulmón, hueso, etc.).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Grupos Pronósticos (Estadios)</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Estadio</th><th>T</th><th>N</th><th>M</th><th>Supervivencia a 5 años</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>Tis</td><td>N0</td><td>M0</td><td>>80%</td></tr>
+                <tr><td>IA</td><td>T1</td><td>N0</td><td>M0</td><td>70-80%</td></tr>
+                <tr><td>IB</td><td>T1, T2</td><td>N0, N1</td><td>M0</td><td>50-60%</td></tr>
+                <tr><td>IIA</td><td>T2, T3</td><td>N0, N1</td><td>M0</td><td>30-40%</td></tr>
+                <tr><td>III</td><td>T3, T4a</td><td>N1, N2</td><td>M0</td><td>15-25%</td></tr>
+                <tr><td>IV</td><td>Cualquier T</td><td>Cualquier N</td><td>M1</td><td><5%</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Clínica del Cáncer de Esófago</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Dis fagia progresiva:</strong> Síntoma más frecuente y precoz. Comienza con dificultad para sólidos y luego para líquidos.</li>
+                <li><strong>Odino fagia:</strong> Dolor al tragar.</li>
+                <li><strong>Regurgitación y sialorrea:</strong> Por obstrucción.</li>
+                <li><strong>Pérdida de peso:</strong> Síntoma muy común (debido a la disfagia y al efecto sistémico del tumor).</li>
+                <li><strong>Dolor torácico retroesternal:</strong> Puede indicar invasión local.</li>
+                <li><strong>Ronquera (disfonía):</strong> Por invasión del nervio laríngeo recurrente.</li>
+                <li><strong>Tos o neumonía por aspiración:</strong> Por fístula traqueoesofágica.</li>
+                <li><strong>Hematemesis o melena:</strong> Por sangrado del tumor.</li>
+                <li><strong>Signos de metástasis:</strong> Adenopatías supraclaviculares (ganglio de Virchow), hepatomegalia, ascitis.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico</h3>
+        <ul>
+            <li><strong>Endoscopia digestiva alta + biopsia:</strong> Gold standard. Confirma el diagnóstico y permite la clasificación histológica.</li>
+            <li><strong>Ecoendoscopia (USE):</strong> Evalúa la profundidad de invasión (T) y la afectación ganglionar regional (N). Esencial para el estadiaje local.</li>
+            <li><strong>Tomografía computarizada (TAC) toracoabdominal:</strong> Evalúa metástasis a distancia (M) y la extensión locorregional.</li>
+            <li><strong>PET-TAC:</strong> Detecta metástasis ocultas y evalúa la respuesta al tratamiento neoadyuvante.</li>
+            <li><strong>Broncoscopia:</strong> Si hay sospecha de invasión traqueal (cercanía al árbol traqueobronquial).</li>
+            <li><strong>Laparoscopia (para tumores de la unión esofagogástrica):</strong> Para descartar carcinomatosis peritoneal.</li>
+        </ul>
+
+        <h3>Tratamiento del Cáncer de Esófago</h3>
+        
+        <h4>Tratamiento Neoadyuvante (antes de la cirugía)</h4>
+        <div class="note-box">
+            <ul>
+                <li><strong>Quimioterapia + Radioterapia:</strong> El régimen estándar para tumores localmente avanzados (T3-T4, N1-N2).</li>
+                <li><strong>Régimen de CROSS:</strong> Carboplatino + Paclitaxel con radioterapia (41.4 Gy). Mejora la supervivencia y la resecabilidad.</li>
+                <li><strong>Quimioterapia sola:</strong> En algunos centros, para pacientes con contraindicación para radioterapia.</li>
+                <li><strong>Ventajas del neoadyuvante:</strong> Reduce el tamaño tumoral, aumenta la tasa de resección R0, mejora la supervivencia.</li>
+            </ul>
+        </div>
+
+        <h4>Tratamiento Quirúrgico (Esofaguectomía)</h4>
+        <p>La resección quirúrgica es el tratamiento curativo en pacientes con enfermedad localizada y sin metástasis a distancia. Las técnicas se detallan en la sección específica.</p>
+        <ul>
+            <li><strong>Indicaciones:</strong> Estadios I, II, III (seleccionados) sin metástasis a distancia y con buen estado funcional (PS 0-1).</li>
+            <li><strong>Contraindicaciones:</strong> Metástasis a distancia (M1), enfermedad localmente avanzada irresecable (T4b), mal estado general (PS >2), comorbilidad severa.</li>
+        </ul>
+
+        <h4>Tratamiento Paliativo</h4>
+        <ul>
+            <li><strong>Stent esofágico (metálico autoexpandible):</strong> Para paliar la disfagia en pacientes irresecables o con enfermedad metastásica.</li>
+            <li><strong>Radioterapia paliativa:</strong> Para controlar el sangrado, el dolor y la disfagia.</li>
+            <li><strong>Quimioterapia paliativa:</strong> En pacientes con enfermedad metastásica y buen estado general.</li>
+            <li><strong>Soporte nutricional:</strong> Gastrostomía o yeyunostomía para nutrición enteral.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TÉCNICAS QUIRÚRGICAS PARA CÁNCER DE ESÓFAGO (ESOFAGUECTOMÍA) -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-tecnicas-cancer">
+        <h2>Técnicas Quirúrgicas - Esofaguectomía</h2>
+        
+        <h3>Principios Generales</h3>
+        <ul>
+            <li><strong>Objetivos de la esofaguectomía oncológica:</strong>
+                <ul>
+                    <li><strong>Resección R0:</strong> Márgenes libres de tumor (proximal y distal >5 cm).</li>
+                    <li><strong>Linfadenectomía adecuada:</strong> Resección de los ganglios linfáticos regionales.</li>
+                    <li><strong>Reconstrucción:</strong> Uso de un conducto gástrico (o yeyunal o colónico) para restaurar el tránsito digestivo.</li>
+                    <li><strong>Preservación de la función:</strong> Evitar complicaciones como el reflujo y la estenosis.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Clasificación de las Técnicas de Esofaguectomía</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Técnica</th><th>Descripción</th><th>Indicaciones</th><th>Ventajas</th><th>Desventajas</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Ivor-Lewis</strong></td>
+                    <td>Abordaje abdominal (laparotomía) + toracotomía derecha. Anastomosis en el tórax (supraaórtica).</td>
+                    <td>Tumores del tercio medio e inferior.</td>
+                    <td>Buena exposición, anastomosis torácica segura.</td>
+                    <td>Requiere toracotomía, mayor dolor.</td>
+                </tr>
+                <tr><td><strong>McKeown (3 campos)</strong></td>
+                    <td>Abordaje abdominal + toracotomía derecha + cervicotomía izquierda. Anastomosis en el cuello.</td>
+                    <td>Tumores del tercio superior y medio (cuando se requiere margen proximal amplio).</td>
+                    <td>Mayor margen proximal, mejor linfadenectomía cervical.</td>
+                    <td>Más invasiva, mayor riesgo de lesión del nervio laríngeo recurrente.</td>
+                </tr>
+                <tr><td><strong>Transhiatal</strong></td>
+                    <td>Abordaje abdominal + cervicotomía izquierda. Sin toracotomía. Disección roma del esófago a través del hiato.</td>
+                    <td>Tumores del tercio medio y superior, pacientes de alto riesgo (pulmonar).</td>
+                    <td>Evita la toracotomía, menor morbilidad pulmonar.</td>
+                    <td>Menor linfadenectomía, riesgo de lesión del nervio laríngeo recurrente.</td>
+                </tr>
+                <tr><td><strong>MIE (VATS/RATS)</strong></td>
+                    <td>Mínimamente invasiva (toracoscopia + laparoscopia). Anastomosis en el tórax (Ivor-Lewis) o en el cuello (McKeown).</td>
+                    <td>Tumores resecables en centros con experiencia.</td>
+                    <td>Menor dolor, recuperación más rápida, menor estancia hospitalaria.</td>
+                    <td>Curva de aprendizaje, costo elevado.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="surg-box">
+            <h4>Técnica de Ivor-Lewis (Detallada)</h4>
+            <ol>
+                <li><strong>Fase abdominal (laparotomía):</strong>
+                    <ul>
+                        <li>Incisión media o subcostal. Se explora la cavidad abdominal (descartar metástasis).</li>
+                        <li>Movilización del estómago: Se seccionan los ligamentos gastrohepático y gastrocólico.</li>
+                        <li>Se ligan la arteria gástrica izquierda y derecha (preservando la gastroepiploica derecha).</li>
+                        <li>Se confecciona un conducto gástrico (tubo) con grapadora lineal (Endo-GIA) a lo largo de la curvatura mayor.</li>
+                        <li>Se coloca una sonda de yeyunostomía para alimentación precoz.</li>
+                        <li>Se cierra el abdomen y se coloca el paciente en decúbito lateral izquierdo.</li>
+                    </ul>
+                </li>
+                <li><strong>Fase torácica (toracotomía derecha o VATS):</strong>
+                    <ul>
+                        <li>Toracotomía posterolateral (5º-6º espacio intercostal) o VATS.</li>
+                        <li>Se identifica y diseca el esófago, desde la vena ácigos hasta el hiato. Se libera de sus adherencias.</li>
+                        <li>Se realiza la linfadenectomía mediastínica (ganglios paraesofágicos, hiliares y subcarinales).</li>
+                        <li>Se secciona el esófago por encima de la vena ácigos (margen proximal).</li>
+                        <li>Se extrae la pieza quirúrgica (esófago + conducto gástrico).</li>
+                    </ul>
+                </li>
+                <li><strong>Anastomosis esofagogástrica torácica:</strong>
+                    <ul>
+                        <li>Se realiza una anastomosis término-lateral entre el conducto gástrico y el esófago (con grapadora circular o sutura manual).</li>
+                        <li>La anastomosis se sitúa en el tórax (supraaórtica) para evitar el reflujo.</li>
+                        <li>Se fija el conducto gástrico al hiato para prevenir la hernia.</li>
+                    </ul>
+                </li>
+                <li><strong>Drenaje y cierre:</strong> Tubos de drenaje pleural (2) y tubo de drenaje subfrénico. Cierre por planos.</li>
+            </ol>
+        </div>
+
+        <div class="surg-box">
+            <h4>Técnica de McKeown (Detallada)</h4>
+            <ol>
+                <li><strong>Fase abdominal:</strong> Similar a Ivor-Lewis (movilización del estómago y confección del conducto gástrico).</li>
+                <li><strong>Fase torácica (toracotomía derecha o VATS):</strong> Disección del esófago, desde la vena ácigos hasta el hiato. Linfadenectomía mediastínica.</li>
+                <li><strong>Fase cervical (cervicotomía izquierda):</strong>
+                    <ul>
+                        <li>Incisión en el cuello, a lo largo del borde anterior del ECM izquierdo.</li>
+                        <li>Se diseca el esófago cervical y se secciona (por encima del tumor).</li>
+                        <li>Se extrae el esófago y el conducto gástrico a través del cuello.</li>
+                    </ul>
+                </li>
+                <li><strong>Anastomosis esofagogástrica cervical:</strong> Se realiza una anastomosis término-terminal o término-lateral en el cuello (sutura manual o con grapadora).</li>
+                <li><strong>Drenaje:</strong> Drenaje cervical y pleural. Sonda de yeyunostomía.</li>
+            </ol>
+        </div>
+
+        <div class="surg-box">
+            <h4>Esofaguectomía Transhiatal (Detallada)</h4>
+            <ol>
+                <li><strong>Fase abdominal:</strong> Laparotomía media. Movilización del estómago y confección del conducto gástrico. Se diseca el hiato y la porción distal del esófago.</li>
+                <li><strong>Fase cervical:</strong> Cervicotomía izquierda. Se diseca el esófago cervical.</li>
+                <li><strong>Disección transhiatal:</strong> Con disección roma (dedo) a través del hiato, se moviliza el esófago desde el abdomen hasta el cuello.</li>
+                <li><strong>Extracción:</strong> Se extrae el esófago y el conducto gástrico a través del cuello o del abdomen.</li>
+                <li><strong>Anastomosis:</strong> Anastomosis esofagogástrica cervical (término-terminal o término-lateral).</li>
+                <li><strong>Drenaje:</strong> Drenaje cervical y subfrénico.</li>
+            </ol>
+            <p><strong>Nota:</strong> Esta técnica es controvertida por la menor linfadenectomía y el mayor riesgo de lesión del nervio laríngeo recurrente.</p>
+        </div>
+
+        <h3>Complicaciones de la Esofaguectomía</h3>
+        <ul>
+            <li><strong>Precoces:</strong>
+                <ul>
+                    <li><strong>Fuga anastomótica:</strong> La más temible (5-15%). Se manifiesta con fiebre, taquicardia, dolor, salida de saliva o contenido gástrico por el drenaje. Tratamiento: drenaje, nutrición parenteral, reintervención (si es masiva).</li>
+                    <li><strong>Lesión del nervio laríngeo recurrente:</strong> Ronquera, aspiración. Manejo conservador (logopedia).</li>
+                    <li><strong>Quilotórax:</strong> Lesión del conducto torácico. Tratamiento: dieta baja en grasas (MCT), nutrición parenteral, somatostatina, reintervención (ligadura del conducto).</li>
+                    <li><strong>Neumonía y atelectasia:</strong> Muy frecuentes. Profilaxis con fisioterapia respiratoria.</li>
+                    <li><strong>Hemorragia:</strong> Por lesión de vasos intercostales o de la aorta. Reintervención.</li>
+                </ul>
+            </li>
+            <li><strong>Tardías:</strong>
+                <ul>
+                    <li><strong>Estenosis anastomótica:</strong> Por fibrosis. Tratamiento: dilatación endoscópica.</li>
+                    <li><strong>Reflujo gastroesofágico:</strong> (especialmente en anastomosis cervical). Tratamiento: IBP, medidas posturales.</li>
+                    <li><strong>Dumping:</strong> Síndrome de vaciamiento rápido. Tratamiento: dieta y medidas posturales.</li>
+                    <li><strong>Recidiva local o a distancia:</strong> Tratamiento paliativo.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ENFERMEDADES BENIGNAS DEL ESÓFAGO Y ACALASIA -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-enfermedades-benignas">
+        <h2>Enfermedades Benignas del Esófago</h2>
+        
+        <h3>Acalasia</h3>
+        <ul>
+            <li><strong>Definición:</strong> Trastorno motor primario del esófago, caracterizado por la falta de relajación del esfínter esofágico inferior (EEI) y la ausencia de peristaltismo en el cuerpo esofágico.</li>
+            <li><strong>Etiología:</strong> Desconocida. Se cree que es una enfermedad autoinmune o neurodegenerativa que afecta a los plexos mientéricos (pérdida de células ganglionares).</li>
+            <li><strong>Clasificación (por manometría):</strong>
+                <ul>
+                    <li><strong>Tipo I (clásica):</strong> Ausencia de peristaltismo y de contracciones.</li>
+                    <li><strong>Tipo II (compresión):</strong> Contracciones panesofágicas de alta presión.</li>
+                    <li><strong>Tipo III (espasmódica):</strong> Contracciones espasmódicas.</li>
+                </ul>
+            </li>
+            <li><strong>Clínica:</strong>
+                <ul>
+                    <li><strong>Disfagia:</strong> Progresiva, tanto para sólidos como para líquidos (disfagia a líquidos es característica).</li>
+                    <li><strong>Regurgitación:</strong> De alimentos no digeridos (que pueden causar neumonía por aspiración).</li>
+                    <li><strong>Dolor torácico retroesternal:</strong> Espontáneo o relacionado con la comida.</li>
+                    <li><strong>Pérdida de peso.</strong></li>
+                    <li><strong>Halitosis y sialorrea.</strong></li>
+                </ul>
+            </li>
+            <li><strong>Diagnóstico:</strong>
+                <ul>
+                    <li><strong>Manometría esofágica:</strong> Gold standard. Muestra la falta de relajación del EEI y la ausencia de peristaltismo.</li>
+                    <li><strong>Radiología con bario:</strong> Dilatación esofágica, "punta en pico" en el EEI, retención de contraste.</li>
+                    <li><strong>Endoscopia:</strong> Dilatación esofágica, retención de alimentos, resistencia al paso del endoscopio. Descartar pseudoacalasia (cáncer de la unión).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Otras Enfermedades Benignas</h3>
+        <ul>
+            <li><strong>Divertículo de Zenker:</strong> Divertículo faríngeo (posterior), en el triángulo de Killian. Se presenta con disfagia orofaríngea, regurgitación, halitosis, tos. Tratamiento: diverticulectomía + miotomía del cricofaríngeo.</li>
+            <li><strong>Divertículo epifrénico:</strong> Divertículo en el tercio inferior del esófago, asociado a acalasia o hipertonía del EEI. Tratamiento: diverticulectomía + miotomía.</li>
+            <li><strong>Reflujo gastroesofágico (ERGE):</strong> Enfermedad por reflujo ácido. Complicaciones: esofagitis, estenosis péptica, esófago de Barrett (premaligno). Tratamiento: médico (IBP) o quirúrgico (funduplicatura).</li>
+            <li><strong>Estenosis péptica:</strong> Estrechamiento del esófago distal por fibrosis secundaria al reflujo. Se presenta con disfagia. Tratamiento: dilatación endoscópica, funduplicatura.</li>
+            <li><strong>Esofagitis eosinofílica:</strong> Enfermedad inflamatoria alérgica. Se presenta con disfagia y impactación de alimentos. Tratamiento: dieta de eliminación, corticoides tópicos (budesonida).</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TÉCNICAS PARA ACALASIA Y ENFERMEDADES BENIGNAS -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-tecnicas-acalasia">
+        <h2>Técnicas Quirúrgicas para Acalasia y Benignas</h2>
+        
+        <h3>Tratamiento de la Acalasia</h3>
+        
+        <h4>Tratamiento Médico y Endoscópico</h4>
+        <div class="note-box">
+            <ul>
+                <li><strong>Farmacológico:</strong> Nitratos (dinitrato de isosorbide) y bloqueadores de los canales de calcio (nifedipino). Efecto limitado y transitorio.</li>
+                <li><strong>Dilatación neumática:</strong> Dilatación del EEI con un balón de gran tamaño (30-40 mm). Eficaz en el 70-80% de los casos. Riesgo de perforación (1-3%).</li>
+                <li><strong>Inyección de toxina botulínica:</strong> Inyección en el EEI. Efecto temporal (6-12 meses). Indicada en pacientes de alto riesgo quirúrgico.</li>
+                <li><strong>POEM (Peroral Endoscopic Myotomy):</strong> Miotomía endoscópica (a través de la submucosa). Es una técnica mínimamente invasiva, con resultados comparables a la cirugía. Menor riesgo de perforación.</li>
+            </ul>
+        </div>
+
+        <h4>Tratamiento Quirúrgico (Miotomía de Heller)</h4>
+        <div class="surg-box">
+            <h5>Miotomía de Heller (Técnica Abierta)</h5>
+            <ul>
+                <li><strong>Indicaciones:</strong> Falla del tratamiento endoscópico, pacientes jóvenes, deseos del paciente.</li>
+                <li><strong>Abordaje:</strong> Laparotomía (o toracotomía izquierda, en desuso).</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Acceso abdominal (laparotomía media o laparoscópica).</li>
+                        <li>Identificación de la unión esofagogástrica y de los nervios vagos.</li>
+                        <li>Incisión de la capa muscular (serosa + muscular) a lo largo del esófago, desde el hiato hasta 2-3 cm por debajo de la unión (6-8 cm de longitud).</li>
+                        <li>La mucosa debe protruir a través de la incisión.</li>
+                        <li><strong>Funduplicatura (Dor o Toupet):</strong> Se realiza una funduplicatura parcial (anterior o posterior) para prevenir el reflujo postoperatorio.</li>
+                        <li>Cierre y drenaje.</li>
+                    </ol>
+                </li>
+                <li><strong>Resultados:</strong> Éxito en el 85-95% de los casos.</li>
+                <li><strong>Complicaciones:</strong> Perforación de la mucosa (1-2%), reflujo gastroesofágico (10-20%), recurrencia (5-10%).</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h5>Miotomía de Heller Laparoscópica (Técnica)</h5>
+            <ol>
+                <li><strong>Paciente:</strong> Decúbito supino con separación de piernas (posición de litotomía).</li>
+                <li><strong>Puertos:</strong> 5 puertos (umbilical, epigástrico, subcostales y flancos).</li>
+                <li><strong>Disección:</strong> Se diseca la unión esofagogástrica y se identifica el hiato.</li>
+                <li><strong>Miotomía:</strong> Con electrobisturí o tijeras, se incide la capa muscular desde 5 cm por encima de la unión hasta 2-3 cm por debajo.</li>
+                <li><strong>Funduplicatura:</strong> Se realiza una funduplicatura de Dor (anterior, 180°) o Toupet (posterior, 270°).</li>
+                <li><strong>Cierre:</strong> Sin drenaje (en la mayoría de los casos).</li>
+            </ol>
+            <p><strong>Ventajas:</strong> Menor dolor, estancia hospitalaria más corta, mejor resultado estético.</p>
+        </div>
+
+        <h3>Tratamiento Quirúrgico del ERGE (Funduplicatura)</h3>
+        <div class="surg-box">
+            <h4>Funduplicatura de Nissen (360°)</h4>
+            <ul>
+                <li><strong>Indicación:</strong> ERGE refractario a tratamiento médico, esofagitis severa, estenosis péptica, esófago de Barrett (con displasia), síntomas extraesofágicos (asma, tos).</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Se diseca el hiato y se moviliza el esófago.</li>
+                        <li>Se moviliza el fondo gástrico y se pasa por detrás del esófago.</li>
+                        <li>El fondo se envuelve alrededor del esófago (360°) y se sutura a sí mismo y al esófago.</li>
+                        <li>Se fija la sutura al esófago para evitar el deslizamiento.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Muy eficaz para el control del reflujo.</li>
+                <li><strong>Desventajas:</strong> Riesgo de disfagia postoperatoria (por la envoltura demasiado apretada), síndrome de "gas bloat" (distensión gástrica).</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>Funduplicatura de Toupet (270° Posterior)</h4>
+            <ul>
+                <li><strong>Indicación:</strong> Pacientes con motilidad esofágica alterada (enfermedad motora asociada).</li>
+                <li><strong>Técnica:</strong> El fondo se coloca por detrás del esófago, fijándolo a los pilares del diafragma y al esófago (270°).</li>
+                <li><strong>Ventaja:</strong> Menor riesgo de disfagia que Nissen.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TUMORES DE MEDIASTINO -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-tumores-mediastino">
+        <h2>Tumores de Mediastino</h2>
+        
+        <h3>Clasificación Topográfica (por compartimentos)</h3>
+        <table class="grade-table">
+            <thead>
+                <tr><th>Compartimento</th><th>Tumores más frecuentes</th><th>Características</th><th>Tratamiento</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Anterior (prevascular)</strong></td>
+                    <td>
+                        <ul>
+                            <li><strong>Timo:</strong> Timoma (el más frecuente), carcinoma tímico, quiste tímico.</li>
+                            <li><strong>Linfoma:</strong> Hodgkin y no Hodgkin.</li>
+                            <li><strong>Tumores de células germinales:</strong> Teratoma (maduro/immaduro), seminoma, no seminoma (coriocarcinoma, tumor del seno endodérmico).</li>
+                            <li><strong>Bocio intratorácico.</strong></li>
+                            <li><strong>Lipoma.</strong></li>
+                        </ul>
+                    </td>
+                    <td>Síntomas: compresión (disfagia, disnea, SVC). Timoma: asociado a miastenia gravis (30-50%).</td>
+                    <td>Resección quirúrgica (timectomía). Quimioterapia/radioterapia para linfomas y tumores germinales.</td>
+                </tr>
+                <tr><td><strong>Medio (visceral)</strong></td>
+                    <td>
+                        <ul>
+                            <li><strong>Quistes broncogénicos.</strong></li>
+                            <li><strong>Quistes pericárdicos.</strong></li>
+                            <li><strong>Linfadenopatías (sarcoidosis, tuberculosis, metástasis).</strong></li>
+                            <li><strong>Tumores traqueales.</strong></li>
+                        </ul>
+                    </td>
+                    <td>Generalmente asintomáticos. Pueden causar compresión traqueal o esofágica.</td>
+                    <td>Resección quirúrgica (si son sintomáticos).</td>
+                </tr>
+                <tr><td><strong>Posterior (paravertebral)</strong></td>
+                    <td>
+                        <ul>
+                            <li><strong>Tumores neurogénicos:</strong> Neurilemoma (schwannoma), neurofibroma, ganglioneuroma (benignos). Neuroblastoma (maligno, en niños).</li>
+                            <li><strong>Tumores esofágicos (leiomioma).</strong></li>
+                            <li><strong>Meningocele.</strong></li>
+                        </ul>
+                    </td>
+                    <td>Pueden causar dolor radicular, compresión medular.</td>
+                    <td>Resección quirúrgica (generalmente por toracotomía o VATS).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Timoma</h3>
+        <ul>
+            <li><strong>Definición:</strong> Tumor del epitelio tímico. Es el tumor mediastínico más frecuente en adultos.</li>
+            <li><strong>Clasificación de Masaoka (estadiaje):</strong>
+                <ul>
+                    <li><strong>Estadio I:</strong> Cápsula intacta, sin invasión.</li>
+                    <li><strong>Estadio II:</strong> Invasión microscópica de la cápsula (IIa) o macroscópica del tejido adiposo (IIb).</li>
+                    <li><strong>Estadio III:</strong> Invasión de estructuras vecinas (pericardio, pleura, grandes vasos).</li>
+                    <li><strong>Estadio IVa:</strong> Implantes pleurales o pericárdicos.</li>
+                    <li><strong>Estadio IVb:</strong> Metástasis a distancia.</li>
+                </ul>
+            </li>
+            <li><strong>Clínica:</strong>
+                <ul>
+                    <li><strong>Miastenia gravis:</strong> Presente en el 30-50% de los casos. Fatiga muscular, ptosis, diplopía, debilidad.</li>
+                    <li><strong>Compresión local:</strong> Disnea, disfagia, síndrome de vena cava superior.</li>
+                    <li><strong>Asintomático:</strong> Hallazgo incidental.</li>
+                </ul>
+            </li>
+            <li><strong>Tratamiento:</strong>
+                <ul>
+                    <li><strong>Resección quirúrgica (timectomía):</strong> Es el pilar del tratamiento. Puede ser por esternotomía (técnica estándar) o VATS (en tumores pequeños).</li>
+                    <li><strong>Radioterapia adyuvante:</strong> En estadios II-III y en resecciones incompletas.</li>
+                    <li><strong>Quimioterapia:</strong> En estadios IV o enfermedad recurrente.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Timectomía (Técnica)</h4>
+            <ol>
+                <li><strong>Acceso:</strong> Esternotomía media (técnica estándar) o VATS (para tumores pequeños y estadios I-II).</li>
+                <li><strong>Resección:</strong> Se reseca el timo en bloque, junto con la grasa mediastínica anterior (para asegurar la linfadenectomía).</li>
+                <li><strong>Se preservan:</strong> Los nervios frénicos, el pericardio y los grandes vasos.</li>
+                <li><strong>Cierre:</strong> Cierre del esternón con alambres de acero.</li>
+            </ol>
+            <p><strong>Complicaciones:</strong> Hemorragia, lesión del nervio frénico (parálisis diafragmática), lesión de los grandes vasos, neumonía.</p>
+        </div>
+    </div>
+    <!-- ============================================================ -->
+<!-- CÁNCER DE PULMÓN - SECCIÓN AMPLIADA -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-cancer-pulmon">
+    <h2>Cáncer de Pulmón</h2>
+    
+    <!-- EPIDEMIOLOGÍA -->
+    <h3>Epidemiología</h3>
+    <ul>
+        <li>Es la neoplasia más frecuente y con mayor mortalidad en ambos sexos en el mundo.</li>
+        <li>El cáncer de pulmón de células no pequeñas (CPCNP) supone el 80-85% de los casos.</li>
+        <li>El cáncer de pulmón de células pequeñas (CPCP) constituye el 20-25%.</li>
+        <li>Supervivencia global a 5 años: 15%.</li>
+        <li>Solo el 25% se diagnostican como enfermedad localizada.</li>
+        <li>El 80% presentarán enfermedad metastásica en algún momento.</li>
+    </ul>
+
+    <!-- FACTORES DE RIESGO -->
+    <h3>Factores de Riesgo</h3>
+    <ul>
+        <li><strong>Tabaquismo:</strong> Principal factor etiológico (90% en hombres, 60-80% en mujeres).</li>
+        <li><strong>Factores ocupacionales:</strong> Asbesto, radiaciones ionizantes, arsénico, hidrocarburos aromáticos, humo de diésel.</li>
+        <li><strong>Enfermedades pulmonares:</strong> EPOC, fibrosis pulmonar, tuberculosis.</li>
+        <li><strong>Factores genéticos:</strong> Mutaciones EGFR, KRAS, ALK, p53.</li>
+        <li><strong>Factores protectores:</strong> Dieta rica en frutas y verduras.</li>
+    </ul>
+
+    <!-- CLASIFICACIÓN HISTOPATOLÓGICA -->
+    <h3>Clasificación Histopatológica (OMS)</h3>
+    
+    <h4>Lesiones Preinvasivas</h4>
+    <ul>
+        <li>Displasia escamosa/carcinoma in situ</li>
+        <li>Hiperplasia adenomatosa atípica</li>
+        <li>Adenocarcinoma in situ (no mucinoso, mucinoso, mixto)</li>
+        <li>Hiperplasia pulmonar difusa idiopática de células neuroendocrinas</li>
+    </ul>
+
+    <h4>Carcinoma de Células Escamosas</h4>
+    <ul>
+        <li>Papilar, células claras, células pequeñas, basaloide</li>
+    </ul>
+
+    <h4>Carcinoma de Células Pequeñas</h4>
+    <ul>
+        <li>Carcinoma de células pequeñas combinado</li>
+    </ul>
+
+    <h4>Adenocarcinoma</h4>
+    <ul>
+        <li><strong>Carcinoma mínimamente invasivo:</strong> ≤3 cm con ≤5 mm de invasión</li>
+        <li><strong>Adenocarcinoma invasivo:</strong> Predominantemente: lipídico, acinar, papilar, micropapilar, sólido</li>
+        <li><strong>Variantes:</strong> Mucinoso, coloide, fetal, entérico</li>
+    </ul>
+
+    <h4>Carcinoma de Células Grandes</h4>
+    <ul>
+        <li>Neuroendocrino, basaloide, linf oepitelioide, células claras, rabdomioide</li>
+    </ul>
+
+    <h4>Carcinoma Adenoescamoso</h4>
+
+    <h4>Carcinomas Sarcomatoides</h4>
+    <ul>
+        <li>Pleomórfico, células fusiformes, células gigantes, carcinosarcoma, blastoma</li>
+    </ul>
+
+    <!-- DIAGNÓSTICO -->
+    <h3>Diagnóstico</h3>
+    
+    <h4>Manifestaciones Clínicas</h4>
+    <ul>
+        <li><strong>Síntomas torácicos:</strong> Tos, hemoptisis, dolor torácico, disnea, sibilancias</li>
+        <li><strong>Síntomas extratorácicos:</strong> Pérdida de peso, fiebre, dolor óseo, síntomas neurológicos</li>
+        <li><strong>Síndromes paraneoplásicos:</strong> Endocrinos (hipercalcemia, SIADH, Cushing), neurológicos (Eaton-Lambert), cutáneos, hematológicos</li>
+        <li><strong>Síndrome de vena cava superior:</strong> Edema facial, circulación colateral</li>
+        <li><strong>Síndrome de Pancoast:</strong> Dolor en hombro, síndrome de Horner, atrofia muscular</li>
+    </ul>
+
+    <h4>Pruebas Diagnósticas</h4>
+    <ul>
+        <li><strong>Radiografía de tórax:</strong> Vista AP y lateral. Valora localización, tamaño, contornos, cavitación.</li>
+        <li><strong>TAC de tórax y abdomen superior:</strong> Evalúa tamaño tumoral, adenopatías mediastínicas, metástasis suprarrenales y hepáticas.</li>
+        <li><strong>PET-TAC:</strong> Alta sensibilidad para metástasis a distancia (20-25% falsos positivos).</li>
+        <li><strong>RMN cerebral:</strong> En adenocarcinomas y CPCP para descartar metástasis.</li>
+        <li><strong>Ecografía endoscópica (EBUS/EUS):</strong> Para estadificación mediastínica y biopsia ganglionar.</li>
+        <li><strong>Mediastinoscopia:</strong> Gold standard para estadificación N2/N3.</li>
+        <li><strong>Videotoracoscopia (VATS):</strong> Para biopsia pleural o pulmonar.</li>
+        <li><strong>Broncoscopia:</strong> Para toma de muestras endobronquiales y transbronquiales.</li>
+        <li><strong>Punción transtorácica:</strong> Guiada por TAC o ecografía para nódulos periféricos.</li>
+    </ul>
+
+    <h4>Estudios Anatomopatológicos</h4>
+    <ul>
+        <li>Citología de esputo (espontáneo e inducido)</li>
+        <li>Aspirado bronquial, cepillado, lavado broncoalveolar</li>
+        <li>Biopsia bronquial o transbronquial por broncoscopia</li>
+        <li>Punción transtorácica con control de imagen</li>
+        <li>Pleurocentesis si derrame pleural</li>
+        <li>Biopsia de pleura (pleuroscopia o abierta)</li>
+        <li>Mediastinoscopia o mediastinostomía</li>
+        <li>Biopsia de adenopatías supraclaviculares</li>
+    </ul>
+
+    <h4>Inmunohistoquímica</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Marcador</th><th>Tipo Histológico Asociado</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>TTF-1</td><td>Adenocarcinoma primario de pulmón no mucinoso (70-100%)</td></tr>
+            <tr><td>p63 / p40</td><td>Carcinoma escamoso</td></tr>
+            <tr><td>CD56, Cromogranina, Sinaptofisina</td><td>Diferenciación neuroendocrina</td></tr>
+            <tr><td>Calretinina, WT-1, D2-40</td><td>Mesotelioma (diferenciar de adenocarcinoma)</td></tr>
+            <tr><td>CEA, Ber-EP4, MOC-31</td><td>Adenocarcinoma (diferenciar de mesotelioma)</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Diagnóstico Molecular</h4>
+    <ul>
+        <li><strong>EGFR:</strong> Mutaciones en 10% (occidentales) a 50% (asiáticos). Asociado a no fumadores, mujeres, adenocarcinoma no mucinoso. Sensibilidad a inhibidores de tirosinquinasa (TKI).</li>
+        <li><strong>KRAS:</strong> Mutaciones mutuamente excluyentes con EGFR. Asociado a resistencia a TKI. Más frecuente en fumadores y no asiáticos.</li>
+        <li><strong>EML4-ALK:</strong> Translocación en 3-5% de CPCNP. Asociado a pacientes jóvenes, no fumadores. Sensibilidad a crizotinib.</li>
+        <li><strong>ROS1, BRAF, MET, RET, NTRK:</strong> Otras dianas terapéuticas emergentes.</li>
+        <li><strong>PD-L1:</strong> Biomarcador predictivo de respuesta a inmunoterapia.</li>
+    </ul>
+
+    <!-- ESTADIFICACIÓN TNM -->
+    <h3>Estadificación (TNM 8ª Edición)</h3>
+    
+    <h4>Clasificación T</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Categoría</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Tx</strong></td><td>Tumor no evaluable o confirmado por citología</td></tr>
+            <tr><td><strong>T0</strong></td><td>Sin evidencia de tumor primario</td></tr>
+            <tr><td><strong>Tis</strong></td><td>Carcinoma in situ (displasia severa)</td></tr>
+            <tr><td><strong>T1</strong></td><td>Tumor ≤3 cm, rodeado por pulmón o pleura visceral, sin invasión bronquial lobar</td></tr>
+            <tr><td><strong>T1a</strong></td><td>Tumor ≤1 cm</td></tr>
+            <tr><td><strong>T1b</strong></td><td>Tumor >1 cm pero ≤2 cm</td></tr>
+            <tr><td><strong>T1c</strong></td><td>Tumor >2 cm pero ≤3 cm</td></tr>
+            <tr><td><strong>T2</strong></td><td>Tumor >3 cm pero ≤5 cm, o invasión de bronquio principal, o invasión de pleura visceral, o atelectasia/neumonitis que se extiende al hilio</td></tr>
+            <tr><td><strong>T2a</strong></td><td>Tumor >3 cm pero ≤4 cm</td></tr>
+            <tr><td><strong>T2b</strong></td><td>Tumor >4 cm pero ≤5 cm</td></tr>
+            <tr><td><strong>T3</strong></td><td>Tumor >5 cm pero ≤7 cm, o invasión de pared torácica, nervio frénico, pericardio parietal, o nódulo(s) satélite(s) en el mismo lóbulo</td></tr>
+            <tr><td><strong>T4</strong></td><td>Tumor >7 cm, o invasión de mediastino, diafragma, corazón, grandes vasos, tráquea, esófago, columna vertebral, o nódulo(s) en lóbulo ipsilateral diferente</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Clasificación N</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Categoría</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Nx</strong></td><td>Ganglios no evaluables</td></tr>
+            <tr><td><strong>N0</strong></td><td>Sin metástasis ganglionares</td></tr>
+            <tr><td><strong>N1</strong></td><td>Metástasis en ganglios peribronquiales o hiliares ipsilaterales (incluyendo afectación por extensión directa)</td></tr>
+            <tr><td><strong>N2</strong></td><td>Metástasis en ganglios mediastínicos ipsilaterales o subcarinales</td></tr>
+            <tr><td><strong>N3</strong></td><td>Metástasis en ganglios mediastínicos contralaterales, hiliares contralaterales, escalenos o supraclaviculares (ipsi o contralaterales)</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Clasificación M</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Categoría</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>M0</strong></td><td>Sin metástasis a distancia</td></tr>
+            <tr><td><strong>M1a</strong></td><td>Derrame pleural o pericárdico maligno, o nódulo(s) contralateral en pulmón</td></tr>
+            <tr><td><strong>M1b</strong></td><td>Metástasis extratorácica única (un solo sitio)</td></tr>
+            <tr><td><strong>M1c</strong></td><td>Múltiples metástasis extratorácicas en uno o varios órganos</td></tr>
+        </tbody>
+    </table>
+
+    <h4>Grupos Pronósticos (Estadios)</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Estadio</th><th>T</th><th>N</th><th>M</th><th>Supervivencia a 5 años</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>IA1</strong></td><td>T1a</td><td>N0</td><td>M0</td><td>92%</td></tr>
+            <tr><td><strong>IA2</strong></td><td>T1b</td><td>N0</td><td>M0</td><td>83%</td></tr>
+            <tr><td><strong>IA3</strong></td><td>T1c</td><td>N0</td><td>M0</td><td>77%</td></tr>
+            <tr><td><strong>IB</strong></td><td>T2a</td><td>N0</td><td>M0</td><td>68%</td></tr>
+            <tr><td><strong>IIA</strong></td><td>T2b</td><td>N0</td><td>M0</td><td>60%</td></tr>
+            <tr><td><strong>IIB</strong></td><td>T1-T2</td><td>N1</td><td>M0</td><td>53%</td></tr>
+            <tr><td><strong>IIB</strong></td><td>T3</td><td>N0</td><td>M0</td><td>53%</td></tr>
+            <tr><td><strong>IIIA</strong></td><td>T1-T2</td><td>N2</td><td>M0</td><td>36%</td></tr>
+            <tr><td><strong>IIIA</strong></td><td>T3</td><td>N1</td><td>M0</td><td>36%</td></tr>
+            <tr><td><strong>IIIA</strong></td><td>T4</td><td>N0-N1</td><td>M0</td><td>36%</td></tr>
+            <tr><td><strong>IIIB</strong></td><td>T1-T2</td><td>N3</td><td>M0</td><td>26%</td></tr>
+            <tr><td><strong>IIIB</strong></td><td>T3-T4</td><td>N2</td><td>M0</td><td>26%</td></tr>
+            <tr><td><strong>IIIC</strong></td><td>T3-T4</td><td>N3</td><td>M0</td><td>13%</td></tr>
+            <tr><td><strong>IVA</strong></td><td>Cualquier T</td><td>Cualquier N</td><td>M1a-M1b</td><td>10%</td></tr>
+            <tr><td><strong>IVB</strong></td><td>Cualquier T</td><td>Cualquier N</td><td>M1c</td><td><5%</td></tr>
+        </tbody>
+    </table>
+
+    <!-- TRATAMIENTO QUIRÚRGICO - TÉCNICAS DE RESECCIÓN PULMONAR -->
+    <h3>Tratamiento Quirúrgico - Técnicas de Resección Pulmonar</h3>
+    
+    <h4>Principios de la Cirugía Oncológica Pulmonar</h4>
+    <ul>
+        <li><strong>Resección R0:</strong> Obtención de márgenes libres de tumor (proximal y distal >2 cm o >5 mm en tejido sano).</li>
+        <li><strong>Linfadenectomía sistemática:</strong> Resección de ganglios mediastínicos y hiliares ipsilaterales (grupos 1-10).</li>
+        <li><strong>Preservación de parénquima:</strong> Maximizar la función pulmonar residual.</li>
+        <li><strong>Control vascular y bronquial:</strong> Ligadura y sección segura de estructuras hiliares.</li>
+        <li><strong>Prueba de estanqueidad:</strong> Verificar la ausencia de fugas aéreas tras la resección.</li>
+    </ul>
+
+    <h4>Tipos de Resección Pulmonar</h4>
+
+    <div class="surg-box">
+        <h5>1. Resección en Cuña (Wedge Resection)</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección no anatómica de una porción periférica del pulmón.</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Nódulo periférico pequeño (<2 cm) en paciente de alto riesgo quirúrgico.</li>
+                    <li>Diagnóstico de nódulo indeterminado (biopsia escisional).</li>
+                    <li>Metástasis pulmonar única.</li>
+                    <li>Pacientes con función pulmonar limitada (FEV1 <40%).</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (Abierta - Toracotomía):</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral (5º-6º EIC) en el lado afectado.</li>
+                    <li><strong>Localización:</strong> Identificar el nódulo mediante palpación digital o ecografía intraoperatoria.</li>
+                    <li><strong>Resección:</strong>
+                        <ul>
+                            <li>Se coloca una grapadora lineal cortante (Endo-GIA o TA) con carga vascular (verde) o de pulmón (azul), según el grosor del parénquima.</li>
+                            <li>La grapadora se coloca en la base del nódulo, dejando un margen de 1-2 cm de tejido sano.</li>
+                            <li>Se dispara la grapadora, resecando el nódulo en cuña.</li>
+                            <li>Alternativa: sutura manual con puntos de colchonero de polipropileno 3/0 o 4/0.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Prueba de estanqueidad:</strong> Insuflación pulmonar a 20-30 cm H₂O para verificar ausencia de fugas. Si hay fugas, se refuerzan con puntos de Vicryl 3/0 o sellantes (Tachosil, Surgicel).</li>
+                    <li><strong>Drenaje:</strong> Tubo torácico 24-28 Fr en el hemitórax ipsilateral, conectado a sello de agua con aspiración (-15 a -20 cm H₂O).</li>
+                    <li><strong>Cierre:</strong> Por planos.</li>
+                </ol>
+            </li>
+            <li><strong>Ventajas:</strong> Preserva parénquima, menor morbilidad.</li>
+            <li><strong>Desventajas:</strong> Mayor tasa de recurrencia local que resecciones anatómicas.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>2. Segmentectomía</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección anatómica de un segmento broncopulmonar.</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Nódulo periférico pequeño (<2 cm) con margen adecuado.</li>
+                    <li>Pacientes con función pulmonar limitada pero con capacidad para resección anatómica.</li>
+                    <li>Tumor confinado a un segmento pulmonar.</li>
+                    <li>Lesión benigna o metastásica en paciente de alto riesgo.</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (Abierta - Toracotomía):</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral (5º-6º EIC) o axilar.</li>
+                    <li><strong>Identificación del segmento:</strong> Se identifica el segmento pulmonar que contiene el nódulo (ej. segmento apical del lóbulo inferior).</li>
+                    <li><strong>Disección hiliar segmentaria:</strong>
+                        <ul>
+                            <li>Se identifica y diseca la arteria segmentaria correspondiente.</li>
+                            <li>Se liga con seda 2/0 o 3/0 y se secciona distalmente.</li>
+                            <li>Se identifica y diseca la vena segmentaria.</li>
+                            <li>Se liga y secciona la vena segmentaria.</li>
+                            <li>Se identifica y diseca el bronquio segmentario.</li>
+                            <li>Se secciona el bronquio con grapadora (Endo-GIA) o con sutura manual.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sección del parénquima:</strong>
+                        <ul>
+                            <li>Se secciona el parénquima siguiendo los planos intersegmentarios.</li>
+                            <li>Técnica de disección con aire: se insufla el pulmón para identificar el plano entre segmentos.</li>
+                            <li>Se secciona con grapadora (Endo-GIA) o con electrocauterio (disección lenta).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Extracción:</strong> Se extrae el segmento resecado.</li>
+                    <li><strong>Prueba de estanqueidad y drenaje:</strong> Igual que en la resección en cuña.</li>
+                    <li><strong>Cierre:</strong> Por planos.</li>
+                </ol>
+            </li>
+            <li><strong>Ventajas:</strong> Resección anatómica, mejor control oncológico que la cuña.</li>
+            <li><strong>Desventajas:</strong> Técnicamente más compleja, mayor tiempo quirúrgico.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>3. Lobectomía</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección de un lóbulo pulmonar completo (técnica anatómica). Es el gold standard para el tratamiento quirúrgico del cáncer de pulmón en estadios I-II.</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>CPCNP en estadio I y II (T1-T3, N0-N1).</li>
+                    <li>Tumor confinado a un lóbulo sin afectación de otros lóbulos.</li>
+                    <li>Pacientes con función pulmonar adecuada (FEV1 ≥40%, DLCO ≥40%).</li>
+                </ul>
+            </li>
+            <li><strong>Contraindicaciones:</strong>
+                <ul>
+                    <li>Enfermedad metastásica a distancia (M1).</li>
+                    <li>Afectación N2/N3 (criterio de irresecabilidad en algunos casos).</li>
+                    <li>Función pulmonar insuficiente (FEV1 <40% o DLCO <40%).</li>
+                    <li>Invasión de estructuras vitales (T4 irresecable).</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (Lobectomía por Toracotomía Posterolateral):</strong>
+                <ol>
+                    <li><strong>Posición del paciente:</strong> Decúbito lateral con rodillo bajo la axila y flexión de la cadera (fosa renal). El brazo ipsilateral se coloca en abducción sobre un soporte.</li>
+                    <li><strong>Incisión:</strong>
+                        <ul>
+                            <li>Toracotomía posterolateral: desde la apófisis espinosa de T4-T5, pasando por el ángulo de la escápula, hasta la línea axilar anterior.</li>
+                            <li>Sección de los músculos: trapecio, dorsal ancho, serrato anterior.</li>
+                            <li>Acceso a través del 5º o 6º espacio intercostal (EIC).</li>
+                            <li>Separación de costillas con separador de Finochietto.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Exploración de la cavidad torácica:</strong>
+                        <ul>
+                            <li>Inspección de la pleura parietal y visceral para descartar implantes tumorales.</li>
+                            <li>Palpación del tumor y de los ganglios mediastínicos.</li>
+                            <li>Evaluación de la resecabilidad.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Disección hiliar:</strong>
+                        <ol>
+                            <li><strong>Identificación de estructuras:</strong> Se identifica la arteria pulmonar, las venas pulmonares y el bronquio lobar correspondiente.</li>
+                            <li><strong>Ligadura de la arteria pulmonar (ramas lobares):</strong>
+                                <ul>
+                                    <li>Se diseca la arteria pulmonar en su trayecto intrapulmonar.</li>
+                                    <li>Se identifican las ramas arteriales que irrigan el lóbulo a resecar.</li>
+                                    <li>Se ligan con seda 2/0 o polipropileno 2/0 en dos puntos (proximal y distal).</li>
+                                    <li>Se secciona entre las ligaduras.</li>
+                                    <li>Se realiza la ligadura proximal con doble nudo o transfixión.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Ligadura de la vena pulmonar:</strong>
+                                <ul>
+                                    <li>Se diseca la vena pulmonar correspondiente al lóbulo.</li>
+                                    <li>Se ligan las venas lobares (ej. vena superior derecha para lobectomía superior).</li>
+                                    <li>Se liga con seda 2/0 o polipropileno 2/0 en dos puntos.</li>
+                                    <li>Se secciona entre las ligaduras.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Sección del bronquio lobar:</strong>
+                                <ul>
+                                    <li>Se diseca el bronquio lobar correspondiente.</li>
+                                    <li>Se secciona con grapadora (Endo-GIA de 30 mm o TA) con carga vascular (verde).</li>
+                                    <li>Alternativa: sutura manual con polipropileno 3/0 (técnica de sutura continua o puntos separados).</li>
+                                    <li>Se verifica que el muñón bronquial tenga una longitud adecuada (no demasiado largo para evitar isquemia, no demasiado corto para evitar dehiscencia).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Sección de la cisura interlobar:</strong>
+                                <ul>
+                                    <li>Se completa la sección de la cisura interlobar para liberar el lóbulo.</li>
+                                    <li>Se utiliza grapadora (Endo-GIA) con carga azul (parénquima) o electrobisturí.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li><strong>Extracción de la pieza quirúrgica:</strong> Se extrae el lóbulo resecado y se envía a anatomía patológica para estudio intraoperatorio (biopsia por congelación de márgenes y ganglios).</li>
+                    <li><strong>Linfadenectomía mediastínica sistemática:</strong>
+                        <ul>
+                            <li><strong>Lado derecho:</strong> Grupos 1, 2, 3, 4, 7, 8, 9 y 10 superior e inferior.</li>
+                            <li><strong>Lado izquierdo:</strong> Grupos 1, 2, 3, 4, 5, 6, 7, 8, 9 y 10.</li>
+                            <li>Técnica: Se diseca la grasa mediastínica y los ganglios linfáticos en bloque, respetando las estructuras vasculares y nerviosas.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Prueba de estanqueidad:</strong> Se insufla el pulmón con 20-30 cm H₂O para verificar ausencia de fugas aéreas en la línea de grapas y en el muñón bronquial. Si hay fugas, se refuerzan.</li>
+                    <li><strong>Drenaje:</strong> Colocar dos tubos torácicos (28-32 Fr) en el hemitórax: uno apical (para aire) y uno basal (para líquido). Conectar a sello de agua con aspiración (-15 a -20 cm H₂O).</li>
+                    <li><strong>Cierre:</strong> Cierre de la pared torácica por planos: aproximación de costillas, músculos y piel.</li>
+                </ol>
+            </li>
+            <li><strong>Variantes de lobectomía:</strong>
+                <ul>
+                    <li><strong>Lobectomía superior derecha:</strong> Resección del lóbulo superior derecho (LSD). Incluye ligadura de la vena superior derecha, arteria apical/anterior y bronquio superior derecho.</li>
+                    <li><strong>Lobectomía media derecha:</strong> Resección del lóbulo medio. Técnica más compleja por la proximidad de las estructuras hiliares.</li>
+                    <li><strong>Lobectomía inferior derecha:</strong> Resección del lóbulo inferior derecho (LID). Incluye ligadura de la arteria basal y bronquio inferior.</li>
+                    <li><strong>Lobectomía superior izquierda:</strong> Resección del lóbulo superior izquierdo (LSI). Incluye ligadura de la vena superior izquierda, arteria pulmonar (ramas apicales y anteriores) y bronquio superior.</li>
+                    <li><strong>Lobectomía inferior izquierda:</strong> Resección del lóbulo inferior izquierdo (LII). Incluye ligadura de la arteria basal y bronquio inferior.</li>
+                </ul>
+            </li>
+            <li><strong>Ventajas:</strong> Mejor control oncológico, menor tasa de recurrencia local que resecciones limitadas.</li>
+            <li><strong>Desventajas:</strong> Mayor pérdida de parénquima pulmonar, mayor morbilidad.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>4. Bilobectomía</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección de dos lóbulos adyacentes (solo en pulmón derecho: lóbulo superior + medio, o lóbulo medio + inferior).</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Tumor que afecta a dos lóbulos adyacentes (T2-T3).</li>
+                    <li>Tumor que cruza la cisura interlobar.</li>
+                    <li>Pacientes con función pulmonar adecuada para una resección mayor.</li>
+                </ul>
+            </li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral (5º-6º EIC).</li>
+                    <li><strong>Disección hiliar:</strong> Se identifican y ligan las estructuras correspondientes a los dos lóbulos a resecar.</li>
+                    <li><strong>Sección del bronquio interlobar:</strong> Se secciona el bronquio común o los bronquios individuales.</li>
+                    <li><strong>Sección de la cisura interlobar:</strong> Se completa la sección entre los lóbulos resecados y el lóbulo remanente.</li>
+                    <li><strong>Extracción, linfadenectomía y drenaje:</strong> Igual que en la lobectomía.</li>
+                </ol>
+            </li>
+            <li><strong>Ventajas:</strong> Permite resección oncológica completa evitando neumonectomía.</li>
+            <li><strong>Desventajas:</strong> Mayor pérdida de parénquima que lobectomía, mayor riesgo de complicaciones.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>5. Neumonectomía</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección de todo un pulmón (derecho o izquierdo). Es la resección más extensa y con mayor morbilidad y mortalidad.</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Tumor central que afecta a todos los lóbulos del pulmón.</li>
+                    <li>Tumor que afecta al bronquio principal o a la carina.</li>
+                    <li>Tumor con afectación de la arteria pulmonar proximal.</li>
+                    <li>Pacientes con función pulmonar adecuada para soportar la neumonectomía (FEV1 ≥60-70% de lo previsto, DLCO ≥50-60%).</li>
+                </ul>
+            </li>
+            <li><strong>Contraindicaciones:</strong>
+                <ul>
+                    <li>FEV1 <40% (absoluta para neumonectomía derecha, relativa para izquierda).</li>
+                    <li>DLCO <40%.</li>
+                    <li>Hipertensión pulmonar severa (PAP >40 mmHg).</li>
+                    <li>Insuficiencia cardíaca o coronariopatía severa.</li>
+                    <li>Edad avanzada (>75 años) con comorbilidades significativas.</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (Neumonectomía por Toracotomía Posterolateral):</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral (5º-6º EIC).</li>
+                    <li><strong>Exploración y evaluación de resecabilidad:</strong>
+                        <ul>
+                            <li>Inspección de la cavidad pleural para descartar implantes.</li>
+                            <li>Evaluación de la extensión tumoral y de la afectación de estructuras mediastínicas.</li>
+                            <li>Palpación de ganglios mediastínicos y hiliares.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Disección hiliar y sección de estructuras:</strong>
+                        <ol>
+                            <li><strong>Arteria pulmonar principal:</strong>
+                                <ul>
+                                    <li>Se diseca la arteria pulmonar dentro del pericardio (si es necesario).</li>
+                                    <li>Se ligan las ramas arteriales que irrigan el pulmón.</li>
+                                    <li>Se liga la arteria pulmonar proximalmente con seda 2/0 o polipropileno 2/0 (doble ligadura con transfixión).</li>
+                                    <li>Se secciona distalmente a la ligadura.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Venas pulmonares (superior e inferior):</strong>
+                                <ul>
+                                    <li>Se disecan las venas pulmonares superior e inferior.</li>
+                                    <li>Se ligan proximalmente con seda 2/0 (doble ligadura con transfixión).</li>
+                                    <li>Se secciona distalmente a la ligadura.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Bronquio principal:</strong>
+                                <ul>
+                                    <li>Se diseca el bronquio principal lo más proximal posible (cerca de la carina).</li>
+                                    <li>Se secciona con grapadora (TA-30 o Endo-GIA) con carga vascular (verde).</li>
+                                    <li>Alternativa: sutura manual con polipropileno 3/0 (técnica de sutura continua en dos planos).</li>
+                                    <li>Se verifica la longitud del muñón bronquial (2-3 cm, sin excesiva tensión).</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li><strong>Extracción del pulmón:</strong> Se extrae el pulmón completo, incluyendo los ganglios hiliares y mediastínicos.</li>
+                    <li><strong>Linfadenectomía mediastínica sistemática:</strong> Igual que en la lobectomía, pero con mayor acceso a los ganglios mediastínicos.</li>
+                    <li><strong>Cierre del muñón bronquial:</strong> Se realiza un refuerzo del muñón bronquial con un colgajo de pleura o de músculo intercostal (para prevenir la fístula broncopleural).</li>
+                    <li><strong>Drenaje:</strong> Colocar tubo torácico apical (para drenaje de aire) y basal (para drenaje de líquido). Conectar a sello de agua sin aspiración (o con aspiración suave inicial).</li>
+                    <li><strong>Cierre:</strong> Por planos.</li>
+                </ol>
+            </li>
+            <li><strong>Complicaciones específicas de la neumonectomía:</strong>
+                <ul>
+                    <li><strong>Edema agudo del pulmón remanente:</strong> Complicación temprana fatal. Manejo: ventilación protectora, restricción de fluidos, diuréticos.</li>
+                    <li><strong>Fístula broncopleural:</strong> Comunicación entre el muñón bronquial y el espacio pleural. Tratamiento: drenaje torácico, reintervención con cierre o toracoplastia.</li>
+                    <li><strong>Empiema pleural:</strong> Infección del espacio pleural post-neumonectomía. Tratamiento: drenaje, antibióticos, decorticación.</li>
+                    <li><strong>Insuficiencia respiratoria:</strong> Por hipertensión pulmonar o sobrecarga del pulmón remanente.</li>
+                    <li><strong>Arritmias cardíacas:</strong> Frecuentes (30-40%). Manejo médico.</li>
+                    <li><strong>Herniación del pulmón contralateral:</strong> Desplazamiento del pulmón sano hacia el hemitórax vacío. Prevención con mediastinopexia.</li>
+                </ul>
+            </li>
+            <li><strong>Ventajas:</strong> Resección oncológica radical en tumores centrales.</li>
+            <li><strong>Desventajas:</strong> Alta morbilidad y mortalidad (5-10%), pérdida total del parénquima pulmonar.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>6. Resecciones Ampliadas (Extendidas)</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección pulmonar combinada con resección de estructuras adyacentes invadidas por el tumor.</li>
+            <li><strong>Indicaciones:</strong> Tumores T3-T4 seleccionados con invasión local, sin metástasis a distancia.</li>
+            <li><strong>Tipos de resecciones ampliadas:</strong>
+                <ul>
+                    <li><strong>Resección de pared torácica (costopleuroexéresis):</strong> Resección de pleura parietal y/o costillas (T3). Técnica: resección en bloque del pulmón y la pared torácica, con reconstrucción con malla de polipropileno o PTFE.</li>
+                    <li><strong>Resección diafragmática:</strong> Resección parcial del diafragma con reconstrucción primaria o con malla.</li>
+                    <li><strong>Resección pericárdica:</strong> Resección del pericardio con reconstrucción con malla.</li>
+                    <li><strong>Resección de la vena cava superior:</strong> Resección y reconstrucción con injerto vascular.</li>
+                    <li><strong>Resección de la aurícula izquierda:</strong> Resección parcial de la aurícula izquierda (cuando el tumor invade la vena pulmonar proximal).</li>
+                    <li><strong>Resección de la aorta:</strong> Resección y reconstrucción con injerto vascular (casos excepcionales).</li>
+                    <li><strong>Resección del esófago:</strong> Resección en bloque del esófago (casos excepcionales).</li>
+                    <li><strong>Resección de la carina (neumonectomía en manguito):</strong> Resección de la carina traqueal y del bronquio principal, con reconstrucción traqueobronquial.</li>
+                </ul>
+            </li>
+            <li><strong>Técnica:</strong> Similar a la resección pulmonar estándar, con resección en bloque de la estructura adyacente y reconstrucción.</li>
+            <li><strong>Ventajas:</strong> Permite resección R0 en tumores localmente avanzados.</li>
+            <li><strong>Desventajas:</strong> Alta morbilidad y mortalidad, requiere equipo multidisciplinario.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>7. Resección de la Pared Torácica (Costopleuroexéresis)</h5>
+        <ul>
+            <li><strong>Indicaciones:</strong> T3 por invasión de pared torácica (pleura parietal, costillas, músculos).</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral ampliada.</li>
+                    <li><strong>Resección en bloque:</strong> Se reseca el tumor pulmonar junto con la porción de pared torácica invadida (pleura parietal, costillas, músculos intercostales).</li>
+                    <li><strong>Margen de seguridad:</strong> 2-3 cm de tejido sano alrededor del área de invasión.</li>
+                    <li><strong>Reconstrucción:</strong> Si la resección es >4-5 cm, se coloca una malla de polipropileno o PTFE para prevenir la hernia pulmonar.</li>
+                    <li><strong>Drenaje y cierre.</strong></li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>8. Resección en Manguito (Broncoplastia)</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección de un segmento de bronquio principal o lobar con reconstrucción término-terminal (para preservar parénquima pulmonar).</li>
+            <li><strong>Indicaciones:</strong>
+                <ul>
+                    <li>Tumor central que afecta al bronquio lobar o al bronquio principal, sin afectación de todo el pulmón.</li>
+                    <li>Pacientes con función pulmonar limitada que no tolerarían una neumonectomía.</li>
+                    <li>Tumor que afecta la carina (resección en manguito de carina).</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (Resección en Manguito Lobar):</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral.</li>
+                    <li><strong>Disección hiliar:</strong> Se disecan la arteria y la vena lobares correspondientes, y se ligan y seccionan.</li>
+                    <li><strong>Resección del bronquio:</strong> Se reseca el segmento bronquial afectado, con márgenes libres de tumor (biopsia por congelación).</li>
+                    <li><strong>Reconstrucción bronquial (manguito):</strong>
+                        <ul>
+                            <li>Se realiza una anastomosis término-terminal entre los dos extremos del bronquio.</li>
+                            <li>Sutura con polipropileno 3/0 o 4/0 en puntos separados (técnica de Cournand o de sutura continua).</li>
+                            <li>Se verifica la estanqueidad de la anastomosis.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Drenaje y cierre.</strong></li>
+                </ol>
+            </li>
+            <li><strong>Ventajas:</strong> Preserva parénquima pulmonar, evita neumonectomía.</li>
+            <li><strong>Desventajas:</strong> Técnicamente compleja, riesgo de dehiscencia anastomótica.</li>
+        </ul>
+    </div>
+
+    <div class="surg-box">
+        <h5>9. Resección de la Carina (Neumonectomía en Manguito)</h5>
+        <ul>
+            <li><strong>Descripción:</strong> Resección de la carina traqueal y del bronquio principal afectado, con reconstrucción traqueobronquial.</li>
+            <li><strong>Indicaciones:</strong> Tumor que afecta la carina y el bronquio principal, sin afectación extensa de la tráquea.</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Acceso:</strong> Toracotomía posterolateral o esternotomía media.</li>
+                    <li><strong>Resección:</strong> Se reseca la carina y el bronquio principal afectado, con márgenes libres.</li>
+                    <li><strong>Reconstrucción:</strong> Se realiza una anastomosis entre la tráquea (o bronquio contralateral) y el bronquio principal del pulmón remanente.</li>
+                    <li><strong>Ventilación:</strong> Se requiere ventilación de alta frecuencia o jet durante la reconstrucción.</li>
+                </ol>
+            </li>
+            <li><strong>Complicaciones:</strong> Dehiscencia anastomótica, fístula broncopleural, estenosis traqueal.</li>
+        </ul>
+    </div>
+
+    <h4>Complicaciones de la Resección Pulmonar</h4>
+    
+    <h5>Complicaciones Intraoperatorias</h5>
+    <ul>
+        <li><strong>Hemorragia masiva:</strong> Por lesión de la arteria pulmonar, vena pulmonar o aorta. Manejo: compresión, sutura vascular, derivación cardiopulmonar.</li>
+        <li><strong>Lesión del nervio frénico:</strong> Elevación del hemidiafragma y disnea postoperatoria.</li>
+        <li><strong>Lesión del nervio laríngeo recurrente:</strong> Ronquera, disfagia, aspiración.</li>
+        <li><strong>Lesión del nervio vago:</strong> Arritmias, disfunción gastrointestinal.</li>
+        <li><strong>Lesión del conducto torácico:</strong> Quilotórax (postoperatorio).</li>
+    </ul>
+
+    <h5>Complicaciones Postoperatorias Precoces</h5>
+    <ul>
+        <li><strong>Fuga aérea persistente:</strong> La más frecuente (15-30%). Manejo: drenaje torácico, pleurodesis química, reintervención si persiste >5-7 días.</li>
+        <li><strong>Neumonía y atelectasia:</strong> Manejo: fisioterapia respiratoria, broncoscopia de aspiración, antibióticos.</li>
+        <li><strong>Fístula broncopleural:</strong> Comunicación entre el muñón bronquial y el espacio pleural. Tratamiento: drenaje torácico, reintervención.</li>
+        <li><strong>Empiema pleural:</strong> Infección del espacio pleural. Tratamiento: drenaje, antibióticos, decorticación.</li>
+        <li><strong>Arritmias cardíacas:</strong> Frecuentes (10-20%). Manejo: antiarrítmicos, control de electrolitos.</li>
+        <li><strong>Edema agudo de pulmón:</strong> Complicación grave. Manejo: ventilación protectora, restricción de fluidos, diuréticos.</li>
+        <li><strong>Tromboembolismo pulmonar:</strong> Profilaxis con anticoagulación.</li>
+        <li><strong>Infección de la herida quirúrgica:</strong> Antibióticos y drenaje.</li>
+    </ul>
+
+    <h5>Complicaciones Postoperatorias Tardías</h5>
+    <ul>
+        <li><strong>Estenosis bronquial:</strong> Por fibrosis. Tratamiento: dilatación endoscópica, stent bronquial.</li>
+        <li><strong>Recurrencia local o a distancia:</strong> Seguimiento y tratamiento oncológico.</li>
+        <li><strong>Disfunción del pulmón remanente:</strong> Disnea progresiva.</li>
+        <li><strong>Hernia pulmonar:</strong> Desplazamiento del pulmón remanente a través del defecto de la pared torácica.</li>
+    </ul>
+
+    <!-- TRATAMIENTO POR ESTADIOS -->
+    <h3>Tratamiento por Estadios</h3>
+    
+    <h4>Estadio 0 (Carcinoma in situ)</h4>
+    <ul>
+        <li>Cirugía (resección local).</li>
+        <li>Terapias endobronquiales: fotodinámica, electrocauterización, crioterapia, láser Nd-YAG.</li>
+    </ul>
+
+    <h4>Estadio IA (T1ab N0 M0)</h4>
+    <ul>
+        <li><strong>Cirugía:</strong> Lobectomía (gold standard) o resección limitada (segmentectomía o cuña) en pacientes de alto riesgo.</li>
+        <li><strong>Márgenes negativos (R0):</strong> Observación (no adyuvancia).</li>
+        <li><strong>Márgenes positivos (R1/R2):</strong> Re-resección o radioterapia.</li>
+    </ul>
+
+    <h4>Estadio IB (T2a N0 M0) y IIA (T2b N0 M0)</h4>
+    <ul>
+        <li><strong>Cirugía:</strong> Lobectomía (gold standard).</li>
+        <li><strong>Márgenes negativos (R0):</strong> Observación o quimioterapia en pacientes de alto riesgo (tumor >4 cm, invasión vascular, pleura visceral).</li>
+        <li><strong>Márgenes positivos (R1/R2):</strong> Re-resección + quimioterapia, o quimiorradioterapia.</li>
+    </ul>
+
+    <h4>Estadio IIA (T1ab-T2a N1 M0) y IIB (T3>7cm N0, T2b N1 M0)</h4>
+    <ul>
+        <li><strong>Cirugía:</strong> Lobectomía (o neumonectomía si es necesario).</li>
+        <li><strong>Márgenes negativos (R0):</strong> Quimioterapia adyuvante (cisplatino + vinorelbina o etopósido).</li>
+        <li><strong>Márgenes positivos (R1/R2):</strong> Re-resección + quimioterapia, o quimiorradiación + quimioterapia.</li>
+    </ul>
+
+    <h4>Estadio IIB (T3 invasivo N0)</h4>
+    <ul>
+        <li><strong>Tumor de Pancoast (surco superior):</strong> Quimiorradioterapia neoadyuvante (concurrente) → cirugía → quimioterapia adyuvante.</li>
+        <li><strong>Tumor que invade pared torácica, vía aérea proximal o mediastino:</strong> Cirugía (resección en bloque) o quimiorradioterapia neoadyuvante → cirugía.</li>
+        <li><strong>Márgenes negativos (R0):</strong> Quimioterapia adyuvante.</li>
+        <li><strong>Márgenes positivos (R1/R2):</strong> Re-resección + quimioterapia, o quimiorradiación + quimioterapia.</li>
+    </ul>
+
+    <h4>Estadio IIIA (N2)</h4>
+    <ul>
+        <li><strong>N2 (ganglios mediastínicos ipsilaterales):</strong>
+            <ul>
+                <li><strong>N2 microscópico (≤2 estaciones):</strong> Quimiorradioterapia neoadyuvante (concurrente) → cirugía → quimioterapia adyuvante + radioterapia (si no fue dada).</li>
+                <li><strong>N2 voluminoso (>2 cm, >2 estaciones, conglomerado):</strong> Quimiorradioterapia concurrente definitiva. No indicada la cirugía.</li>
+                <li><strong>N2 descubierto en el acto quirúrgico:</strong> Continuar con la resección planificada + linfadenectomía mediastínica. Luego quimioterapia adyuvante + radioterapia.</li>
+            </ul>
+        </li>
+        <li><strong>T3N1:</strong> Cirugía + quimioterapia adyuvante.</li>
+        <li><strong>T4N0-1 (resecable):</strong> Cirugía (resección extendida) o quimiorradioterapia neoadyuvante → cirugía.</li>
+        <li><strong>T4N0-1 (irresecable):</strong> Quimiorradioterapia concurrente definitiva.</li>
+    </ul>
+
+    <h4>Estadio IIIB (T4 N2, cualquier T N3)</h4>
+    <ul>
+        <li>No indicada la cirugía curativa.</li>
+        <li>Tratamiento: Quimiorradioterapia concurrente definitiva.</li>
+    </ul>
+
+    <h4>Estadio IV (Metastásico)</h4>
+    <ul>
+        <li>No indicada la cirugía curativa (salvo excepciones: oligometástasis resecable).</li>
+        <li>Tratamiento: Quimioterapia, inmunoterapia, terapias dirigidas según mutaciones (EGFR, ALK, ROS1, etc.).</li>
+        <li><strong>Oligometástasis (M1b - sitio único):</strong>
+            <ul>
+                <li><strong>Cerebro:</strong> Resección de metástasis + radiocirugía estereotáxica (SRS) + tratamiento del tumor primario (si es resecable).</li>
+                <li><strong>Suprarrenal:</strong> Resección de metástasis adrenal + tratamiento del tumor primario.</li>
+                <li><strong>Pulmón contralateral (M1a):</strong> Tratamiento como dos tumores primarios si ambos son resecables.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Quimioterapia Adyuvante (Esquemas)</h4>
+    <ul>
+        <li><strong>Cisplatino 50 mg/m²</strong> días 1 y 8 + <strong>Vinorelbina 25 mg/m²</strong> días 1, 8, 15, 22, cada 28 días × 4 ciclos.</li>
+        <li><strong>Cisplatino 100 mg/m²</strong> día 1 + <strong>Vinorelbina 30 mg/m²</strong> días 1, 8, 15, 22, cada 28 días × 4 ciclos.</li>
+        <li><strong>Cisplatino 75-80 mg/m²</strong> día 1 + <strong>Vinorelbina 25-30 mg/m²</strong> días 1 y 8, cada 21 días × 4 ciclos.</li>
+        <li><strong>Cisplatino 100 mg/m²</strong> día 1 + <strong>Etopósido 100 mg/m²</strong> días 1-3, cada 28 días × 4 ciclos.</li>
+        <li><strong>Carboplatino AUC 6</strong> día 1 + <strong>Paclitaxel 200 mg/m²</strong> día 1, cada 21 días (en pacientes con comorbilidades o que no toleran cisplatino).</li>
+    </ul>
+
+    <h4>Terapias Dirigidas e Inmunoterapia</h4>
+    <ul>
+        <li><strong>EGFR (mutación):</strong> Erlotinib, Osimertinib, Gefitinib, Afatinib.</li>
+        <li><strong>ALK (translocación):</strong> Crizotinib, Alectinib, Lorlatinib, Ceritinib.</li>
+        <li><strong>ROS1 (translocación):</strong> Crizotinib, Entrectinib.</li>
+        <li><strong>BRAF V600E:</strong> Dabrafenib + Trametinib.</li>
+        <li><strong>PD-L1 ≥50%:</strong> Pembrolizumab, Nivolumab, Atezolizumab.</li>
+        <li><strong>Bevacizumab:</strong> Anticuerpo anti-VEGF (en combinación con quimioterapia en no escamosos).</li>
+    </ul>
+
+    <!-- CÁNCER DE PULMÓN DE CÉLULAS PEQUEÑAS -->
+    <h3>Cáncer de Pulmón de Células Pequeñas (CPCP)</h3>
+    
+    <h4>Características Generales</h4>
+    <ul>
+        <li>Constituye el 20-25% de las neoplasias pulmonares.</li>
+        <li>Alta asociación con tabaquismo.</li>
+        <li>Rápido crecimiento y diseminación metastásica temprana.</li>
+        <li>Alta sensibilidad a quimioterapia y radioterapia.</li>
+        <li>Supervivencia a 5 años <10%.</li>
+    </ul>
+
+    <h4>Estadificación del CPCP</h4>
+    <ul>
+        <li><strong>Enfermedad Limitada (EL):</strong> Confinada al hemitórax de origen, mediastino o ganglios supraclaviculares ipsilaterales, dentro de un campo de radioterapia.</li>
+        <li><strong>Enfermedad Extensa (EE):</strong> Diseminación más allá de las áreas supraclaviculares o con metástasis a distancia (M1).</li>
+    </ul>
+
+    <h4>Tratamiento - Enfermedad Limitada (EL)</h4>
+    <ul>
+        <li><strong>Quimiorradioterapia concurrente:</strong> Etopósido + Cisplatino/Carboplatino + Radioterapia torácica (preferiblemente en los primeros 30 días del inicio de la quimioterapia).</li>
+        <li><strong>Radioterapia hiperfraccionada:</strong> 45 Gy en 3 semanas (1.5 Gy dos veces al día) - superior a la convencional.</li>
+        <li><strong>Irradiación craneal profiláctica (ICP):</strong> En pacientes que responden (RC o RP). 25 Gy en 10 fracciones.</li>
+        <li><strong>Cirugía (casos seleccionados - T1-2 N0):</strong> Lobectomía + linfadenectomía mediastínica + quimioterapia adyuvante + ICP.</li>
+    </ul>
+
+    <h4>Tratamiento - Enfermedad Extensa (EE)</h4>
+    <ul>
+        <li><strong>Quimioterapia:</strong> Etopósido + Cisplatino/Carboplatino (estándar) o Cisplatino + Irinotecán.</li>
+        <li><strong>Inmunoterapia:</strong> Atezolizumab o Durvalumab + quimioterapia (primera línea en algunos centros).</li>
+        <li><strong>Radioterapia paliativa:</strong> Para metástasis sintomáticas (cerebrales, óseas, SVC).</li>
+        <li><strong>ICP:</strong> En casos seleccionados con respuesta completa.</li>
+    </ul>
+
+    <h4>Tratamiento - CPCP Recidivante</h4>
+    <ul>
+        <li><strong>Enfermedad sensible (respuesta >3 meses):</strong> Topotecán (oral o IV), Irinotecán, Paclitaxel, Vinorelbina, Gemcitabina.</li>
+        <li><strong>Enfermedad resistente/refractaria (respuesta <3 meses):</strong> Topotecán (si no se usó previamente), cuidados paliativos.</li>
+        <li><strong>Recidiva del SNC:</strong> Radioterapia craneal total + quimioterapia (si es posible).</li>
+    </ul>
+
+    <h4>Contraindicaciones de la ICP</h4>
+    <ul>
+        <li>PS 3-4 (mal estado general).</li>
+        <li>Daño neurovegetativo preexistente.</li>
+        <li>Edad avanzada (>60 años) - mayor riesgo de neurotoxicidad.</li>
+        <li>Enfermedad extensa sin respuesta adecuada.</li>
+        <li>Progresión de la enfermedad.</li>
+    </ul>
+
+    <!-- SEGUIMIENTO -->
+    <h3>Seguimiento Postoperatorio</h3>
+    <ul>
+        <li><strong>Primeros 2 años:</strong> Hemograma y bioquímica cada 3 meses. Radiografía de tórax y ultrasonido abdominal cada 3 meses. TAC torácico cada 6 meses.</li>
+        <li><strong>Años 2-5:</strong> Hemograma y bioquímica cada 6 meses. Radiografía de tórax y ultrasonido abdominal cada 6 meses. TAC torácico anual.</li>
+        <li><strong>Más de 5 años:</strong> Seguimiento anual con radiografía de tórax y TAC.</li>
+        <li><strong>Vacunación anual contra influenza.</strong></li>
+        <li><strong>Programa de cesación tabáquica.</strong></li>
+        <li><strong>Consejos de salud:</strong> Mantener peso adecuado, actividad física ≥30 min/día, dieta equilibrada, limitar alcohol.</li>
+    </ul>
+</div>
+
+    <!-- ============================================================ -->
+    <!-- EMPIEMA PLEURAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-empiema-pleural">
+        <h2>Empiema Pleural</h2>
+        
+        <h3>Definición y Clasificación</h3>
+        <ul>
+            <li><strong>Definición:</strong> Acumulación de pus (líquido purulento) en el espacio pleural, secundaria a una infección bacteriana.</li>
+            <li><strong>Etiología:</strong>
+                <ul>
+                    <li><strong>Neumonía (paraneumónico):</strong> La causa más frecuente (empierna por neumonía).</li>
+                    <li><strong>Postquirúrgico:</strong> Después de cirugía torácica (lobectomía, neumonectomía).</li>
+                    <li><strong>Postraumático:</strong> Heridas penetrantes, hemotórax infectado.</li>
+                    <li><strong>Por extensión:</strong> Absceso pulmonar, perforación esofágica, infección mediastínica.</li>
+                    <li><strong>Iatrogénico:</strong> Toracocentesis, drenaje pleural, biopsia pleural.</li>
+                </ul>
+            </li>
+            <li><strong>Fisiopatología (Evolución en 3 fases):</strong>
+                <ul>
+                    <li><strong>Fase I (exudativa):</strong> Líquido pleural estéril, con bajo contenido de células y proteínas. pH >7.2.</li>
+                    <li><strong>Fase II (fibrinopurulenta):</strong> Líquido purulento con bacterias, células inflamatorias y fibrina. Se forman septos y tabiques. pH <7.2, glucosa <60 mg/dL, LDH >1000 IU/L.</li>
+                    <li><strong>Fase III (organizativa):</strong> Formación de una "cáscara" fibrosa que atrapa el pulmón (pleura engrosada). El pulmón queda atrapado y no se expande.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Clínica del Empiema</h3>
+        <div class="clin-box">
+            <ul>
+                <li><strong>Fiebre:</strong> Alta, con escalofríos (sepsis).</li>
+                <li><strong>Dolor torácico:</strong> Intenso, pleurítico, que aumenta con la respiración profunda.</li>
+                <li><strong>Disnea:</strong> Por derrame pleural y atrapamiento pulmonar.</li>
+                <li><strong>Tos:</strong> Productiva (con esputo purulento).</li>
+                <li><strong>Síntomas generales:</strong> Malestar, anorexia, pérdida de peso, deshidratación.</li>
+                <li><strong>Signos físicos:</strong> Disminución del murmullo vesicular, matidez a la percusión, frote pleural (en fases precoces).</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico del Empiema</h3>
+        <ul>
+            <li><strong>Radiografía de tórax:</strong> Derrame pleural (opacidad), niveles hidroaéreos (si hay fístula broncopleural).</li>
+            <li><strong>Toracocentesis diagnóstica:</strong>
+                <ul>
+                    <li><strong>Líquido purulento:</strong> Aspecto turbio, con pus o exudado.</li>
+                    <li><strong>Análisis del líquido:</strong> pH <7.2, glucosa <60 mg/dL, LDH >1000 IU/L (o >2/3 del LDH sérico).</li>
+                    <li><strong>Gram y cultivo:</strong> Identificación del microorganismo (Streptococcus pneumoniae, Staphylococcus aureus, Klebsiella, anaerobios).</li>
+                </ul>
+            </li>
+            <li><strong>Ecografía torácica:</strong> Útil para guiar la toracocentesis y el drenaje. Identifica la localización, la presencia de septos y la organización del líquido.</li>
+            <li><strong>TAC torácico:</strong> Evalúa el grosor de la pleura, la presencia de abscesos, la atelectasia y la fístula broncopleural.</li>
+        </ul>
+
+        <h3>Diagnóstico Diferencial</h3>
+        <ul>
+            <li>Derrame pleural paraneumónico (no complicado).</li>
+            <li>Derrame pleural maligno.</li>
+            <li>Hemotórax infectado.</li>
+            <li>Absceso pulmonar.</li>
+            <li>Empiema subfrénico.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TRATAMIENTO DEL EMPIEMA PLEURAL -->
+    <!-- ============================================================ -->
+    <div class="content-section" id="sec-tratamiento-empiema">
+        <h2>Tratamiento del Empiema Pleural</h2>
+        
+        <h3>Principios Generales</h3>
+        <ul>
+            <li><strong>Objetivos del tratamiento:</strong>
+                <ul>
+                    <li><strong>Evacuación del pus:</strong> Drenaje adecuado de la cavidad pleural.</li>
+                    <li><strong>Control de la infección:</strong> Antibióticos específicos.</li>
+                    <li><strong>Expansión pulmonar:</strong> Reexpansión del pulmón atrapado.</li>
+                    <li><strong>Prevención de complicaciones:</strong> Evitar la cronicidad y la fístula broncopleural.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Tratamiento Médico</h3>
+        <div class="note-box">
+            <ul>
+                <li><strong>Antibióticos:</strong> 
+                    <ul>
+                        <li><strong>Empíricos:</strong> Ceftriaxona + metronidazol (cubre Gram+, Gram- y anaerobios).</li>
+                        <li><strong>Dirigidos:</strong> Según Gram y cultivo del líquido pleural.</li>
+                        <li><strong>Duración:</strong> 3-6 semanas (vía IV inicial, luego oral).</li>
+                    </ul>
+                </li>
+                <li><strong>Drenaje torácico (tubo de tórax):</strong>
+                    <ul>
+                        <li><strong>Indicación:</strong> Fase I (exudativa) y fase II (fibrinopurulenta) con pus líquido, sin septos extensos.</li>
+                        <li><strong>Técnica:</strong> Inserción de un tubo torácico (24-36 Fr) guiado por ecografía o TAC.</li>
+                        <li><strong>Mantenimiento:</strong> Conectado a aspiración (-10 a -20 cmH₂O).</li>
+                        <li><strong>Control:</strong> Radiografía de tórax para evaluar la expansión pulmonar.</li>
+                    </ul>
+                </li>
+                <li><strong>Fibrinolíticos intrapleurales:</strong> 
+                    <ul>
+                        <li><strong>Indicación:</strong> Fase II con septos y loculaciones.</li>
+                        <li><strong>Agentes:</strong> Urocinasa, estreptocinasa, tPA (activador tisular del plasminógeno).</li>
+                        <li><strong>Dosis:</strong> Urocinasa 100,000-250,000 UI en 50 ml de solución salina, instillado a través del tubo torácico (1-2 veces al día durante 3-5 días).</li>
+                        <li><strong>Eficacia:</strong> Mejora el drenaje y la expansión pulmonar.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento Quirúrgico (Indicaciones)</h3>
+        <ul>
+            <li><strong>Fase III (organizativa):</strong> Con formación de cáscara fibrosa y atrapamiento pulmonar.</li>
+            <li><strong>Fase II (fibrinopurulenta):</strong> Con septos y loculaciones que no responden a los fibrinolíticos o al drenaje.</li>
+            <li><strong>Fístula broncopleural:</strong> Comunicación entre el pulmón y el espacio pleural.</li>
+            <li><strong>Empiema crónico:</strong> De más de 4-6 semanas de evolución.</li>
+            <li><strong>Fallo del drenaje torácico y los fibrinolíticos.</strong></li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>1. Decorticación Pleural (Técnica)</h4>
+            <ul>
+                <li><strong>Objetivo:</strong> Resecar la "cáscara" fibrosa que atrapa el pulmón, permitiendo su expansión.</li>
+                <li><strong>Acceso:</strong> Toracotomía posterolateral (5º-6º espacio intercostal) o VATS (si el empiema es localizado).</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Se accede al espacio pleural y se evacúa el pus.</li>
+                        <li>Se identifica la "cáscara" fibrosa (pleura engrosada).</li>
+                        <li>Se diseca y reseca la cáscara de la superficie pulmonar y de la pared torácica.</li>
+                        <li>Se realiza una decorticación completa para liberar el pulmón y permitir su reexpansión.</li>
+                        <li>Se cierra el tórax con drenajes pleurales (2 tubos).</li>
+                    </ol>
+                </li>
+                <li><strong>Resultados:</strong> Buena expansión pulmonar en el 80-90% de los casos.</li>
+                <li><strong>Complicaciones:</strong> Hemorragia, fuga aérea persistente, infección recurrente.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>2. Toracoplastia (Con o sin Colgajo Muscular)</h4>
+            <ul>
+                <li><strong>Objetivo:</strong> Ocluir el espacio pleural residual (cuando la decorticación no es posible o falla).</li>
+                <li><strong>Indicación:</strong> Pulmón no expandible, empiema crónico, fístula broncopleural.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Resección de costillas (generalmente 5-6 costillas) para "colapsar" la pared torácica y reducir el espacio pleural.</li>
+                        <li>Se puede utilizar un colgajo muscular (pediculado) para rellenar el espacio residual.</li>
+                    </ol>
+                </li>
+                <li><strong>Ventajas:</strong> Eficaz para el control del empiema cuando el pulmón no se expande.</li>
+                <li><strong>Desventajas:</strong> Deformidad de la pared torácica, mayor dolor.</li>
+            </ul>
+        </div>
+
+        <div class="surg-box">
+            <h4>3. Drenaje Abierto (Empiema con Fístula Broncopleural)</h4>
+            <ul>
+                <li><strong>Objetivo:</strong> Drenaje continuo y control de la infección en empiemas crónicos o complejos.</li>
+                <li><strong>Técnica:</strong>
+                    <ol>
+                        <li>Toracostomía abierta: se reseca un segmento de costilla (1-2) y se crea una ventana de drenaje en la pared torácica.</li>
+                        <li>Se mantiene un drenaje abierto durante semanas o meses.</li>
+                        <li>Posteriormente, se puede realizar una toracoplastia para cerrar la ventana.</li>
+                    </ol>
+                </li>
+                <li><strong>Nota:</strong> Es una técnica de "último recurso" para empiemas crónicos y fístulas broncopleurales complejas.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones del Empiema Pleural y su Tratamiento</h3>
+        <ul>
+            <li><strong>Fístula broncopleural:</strong> Comunicación entre el pulmón y el espacio pleural.
+                <ul>
+                    <li><strong>Diagnóstico:</strong> Fuga aérea persistente, neumotórax recurrente, niveles hidroaéreos en radiografía.</li>
+                    <li><strong>Tratamiento:</strong> Drenaje torácico, fibrinolíticos, decorticación, toracoplastia, resección pulmonar (si es necesario).</li>
+                </ul>
+            </li>
+            <li><strong>Empiema crónico:</strong> 
+                <ul>
+                    <li><strong>Tratamiento:</strong> Decorticación, toracoplastia, drenaje abierto.</li>
+                </ul>
+            </li>
+            <li><strong>Sepsis:</strong> 
+                <ul>
+                    <li><strong>Tratamiento:</strong> Antibióticos intravenosos, drenaje urgente, soporte hemodinámico.</li>
+                </ul>
+            </li>
+            <li><strong>Hemotórax infectado:</strong> 
+                <ul>
+                    <li><strong>Tratamiento:</strong> Decorticación, drenaje.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- ============================================================ -->
+<!-- CIRUGÍA DIAFRAGMÁTICA - SECCIÓN AMPLIADA -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-diafragma">
+    <h2>Cirugía Diafragmática</h2>
+    
+    <h3>Anatomía Quirúrgica del Diafragma</h3>
+    
+    <h4>Anatomía Descriptiva</h4>
+    <ul>
+        <li><strong>Definición:</strong> Músculo tendinoso que separa la cavidad torácica de la abdominal. Es el principal músculo de la respiración.</li>
+        <li><strong>Inserción:</strong>
+            <ul>
+                <li><strong>Porción esternal:</strong> En la cara posterior del apéndice xifoides.</li>
+                <li><strong>Porción costal:</strong> En las caras internas de las 6 últimas costillas (arcos costales).</li>
+                <li><strong>Porción lumbar:</strong> En los pilares derechos e izquierdos, que se insertan en las vértebras L1-L3 (derecho) y L1-L2 (izquierdo).</li>
+            </ul>
+        </li>
+        <li><strong>Centro tendinoso (frénico):</strong> Porción central aponeurótica, con forma de trébol (hojas anterior, derecha e izquierda).</li>
+    </ul>
+
+    <h4>Orificios Diafragmáticos y su Contenido</h4>
+    <table class="grade-table">
+        <thead>
+            <tr><th>Orificio</th><th>Nivel vertebral</th><th>Estructuras que lo atraviesan</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Hiato aórtico</strong></td><td>T12</td><td>Aorta torácica, conducto torácico (quilo), vena ácigos (a veces).</td></tr>
+            <tr><td><strong>Hiato esofágico</strong></td><td>T10</td><td>Esófago, nervio vago anterior y posterior, vasos gástricos izquierdos.</td></tr>
+            <tr><td><strong>Orificio de la vena cava</strong></td><td>T8</td><td>Vena cava inferior, rama derecha del nervio frénico.</td></tr>
+            <tr><td><strong>Trígono lumbocostal (Bochdalek)</strong></td><td>L1</td><td>Zona débil entre los pilares lumbares y la porción costal. <span class="badge">Sitio de hernia diafragmática congénita posterolateral.</span></td></tr>
+            <tr><td><strong>Trígono esternocostal (Morgagni)</strong></td><td>—</td><td>Zona débil entre la porción esternal y costal. <span class="badge">Sitio de hernia diafragmática anterior.</span></td></tr>
+        </tbody>
+    </table>
+
+    <h4>Irrigación e Inervación</h4>
+    <ul>
+        <li><strong>Irrigación arterial:</strong>
+            <ul>
+                <li><strong>Arterias frénicas inferiores (rama de la aorta abdominal).</strong></li>
+                <li><strong>Arterias frénicas superiores (rama de la aorta torácica).</strong></li>
+                <li><strong>Ramas intercostales y de la mamaria interna.</strong></li>
+            </ul>
+        </li>
+        <li><strong>Drenaje venoso:</strong> Vena frénica inferior → vena cava inferior (derecha) y vena renal izquierda (izquierda).</li>
+        <li><strong>Inervación motora:</strong> <strong>Nervio frénico (C3-C5).</strong> La lesión bilateral produce parálisis diafragmática completa con insuficiencia respiratoria aguda.</li>
+        <li><strong>Inervación sensitiva:</strong> Nervios intercostales bajos (periferia) y frénicos (centro tendinoso).</li>
+    </ul>
+
+    <div class="note-box">
+        <p><strong>Importancia quirúrgica:</strong> El conocimiento preciso de los orificios diafragmáticos y sus relaciones es esencial para evitar lesiones iatrogénicas durante la cirugía torácica o abdominal (ej. lesión del nervio frénico, del esófago o de la vena cava).</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- PATOLOGÍAS DIAFRAGMÁTICAS -->
+    <!-- ============================================================ -->
+    <h3>Patologías Diafragmáticas más Frecuentes</h3>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA DIAFRAGMÁTICA CONGÉNITA (Bochdalek) -->
+    <!-- ============================================================ -->
+    <h4>1. Hernia Diafragmática Congénita (Bochdalek)</h4>
+    <ul>
+        <li><strong>Definición:</strong> Defecto en el desarrollo del diafragma que permite el paso de vísceras abdominales al tórax. La más frecuente es la <strong>hernia posterolateral (Bochdalek)</strong>, que ocurre por fallo en el cierre del canal pleuroperitoneal.</li>
+        <li><strong>Incidencia:</strong> 1:2000-1:5000 nacidos vivos. Más frecuente en el lado izquierdo (80-90%).</li>
+        <li><strong>Asociación:</strong> Puede asociarse a malformaciones (cardíacas, renales, neurales) y a síndromes genéticos (síndrome de Fryns, Cornelia de Lange).</li>
+        <li><strong>Fisiopatología:</strong> Herniación de vísceras abdominales (estómago, intestino, bazo, hígado) al tórax → compresión pulmonar → hipoplasia pulmonar ipsilateral y contralateral → hipertensión pulmonar → insuficiencia respiratoria neonatal.</li>
+        <li><strong>Clínica:</strong>
+            <ul>
+                <li><strong>Prenatal:</strong> Polihidramnios, hernia visible en ecografía (2º trimestre), desplazamiento del corazón.</li>
+                <li><strong>Neonatal:</strong> Distrés respiratorio severo al nacer, abdomen escafoideo (excavado), tórax abombado, ruidos intestinales en el tórax.</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico:</strong>
+            <ul>
+                <li><strong>Ecografía prenatal:</strong> Diagnóstico en el 90% de los casos (2º trimestre).</li>
+                <li><strong>Rx de tórax:</strong> Asas intestinales en el hemitórax, desplazamiento mediastínico, ausencia de cámara gástrica abdominal.</li>
+            </ul>
+        </li>
+        <li><strong>Tratamiento:</strong>
+            <ul>
+                <li><strong>Estabilización neonatal:</strong> Intubación, ventilación de alta frecuencia, NO inhalado para hipertensión pulmonar, ECMO en casos refractarios.</li>
+                <li><strong>Cirugía:</strong> Reparación diferida (cuando el paciente está estable, generalmente a los 2-7 días).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="surg-box">
+        <h5>Técnica de Reparación de Hernia Diafragmática Congénita (Abordaje Abdominal)</h5>
+        <ol>
+            <li><strong>Incisión:</strong> Laparotomía subcostal (en "chevron") o laparotomía media supraumbilical.</li>
+            <li><strong>Reducción de las vísceras:</strong>
+                <ul>
+                    <li>Identificar y reducir suavemente el estómago, intestino, bazo e hígado del tórax al abdomen.</li>
+                    <li>Si hay adherencias, liberarlas con disección roma y cortante.</li>
+                    <li>Explorar el contenido herniado para descartar malrotación, atresia intestinal o vólvulo.</li>
+                </ul>
+            </li>
+            <li><strong>Evaluación del defecto diafragmático:</strong> Se mide el tamaño y se valora la presencia de un saco herniario (frecuente en hernias de Bochdalek).</li>
+            <li><strong>Resección del saco (si existe):</strong> Se reseca el saco herniario para evitar la recurrencia y facilitar el cierre.</li>
+            <li><strong>Cierre primario del defecto:</strong>
+                <ul>
+                    <li>Si el defecto es pequeño (&lt;2-3 cm): cierre directo con puntos separados de seda 2/0 o polipropileno 2/0.</li>
+                    <li>Si el defecto es grande (>3 cm): se realiza una <strong>plastia diafragmática</strong> con un colgajo de músculo (ej. colgajo de la porción costal del diafragma) o con una malla de polipropileno (o PTFE).</li>
+                </ul>
+            </li>
+            <li><strong>Drenaje:</strong> Colocar un tubo de tórax (10-12 Fr) en el hemitórax ipsilateral para drenar el aire residual y evitar el neumotórax a tensión.</li>
+            <li><strong>Cierre:</strong> Por planos.</li>
+            <li><strong>Postoperatorio:</strong> El paciente debe permanecer en la UCI neonatal con ventilación mecánica y control de la hipertensión pulmonar.</li>
+        </ol>
+        <p><strong>Variante torácica (toracotomía):</strong> En algunos centros se prefiere el abordaje torácico (toracotomía posterolateral), especialmente cuando el defecto es pequeño y el contenido herniado es fácilmente reducible.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- EVENTRACIÓN DIAFRAGMÁTICA -->
+    <!-- ============================================================ -->
+    <h4>2. Eventración Diafragmática</h4>
+    <ul>
+        <li><strong>Definición:</strong> Elevación anormal y permanente de una porción del diafragma (generalmente la hoja derecha) debido a una <strong>debilidad o parálisis</strong> del músculo diafragmático, sin solución de continuidad (a diferencia de la hernia).</li>
+        <li><strong>Clasificación:</strong>
+            <ul>
+                <li><strong>Congénita:</strong> Por agenesia o hipoplasia del músculo diafragmático.</li>
+                <li><strong>Adquirida:</strong>
+                    <ul>
+                        <li><strong>Parálisis del nervio frénico:</strong> Por lesión quirúrgica (cirugía cardíaca, torácica), traumática, tumoral (metástasis), o infecciosa (neuromielitis).</li>
+                        <li><strong>Debilidad muscular:</strong> Por distrofias musculares, miopatías, o envejecimiento.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Clínica:</strong>
+            <ul>
+                <li><strong>Asintomático:</strong> La mayoría de los casos son hallazgos incidentales.</li>
+                <li><strong>Sintomático:</strong> Disnea de esfuerzo, ortopnea, dolor torácico o abdominal (por tracción del diafragma), infecciones respiratorias recurrentes (por atelectasia basal).</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico:</strong>
+            <ul>
+                <li><strong>Rx de tórax:</strong> Elevación de la cúpula diafragmática (más de 2-3 cm), con desplazamiento del corazón hacia el lado contralateral.</li>
+                <li><strong>Fluoroscopia o ecografía:</strong> Movimiento paradójico del diafragma (signo de la "bicicleta" o "paradoja diafragmática") durante la respiración.</li>
+                <li><strong>TAC:</strong> Confirma la elevación y descarta lesiones subyacentes (tumores, hernia).</li>
+            </ul>
+        </li>
+        <li><strong>Tratamiento:</strong>
+            <ul>
+                <li><strong>Asintomático:</strong> Observación.</li>
+                <li><strong>Sintomático (disnea severa, infecciones recurrentes):</strong> <strong>Plicatura diafragmática</strong> (técnica quirúrgica que pliega y fija el diafragma en posición descendida para mejorar la mecánica respiratoria).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="surg-box">
+        <h5>Técnica de Plicatura Diafragmática (Abordaje Torácico)</h5>
+        <ol>
+            <li><strong>Acceso:</strong> Toracotomía posterolateral (6º-7º EIC) o VATS (cirugía torácica videoasistida) en el hemitórax afectado.</li>
+            <li><strong>Exposición del diafragma:</strong> Se identifica la cúpula diafragmática elevada y se evalúa el grado de eventración.</li>
+            <li><strong>Plicatura:</strong>
+                <ul>
+                    <li>Se realiza una serie de <strong>puntos de colchonero</strong> con sutura de polipropileno 1 o 0 (o seda 0) en la porción atrófica del diafragma, desde la periferia hacia el centro tendinoso.</li>
+                    <li>Los puntos se anudan progresivamente, plicando (plegando) el diafragma hacia abajo, <strong>como si se cerrara una cortina</strong>.</li>
+                    <li>Se colocan de 5 a 10 puntos, dependiendo del tamaño de la eventración.</li>
+                    <li>El objetivo es descender la cúpula diafragmática 2-3 espacios intercostales y restaurar la anatomía normal.</li>
+                </ul>
+            </li>
+            <li><strong>Comprobación:</strong> Se verifica que la plicatura sea firme y que el diafragma quede en una posición adecuada.</li>
+            <li><strong>Drenaje:</strong> Tubo de tórax (28-32 Fr) en el hemitórax ipsilateral, conectado a sello de agua con aspiración.</li>
+            <li><strong>Cierre:</strong> Por planos.</li>
+            <li><strong>Postoperatorio:</strong> El paciente experimenta una mejora significativa de la disnea y la capacidad respiratoria.</li>
+        </ol>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- HERNIA HIATAL -->
+    <!-- ============================================================ -->
+    <h4>3. Hernia Hiatal</h4>
+    <ul>
+        <li><strong>Definición:</strong> Herniación de una porción del estómago a través del hiato esofágico hacia el mediastino posterior. Es la patología diafragmática más frecuente en adultos.</li>
+        <li><strong>Clasificación:</strong>
+            <ul>
+                <li><strong>Tipo I (deslizante):</strong> La unión esofagogástrica y el cardias se desplazan hacia el tórax. Es la más frecuente (90%).</li>
+                <li><strong>Tipo II (paraesofágica):</strong> El cardias permanece en su posición normal, pero el fondo gástrico herniado junto al esófago.</li>
+                <li><strong>Tipo III (mixta):</strong> Combinación de los tipos I y II.</li>
+                <li><strong>Tipo IV:</strong> Herniación de otras vísceras (epiplón, colon, bazo) junto con el estómago.</li>
+            </ul>
+        </li>
+        <li><strong>Clínica:</strong>
+            <ul>
+                <li><strong>Por reflujo:</strong> Pirosis, regurgitación, disfagia (por esofagitis por reflujo).</li>
+                <li><strong>Por compresión:</strong> Dolor torácico retroesternal, disnea, palpitaciones (por compresión cardíaca en hernias grandes).</li>
+                <li><strong>Complicaciones:</strong> Esofagitis, úlcera péptica, estenosis esofágica, hemorragia digestiva, <strong>vólvulo gástrico</strong> (urgencia quirúrgica).</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico:</strong>
+            <ul>
+                <li><strong>Endoscopia digestiva alta:</strong> Visualiza la hernia, el esófago de Barrett y las lesiones asociadas.</li>
+                <li><strong>Esofagograma con bario:</strong> Muestra el desplazamiento de la unión esofagogástrica y la presencia de la hernia.</li>
+                <li><strong>Manometría y pH-metría:</strong> Para evaluar el reflujo y la motilidad esofágica.</li>
+            </ul>
+        </li>
+        <li><strong>Tratamiento médico:</strong> Inhibidores de la bomba de protones (IBP), medidas higiénico-dietéticas.</li>
+        <li><strong>Tratamiento quirúrgico:</strong> <strong>Funduplicatura (Nissen, Toupet, Dor)</strong> + <strong>cruroplastia</strong> (cierre de los pilares del hiato).</li>
+    </ul>
+
+    <div class="surg-box">
+        <h5>Técnica de Funduplicatura de Nissen (360°) + Cruroplastia (Abordaje Laparoscópico)</h5>
+        <ol>
+            <li><strong>Posición:</strong> Decúbito supino, separación de piernas (posición de litotomía) para el cirujano.</li>
+            <li><strong>Puertos:</strong> 5 puertos (umbilical para la óptica, epigástrico para el cirujano, subcostales para los ayudantes, y uno para retracción hepática).</li>
+            <li><strong>Disección del hiato esofágico:</strong>
+                <ul>
+                    <li>Se diseca la unión esofagogástrica y se expone el hiato.</li>
+                    <li>Se identifican y preservan los nervios vagos.</li>
+                    <li>Se libera el esófago distal (5-6 cm) mediante disección roma y cortante.</li>
+                    <li>Se reduce el contenido herniado al abdomen.</li>
+                </ul>
+            </li>
+            <li><strong>Cruroplastia (cierre de los pilares):</strong>
+                <ul>
+                    <li>Se aproximan los pilares del diafragma por detrás del esófago con <strong>puntos de seda 0</strong> o polipropileno 0 (2-3 puntos).</li>
+                    <li>El cierre debe dejar suficiente espacio para un dedo (o una pinza de 10 mm) entre la sutura y el esófago.</li>
+                </ul>
+            </li>
+            <li><strong>Funduplicatura de Nissen (360°):</strong>
+                <ul>
+                    <li>Se moviliza el fondo gástrico (sección de los vasos cortos gástricos).</li>
+                    <li>Se pasa el fondo gástrico por detrás del esófago (por el hiato) y se envuelve alrededor del esófago, creando un manguito de 360° de 2-3 cm de longitud.</li>
+                    <li>Se sutura el fondo a sí mismo y al esófago con <strong>puntos de seda 2/0 o polipropileno 2/0</strong> (3-4 puntos).</li>
+                    <li>Se fija el manguito al esófago con 1-2 puntos para evitar el deslizamiento.</li>
+                </ul>
+            </li>
+            <li><strong>Comprobación:</strong> Se verifica que el manguito no esté demasiado apretado (debe permitir el paso de una pinza de 10 mm).</li>
+            <li><strong>Drenaje:</strong> No se coloca drenaje (excepto en casos complejos).</li>
+            <li><strong>Cierre:</strong> Por planos.</li>
+            <li><strong>Postoperatorio:</strong> Inicio de vía oral a las 24-48h (líquidos claros), progresando a dieta blanda. Alta a las 48-72h.</li>
+        </ol>
+        <p><strong>Variantes:</strong> Funduplicatura de Toupet (270° posterior) y Dor (180° anterior) en pacientes con motilidad esofágica alterada.</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- TRAUMA DIAFRAGMÁTICO -->
+    <!-- ============================================================ -->
+    <h4>4. Trauma Diafragmático</h4>
+    <ul>
+        <li><strong>Definición:</strong> Lesión del diafragma por trauma cerrado (contusión) o penetrante (arma blanca, arma de fuego).</li>
+        <li><strong>Epidemiología:</strong>
+            <ul>
+                <li><strong>Trauma cerrado:</strong> 1-5% de los politraumatizados. Mecanismo: desaceleración brusca (accidentes de tráfico), compresión toracoabdominal (caídas). <strong>Más frecuente en el lado izquierdo (70-80%)</strong> (por la protección del hígado en el lado derecho).</li>
+                <li><strong>Trauma penetrante:</strong> 10-15% de las heridas toracoabdominales. Arma blanca (la más frecuente) o arma de fuego.</li>
+            </ul>
+        </li>
+        <li><strong>Clínica:</strong>
+            <ul>
+                <li><strong>Aguda:</strong> Dolor torácico o abdominal, disnea, signos de shock (si hay lesión vascular asociada).</li>
+                <li><strong>Tardía (días-meses):</strong> Disnea progresiva, dolor abdominal, hernia diafragmática con estrangulación de vísceras.</li>
+                <li><strong>Signos radiográficos:</strong> Elevación del hemidiafragma, nivel hidroaéreo en el tórax, asas intestinales en el tórax, desplazamiento mediastínico.</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico:</strong>
+            <ul>
+                <li><strong>Rx de tórax:</strong> 50-60% de sensibilidad.</li>
+                <li><strong>TAC con contraste:</strong> Gold standard. Sensibilidad 70-90%. Muestra la discontinuidad del diafragma y la herniación de vísceras.</li>
+                <li><strong>Ecografía (FAST):</strong> Puede detectar líquido libre o herniación.</li>
+                <li><strong>Laparoscopia o toracoscopia:</strong> Para casos dudosos (diagnóstico y tratamiento).</li>
+            </ul>
+        </li>
+        <li><strong>Tratamiento:</strong>
+            <ul>
+                <li><strong>Trauma cerrado:</strong> Si hay inestabilidad hemodinámica, laparotomía exploradora de urgencia. Si está estable, TAC y reparación diferida (si es necesario).</li>
+                <li><strong>Trauma penetrante:</strong> Siempre se debe explorar. Abordaje abdominal o torácico según la localización de la herida.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="surg-box">
+        <h5>Técnica de Reparación de la Rotura Diafragmática (Abordaje Abdominal)</h5>
+        <ol>
+            <li><strong>Incisión:</strong> Laparotomía media xifopubiana (la más utilizada) o toracofrenolaparotomía (si hay lesiones torácicas asociadas).</li>
+            <li><strong>Exploración:</strong> Se revisan todas las vísceras abdominales (en busca de lesiones asociadas: hígado, bazo, intestino).</li>
+            <li><strong>Reducción del contenido herniado:</strong>
+                <ul>
+                    <li>Se identifica la víscera herniada (estómago, colon, epiplón) y se reduce suavemente al abdomen.</li>
+                    <li>Si hay adherencias, se liberan con disección roma y cortante.</li>
+                    <li>Se evalúa la viabilidad de las vísceras (color, peristaltismo, pulsos). Si hay necrosis, se reseca y se realiza anastomosis.</li>
+                </ul>
+            </li>
+            <li><strong>Exploración del defecto:</strong> Se mide el tamaño de la rotura y se evalúa la presencia de bordes contusos o necróticos.</li>
+            <li><strong>Desbridamiento:</strong> Se resecan los bordes contusos (si es necesario) con tijeras o bisturí eléctrico.</li>
+            <li><strong>Reparación primaria:</strong>
+                <ul>
+                    <li>Si el defecto es <4-5 cm: cierre directo con <strong>puntos separados de polipropileno 0 o seda 0</strong> (o sutura continua de polipropileno 0).</li>
+                    <li>Los puntos se colocan a 1 cm del borde, abarcando todo el espesor del diafragma.</li>
+                    <li>Se debe tener cuidado de no incluir el nervio frénico (en la porción central).</li>
+                </ul>
+            </li>
+            <li><strong>Plastia con malla (defectos grandes):</strong>
+                <ul>
+                    <li>Si el defecto es >5 cm o no se puede cerrar primariamente, se coloca una <strong>malla de polipropileno (Prolene)</strong> o de PTFE (Gore-Tex) fijada con puntos de polipropileno 0.</li>
+                    <li>La malla se coloca como un parche, fijada al borde del defecto con puntos separados.</li>
+                </ul>
+            </li>
+            <li><strong>Comprobación:</strong> Se insufla el pulmón a través del tubo de tórax (si se ha colocado) para comprobar la estanqueidad de la sutura.</li>
+            <li><strong>Drenaje:</strong> Colocar un tubo de tórax en el hemitórax ipsilateral (28-32 Fr) si se ha abierto la pleura durante la reparación.</li>
+            <li><strong>Cierre:</strong> Por planos.</li>
+        </ol>
+        <p><strong>Variante torácica (toracotomía):</strong> En heridas toracoabdominales con lesión pulmonar asociada, se prefiere el abordaje torácico (toracotomía posterolateral).</p>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- TUMORES DEL DIAFRAGMA -->
+    <!-- ============================================================ -->
+    <h4>5. Tumores del Diafragma</h4>
+    <ul>
+        <li><strong>Clasificación:</strong>
+            <ul>
+                <li><strong>Benignos (50%):</strong> Lipomas (los más frecuentes), fibromas, neurofibromas, hemangiomas, quistes (broncogénicos, pericárdicos).</li>
+                <li><strong>Malignos (50%):</strong>
+                    <ul>
+                        <li><strong>Primarios:</strong> Sarcomas (leiomiosarcoma, fibrosarcoma), tumores malignos de células germinales.</li>
+                        <li><strong>Secundarios (metástasis):</strong> Los más frecuentes por extensión directa (cáncer de pulmón, mesotelioma, cáncer de estómago, cáncer de colon) o por vía hematógena/linfática.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Clínica:</strong>
+            <ul>
+                <li><strong>Asintomático:</strong> La mayoría son hallazgos incidentales.</li>
+                <li><strong>Sintomático:</strong> Dolor torácico o abdominal, disnea, tos, hemoptisis (si invade el pulmón), o síndrome de vena cava superior (si comprime la cava).</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico:</strong>
+            <ul>
+                <li><strong>Rx de tórax:</strong> Masa o elevación diafragmática.</li>
+                <li><strong>TAC o RM:</strong> Caracteriza el tumor y su extensión.</li>
+                <li><strong>Biopsia:</strong> Por punción percutánea (guiada por TAC) o por cirugía (toracoscopia o laparoscopia).</li>
+            </ul>
+        </li>
+        <li><strong>Tratamiento:</strong>
+            <ul>
+                <li><strong>Benigno:</strong> Resección local si es sintomático o >5 cm.</li>
+                <li><strong>Maligno primario:</strong> Resección quirúrgica en bloque con márgenes amplios (a veces con resección de pulmón, hígado o pared torácica).</li>
+                <li><strong>Metástasis:</strong> Resección si es única y el paciente está estable (cirugía citorreductora), o tratamiento paliativo (radioterapia, quimioterapia).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="surg-box">
+        <h5>Técnica de Resección de Tumor Diafragmático</h5>
+        <ol>
+            <li><strong>Abordaje:</strong> Toracotomía (si el tumor es torácico) o laparotomía (si es abdominal).</li>
+            <li><strong>Exposición:</strong> Se identifica el tumor y se evalúa su relación con las estructuras vecinas (pulmón, hígado, pericardio).</li>
+            <li><strong>Resección en bloque:</strong> Se reseca el tumor junto con un margen de tejido sano (2-3 cm) y las estructuras adyacentes si están invadidas.</li>
+            <li><strong>Reconstrucción:</strong>
+                <ul>
+                    <li>Si el defecto es <5 cm: cierre primario con polipropileno 0.</li>
+                    <li>Si el defecto es >5 cm: plastia con malla de polipropileno o PTFE (fijada con puntos de polipropileno 0).</li>
+                    <li>En resecciones extensas (ej. resección de todo un hemidiafragma), se puede usar un colgajo de músculo (ej. músculo dorsal ancho o recto anterior) para cubrir el defecto.</li>
+                </ul>
+            </li>
+            <li><strong>Drenaje:</strong> Tubo de tórax en el hemitórax ipsilateral.</li>
+            <li><strong>Cierre:</strong> Por planos.</li>
+        </ol>
+    </div>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- COMPLICACIONES DE LA CIRUGÍA DIAFRAGMÁTICA -->
+    <!-- ============================================================ -->
+    <h3>Complicaciones de la Cirugía Diafragmática</h3>
+    <ul>
+        <li><strong>Fuga anastomótica o dehiscencia de la sutura:</strong> La más frecuente. Se manifiesta con fiebre, dolor, derrame pleural, o neumotórax. Tratamiento: drenaje torácico, nutrición enteral o parenteral, reintervención si es significativa.</li>
+        <li><strong>Hemorragia:</strong> Por lesión de vasos intercostales, frénicos o de la vena cava. Requiere reintervención urgente.</li>
+        <li><strong>Lesión del nervio frénico:</strong> Parálisis diafragmática ipsilateral, con elevación del hemidiafragma y disnea. Tratamiento: fisioterapia respiratoria, plicatura diafragmática si es severa.</li>
+        <li><strong>Neumotórax o derrame pleural:</strong> Secundario a la apertura de la pleura. Se maneja con tubo de tórax.</li>
+        <li><strong>Recurrencia de la hernia:</strong> Más frecuente en hernias grandes o cuando se usa malla. Requiere reintervención.</li>
+        <li><strong>Infección de la malla:</strong> Requiere retirada de la malla y desbridamiento.</li>
+        <li><strong>Estenosis del hiato esofágico:</strong> Disfagia postoperatoria (en funduplicatura). Se maneja con dilataciones endoscópicas.</li>
+    </ul>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <!-- ALGORITMO DE DECISIÓN TERAPÉUTICA -->
+    <!-- ============================================================ -->
+    <h3>Algoritmo de Decisión Terapéutica en Patología Diafragmática</h3>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Hernia diafragmática congénita (neonato):</strong> Estabilización (ventilación, NO, ECMO) → Cirugía diferida (reparación primaria o con malla).</li>
+            <li><strong>Eventración diafragmática sintomática:</strong> Plicatura diafragmática (toracotomía o VATS).</li>
+            <li><strong>Hernia hiatal (ERGE):</strong> Tratamiento médico (IBP) → Si falla o hay hernia paraesofágica: Funduplicatura (laparoscópica o abierta) + cruroplastia.</li>
+            <li><strong>Trauma diafragmático:</strong>
+                <ul>
+                    <li><strong>Trauma cerrado con inestabilidad:</strong> Laparotomía exploradora urgente + reparación primaria.</li>
+                    <li><strong>Trauma penetrante:</strong> Siempre exploración (laparotomía o toracotomía) + reparación primaria.</li>
+                </ul>
+            </li>
+            <li><strong>Tumor diafragmático:</strong> Resección quirúrgica (con o sin malla) si es resecable.</li>
+        </ul>
+    </div>
+</div>
+<!-- ============================================================ -->
+<!-- HAMARTOMA PULMONAR (Y PLEURAL) - SECCIÓN AMPLIADA -->
+<!-- ============================================================ -->
+<div class="content-section" id="sec-hamartoma-pleural">
+    <h2>Hamartoma Pulmonar (y Pleural)</h2>
+
+    <h3>Definición y Conceptos Generales</h3>
+    <ul>
+        <li><strong>Definición:</strong> Tumor benigno del pulmón (y excepcionalmente de la pleura) compuesto por una proliferación desordenada de tejidos maduros normales del órgano (cartílago, tejido conectivo, grasa, músculo liso, epitelio bronquial), sin capacidad de crecimiento infiltrativo ni metastásico.</li>
+        <li><strong>Terminología correcta:</strong>
+            <ul>
+                <li>El término <strong>hamartoma pleural</strong> es incorrecto, ya que la pleura no tiene parénquima propio para formar hamartomas. Los hamartomas son <strong>intrapulmonares</strong> (90-95%) o <strong>endobronquiales</strong> (5-10%).</li>
+                <li>Las lesiones pleurales benignas similares se denominan <strong>tumores fibrosos solitarios de la pleura</strong> (antiguamente llamados "mesoteliomas benignos" o "fibromas pleurales"), que no son hamartomas.</li>
+                <li>Por rigor académico, esta sección se centrará en el <strong>hamartoma pulmonar</strong>, que es la entidad de interés quirúrgico.</li>
+            </ul>
+        </li>
+        <li><strong>Epidemiología:</strong>
+            <ul>
+                <li>Es el <strong>tumor benigno más frecuente del pulmón</strong> (representa el 75-80% de todos los tumores benignos pulmonares).</li>
+                <li>Incidencia: 0.25-0.5% de la población general.</li>
+                <li>Más frecuente en <strong>varones</strong> (2-3:1) y en la <strong>5ª-7ª década de la vida</strong> (pico entre 50-60 años).</li>
+                <li>Asociación: Síndrome de <strong>Carney</strong> (hamartomas pulmonares múltiples + leiomiomas uterinos + tumores de células de la granulosa) y <strong>síndrome de Cowden</strong> (hamartomas múltiples en varios órganos).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Clasificación</h3>
+    <ul>
+        <li><strong>Por localización:</strong>
+            <ul>
+                <li><strong>Intrapulmonar (90-95%):</strong> Localizado en el parénquima pulmonar, generalmente en los lóbulos inferiores (60-70%).</li>
+                <li><strong>Endobronquial (5-10%):</strong> Localizado en la luz de un bronquio (generalmente segmentario o subsegmentario). Puede causar obstrucción y atelectasia.</li>
+                <li><strong>Pleural (excepcional):</strong> Son casos aislados, generalmente confundidos con tumores fibrosos solitarios de la pleura.</li>
+            </ul>
+        </li>
+        <li><strong>Por tamaño:</strong>
+            <ul>
+                <li><strong>Pequeño (&lt;2 cm):</strong> Mayoría de los casos, asintomáticos.</li>
+                <li><strong>Mediano (2-4 cm):</strong> Pueden causar síntomas por compresión.</li>
+                <li><strong>Grande (&gt;4 cm):</strong> Pueden confundirse con neoplasias malignas y causar síntomas significativos.</li>
+            </ul>
+        </li>
+        <li><strong>Por morfología radiológica:</strong>
+            <ul>
+                <li><strong>Con calcificaciones (30-40%):</strong> Calcificaciones en "palomitas de maíz" (popcorn calcifications) — <strong>patognomónico</strong> del hamartoma.</li>
+                <li><strong>Sin calcificaciones (60-70%):</strong> Nódulo o masa de bordes bien definidos, a veces lobulados.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Anatomía Patológica</h3>
+    <ul>
+        <li><strong>Macroscópica:</strong>
+            <ul>
+                <li>Tumor bien circunscrito, de consistencia firme, color blanco-grisáceo o amarillento.</li>
+                <li>Superficie de corte lobulada, con áreas quísticas o calcificadas.</li>
+                <li>Generalmente único (90%), pero puede ser múltiple (10%) en los síndromes genéticos.</li>
+            </ul>
+        </li>
+        <li><strong>Microscópica:</strong>
+            <ul>
+                <li><strong>Componentes mesenquimatosos:</strong> Cartílago (maduro, hialino), tejido adiposo, tejido fibroso, músculo liso.</li>
+                <li><strong>Componentes epiteliales:</strong> Células epiteliales bronquiolares, glándulas mucosas, espacios quísticos revestidos por epitelio respiratorio.</li>
+                <li><strong>Patrón característico:</strong> "Ensalada de frutas" o "mosaico" (mezcla desordenada de todos los componentes).</li>
+                <li><strong>Características:</strong> Ausencia de atipia celular, mitiosis escasas o ausentes, invasión local ausente.</li>
+            </ul>
+        </li>
+        <li><strong>Inmunohistoquímica:</strong>
+            <ul>
+                <li>Positividad para S100 (cartílago), actina de músculo liso, citoqueratinas (componente epitelial).</li>
+                <li>Negatividad para marcadores de malignidad (p53, Ki-67 bajo).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Clínica</h3>
+    <div class="clin-box">
+        <ul>
+            <li><strong>Asintomático (80-90%):</strong> Hallazgo incidental en una radiografía de tórax o TAC solicitada por otra causa.</li>
+            <li><strong>Sintomático (10-20%):</strong> Los síntomas dependen del tamaño y la localización:
+                <ul>
+                    <li><strong>Intrapulmonar:</strong> Dolor torácico (por irritación pleural), tos seca, hemoptisis (si erosiona un vaso), disnea (si es muy grande o múltiple).</li>
+                    <li><strong>Endobronquial:</strong> Tos, sibilancias localizadas, hemoptisis, neumonías recurrentes (por obstrucción bronquial), atelectasia.</li>
+                </ul>
+            </li>
+            <li><strong>Signos de alarma (sospecha de transformación maligna):</strong>
+                <ul>
+                    <li>Crecimiento rápido del nódulo (&gt;2.5 mm/año en TAC seriado).</li>
+                    <li>Aparición de bordes espiculados o irregulares.</li>
+                    <li>Desarrollo de necrosis central o cambios en el patrón de calcificaciones.</li>
+                    <li><strong>Nota:</strong> La transformación maligna del hamartoma es <strong>excepcional</strong> (&lt;1% de los casos), pero puede ocurrir (hamartoma maligno o carcinoma ex-hamartoma).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Diagnóstico</h3>
+    <ul>
+        <li><strong>Rx de tórax (AP y lateral):</strong>
+            <ul>
+                <li>Nódulo o masa pulmonar solitaria, de bordes bien definidos, a veces lobulados.</li>
+                <li><strong>Calcificaciones en "palomitas de maíz"</strong> (patognomónico, pero solo en 30-40% de los casos).</li>
+            </ul>
+        </li>
+        <li><strong>TAC de tórax con contraste (alta resolución):</strong>
+            <ul>
+                <li>Gold standard para el diagnóstico y la caracterización.</li>
+                <li>Muestra un nódulo de bordes nítidos, lobulados, con densidad grasa (-40 a -120 UH) y/o calcificaciones (en "palomitas de maíz").</li>
+                <li>El <strong>contenido graso</strong> (en 50-60% de los casos) es muy sugestivo de hamartoma.</li>
+                <li>Permite medir el tamaño, la atenuación y el crecimiento en estudios seriados.</li>
+            </ul>
+        </li>
+        <li><strong>PET-TAC (Fluorodesoxiglucosa):</strong>
+            <ul>
+                <li>El hamartoma típicamente <strong>no capta</strong> FDG (SUV &lt;2.5), lo que ayuda a diferenciarlo de una neoplasia maligna.</li>
+                <li>Indicado en nódulos dudosos o con crecimiento en el seguimiento.</li>
+            </ul>
+        </li>
+        <li><strong>Biopsia (PAAF o core biopsy):</strong>
+            <ul>
+                <li><strong>Indicada en:</strong> Nódulos sin calcificaciones características, con crecimiento, o en pacientes con sospecha de neoplasia.</li>
+                <li><strong>Vía:</strong> Punción percutánea guiada por TAC o ecografía, o biopsia transbronquial (si es endobronquial).</li>
+                <li><strong>Rendimiento:</strong> La PAAF tiene una sensibilidad del 60-80% para el diagnóstico de hamartoma. La core biopsy mejora el rendimiento.</li>
+            </ul>
+        </li>
+        <li><strong>Broncoscopia (si es endobronquial):</strong>
+            <ul>
+                <li>Visualiza el tumor en la luz bronquial.</li>
+                <li>Permite tomar biopsia y, en algunos casos, resección endoscópica.</li>
+            </ul>
+        </li>
+        <li><strong>Diagnóstico diferencial:</strong>
+            <ul>
+                <li><strong>Maligno:</strong> Adenocarcinoma, carcinoma epidermoide, metástasis.</li>
+                <li><strong>Benigno:</strong> Granuloma (tuberculoma), hamartoma, tumor carcinoide típico, nódulo reumatoide, angiodisplasia.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Tratamiento</h3>
+
+    <h4>1. Observación (Manejo Conservador)</h4>
+    <div class="note-box">
+        <ul>
+            <li><strong>Indicación:</strong> Hamartomas <strong>&lt;2 cm</strong>, asintomáticos, sin crecimiento en el seguimiento, con características típicas (calcificaciones "en palomitas de maíz" o contenido graso).</li>
+            <li><strong>Conducta:</strong> Seguimiento con <strong>TAC de baja dosis</strong> a los 6, 12, 18 y 24 meses, y luego anualmente durante 5 años (si no hay cambios).</li>
+            <li><strong>Criterios de crecimiento:</strong> Aumento de &gt;2 mm/año o aparición de características sospechosas (bordes irregulares, necrosis). Si ocurre, se reconsidera la cirugía.</li>
+        </ul>
+    </div>
+
+    <h4>2. Tratamiento Quirúrgico</h4>
+    <div class="surg-box">
+        <h5>Indicaciones Quirúrgicas</h5>
+        <ul>
+            <li><strong>Absolutas:</strong>
+                <ul>
+                    <li>Hamartoma sintomático (dolor, tos, hemoptisis, disnea).</li>
+                    <li>Hamartoma endobronquial con obstrucción, atelectasia o neumonías recurrentes.</li>
+                    <li>Hamartoma con crecimiento en el seguimiento (sospecha de malignidad).</li>
+                    <li>Hamartoma con características atípicas en la TAC (bordes espiculados, necrosis).</li>
+                </ul>
+            </li>
+            <li><strong>Relativas:</strong>
+                <ul>
+                    <li>Hamartoma >3-4 cm (mayor riesgo de síntomas y complicaciones).</li>
+                    <li>Paciente joven (&lt;40 años) con nódulo solitario (para evitar la ansiedad y el seguimiento prolongado).</li>
+                    <li>Sospecha de síndrome de Carney o Cowden (múltiples hamartomas).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h5>Técnicas Quirúrgicas</h5>
+
+        <h6>A. Resección en Cuña (Wedge Resection) — Técnica de Elección</h6>
+        <ul>
+            <li><strong>Indicación:</strong> Hamartomas periféricos, pequeños o medianos (&lt;3-4 cm), en la periferia del pulmón.</li>
+            <li><strong>Vía de abordaje:</strong>
+                <ul>
+                    <li><strong>VATS (Cirugía Torácica Videoasistida):</strong> Es el abordaje de elección en la mayoría de los casos (menor dolor, menor estancia hospitalaria, mejor recuperación).</li>
+                    <li><strong>Toracotomía posterolateral:</strong> En hamartomas grandes, profundos, o cuando el VATS no es factible (ej. adherencias extensas, tamaño &gt;5 cm).</li>
+                </ul>
+            </li>
+            <li><strong>Técnica (VATS):</strong>
+                <ol>
+                    <li><strong>Posición:</strong> Decúbito lateral con el lado afectado hacia arriba.</li>
+                    <li><strong>Puertos:</strong> 3 puertos de 5-12 mm (óptica 10 mm, pinzas 5 mm, grapadora 12 mm).</li>
+                    <li><strong>Localización:</strong> Identificar el nódulo. Si no es visible en la superficie pulmonar, se usa la ecografía endoscópica o la palpación con instrumentos.</li>
+                    <li><strong>Resección:</strong> Se aplica una <strong>grapadora lineal cortante (Endo-GIA)</strong> de 45 o 60 mm, con carga vascular (verde) o de pulmón (azul), según el grosor del parénquima.</li>
+                    <li>Se coloca una grapa en la base del nódulo, dejando un margen de 1-2 cm de tejido sano.</li>
+                    <li>Se dispara la grapadora, resecando el nódulo en cuña.</li>
+                    <li><strong>Extracción:</strong> Se coloca el nódulo en una bolsa de extracción (endobag) y se extrae por el puerto de 12 mm (o se amplía la incisión si es necesario).</li>
+                    <li><strong>Envío a anatomía patológica:</strong> Se envía la pieza para estudio intraoperatorio (biopsia por congelación) y definitivo.</li>
+                    <li><strong>Prueba de estanqueidad:</strong> Se insufla el pulmón con 20-30 cm H₂O para comprobar que no hay fugas aéreas en la línea de grapas. Si hay fugas, se refuerzan con puntos de Vicryl 3/0 o con sellantes (Tachosil, Surgicel).</li>
+                    <li><strong>Drenaje:</strong> Colocar un tubo de tórax (24-28 Fr) en el hemitórax, conectado a sello de agua con aspiración (-15 a -20 cm H₂O).</li>
+                    <li><strong>Cierre:</strong> Por planos.</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h6>B. Resección Segmentaria (Segmentectomía)</h6>
+        <ul>
+            <li><strong>Indicación:</strong> Hamartomas profundos, grandes (3-5 cm), o localizados en un segmento pulmonar, donde la resección en cuña no es posible sin comprometer el parénquima circundante.</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Abordaje:</strong> Toracotomía posterolateral o VATS (en centros con experiencia).</li>
+                    <li><strong>Identificación del segmento:</strong> Se identifica el segmento pulmonar que contiene el nódulo (ej. segmento apical del lóbulo inferior).</li>
+                    <li><strong>Disección de la arteria y el bronquio segmentarios:</strong> Se disecan y ligan los vasos (arteria y vena segmentaria) y el bronquio segmentario con Vicryl 2/0 o 3/0.</li>
+                    <li><strong>Sección del parénquima:</strong> Se secciona el parénquima siguiendo los planos intersegmentarios con grapadora (Endo-GIA) o con electrobisturí (disección con aire para identificar el plano).</li>
+                    <li><strong>Extracción:</strong> Se extrae el segmento resecado.</li>
+                    <li><strong>Prueba de estanqueidad y drenaje:</strong> Igual que en la resección en cuña.</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h6>C. Lobectomía</h6>
+        <ul>
+            <li><strong>Indicación:</strong> Hamartomas muy grandes (&gt;5 cm), endobronquiales con destrucción del lóbulo (atelectasia, bronquiectasias), o cuando no se puede descartar malignidad.</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Abordaje:</strong> Toracotomía posterolateral o VATS (lobectomía VATS).</li>
+                    <li><strong>Disección del hilio:</strong> Se diseca y liga por separado la arteria pulmonar (ramas lobares), la vena pulmonar y el bronquio principal del lóbulo afectado.</li>
+                    <li><strong>Sección del bronquio:</strong> Con grapadora (Endo-GIA) o sutura manual.</li>
+                    <li><strong>Extracción:</strong> Se extrae el lóbulo.</li>
+                    <li><strong>Drenaje:</strong> Tubo de tórax.</li>
+                    <li><strong>Linfadenectomía:</strong> Se realiza una linfadenectomía mediastínica (ganglios hiliares y mediastínicos) para el estudio definitivo (descartar malignidad).</li>
+                </ol>
+            </li>
+        </ul>
+
+        <h6>D. Resección Endoscópica (para hamartomas endobronquiales)</h6>
+        <ul>
+            <li><strong>Indicación:</strong> Hamartomas endobronquiales pediculados, pequeños (&lt;2 cm), accesibles por broncoscopia rígida.</li>
+            <li><strong>Técnica:</strong>
+                <ol>
+                    <li><strong>Broncoscopia rígida:</strong> Bajo anestesia general, se introduce el broncoscopio rígido.</li>
+                    <li><strong>Visualización:</strong> Se identifica el tumor en la luz bronquial.</li>
+                    <li><strong>Resección:</strong>
+                        <ul>
+                            <li><strong>Electrocauterio:</strong> Se reseca el tumor con un asa de diatermia.</li>
+                            <li><strong>Láser (Nd:YAG):</strong> Se vaporiza o reseca el tumor.</li>
+                            <li><strong>Microdebridador:</strong> Se reseca el tumor con un microdebridador (como en la cirugía endoscópica nasal).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Extracción:</strong> Se extrae el tumor con una pinza de biopsia o con el broncoscopio.</li>
+                    <li><strong>Control:</strong> Se realiza una broncoscopia de control a los 3-6 meses para comprobar la ausencia de recurrencia.</li>
+                </ol>
+            </li>
+            <li><strong>Ventajas:</strong> Mínimamente invasivo, evita la cirugía abierta.</li>
+            <li><strong>Desventajas:</strong> Riesgo de hemorragia, perforación bronquial, recurrencia (si la resección es incompleta).</li>
+        </ul>
+    </div>
+
+    <h4>3. Tratamiento Paliativo</h4>
+    <ul>
+        <li>Raramente necesario, ya que el hamartoma es benigno y no produce síntomas graves en la mayoría de los casos.</li>
+        <li>En casos excepcionales (hamartoma gigante con compresión severa), se puede considerar radioterapia o quimioterapia, pero su eficacia es limitada.</li>
+    </ul>
+
+    <h3>Complicaciones de la Cirugía del Hamartoma</h3>
+    <ul>
+        <li><strong>Fuga aérea persistente:</strong> La complicación más frecuente (5-15%). Se maneja con drenaje torácico y aspiración continua. Si persiste >5-7 días, se puede considerar pleurodesis química (talco) o reintervención.</li>
+        <li><strong>Hemorragia:</strong> Por lesión de vasos pulmonares o intercostales. Requiere reintervención si es significativa.</li>
+        <li><strong>Neumonía o atelectasia:</strong> Por retención de secreciones. Se maneja con fisioterapia respiratoria, broncoscopia de aspiración.</li>
+        <li><strong>Infección de la herida quirúrgica:</strong> Antibióticos y drenaje.</li>
+        <li><strong>Recurrencia (rara):</strong> Si la resección es incompleta (especialmente en tumores endobronquiales).</li>
+        <li><strong>Transformación maligna (excepcional):</strong> Se maneja con resección amplia (lobectomía o neumonectomía) y quimioterapia si es necesario.</li>
+    </ul>
+
+    <h3>Pronóstico</h3>
+    <ul>
+        <li><strong>Excelente.</strong> La resección quirúrgica es curativa en el 99% de los casos.</li>
+        <li>La supervivencia a 5 años es del 100% si la resección es completa (R0).</li>
+        <li>La recurrencia es &lt;1% después de una resección completa.</li>
+        <li>El seguimiento postoperatorio se realiza con TAC de tórax a los 6-12 meses y luego según la evolución clínica.</li>
+    </ul>
+
+    <hr>
+
+    <h3>Hamartoma Pleural (Aclaración)</h3>
+    <ul>
+        <li><strong>Concepto:</strong> Como se mencionó, el hamartoma pleural puro es una entidad <strong>excepcional</strong> y discutida. La mayoría de las lesiones pleurales benignas que se diagnostican como "hamartomas" son en realidad <strong>tumores fibrosos solitarios de la pleura</strong> (TFSP) o <strong>fibromas pleurales</strong>.</li>
+        <li><strong>Tumor Fibroso Solitario de la Pleura (TFSP):</strong>
+            <ul>
+                <li>Es la lesión pleural benigna más frecuente (aunque es rara en la práctica clínica).</li>
+                <li><strong>Origen:</strong> Células mesenquimatosas submesoteliales (no es un hamartoma).</li>
+                <li><strong>Clínica:</strong> Similar al hamartoma intrapulmonar (asintomático o con síntomas compresivos).</li>
+                <li><strong>Diagnóstico:</strong> TAC (masa pleural bien delimitada, a veces pediculada).</li>
+                <li><strong>Tratamiento:</strong> Resección quirúrgica (VATS o toracotomía), con pronóstico excelente.</li>
+                <li><strong>Nota:</strong> El TFSP puede ser maligno en el 10-15% de los casos (tumor fibroso solitario maligno), por lo que siempre se debe resecar.</li>
+            </ul>
+        </li>
+        <li><strong>Conclusión:</strong> Si en un examen te preguntan por "hamartoma pleural", la respuesta correcta es que es una entidad excepcional y que la mayoría de las lesiones pleurales benignas son <strong>tumores fibrosos solitarios de la pleura</strong>.</li>
+    </ul>
+
+    <hr>
+
+    <h3>Algoritmo de Decisión Terapéutica para Hamartoma Pulmonar</h3>
+    <div class="surg-box">
+        <ul>
+            <li><strong>Hamartoma &lt;2 cm, asintomático, características típicas:</strong> Observación con TAC seriado (6, 12, 18, 24 meses, luego anual).</li>
+            <li><strong>Hamartoma &lt;2 cm, sintomático:</strong> Resección quirúrgica (VATS, resección en cuña).</li>
+            <li><strong>Hamartoma 2-4 cm, características típicas, asintomático:</strong> Observación con TAC seriado (cada 6-12 meses) o resección quirúrgica (según preferencia del paciente y riesgo quirúrgico).</li>
+            <li><strong>Hamartoma &gt;4 cm, sintomático, o con crecimiento:</strong> Resección quirúrgica (VATS o toracotomía, resección en cuña o segmentectomía).</li>
+            <li><strong>Hamartoma endobronquial con obstrucción:</strong> Resección endoscópica (broncoscopia rígida) o resección quirúrgica (si es grande o no accesible).</li>
+            <li><strong>Sospecha de malignidad (crecimiento rápido, bordes espiculados, necrosis):</strong> Resección quirúrgica (lobectomía) con linfadenectomía mediastínica.</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<script>
+    // Navegación
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    showSection('inicio');
+</script>
+
+</body>
+</html>

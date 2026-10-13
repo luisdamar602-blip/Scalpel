@@ -1,0 +1,2616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Residencia de Cirugía v4.6 - Edición Completa</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --medical-cyan: #38bdf8;
+            --success-green: #22c55e;
+            --warning-amber: #f59e0b;
+            --danger-red: #ef4444;
+            --doctor-color: #a855f7;
+            --exam-color: #ec4899;
+            --subordinate-color: #10b981;
+            --nav-height: 65px;
+            --gold-glow: #fbbf24;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark); color: var(--text-main); margin: 0;
+            padding: 10px 10px calc(var(--nav-height) + 20px) 10px;
+            overflow-x: hidden;
+        }
+
+        .header-panel {
+            background: var(--bg-panel); border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 12px; margin-bottom: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, var(--doctor-color), #7c3aed);
+            padding: 6px 12px; border-radius: 20px; font-weight: bold;
+            font-size: 0.9rem; display: inline-block; margin-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px;
+        }
+
+        .stat-box {
+            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--medical-cyan);
+        }
+        .stat-box.repu { border-left-color: var(--warning-amber); }
+        .stat-box.destreza { border-left-color: var(--subordinate-color); }
+        .stat-box.crisis { border-left-color: var(--danger-red); }
+
+        .stat-val { font-size: 1.1rem; font-weight: bold; color: #fff; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+
+        .btn-evolucionar {
+            width: 100%; background: linear-gradient(135deg, var(--medical-cyan), #0284c7);
+            color: #fff; border: none; padding: 20px; font-size: 1.2rem; font-weight: bold;
+            border-radius: 12px; margin: 15px 0 5px 0; cursor: pointer; position: relative;
+            box-shadow: 0 4px 15px rgba(56,189,248,0.2); transition: transform 0.1s, background 0.3s;
+        }
+        .btn-evolucionar:active { transform: scale(0.98); }
+        .btn-evolucionar:disabled { background: #1e293b; color: var(--text-muted); border: 1px dashed var(--border-color); cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .btn-hab {
+            width: 100%; background: #475569; color: #fff; border: none; padding: 12px;
+            font-weight: bold; border-radius: 8px; cursor: pointer; margin-bottom: 8px;
+            transition: all 0.3s ease; border: 2px solid transparent;
+        }
+        .btn-hab:disabled { background: #1e293b; color: var(--text-muted); cursor: not-allowed; box-shadow: none !important; border-color: transparent !important; }
+        
+        .btn-hab.disponible {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border-color: var(--gold-glow);
+            box-shadow: 0 0 15px var(--gold-glow);
+            animation: goldPulse 2s infinite;
+        }
+
+        @keyframes goldPulse {
+            0% { box-shadow: 0 0 8px #d97706; }
+            50% { box-shadow: 0 0 20px var(--gold-glow); }
+            100% { box-shadow: 0 0 8px #d97706; }
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background: var(--bg-panel); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 12px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .card-info h4 { margin: 0 0 4px 0; font-size: 1rem; }
+        .card-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted); }
+
+        .btn-buy {
+            background: var(--success-green); color: #fff; border: none;
+            padding: 8px 14px; font-weight: bold; border-radius: 6px; cursor: pointer;
+        }
+        .btn-buy:disabled { background: #334155; color: var(--text-muted); cursor: not-allowed; }
+
+        .btn-tribunal {
+            width: 100%; background: linear-gradient(135deg, var(--exam-color), #db2777);
+            color: #fff; border: none; padding: 15px; font-size: 1.1rem; font-weight: bold;
+            border-radius: 10px; cursor: pointer; margin-top: 10px;
+        }
+        .btn-tribunal:disabled { background: #334155; color: var(--text-muted); opacity: 0.6; }
+
+        .tecnica-pasos-container {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .paso-btn {
+            width: 100%; background: #1e293b; color: #fff; border: 2px solid #475569;
+            padding: 10px; border-radius: 6px; text-align: left; font-size: 0.85rem; cursor: pointer;
+        }
+        .paso-btn.correcto {
+            border-color: var(--success-green); background: rgba(34, 197, 94, 0.2);
+        }
+
+        .log-container {
+            background: #090d16; border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 10px; height: 100px; overflow-y: auto;
+            font-family: monospace; font-size: 0.75rem; color: #38bdf8; margin-top: 15px;
+        }
+        .log-entry { border-bottom: 1px solid #1e293b; padding: 2px 0; }
+
+        .nav-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
+            background: #1e293b; border-top: 1px solid var(--border-color);
+            display: grid; grid-template-columns: repeat(5, 1fr); z-index: 100;
+        }
+
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.65rem; font-weight: bold; cursor: pointer;
+        }
+        .nav-item.active { color: var(--medical-cyan); background: rgba(56,189,248,0.05); }
+        .nav-item span { font-size: 1.2rem; margin-bottom: 2px; }
+
+        .modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.9); display: none; align-items: center;
+            justify-content: center; z-index: 1000; padding: 20px;
+        }
+        .modal-content {
+            background: var(--bg-panel); border: 1px solid var(--border-color);
+            padding: 20px; border-radius: 16px; width: 100%; max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .modal-content h3 { margin-top: 0; color: var(--medical-cyan); }
+        .modal-options button {
+            width: 100%; background: #334155; color: #fff; border: 1px solid var(--border-color);
+            padding: 12px; margin: 6px 0; border-radius: 8px; text-align: left;
+            font-size: 0.9rem; font-weight: 500; cursor: pointer;
+        }
+        .modal-options button:active { background: #475569; }
+        .btn-modal-close {
+            width: 100%; background: var(--danger-red); color: #fff; border: none;
+            padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-panel">
+        <div id="rango-badge" class="rank-badge">Interno Vertical</div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-val" id="stat-xp">0</div>
+                <div class="stat-lbl">Experiencia (XP)</div>
+            </div>
+            <div class="stat-box repu">
+                <div class="stat-val" id="stat-repu">0</div>
+                <div class="stat-lbl">Prestigio</div>
+            </div>
+            <div class="stat-box destreza">
+                <div class="stat-val" id="stat-destreza">0</div>
+                <div class="stat-lbl">Destreza</div>
+            </div>
+            <div class="stat-box crisis">
+                <div class="stat-val" id="stat-crisis">0</div>
+                <div class="stat-lbl">Crisis Superadas</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted); text-align: right;" id="stat-pasivo">
+            +0 XP/s | +0.00 Prestigio/s
+        </div>
+    </div>
+
+    <!-- ===== PESTAÑA CLÍNICA ===== -->
+    <div id="tab-clinica" class="tab-content active">
+        <div style="margin-top: 15px; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: bold; font-size: 0.9rem; color: var(--warning-amber);">📋 Misiones Diarias</span>
+                <span id="misiones-reset" style="font-size: 0.7rem; color: var(--text-muted);"></span>
+            </div>
+            <div id="lista-misiones"></div>
+        </div>
+        
+        <button id="btn-evolucionar-principal" class="btn-evolucionar" onclick="hacerClicEvolucion()">
+            💡 EVOLUCIONAR PACIENTE<br>
+            <span id="lbl-evolucionar-desc" style="font-size:0.8rem; font-weight:normal; opacity:0.8;">Suma experiencia médica</span>
+        </button>
+
+        <button id="btn-organizar-tecnica" class="btn-hab" style="background: linear-gradient(135deg, var(--doctor-color), #7c3aed); margin-bottom: 8px; font-size: 1.05rem; box-shadow: 0 4px 10px rgba(168,85,247,0.3);" onclick="abrirMinijuegoTecnica()">
+            😷 ENTRAR A QUIRÓFANO: Ordenar Técnica (+ Destreza y XP)
+        </button>
+
+        <button id="btn-entrenar-destreza" class="btn-hab" style="background: var(--subordinate-color); margin-bottom: 15px;" onclick="entrenarDestrezaQuirurgica()">
+            ✂️ Practicar Nudos y Suturas Rápidas (+0.1 Destreza)
+        </button>
+        <button onclick="guardarPartida(); alert('Partida guardada!')" style="position:fixed;bottom:75px;left:10px;padding:8px 12px;background:#334155;color:#fff;border:none;border-radius:6px;font-size:0.7rem;z-index:50;">💾 Guardar</button>
+
+        <button id="btn-habilidad" class="btn-hab" onclick="activarHabilidad()" disabled>
+            Habilidad: Bloqueada
+        </button>
+
+        <div style="margin-top: 15px;">
+            <span style="font-weight: bold; font-size: 0.9rem; color: var(--medical-cyan);">📋 Bitácora del Servicio:</span>
+            <div class="log-container" id="log">
+                <div class="log-entry">Bienvenido al hospital. Comienza a evolucionar pacientes.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PESTAÑA TIENDA ===== -->
+    <div id="tab-tienda" class="tab-content">
+        <h3 style="color: var(--medical-cyan); margin-top:0;">Estudio e Insumos Médicos</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Invertir en literatura o mejores herramientas incrementa tu capacidad por cada evolución manual.</p>
+        <div id="lista-tienda"></div>
+    </div>
+
+    <!-- ===== PESTAÑA PERSONAL ===== -->
+    <div id="tab-residentes" class="tab-content">
+        <h3 style="color: var(--subordinate-color); margin-top:0;">Subordinados del Servicio</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Asigna tareas a los internos y residentes del servicio para acumular experiencia pasiva por segundo de forma continua.</p>
+        <div id="lista-subordinados"></div>
+    </div>
+
+    <!-- ===== PESTAÑA INVESTIGACIÓN ===== -->
+    <div id="tab-investigacion" class="tab-content">
+        <h3 style="color: var(--medical-cyan); margin-top:0;">🔬 Líneas de Investigación</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">
+            Invierte XP y Prestigio en proyectos académicos. Al completarlos, obtienes bonificaciones de <strong style="color:var(--warning-amber);">Prestigio pasivo</strong> permanentes.
+        </p>
+        <div id="investigacion-activa" style="background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--warning-amber);">
+            <p id="investigacion-estado" style="margin:0;">No hay investigación activa. Elige un proyecto.</p>
+            <div id="investigacion-progreso" style="display:none; margin-top:8px;">
+                <div style="background:#334155; height:10px; border-radius:5px; overflow:hidden;">
+                    <div id="barra-investigacion" style="height:100%; width:0%; background:var(--medical-cyan); transition: width 0.3s;"></div>
+                </div>
+                <p id="tiempo-restante" style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Tiempo restante: --</p>
+            </div>
+        </div>
+        <div id="lista-proyectos"></div>
+    </div>
+
+    <!-- ===== PESTAÑA TRIBUNAL ===== -->
+    <div id="tab-tribunal" class="tab-content">
+        <h3 style="color: var(--exam-color); margin-top:0;">Tribunal de Acreditación Académica</h3>
+        <div class="header-panel" style="background: rgba(0,0,0,0.2);">
+            <h4 id="tribunal-siguiente-rango" style="margin:0 0 5px 0;">Siguiente Rango: Residente 1 (R1)</h4>
+            <p id="tribunal-requisitos" style="margin:0; font-size:0.85rem; color:var(--text-muted);">Requisitos: 500 XP / 35 Prestigio / 10 Destreza</p>
+        </div>
+        <button id="btn-iniciar-examen" class="btn-tribunal" onclick="iniciarExamen()">
+            📝 Rendir Examen de Promoción
+        </button>
+    </div>
+
+    <!-- ===== BOTÓN FLOTANTE ESPECIALISTA ===== -->
+    <div id="btn-floating-esp" style="position: fixed; bottom: 85px; right: 20px; width: 65px; height: 65px; border-radius: 50%; background: var(--warning-amber); border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; z-index: 99;" onclick="interceptarEspecialista()">👨‍⚕️</div>
+
+    <!-- ===== MODAL ===== -->
+    <div id="decision-modal" class="modal">
+        <div class="modal-content">
+            <span id="modal-doctor-tag" style="padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-bottom: 8px; background-color: var(--medical-cyan);">ALERTA</span>
+            <h3 id="modal-titulo">Caso Clínico</h3>
+            <p id="modal-descripcion" style="font-size: 0.95rem; line-height: 1.4; color: #fff;"></p>
+            
+            <div id="modal-options" class="modal-options"></div>
+            
+            <div id="tecnica-quirurgica-container" class="tecnica-pasos-container" style="display:none;"></div>
+
+            <button id="btn-modal-cancelar" class="btn-modal-close" style="display:none;" onclick="ejecutarPenalizacionRechazo()">
+                🏃‍♂️ Evadir pregunta (Penalización)
+            </button>
+            <button id="btn-modal-entendido" class="btn-modal-close" style="display:none; background: var(--success-green);" onclick="cerrarModalCrisis()">
+                👍 Aceptar la Sanción y Continuar
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== NAVEGACIÓN INFERIOR ===== -->
+    <div class="nav-bar">
+        <div class="nav-item active" id="nav-clinica" onclick="cambiarPestaña('clinica')"><span>🩺</span>Clínica</div>
+        <div class="nav-item" id="nav-tienda" onclick="cambiarPestaña('tienda')"><span>📚</span>Insumos</div>
+        <div class="nav-item" id="nav-residentes" onclick="cambiarPestaña('residentes')"><span>👥</span>Personal</div>
+        <div class="nav-item" id="nav-investigacion" onclick="cambiarPestaña('investigacion')"><span>🔬</span>Investigación</div>
+        <div class="nav-item" id="nav-tribunal" onclick="cambiarPestaña('tribunal')"><span>🎓</span>Tribunal</div>
+    </div>
+
+    <script>
+    // ================================================================
+    // 1. RANGOS
+    // ================================================================
+    const RANGOS = [
+        { nombre: "Interno Vertical", xpReq: 500, repuReq: 0, destrezaReq: 0, xpHab: "Café de la Guardia", descHab: "Clics x2 por 12s", cd: 20 },
+        { nombre: "Residente 1 (R1)", xpReq: 5000, repuReq: 35, destrezaReq: 50, xpHab: "Evolución Rápida", descHab: "+5 XP/s permanente", cd: 0 },
+        { nombre: "Residente 2 (R2)", xpReq: 35000, repuReq: 100, destrezaReq: 250, xpHab: "Cierre Planos Veloz", descHab: "Clics +50% por 15s", cd: 30 },
+        { nombre: "Residente 3 (R3)", xpReq: 180000, repuReq: 300, destrezaReq: 700, xpHab: "Asumir la Pleurostomía", descHab: "+400 XP e invoca Caso", cd: 45 },
+        { nombre: "Residente 4 (R4)", xpReq: 850000, repuReq: 650, destrezaReq: 1500, xpHab: "Residente Aguacate", descHab: "+20 Prestigio listo", cd: 60 },
+        { nombre: "Especialista General", xpReq: 4500000, repuReq: 1500, destrezaReq: 2800, xpHab: "Delegar al Residente", descHab: "Pasivo x3 por 20s", cd: 90 },
+        { nombre: "Jefe de Servicio", xpReq: Infinity, repuReq: Infinity, destrezaReq: Infinity, xpHab: "Asignación de Roles", descHab: "Pasivo x10", cd: 0 }
+    ];
+
+    // ================================================================
+    // 2. SUBORDINADOS
+    // ================================================================
+    const SUBORDINADOS_DATA = [
+        { id: "luis_alberto", nombre: "Luis Alberto (Interno)", desc: "Evoluciona las camas asignadas.", costoXp: 150, repuReq: 0, aportePasivo: 1 },
+        { id: "mandiel", nombre: "Mandiel (R1)", desc: "Pese a que tira piedras, ayuda con la papelería.", costoXp: 280, repuReq: 5, aportePasivo: 2 },
+        { id: "diana", nombre: "Diana (R1)", desc: "Mantiene las indicaciones de la sala al día.", costoXp: 1200, repuReq: 25, aportePasivo: 8 },
+        { id: "suanne", nombre: "Suanne (R1)", desc: "Controla los ingresos y balances hídricos.", costoXp: 1800, repuReq: 40, aportePasivo: 14 },
+        { id: "thalia", nombre: "Thalia (R2)", desc: "Garantiza las curas complejas de la guardia.", costoXp: 6500, repuReq: 90, aportePasivo: 45 },
+        { id: "beatriz", nombre: "Beatriz (R1)", desc: "Es hija de Edmundo Mogena el Jefe del Servicio", costoXp: 7500, repuReq: 100, aportePasivo: 50 },
+        { id: "yelennis", nombre: "Yelennis (R2)", desc: "Adelanta los reportes operatorios acumulados.", costoXp: 9500, repuReq: 130, aportePasivo: 70 },
+        { id: "marialis", nombre: "Marialis (R3)", desc: "Supervisa las altas y coordina el salón menor.", costoXp: 35000, repuReq: 260, aportePasivo: 240 },
+        { id: "wendy", nombre: "Wendy (R3)", desc: "Organiza la entrega de guardia y discute casos.", costoXp: 52000, repuReq: 340, aportePasivo: 390 },
+        { id: "julio", nombre: "Julio (R4)", desc: "Asume la jefatura de residentes en el salón principal.", costoXp: 210000, repuReq: 600, aportePasivo: 1450 }
+    ];
+
+    // ================================================================
+    // 3. TIENDA (CORREGIDA - Valores más claros)
+    // ================================================================
+    const TIENDA_ITEMS = [
+        { id: "atls", nombre: "📖 Manual ATLS v10", desc: "+1 XP por clic", costo: 60, costoEscala: 1.3, aporteClic: 1 },
+        { id: "sabatiston", nombre: "📚 Tratado Sabiston", desc: "+5 XP por clic", costo: 400, costoEscala: 1.35, aporteClic: 5 },
+        { id: "esteto", nombre: "🩺 Estetoscopio Littmann", desc: "+15 XP por clic y +1 Destreza", costo: 2500, costoEscala: 1.4, aporteClic: 15, aporteDestreza: 1 },
+        { id: "lapiz", nombre: "✏️ Lápiz Electrocoagulación", desc: "+60 XP por clic y +3 Destreza", costo: 12000, costoEscala: 1.45, aporteClic: 60, aporteDestreza: 3 },
+        { id: "taquilla", nombre: "🔑 Taquilla en Internado", desc: "+250 XP por clic y +5 Destreza", costo: 75000, costoEscala: 1.5, aporteClic: 250, aporteDestreza: 5 },
+        { id: "mixter", nombre: "🔧 Pinza Mixter", desc: "+10 Destreza y +10 Prestigio", costo: 85000, costoEscala: 1.5, aportePrestigio: 10, aporteDestreza: 10 },
+        { id: "malla", nombre: "🧵 Malla Polipropileno", desc: "+20 Destreza y +20 Prestigio", costo: 100000, costoEscala: 1.5, aportePrestigio: 20, aporteDestreza: 20 },
+        { id: "celulosa", nombre: "🧬 Malla Celulosa", desc: "+30 Destreza y +25 Prestigio", costo: 150000, costoEscala: 1.5, aportePrestigio: 25, aporteDestreza: 30 },
+        { id: "suturadora", nombre: "🔫 Suturadora Mecánica", desc: "+50 Destreza y +50 Prestigio", costo: 250000, costoEscala: 1.5, aportePrestigio: 50, aporteDestreza: 50 },
+        { id: "numero", nombre: "📱 El número de la Interna", desc: "+100 Destreza y +100 Prestigio", costo: 300000, costoEscala: 1.5, aportePrestigio: 100, aporteDestreza: 100 }
+    ];
+
+    // ================================================================
+    // 4. TÉCNICAS QUIRÚRGICAS (25 técnicas - COMPLETAS)
+    // ================================================================
+    const BANCO_TECNICAS = [
+        {
+            cirugia: "Apendicectomía Convencional (Abierta)",
+            pasosCorrectos: [
+                "Incisión oblicua o transversa en fosa ilíaca derecha (McBurney o Rocky-Davis)",
+                "Localización del apéndice cecal y exteriorización guiándose por las tenias del colon",
+                "Disección, ligadura y sección del mesoapéndice (arteria apendicular)",
+                "Doble ligadura de la base apendicular, sección del órgano y tratamiento del muñón",
+                "Lavado local de la fosa ilíaca, revisión de la hemostasia y cierre por planos anatómicos"
+            ]
+        },
+        {
+            cirugia: "Colecistectomía Abierta de Urgencia",
+            pasosCorrectos: [
+                "Incisión subcostal derecha (Kocher) y colocación de campos para exposición",
+                "Disección minuciosa y aislamiento del Triángulo de Calot (conducto y arteria)",
+                "Identificación, doble ligadura proximal/distal y sección del Conducto Cístico",
+                "Identificación, doble ligadura y sección selectiva de la Arteria Cística",
+                "Disección retrógrada de la vesícula biliar del lecho hepático y hemostasia con electrocauterio"
+            ]
+        },
+        {
+            cirugia: "Laparotomía Exploradora por Neumoperitoneo",
+            pasosCorrectos: [
+                "Incisión mediana supra e infraumbilical con apertura de la línea alba y peritoneo",
+                "Aspiración inmediata del gas acumulado, contenido entérico o purulento libre",
+                "Evisceración reglada y sistemática desde el esófago abdominal hasta el recto sigmoides",
+                "Identificación del sitio exacto de la perforación de la víscera hueca",
+                "Control temporal de la contaminación mediante oclusión o colocación de pinzas atraumáticas"
+            ]
+        },
+        {
+            cirugia: "Hernioplastia Inguinal Estrangulada",
+            pasosCorrectos: [
+                "Incisión inguinal ipsilateral paralela al ligamento inguinal y apertura del oblicuo mayor",
+                "Apertura del saco herniario infectado o a tensión para evaluar el líquido retenido",
+                "Inspección macroscópica de la viabilidad del asa intestinal (color, motilidad y pulso arterial)",
+                "Reducción del contenido viable a la cavidad abdominal tras liberar el anillo constrictor",
+                "Cierre del saco herniario alta reconstrucción de la pared posterior (técnica de Lichtenstein)"
+            ]
+        },
+        {
+            cirugia: "Rafia Gástrica por Úlcera Perforada",
+            pasosCorrectos: [
+                "Abordaje mediante laparotomía mediana y exposición de la cara anterior del estómago",
+                "Toma de biopsia de los bordes desvitalizados de la úlcera peptídica perforada",
+                "Sutura primaria del defecto con puntos sueltos invertidos de material absorbible",
+                "Refuerzo de la línea de sutura mediante el parche epiploico de Graham (fijación de epiplón mayor)",
+                "Lavado exhaustivo de los espacios subfrénicos y goterones paracólicos con solución salina"
+            ]
+        },
+        {
+            cirugia: "Resección Intestinal y Anastomosis por Isquemia Mesentérica",
+            pasosCorrectos: [
+                "Apertura abdominal y delimitación precisa del segmento intestinal necrótico o inviable",
+                "Ligadura escalonada de las arcadas vasculares del mesenterio correspondiente al segmento afecto",
+                "Sección del intestino en zonas sanas con buen sangrado y bordes bien vascularizados",
+                "Confección de anastomosis término-terminal manual o mecánica libre de tensión",
+                "Cierre meticuloso de la brecha mesentérica para prevenir hernias internas posoperatorias"
+            ]
+        },
+        {
+            cirugia: "Drenaje Quirúrgico de Absceso Hepático Amebiano Complicado",
+            pasosCorrectos: [
+                "Abordaje subcostal derecho o mediano guiado por ecografía preoperatoria",
+                "Localización del área de fluctuación o hepatomegalia inflamatoria en la cápsula de Glisson",
+                "Punción guiada e incisión de la pared anterior del absceso protegiendo la cavidad",
+                "Aspiración completa del contenido espeso purulento (aspecto en pasta de anchoas)",
+                "Colocación de un sistema de drenaje cerrado de grueso calibre fijado a la piel"
+            ]
+        },
+        {
+            cirugia: "Esplenectomía de Urgencia por Trauma Abdominal Grado IV",
+            pasosCorrectos: [
+                "Laparotomía supraumbilical amplia y empaquetamiento inmediato de los cuatro cuadrantes",
+                "Movilización del bazo rompiendo digitalmente los ligamentos esplenorrenal y esplenocólico",
+                "Tracción medial del bazo para exponer el hilio esplénico posterior a la cola del páncreas",
+                "Pinzamiento individual, ligadura doble y sección de la arteria y vena esplénica",
+                "Retirada del órgano, revisión exhaustiva del lecho esplénico y empaquetamiento si persiste sangrado"
+            ]
+        },
+        {
+            cirugia: "Tratamiento Quirúrgico de Diverticulitis Perforada (Operación de Hartmann)",
+            pasosCorrectos: [
+                "Incisión infraumbilical izquierda o mediana y debridamiento de adherencias inflamatorias",
+                "Resección del segmento de colon sigmoides comprometido, necrótico o perforado",
+                "Cierre ciego del muñón rectal distal mediante sutura mecánica o manual (recto intraperitoneal)",
+                "Exteriorización del cabo colónico proximal a través de la fosa ilíaca izquierda",
+                "Confección de la colostomía terminal madurada a la piel (fijación mucocutánea)"
+            ]
+        },
+        {
+            cirugia: "Aseo Peritoneal en Peritonitis Purulenta Generalizada",
+            pasosCorrectos: [
+                "Identificación y resolución del foco infeccioso primario (apéndice, divertículo o víscera)",
+                "Aspiración de colecciones purulentas en fondo de saco de Douglas, subhepático y subfrénico",
+                "Lavado de la cavidad con abundantes litros de solución fisiológica tibia hasta obtener líquido claro",
+                "Secado meticuloso de los recesos peritoneales con compresas estériles sin lesionar el endotelio",
+                "Colocación estratégica de drenajes tubulares multiforados en zonas de declive"
+            ]
+        },
+        {
+            cirugia: "Desbridamiento de Fascitis Necrosante Perineal (Gangrena de Fournier)",
+            pasosCorrectos: [
+                "Incisiones lineales e interpuestas amplias sobre las zonas de crepitación y piel necrótica",
+                "Disección digital roma rompiendo los planos faciales despegados por las toxinas bacterianas",
+                "Resección radical con bisturí de toda la fascia desvitalizada, grisácea y tejido celular necrótico",
+                "Lavado a presión con solución salina combinada con peróxido de hidrógeno",
+                "Empaquetamiento laxo de las heridas abiertas con gasas impregnadas en antiséptico"
+            ]
+        },
+        {
+            cirugia: "Adesiolisis por Obstrucción de Intestino Delgado",
+            pasosCorrectos: [
+                "Ingreso cuidadoso a cavidad evitando perforar asas intestinales distendidas adheridas a la pared",
+                "Identificación visual del 'punto de transición' entre el asa colapsada y el asa dilatada",
+                "Sección roma o cortante de la brida o banda fibrótica causante de la oclusión",
+                "Evaluación de la peristalsis y recoloración del intestino tras la liberación del tránsito",
+                "Revisión de toda la longitud del intestino en busca de despulidos serosos o desgarros"
+            ]
+        },
+        {
+            cirugia: "Colecistostomía Abierta de Salvataje",
+            pasosCorrectos: [
+                "Incisión transrectal superior o subcostal derecha mínima sobre el fondo vesicular palpable",
+                "Colocación de puntos de transfixión (jareta) en el fondo de la vesícula biliar",
+                "Punción central y aspiración del contenido purulento a tensión para descompresión",
+                "Introducción de una sonda de hule tipo Foley o Malecot al interior de la luz vesicular",
+                "Anudado de la jareta, fijación de la vesícula a la pared abdominal anterior y exteriorización del catéter"
+            ]
+        },
+        {
+            cirugia: "Cierre Temporal de Abdomen (Bolsa de Bogotá)",
+            pasosCorrectos: [
+                "Verificación de edema masivo de asas y riesgo inminente de síndrome compartimental abdominal",
+                "Colocación de una lámina estéril de polivinilo (bolsa de solución salina moldeada)",
+                "Sutura continua con monofilamento grueso (Nylon 2-0) anclando la lámina a los bordes de la piel",
+                "Colocación de compresas absorbentes sobre la bolsa para recolectar el fluido peritoneal",
+                "Instalación de un sistema de aspiración negativa artesanal o comercial sobre el apósito"
+            ]
+        },
+        {
+            cirugia: "Control de Daños por Trauma Hepático Penetrante",
+            pasosCorrectos: [
+                "Laparotomía transversa bilateral o mediana amplia para control vascular rápido",
+                "Maniobra de Pringle (pinzamiento digital o vascular transitorio del ligamento hepatoduodenal)",
+                "Identificación de las laceraciones profundas en los segmentos hepáticos lesionados",
+                "Empaquetamiento perihepático compresivo (Packing) con múltiples compresas alrededor del órgano",
+                "Verificación del cese del sangrado masivo venoso e indicación de traslado urgente a UCI"
+            ]
+        },
+        {
+            cirugia: "Debridamiento Quirúrgico de Pancreatitis Necrotizante Aguda (Necrosectomía)",
+            pasosCorrectos: [
+                "Acceso a la transcavidad de los epiplones mediante el despegamiento colopancreático",
+                "Apertura del peritoneo parietal posterior exponiendo el tejido pancreático y peripancreático",
+                "Extracción manual roma (necrosectomía digital) de los secuestros de tejido graso licuado",
+                "Lavado de arrastre profuso del espacio retroperitoneal con solución tibia",
+                "Instalación de drenajes de doble luz para sistema de lavado posoperatorio continuo"
+            ]
+        },
+        {
+            cirugia: "Yeyunostomía de Alimentación tipo Witzel",
+            pasosCorrectos: [
+                "Identificación del asa yeyunal a 30 centímetros del ángulo de Treitz",
+                "Inserción de una sonda flexible de hule a través de una pequeña enterotomía en el borde antimesentérico",
+                "Fijación de la sonda a la pared intestinal mediante una sutura en jareta absorbible",
+                "Tunelización de la sonda invaginándola en la pared yeyunal cubriéndola con puntos seroseros",
+                "Fijación del asa yeyunal al peritoneo parietal anterior antes de exteriorizar la sonda por contrabertura"
+            ]
+        },
+        {
+            cirugia: "Descompresión por Vólvulo de Sigmoides Complicado",
+            pasosCorrectos: [
+                "Laparotomía mediana inferior y exteriorización cuidadosa del asa sigmoidea gigantesca",
+                "Detorsión manual del asa girando en sentido contrario a las manecillas del reloj",
+                "Evaluación de la viabilidad del colon; ante necrosis, pinzamiento inmediato de la base",
+                "Resección del segmento colónico afectado sin descompresión previa para evitar bacteriemia",
+                "Abandono del muñón rectal y confección de colostomía proximal transitoria"
+            ]
+        },
+        {
+            cirugia: "Traqueostomía Quirúrgica de Urgencia",
+            pasosCorrectos: [
+                "Incisión cervical transversa dos dedos por encima de la horquilla esternal",
+                "Disección por planos de la línea media separando los músculos infrahioideos",
+                "Sección o retracción superior del istmo de la glándula tiroides para exponer los anillos traqueales",
+                "Apertura horizontal de la pared anterior traqueal entre el segundo y tercer anillo (ventana traqueal)",
+                "Introducción de la cánula de traqueostomía con balón, insuflación del mismo y fijación lateral"
+            ]
+        },
+        {
+            cirugia: "Toracotomía de Emergencia por Hemotórax Masivo",
+            pasosCorrectos: [
+                "Incisión anterolateral en el quinto espacio intercostal izquierdo justo debajo del pezón",
+                "Sección rápida del músculo intercostal y pleura parietal e inserción del separador de Finochietto",
+                "Evacuación manual de los coágulos y aspiración de la sangre libre del espacio pleural",
+                "Compresión digital directa de la aorta torácica descendente contra los cuerpos vertebrales",
+                "Identificación y pinzamiento del vaso sangrante (mamaria interna, intercostal o hilio pulmonar)"
+            ]
+        },
+        {
+            cirugia: "Hernioplastia Umbilical Estrangulada",
+            pasosCorrectos: [
+                "Incisión infraumbilical semicircular bordeando el defecto de la hernia",
+                "Disección y aislamiento periférico del saco herniario fibroso adherido a la piel",
+                "Apertura del saco, drenaje del líquido de sufrimiento y evaluación de la viabilidad del epiplón o asa",
+                "Resección del epiplón isquémico o reducción del asa sana al interior de la cavidad abdominal",
+                "Cierre del defecto aponeurótico mediante sutura con puntos cruzados no absorbibles (técnica de Mayo)"
+            ]
+        },
+        {
+            cirugia: "Yeyunectomía por Trauma Penetrante Transfixiante",
+            pasosCorrectos: [
+                "Exploración sistemática del asa delgada identificando los orificios de entrada y salida",
+                "Aislamiento con compresas del segmento que aloja las perforaciones múltiples contiguas",
+                "Ligadura selectiva de los vasos mesentéricos que nutren el segmento perforado",
+                "Corte del intestino con bisturí frío dejando márgenes vitales sanos",
+                "Restablecimiento del tránsito intestinal mediante anastomosis manual en dos planos"
+            ]
+        },
+        {
+            cirugia: "Drenaje Quirúrgico de Absceso Perianal Complejo",
+            pasosCorrectos: [
+                "Colocación del paciente en posición de litotomía o navaja sevillana bajo anestesia",
+                "Palpación bimanual para localizar la zona de máxima fluctuación e induración perianal",
+                "Incisión crucial (en forma de cruz) sobre el tejido inflamado cortando los bordes para evitar cierre precoz",
+                "Ruptura de los lóculos internos purulentos mediante pinza roma o dedo enguantado",
+                "Lavado de la cavidad con solución antiséptica y colocación de un drenaje Penrose o mecha de gasa"
+            ]
+        },
+        {
+            cirugia: "Derivación Cisto-Yeyunal en Y de Roux por Trauma Biliar Complicado",
+            pasosCorrectos: [
+                "Laparotomía subcostal derecha ampliada y disección del ligamento hepatoduodenal",
+                "Identificación y regularización del cabo proximal sano de la vía biliar principal lesionada",
+                "Sección del yeyuno a 40 cm del ángulo de Treitz y movilización del cabo distal transmesocólico",
+                "Confección de la anastomosis bilio-entérica término-lateral con puntos sueltos monofilamento",
+                "Reconstitución del tránsito intestinal mediante anastomosis yeyuno-yeyunal (pie de la Y de Roux)"
+            ]
+        },
+        {
+            cirugia: "Amputación de Rectosigmoides por Megacolon Tóxico",
+            pasosCorrectos: [
+                "Abordaje por laparotomía mediana y movilización del colon izquierdo liberando el espacio parietocólico",
+                "Disección roma del espacio retrorrectal protegiendo minuciosamente ambos uréteres",
+                "Ligadura y sección escalonada de la arteria mesentérica inferior cerca de su origen",
+                "Sección del colon descendente y el recto superior mediante grapadoras lineales cortantes",
+                "Extracción de la pieza quirúrgica y abocamiento del cabo colónico proximal como ostomía terminal"
+            ]
+        }
+    ];
+
+    // ================================================================
+    // 5. PREGUNTAS DE PASILLO Y DIÁLOGOS DE ESPECIALISTAS (80 preguntas - COMPLETAS)
+    // ================================================================
+    const DIALOGOS_ESPECIALISTAS = {
+        "Eduardo": { ok: "Está bien, pero estudia más", fail: "Estás suspenso, vaya a leer el ATLS" },
+        "Michel": { ok: "Puede ser... pasable", fail: "Estás perdido en el espacio, doctor" },
+        "Lorenzo": { ok: "Estás hecha una loca estudiando, ¡así se hace!", fail: "El Huesaso del siglo. ¡Estudie!" },
+        "Alian": { ok: "Correcto, se nota que aplicas la evidencia", fail: "Estudia más, estás desactualizado" },
+        "Rudy": { ok: "Eres bueno, no como Mandiel que es mongo", fail: "Eres peor que Mandiel, qué deshonra" },
+        "Reinaldo": { ok: "Perfecto, criterio quirúrgico impecable", fail: "Incorrecto, pusiste en riesgo al paciente" },
+        "Napoles": { ok: "Ustedes los residentes viven tirando piedras, pero esta la pegaste", fail: "No sabes Nada, nadie lo sabe, Solo yo. ¡A fregar instrumental!" },
+        "Rafael": { ok: "A lo mejor te creo... por esta vez", fail: "Nop, malísimo. Mejor le pregunto a una interna" }
+    };
+
+    const PREGUNTAS_PASILLO = [
+        // --- EDUARDO ---
+        {
+            esp: "Eduardo",
+            q: "Llega un trauma de tórax con asimetría, ruidos abolidos del lado derecho, disnea extrema e ingurgitación yugular. ¿Conducta inmediata?",
+            opts: [
+                { t: "Descompresión inmediata con aguja en el espacio intercostal correspondiente", ok: true },
+                { t: "Mandar al paciente a rayos X de tórax urgente", ok: false },
+                { t: "Iniciar intubación de secuencia rápida de inmediato", ok: false },
+                { t: "Colocar un vendaje elástico compresivo en el tórax", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Trauma cerrado de abdomen. Paciente hipotenso (TAS 80 mmHg) que no responde a cristaloides. FAST positivo en espacio de Morrison. ¿Conducta?",
+            opts: [
+                { t: "Laparotomía exploradora inmediata", ok: true },
+                { t: "Tomografía computarizada con doble contraste", ok: false },
+                { t: "Paracentesis diagnóstica seriada", ok: false },
+                { t: "Transfundir 4 unidades de glóbulos rojos y esperar", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "En la evaluación inicial de un politrauma, ¿qué lesión representa una amenaza inminente para la vida en la 'B' del ABCDE?",
+            opts: [
+                { t: "Neumotórax a tensión", ok: true },
+                { t: "Taponamiento cardíaco", ok: false },
+                { t: "Obstrucción de la vía aérea por la lengua", ok: false },
+                { t: "Fractura expuesta de fémur con sangrado activo", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Paciente con sospecha de rotura diafragmática traumática izquierda. ¿Qué hallazgo en la radiografía de tórax es patognomónico?",
+            opts: [
+                { t: "Presencia de la sonda nasogástrica en el hemitórax izquierdo", ok: true },
+                { t: "Derrame pleural masivo derecho", ok: false },
+                { t: "Desviación de la tráquea hacia el lado izquierdo", ok: false },
+                { t: "Neumomediastino difuso", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Llega un paciente con trauma torácico abierto, con una herida succionante de 4 cm en el hemitórax izquierdo. ¿Cuál es el manejo inicial en el sitio?",
+            opts: [
+                { t: "Colocar un parche oclusivo fijado en tres de sus lados (válvula unidireccional)", ok: true },
+                { t: "Suturar la herida por planos de inmediato para evitar la entrada de aire", ok: false },
+                { t: "Realizar una traqueostomía de urgencia", ok: false },
+                { t: "Colocar un apósito seco fuertemente comprimido e impactado", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Un politraumatizado presenta triada de Beck (Ruidos cardíacos apagados, hipotensión e ingurgitación yugular). ¿Cuál es el tratamiento de emergencia?",
+            opts: [
+                { t: "Pericardiocentesis evacuadora de urgencia", ok: true },
+                { t: "Colocación de sonda pleural en el 5to espacio intercostal", ok: false },
+                { t: "Administración de un bolo de diuréticos de asa (Furosemida)", ok: false },
+                { t: "Toracotomía anterolateral bilateral en la camilla de guardia", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Según los lineamientos del ATLS, ¿cuál es el volumen inicial ideal de solución cristaloide isotónica entibiada que se debe infundir en un adulto con shock hipovolémico?",
+            opts: [
+                { t: "1 litro", ok: true },
+                { t: "3 litros", ok: false },
+                { t: "500 mililitros", ok: false },
+                { t: "Únicamente se infunden hemoderivados desde el inicio", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Trauma craneoencefálico. Paciente abre los ojos al dolor, emite sonidos incomprensibles y localiza estímulos dolorosos. ¿Qué escala de Glasgow tiene?",
+            opts: [
+                { t: "9 (Moderado)", ok: true },
+                { t: "12 (Leve)", ok: false },
+                { t: "7 (Grave)", ok: false },
+                { t: "5 (Crítico)", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "Paciente con trauma cerrado de abdomen y fractura de pelvis inestable. Presenta hipotensión refractaria. ¿Qué dispositivo de fijación temporal reduce el volumen pélvico y frena el sangrado venoso?",
+            opts: [
+                { t: "Sábana o cinturón pélvico a nivel de los trocánteres mayores", ok: true },
+                { t: "Tracción esquelética supracondílea inmediata", ok: false },
+                { t: "Fijadores externos definitivos en crestas ilíacas", ok: false },
+                { t: "Pantalón antichoque neumático inflado a máxima presión", ok: false }
+            ]
+        },
+        {
+            esp: "Eduardo",
+            q: "¿Cuál es el criterio clínico o gasométrico definitivo para indicar una toracotomía de urgencia en un paciente con hemotórax masivo?",
+            opts: [
+                { t: "Gasto inicial >1500 ml de sangre al colocar la sonda o >200 ml/h por 2-4 horas continuas", ok: true },
+                { t: "Presencia de un coágulo retenido de 200 ml visible por ultrasonido", ok: false },
+                { t: "PH pleural inferior a 7.2 en la muestra de líquido", ok: false },
+                { t: "Persistencia de disnea leve a pesar de la expansión pulmonar parcial", ok: false }
+            ]
+        },
+        // --- MICHEL ---
+        {
+            esp: "Michel",
+            q: "Paciente con dolor severo en barra en epigastrio y amilasa sérica al triple del valor normal. ¿Cuál es el pilar inicial?",
+            opts: [
+                { t: "Fluidoterapia enérgica guiada por metas (hidratación)", ok: true },
+                { t: "Cirugía exploratoria laparoscópica de urgencia", ok: false },
+                { t: "Antibioticoterapia profiláctica con Imipenem", ok: false },
+                { t: "Dieta absoluta por 10 días y sonda nasogástrica fija", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "Varón de 50 años con ictericia progresiva, dolor sordo en hipocondrio derecho y pérdida de peso. Vesícula palpable no dolorosa (Signo de Courvoisier-Terrier). Sospecha:",
+            opts: [
+                { t: "Adenocarcinoma de la cabeza del páncreas / Ampuloma", ok: true },
+                { t: "Colelitiasis crónica agudizada", ok: false },
+                { t: "Hepatitis viral de tipo A", ok: false },
+                { t: "Quiste hidatídico hepático roto", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "Para predecir la severidad de una pancreatitis aguda en las primeras 24 horas de admisión, ¿qué escala o marcador clínico es el más útil?",
+            opts: [
+                { t: "Criterios de SIRS / Escala APACHE II", ok: true },
+                { t: "Criterios de Ranson modificados", ok: false },
+                { t: "Amilasa sérica evolutiva", ok: false },
+                { t: "Clasificación tomográfica de Balthazar", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "¿Cuál es la causa metabólica más común que predispone a la formación de cálculos de colesterol en la vesícula biliar?",
+            opts: [
+                { t: "Hipersecreción biliar de colesterol combinada con hipomotilidad vesicular", ok: true },
+                { t: "Aumento de la excreción urinaria de bilirrubina conjugada", ok: false },
+                { t: "Exceso de sales biliares en la circulación enterohepática", ok: false },
+                { t: "Acidosis tubular renal de tipo proximal", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "Paciente con sospecha de fístula pancreática postoperatoria. ¿Qué criterio laboratorial en el líquido del drenaje confirma el diagnóstico según el ISGPS?",
+            opts: [
+                { t: "Concentración de amilasa superior a 3 veces el límite alto normal del suero sérico", ok: true },
+                { t: "Gasto diario del drenaje mayor a 500 ml independientemente de los componentes", ok: false },
+                { t: "Presencia de flora polimicrobiana y persistencia de fiebre", ok: false },
+                { t: "Concentración de lipasa menor a la mitad del valor plasmático", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "¿Cuál es la complicación local diferida más frecuente de la pancreatitis aguda, que carece de pared epitelial y suele formarse tras 4 semanas?",
+            opts: [
+                { t: "Seudoquiste pancreático", ok: true },
+                { t: "Necrosis amurallada (WON)", ok: false },
+                { t: "Absceso pancreático purulento", ok: false },
+                { t: "Colección líquida aguda peripancreática", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "En el manejo del adenocarcinoma gástrico del antro, ¿cuál es el margen de resección proximal mínimo recomendado por la evidencia quirúrgica para asegurar bordes libres?",
+            opts: [
+                { t: "Al menos 5 cm de margen macroscópicamente sano", ok: true },
+                { t: "Bastan 2 cm si el tumor es bien diferenciado", ok: false },
+                { t: "10 cm fijos incluyendo obligatoriamente el cardias", ok: false },
+                { t: "No importa el margen si se realiza linfadenectomía D1", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "Llega un paciente con hemorragia digestiva alta masiva por várices esofágicas sangrantes refractarias al manejo endoscópico. ¿Qué medida de rescate temporal ejerce taponamiento mecánico directo?",
+            opts: [
+                { t: "Sonda de Sengstaken-Blakemore", ok: true },
+                { t: "Sonda nasogástrica de Levin calibre 18 Fr", ok: false },
+                { t: "Infusión continua de Octreotide", ok: false },
+                { t: "Colocación de un stent duodenal autoexpandible", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "¿Qué tipo de reconstrucción digestiva tras una gastrectomía subtotal ofrece la menor incidencia de gastritis por reflujo alcalino biliar?",
+            opts: [
+                { t: "Reconstrucción en Y de Roux", ok: true },
+                { t: "Reconstrucción tipo Billroth II (Polya)", ok: false },
+                { t: "Reconstrucción tipo Billroth I (Pean)", ok: false },
+                { t: "Interposición de asa yeyunal simple (Henley)", ok: false }
+            ]
+        },
+        {
+            esp: "Michel",
+            q: "Durante una colecistectomía por colecistitis escleroatrófica, ¿qué maniobra de seguridad es mandatoria para definir la 'Visión Crítica de Seguridad' de Strasberg?",
+            opts: [
+                { t: "Limpiar el tercio inferior de la vesícula y separar el conducto y arteria císticos del lecho hepático", ok: true },
+                { t: "Disecar por completo la vía biliar principal hasta su confluencia", ok: false },
+                { t: "Realizar una colangiografía transoperatoria rutinaria por el fondo vesicular", ok: false },
+                { t: "Seccionar las estructuras pegadas al duodeno de manera roma", ok: false }
+            ]
+        },
+        // --- LORENZO ---
+        {
+            esp: "Lorenzo",
+            q: "Te presentan una hernia inguinal derecha con cambios de coloración en la piel, irreductible y exquisitamente dolorosa. ¿Conducta?",
+            opts: [
+                { t: "Intervención quirúrgica de urgencia sin maniobras agresivas", ok: true },
+                { t: "Maniobra de Taxis aplicando presión de forma violenta", ok: false },
+                { t: "Colocar hielo local por 4 horas y volver a evaluar", ok: false },
+                { t: "Dar el alta con analgésicos y programar electivo", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "¿Cuál es el componente anatómico estructural clave que se debilita o rompe en la génesis de una hernia inguinal directa?",
+            opts: [
+                { t: "Fascia transversalis en el triángulo de Hesselbach", ok: true },
+                { t: "Anillo inguinal profundo por persistencia del conducto peritoneovaginal", ok: false },
+                { t: "Aponeurosis del músculo oblicuo mayor", ok: false },
+                { t: "Ligamento de Gimbernat", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "Durante una hernioplastia inguinal abierta, identificas un saco herniario que protruye medial a los vasos epigástricos inferiores. ¿Qué tipo de hernia es?",
+            opts: [
+                { t: "Hernia Inguinal Directa", ok: true },
+                { t: "Hernia Inguinal Indirecta", ok: false },
+                { t: "Hernia Crural o Femoral", ok: false },
+                { t: "Hernia de Spiegel", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "¿Cómo se define una Hernia de Littre?",
+            opts: [
+                { t: "Aquella cuyo saco herniario contiene un divertículo de Meckel", ok: true },
+                { t: "La que contiene solo una parte de la pared del intestino (borde antimesentérico)", ok: false },
+                { t: "Una hernia inguinal e indirecta simultánea en el mismo lado", ok: false },
+                { t: "Una hernia incarcerada que contiene el apéndice cecal inflamado", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "Durante la disección del conducto inguinal en un paciente joven, se identifica que el saco herniario acompaña al cordón espermático por dentro de la fascia cremastérica. ¿Qué tipo de hernia es y cuál es su causa?",
+            opts: [
+                { t: "Hernia inguinal indirecta por persistencia del conducto peritoneovaginal permeable", ok: true },
+                { t: "Hernia inguinal directa por debilidad adquirida de la fascia transversalis", ok: false },
+                { t: "Hernia crural por dilatación del anillo femoral", ok: false },
+                { t: "Hernia de Richter por atrapamiento parcial del borde antimesentérico", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "Al realizar una técnica de McVay para reparar una hernia crural, ¿a qué estructura anatómica firme se debe suturar el tendón conjunto para sellar el defecto?",
+            opts: [
+                { t: "Ligamento de Cooper (Ligamento pectíneo)", ok: true },
+                { t: "Ligamento de Poupart (Ligamento inguinal)", ok: false },
+                { t: "Cintilla iliopúbica de Thompson", ok: false },
+                { t: "Fascia del músculo psoas mayor", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "¿Qué nervio sensitivo discurre inmediatamente por encima del cordón espermático tras abrir la aponeurosis del oblicuo mayor y puede lesionarse al disecar el saco?",
+            opts: [
+                { t: "Nervio ilioinguinal (Abdominogenital menor)", ok: true },
+                { t: "Rama femoral del nervio genitofemoral", ok: false },
+                { t: "Nervio femorocutáneo lateral", ok: false },
+                { t: "Nervio hipogástrico (Abdominogenital mayor)", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "En la clasificación de Nyhus para hernias de la región inguinocrural, ¿a qué categoría corresponde una hernia inguinal indirecta con el anillo inguinal profundo dilatado y destrucción del piso del conducto (hernia en pantalón)?",
+            opts: [
+                { t: "Tipo IIIb", ok: true },
+                { t: "Tipo I", ok: false },
+                { t: "Tipo II", ok: false },
+                { t: "Tipo IVa", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "Paciente operado de urgencia por hernia inguinal estrangulada. Al abrir el saco, encuentras un asa intestinal isquémica. Realizas una resección segmentaria. ¿Qué conducta es la más recomendada respecto al uso de malla?",
+            opts: [
+                { t: "Evitar el uso de malla sintética (reparación anatómica pura) por alto riesgo de contaminación", ok: true },
+                { t: "Colocar una malla de polipropileno pesada de forma habitual", ok: false },
+                { t: "Colocar la malla impregnada en yodopovidona y cerrar la piel", ok: false },
+                { t: "Dejar el defecto abierto para un segundo tiempo en 6 meses", ok: false }
+            ]
+        },
+        {
+            esp: "Lorenzo",
+            q: "¿Cuál es la localización anatómica exacta de una Hernia de Spiegel?",
+            opts: [
+                { t: "En la línea semilunar, en la transición entre el músculo recto anterior y las aponeurosis laterales", ok: true },
+                { t: "En la línea alba, a mitad de camino entre el apéndice xifoides y el ombligo", ok: false },
+                { t: "En el triángulo lumbar superior (Triángulo de Grynfeltt)", ok: false },
+                { t: "A través del agujero obturador en la pelvis", ok: false }
+            ]
+        },
+        // --- ALIAN ---
+        {
+            esp: "Alian",
+            q: "Según protocolos modernos de recuperación precoz (ERAS) en resecciones colónicas, ¿cuándo se debe iniciar la movilización y la vía oral?",
+            opts: [
+                { t: "Movilización fuera de la cama y dieta líquida en las primeras 24 horas", ok: true },
+                { t: "Al quinto día tras confirmar expulsión de flatos", ok: false },
+                { t: "Únicamente cuando se retire por completo el drenaje", ok: false },
+                { t: "A las 72 horas previo control radiológico con bario", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "En el protocolo ERAS, ¿cuál es la conducta recomendada respecto a la preparación mecánica del colon en cirugías rectosigmoideas de forma rutinaria?",
+            opts: [
+                { t: "Se prefiere evitar de forma rutinaria o usarla selectivamente, sin ayuno prolongado", ok: true },
+                { t: "Es obligatoria con polietilenglicol y dos días de dieta líquida estricta", ok: false },
+                { t: "Debe combinarse siempre con antibióticos orales no absorbibles por 72 horas", ok: false },
+                { t: "Se sustituye exclusivamente por enemas de alta presión en el quirófano", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "¿Cuál es el objetivo principal de administrar una carga de carbohidratos vía oral 2 horas antes de la cirugía según las guías ERAS?",
+            opts: [
+                { t: "Reducir la resistencia insulínica postoperatoria y el catabolismo", ok: true },
+                { t: "Prevenir la hipoglucemia transoperatoria causada por la anestesia", ok: false },
+                { t: "Aumentar la presión del esfínter esofágico inferior para evitar aspiración", ok: false },
+                { t: "Acelerar el vaciamiento gástrico de sólidos pesados", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "Respecto al uso de drenajes abdominales rutinarios en la colecistectomía laparoscópica electiva no complicada, ERAS determina que:",
+            opts: [
+                { t: "Están contraindicados de forma rutinaria porque incrementan la morbilidad y la estancia", ok: true },
+                { t: "Son obligatorios para detectar fugas biliares subclínicas", ok: false },
+                { t: "Deben dejarse por al menos 48 horas bajo aspiración negativa", ok: false },
+                { t: "Solo se omiten si el paciente es joven y no padece comorbilidades", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "¿Cuál es la estrategia recomendada por el protocolo ERAS para el manejo de fluidos transoperatorios en una cirugía abdominal mayor?",
+            opts: [
+                { t: "Terapia hídrica dirigida por objetivos (restricción/euvelemia) para evitar el edema intestinal", ok: true },
+                { t: "Administración empírica de 30 ml/kg/hora de cristaloides para asegurar diuresis", ok: false },
+                { t: "Sobrecarga masiva preanestésica con coloides para contrarrestar la vasodilatación", ok: false },
+                { t: "Mantener al paciente en hipotensión deliberada sin aportar fluidos hasta el cierre", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "Para optimizar el control del dolor postoperatorio según los principios ERAS minimizando el íleo paralítico, ¿cuál es la conducta farmacológica de elección?",
+            opts: [
+                { t: "Analgesia multimodal ahorradora de opioides (AINES, paracetamol, bloqueos regionales)", ok: true },
+                { t: "Infusión continua de Meperidina o Morfina a altas dosis por bomba de infusión", ok: false },
+                { t: "Uso exclusivo de sedantes benzodiacepínicos durante las primeras 48 horas", ok: false },
+                { t: "Esperar a que el paciente refiera dolor insoportable para administrar analgésicos", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "En la profilaxis antitrombótica postoperatoria para pacientes oncológicos sometidos a cirugía colorrectal mayor, ¿cuál es la duración estándar recomendada por las guías?",
+            opts: [
+                { t: "Heparina de bajo peso molecular por 28 días extendidos post-alta", ok: true },
+                { t: "Interrumpir las dosis de heparina inmediatamente al retirar las suturas epidurales", ok: false },
+                { t: "Únicamente movilización temprana sin necesidad de fármacos anticoagulantes", ok: false },
+                { t: "Aspirina 100 mg por vía oral durante las primeras 72 horas únicamente", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "Según la evidencia en la prevención de la infección del sitio quirúrgico (ISQ) promovida por las guías de práctica clínica, ¿cuál es el tiempo óptimo para la administración de la profilaxis antibiótica endovenosa?",
+            opts: [
+                { t: "Dentro de los 60 minutos previos a la incisión quirúrgica", ok: true },
+                { t: "Inmediatamente después de intubar al paciente, unas 3 horas antes de operar", ok: false },
+                { t: "Justo en el momento de realizar el corte de la piel", ok: false },
+                { t: "Al finalizar el procedimiento en la sala de recuperación", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "¿Cuál es la recomendación del protocolo ERAS sobre el uso de sondas nasogástricas postoperatorias de rutina tras una gastrectomía o resección colónica?",
+            opts: [
+                { t: "Retirarla antes de la extubación o no colocarla de rutina para evitar complicaciones pulmonares", ok: true },
+                { t: "Mantenerla fija a aspiración intermitente hasta que el débito sea menor a 50 ml", ok: false },
+                { t: "Dejarla colocada obligatoriamente por 7 días para proteger las anastomosis", ok: false },
+                { t: "Sustituirla siempre por una yeyunostomía de alimentación en el transoperatorio", ok: false }
+            ]
+        },
+        {
+            esp: "Alian",
+            q: "Respecto al ayuno preoperatorio para sólidos en cirugías electivas, las guías de anestesia y ERAS actuales permiten la ingesta de comida ligera hasta:",
+            opts: [
+                { t: "6 horas antes de la cirugía", ok: true },
+                { t: "24 horas antes de la cirugía manteniendo dieta líquida", ok: false },
+                { t: "12 horas fijas pasando una sonda de vaciamiento", ok: false },
+                { t: "No hay límite de tiempo para sólidos si se usan procinéticos", ok: false }
+            ]
+        },
+        // --- RUDY ---
+        {
+            esp: "Rudy",
+            q: "Paciente masculino de 45 años con sospecha de oclusión intestinal mecánica alta. ¿Cuál es el hallazgo radiográfico clásico en bipedestación?",
+            opts: [
+                { t: "Niveles hidroaéreos en 'escalera' y ausencia de gas distal", ok: true },
+                { t: "Imagen en 'grano de café' gigante en cuadrante inferior", ok: false },
+                { t: "Neumoperitoneo bilateral subdiafragmático franco", ok: false },
+                { t: "Borramiento completo de la línea del psoas derecho", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "Paciente con oclusión intestinal por vólvulo de sigmoides, estable, sin signos de peritonitis ni estrangulación. Tratamiento inicial de elección:",
+            opts: [
+                { t: "Desvolvulación por sigmoidoscopia o colonoscopia + sonda rectal", ok: true },
+                { t: "Laparotomía inmediata con operación de Hartmann", ok: false },
+                { t: "Resección y anastomosis primaria término-terminal de urgencia", ok: false },
+                { t: "Conducta expectante con procinéticos intravenosos", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "La causa más frecuente de oclusión intestinal mecánica del intestino delgado en pacientes con antecedentes de cirugías abdominales previas es:",
+            opts: [
+                { t: "Bridas y adherencias postoperatorias", ok: true },
+                { t: "Hernias encarceladas de la pared anterior", ok: false },
+                { t: "Neoplasias estenosantes del íleon terminal", ok: false },
+                { t: "Íleo biliar por fístula colecistoduodenal", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "En una oclusión en asa cerrada del colon (ej. tumor de colon izquierdo), ¿qué factor anatómico determina el riesgo inminente de perforación cecal?",
+            opts: [
+                { t: "Una válvula ileocecal competente", ok: true },
+                { t: "Una válvula ileocecal incompetente", ok: false },
+                { t: "La longitud excesiva del colon transverso", ok: false },
+                { t: "La presencia de diverticulosis asociada en el ciego", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "Paciente con sospecha de íleo biliar (oclusión mecánica). ¿Cómo se denomina a la tríada radiológica clásica compuesta por neumobilia, niveles de oclusión y cálculo radiopaco ectópico?",
+            opts: [
+                { t: "Tríada de Rigler", ok: true },
+                { t: "Tríada de Sandblom", ok: false },
+                { t: "Signo de Jobert", ok: false },
+                { t: "Tríada de Wahl", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "Ante una obstrucción del intestino delgado secundaria a bridas, ¿cuál es el parámetro clínico-analítico más fiable para abandonar el manejo médico conservador e indicar cirugía inmediata?",
+            opts: [
+                { t: "Aparición de signos de irritación peritoneal (rebote), fiebre y leucocitosis (sospecha de estrangulación)", ok: true },
+                { t: "Persistencia del dolor cólico leve tras 12 horas de sonda nasogástrica", ok: false },
+                { t: "Aumento del volumen del líquido aspirado por la sonda Levin", ok: false },
+                { t: "Ausencia de evacuaciones líquidas en las primeras 6 horas", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "¿A partir de qué diámetro cecal medido en una radiografía simple se considera que existe un riesgo inminente de rotura diastásica en una obstrucción colónica?",
+            opts: [
+                { t: "10 - 12 centímetros", ok: true },
+                { t: "5 centímetros", ok: false },
+                { t: "8 centímetros", ok: false },
+                { t: "18 centímetros", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "Anciano de 82 años institucionalizado presenta distensión abdominal masiva sin dolor franco. La radiografía muestra una gran dilatación del colon desde el ciego al recto, pero la tomografía descarta obstrucción mecánica. Diagnóstico:",
+            opts: [
+                { t: "Síndrome de Ogilvie (Seudoobstrucción colónica aguda)", ok: true },
+                { t: "Vólvulo de ciego en asa cerrada", ok: false },
+                { t: "Megacolon tóxico secundario a colitis", ok: false },
+                { t: "Fecaloma gigante impactado", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "En el manejo farmacológico inicial del Síndrome de Ogilvie refractario a descompresión con sonda, ¿qué medicamento parasimpaticomimético es el de elección para inducir la motilidad colónica?",
+            opts: [
+                { t: "Neostigmina (con monitorización cardíaca por riesgo de bradicardia)", ok: true },
+                { t: "Atropina endovenosa en bolo", ok: false },
+                { t: "Metoclopramida a altas dosis", ok: false },
+                { t: "Loperamida vía oral", ok: false }
+            ]
+        },
+        {
+            esp: "Rudy",
+            q: "Durante una laparotomía por oclusión intestinal alta, encuentras un asa de intestino delgado de viabilidad dudosa debido a estrangulación por brida. Tras liberar la brida y aplicar compresas tibias con oxígeno por 15 minutos, ¿qué signo confirma la viabilidad del asa?",
+            opts: [
+                { t: "Retorno del color rosado, presencia de pulso arterial palpable en el mesenterio y peristalsis visible", ok: true },
+                { t: "Persistencia del color violáceo oscuro mate sin motilidad", ok: false },
+                { t: "Ausencia completa de sangrado al hacer un pequeño corte en la serosa", ok: false },
+                { t: "Desaparición del líquido libre peritoneal", ok: false }
+            ]
+        },
+        // --- NAPOLES ---
+        {
+            esp: "Napoles",
+            q: "Se sospecha una perforación de úlcera péptica. El residente insiste en que no ve neumoperitoneo en la placa de tórax normal. ¿Qué le dices?",
+            opts: [
+                { t: "El neumoperitoneo puede estar ausente hasta en un 30% de los casos", ok: true },
+                { t: "Si no hay neumoperitoneo, queda totalmente descartada la perforación", ok: false },
+                { t: "Hay que repetir la placa cada 30 minutos en diferentes posiciones", ok: false },
+                { t: "Indica bario por vía oral para confirmar la fuga de inmediato", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Femenina de 35 años con dolor en epigastrio irradiado a dorso, shock y signos de Cullen y Grey-Turner positivos en piel. Esto indica:",
+            opts: [
+                { t: "Pancreatitis aguda necrohemorrágica con sangrado retroperitoneal", ok: true },
+                { t: "Rotura espontánea de un quiste hepático simple", ok: false },
+                { t: "Embarazo ectópico roto con hemoperitoneo masivo", ok: false },
+                { t: "Perforación de divertículo de Meckel", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Llega una urgencia con neumoperitoneo masivo. Al abrir, encuentras una perforación de 1 cm en la cara anterior del bulbo duodenal. Técnica de elección:",
+            opts: [
+                { t: "Cierre primario de la perforación con parche de epiplón (Parche de Graham)", ok: true },
+                { t: "Antrectomía con reconstrucción Bilroth II de urgencia", ok: false },
+                { t: "Vagotomía troncular con piloroplastia inmediata", ok: false },
+                { t: "Exclusión duodenal y gastrostomía de descompresión", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "¿Cuál es el método diagnóstico con mayor sensibilidad y especificidad para confirmar una isquemia mesentérica aguda en las primeras horas?",
+            opts: [
+                { t: "Angiotomografía computarizada (Angio-TAC) de abdomen", ok: true },
+                { t: "Radiografía simple de abdomen en bipedestación", ok: false },
+                { t: "Ultrasonido Doppler abdominal convencional", ok: false },
+                { t: "Paracentesis evacuadora", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Paciente con sospecha de diverticulitis aguda que presenta neumaturia y fecaluria. ¿Qué tipo de fístula interna justifica clínicamente este cuadro?",
+            opts: [
+                { t: "Fístula colovesical", ok: true },
+                { t: "Fístula colouterina", ok: false },
+                { t: "Fístula coloentérica", ok: false },
+                { t: "Fístula colovaginal", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Según la clasificación de Hinchey modificada para diverticulitis aguda, ¿a qué estadio corresponde un absceso pélvico o retroperitoneal tabicado distante al foco inflamatorio original?",
+            opts: [
+                { t: "Estadio II", ok: true },
+                { t: "Estadio I", ok: false },
+                { t: "Estadio III", ok: false },
+                { t: "Estadio IV", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Paciente con diagnóstico de diverticulitis Hinchey IV (peritonitis fecaloidea masiva). ¿Cuál es el procedimiento quirúrgico clásico de elección para controlar la sepsis?",
+            opts: [
+                { t: "Operación de Hartmann (resección sigmoidea, colostomía terminal y cierre de muñón distal)", ok: true },
+                { t: "Resección segmentaria con anastomosis primaria e ileostomía de protección", ok: false },
+                { t: "Lavado peritoneal laparoscópico y colocación de drenajes sin resección", ok: false },
+                { t: "Hemicolectomía izquierda total con anastomosis término-terminal suelta", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "En un paciente con sospecha de vólvulo de ciego, ¿qué hallazgo radiológico típico orienta el diagnóstico diferencial frente al vólvulo de sigmoides?",
+            opts: [
+                { t: "Gran asa distendida con el ápice dirigido hacia el hipocondrio izquierdo", ok: true },
+                { t: "Imagen en 'grano de café' que nace desde la fosa ilíaca izquierda", ok: false },
+                { t: "Ausencia completa de niveles hidroaéreos en el intestino delgado", ok: false },
+                { t: "Presencia de gas abundante atrapado de forma uniforme en el recto", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "¿Cuál es la causa más común de hemorragia digestiva baja masiva y clínicamente significativa en pacientes mayores de 60 años?",
+            opts: [
+                { t: "Enfermedad diverticular (sangrado diverticular)", ok: true },
+                { t: "Adenocarcinoma de recto", ok: false },
+                { t: "Hemorroides internas grado IV", ok: false },
+                { t: "Divertículo de Meckel ulcerado", ok: false }
+            ]
+        },
+        {
+            esp: "Napoles",
+            q: "Durante una laparotomía por trauma de colon, encuentras una lesión destructiva que compromete el 70% de la circunferencia del colon izquierdo en un paciente con shock prolongado. Conducta de elección:",
+            opts: [
+                { t: "Resección del segmento afectado y abocamiento de cabos (colostomía tipo Mikulicz o Hartmann)", ok: true },
+                { t: "Sutura primaria en un solo plano con seda 2-0", ok: false },
+                { t: "Colocación de un parche de epiplón fijado sobre la perforación sin resecar", ok: false },
+                { t: "Anastomosis primaria término-terminal inmediata reforzada con pegamento biológico", ok: false }
+            ]
+        },
+        // --- RAFAEL ---
+        {
+            esp: "Rafael",
+            q: "En una apendicitis aguda en fase supurada, ¿cuál es el mecanismo fisiopatológico primario desencadenante?",
+            opts: [
+                { t: "Obstrucción de la luz apendicular por fecalito o hiperplasia linfoide", ok: true },
+                { t: "Infección bacteriana hematógena por Staphylococcus aureus", ok: false },
+                { t: "Isquemia primaria de la arteria apendicular por ateromatosis", ok: false },
+                { t: "Perforación espontánea secundaria a amebiasis intestinal", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "Paciente embarazada de 22 semanas con dolor abdominal. Sospechas apendicitis aguda. ¿Dónde esperas encontrar el punto de máximo dolor?",
+            opts: [
+                { t: "Desplazado hacia arriba y afuera (hacia el hipocondrio derecho)", ok: true },
+                { t: "Exactamente en el punto de McBurney clásico", ok: false },
+                { t: "En la fosa ilíaca izquierda por rotación uterina", ok: false },
+                { t: "En la región periumbilical sin irradiación", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "Durante una apendicectomía, encuentras un tumor firme de 1 cm en la punta del apéndice. El informe congelado dice 'Tumor Neuroendocrino (Carcinoide) bien diferenciado'. Conducta:",
+            opts: [
+                { t: "La apendicectomía simple es suficiente si los márgenes y la base están libres", ok: true },
+                { t: "Hemicolectomía derecha reglada obligatoria en el mismo acto", ok: false },
+                { t: "Cierre y derivación a oncología médica para quimioterapia masiva", ok: false },
+                { t: "Mesa operatoria inmediata para vaciamiento ganglionar retroperitoneal", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "¿Cuál es el microorganismo anaerobio aislado con mayor frecuencia en cultivos de líquido peritoneal tras una apendicitis aguda perforada?",
+            opts: [
+                { t: "Bacteroides fragilis", ok: true },
+                { t: "Clostridium perfringens", ok: false },
+                { t: "Escherichia coli", ok: false },
+                { t: "Pseudomonas aeruginosa", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "¿Cómo se define el Signo de Rovsing durante la exploración física de un paciente con sospecha de apendicitis aguda?",
+            opts: [
+                { t: "Dolor en la fosa ilíaca derecha al presionar la fosa ilíaca izquierda", ok: true },
+                { t: "Dolor exacerbado al realizar la descompresión brusca del abdomen derecho", ok: false },
+                { t: "Dolor en el hipocondrio derecho al realizar una inspiración profunda", ok: false },
+                { t: "Aumento del dolor al extender el muslo derecho en decúbito lateral izquierdo", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "En el sistema de puntuación de Alvarado para el diagnóstico clínico de apendicitis aguda, ¿qué parámetro analítico otorga un valor de 2 puntos?",
+            opts: [
+                { t: "Leucocitosis (>10,000 /mm³)", ok: true },
+                { t: "Desviación a la izquierda de la fórmula blanca", ok: false },
+                { t: "Fiebre documentada mayor a 38°C", ok: false },
+                { t: "Náuseas o vómitos", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "Al realizar una apendicectomía convencional abierta, ¿cuál es el nombre de la incisión oblicua que corta en dirección de las fibras de la aponeurosis del oblicuo mayor en la fosa ilíaca derecha?",
+            opts: [
+                { t: "Incisión de McBurney", ok: true },
+                { t: "Incisión de Rocky-Davis", ok: false },
+                { t: "Incisión paramediana derecha", ok: false },
+                { t: "Incisión de Pfannenstiel", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "¿Qué variante anatómica de posición apendicular es la más común en la población general y se asocia frecuentemente a presentaciones clínicas atípicas con dolor lumbar?",
+            opts: [
+                { t: "Retrocecal", ok: true },
+                { t: "Pélvica", ok: false },
+                { t: "Subcecal o ileal", ok: false },
+                { t: "Preileal", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "Paciente masculino de 14 años post-operado de apendicectomía por apendicitis gangrenosa hace 6 días. Inicia con picos febriles de 39°C, tenesmo rectal y dolor pélvico sordo. Sospecha clínica:",
+            opts: [
+                { t: "Absceso residual en el fondo de saco de Douglas", ok: true },
+                { t: "Obstrucción intestinal mecánica por bridas", ok: false },
+                { t: "Fístula cecal por dehiscencia del muñón", ok: false },
+                { t: "Invaginación intestinal postoperatoria", ok: false }
+            ]
+        },
+        {
+            esp: "Rafael",
+            q: "Durante una laparoscopia por apendicitis, identificas que la base del apéndice está completamente necrosada e involucra el tejido del ciego cecal vecino. ¿Cuál es el manejo adecuado del muñón?",
+            opts: [
+                { t: "Realizar una sutura en jareta (invaginación) o colocar una endo-sutura en tejido cecal sano", ok: true },
+                { t: "Colocar un clip de titanio simple directamente sobre el tejido necrótico", ok: false },
+                { t: "Ligar con hilo de catgut simple dejando la necrosis expuesta", ok: false },
+                { t: "Convertir de inmediato a hemicolectomía derecha abierta de forma mandatoria", ok: false }
+            ]
+        },
+        // --- REINALDO ---
+        {
+            esp: "Reinaldo",
+            q: "Paciente con sospecha de colecistitis aguda y plastrón biliar vesicular palpable. ¿Cuál es el estudio de imagen inicial de elección?",
+            opts: [
+                { t: "Ultrasonido abdominal superior", ok: true },
+                { t: "Tomografía computarizada con doble contraste", ok: false },
+                { t: "Colangiopancreatografía retrógrada endoscópica (CPRE)", ok: false },
+                { t: "Gammagrafía biliar con ácido iminodiacético (HIDA)", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "Femenina de 45 años, operada de colecistectomía laparoscópica hace 72 horas. Inicia con dolor abdominal difuso, fiebre y tinte ictérico. Sospecha principal:",
+            opts: [
+                { t: "Lesión inadvertida de la vía biliar principal o fuga del muñón cístico", ok: true },
+                { t: "Pancreatitis postoperatoria por estrés quirúrgico", ok: false },
+                { t: "Íleo paralítico reflejo fisiológico tardío", ok: false },
+                { t: "Hepatotoxicidad fulminante por anestésicos", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "¿Cuáles son los componentes clínicos que conforman la Tríada de Charcot para el diagnóstico de colangitis aguda?",
+            opts: [
+                { t: "Fiebre con escalofríos, ictericia y dolor en hipocondrio derecho", ok: true },
+                { t: "Hipotensión, confusión mental y dolor abdominal", ok: false },
+                { t: "Masa palpable, ictericia y dolor sordo", ok: false },
+                { t: "Fiebre, leucocitosis y esplenomegalia", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "Al expandir la Tríada de Charcot a la Péntada de Reynolds en una colangitis supurativa grave, ¿qué dos parámetros se añaden?",
+            opts: [
+                { t: "Shock (hipotensión) y alteración del estado mental (depresión del SNC)", ok: true },
+                { t: "Fallo renal agudo y amilasemia elevada", ok: false },
+                { t: "Coagulopatía de consumo y ascitis libre", ok: false },
+                { t: "Insuficiencia respiratoria y distensión abdominal", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "¿Cuál es el hallazgo ecográfico estándar de mayor peso para el diagnóstico de colecistitis aguda litiásica?",
+            opts: [
+                { t: "Engrosamiento de la pared vesicular >4 mm, líquido pericolequístico y Murphy ecográfico positivo", ok: true },
+                { t: "Presencia de un cálculo flotante de 5 mm en el cuerpo vesicular", ok: false },
+                { t: "Sombra acústica posterior aislada sin edema de pared", ok: false },
+                { t: "Dilatación del conducto colédoco por encima de los 10 mm", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "En la clasificación de Tokyo (TG18) para colecistitis aguda, ¿qué criterio define que el cuadro clínico corresponde a un Grado III (Grave)?",
+            opts: [
+                { t: "Disfunción de cualquier órgano o sistema (cardiovascular, neurológico, renal, hepático o hematológico)", ok: true },
+                { t: "Duración de los síntomas de dolor por más de 72 horas continuas", ok: false },
+                { t: "Presencia de marcada inflamación local con masa palpable en hipocondrio derecho", ok: false },
+                { t: "Recuento leucocitario superior a 18,000 células por milímetro cúbico", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "Paciente con colecistitis aguda Grado III y alto riesgo quirúrgico (comorbilidades graves, ASA IV). ¿Cuál es la conducta de elección si no tolera la anestesia general?",
+            opts: [
+                { t: "Colecistostomía percutánea guiada por ultrasonido o TAC para drenaje", ok: true },
+                { t: "Colecistectomía laparoscópica forzada con tres vías centralizadas", ok: false },
+                { t: "Tratamiento antibiótico indefinido esperando la resolución espontánea", ok: false },
+                { t: "Realizar una CPRE con esfinterotomía de urgencia", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "¿Cuál es el manejo inicial de elección para un paciente con coledocolitiasis confirmada que cursa con ictericia obstructiva sin signos de colangitis de urgencia?",
+            opts: [
+                { t: "ERCP/CPRE con esfinterotomía programada seguida de colecistectomía laparoscópica", ok: true },
+                { t: "Exploración abierta de la vía biliar con colocación de tubo en T (Sonda de Kahr) de entrada", ok: false },
+                { t: "Tratamiento disolutivo vía oral con ácidos biliares por un año", ok: false },
+                { t: "Laparotomía inmediata y anastomosis biliodigestiva en Y de Roux", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "Durante una colecistectomía por colecistitis aguda, se produce una apertura accidental de la vesícula con salida de bilis purulenta y cálculos a la cavidad. ¿Qué conducta previene abscesos postoperatorios?",
+            opts: [
+                { t: "Aspirar por completo la bilis, recuperar todos los cálculos sueltos con bolsa y realizar un lavado profuso", ok: true },
+                { t: "Cerrar el abdomen de inmediato sin lavar para no diseminar la infección", ok: false },
+                { t: "Dejar el lecho lleno de polvo de antibiótico local y omitir los drenajes", ok: false },
+                { t: "Convertir a cirugía abierta para colocar suturas continuas en el peritoneo parietal", ok: false }
+            ]
+        },
+        {
+            esp: "Reinaldo",
+            q: "El Síndrome de Mirizzi en su grado más avanzado fisiopatológico implica:",
+            opts: [
+                { t: "Obstrucción del conducto hepático común provocada por el impacto de un cálculo en el cístico o bacinete, que erosiona la pared y forma una fístula colecistocoledociana", ok: true },
+                { t: "La impactación de un cálculo gigante directamente dentro del lumen de la segunda porción del duodeno", ok: false },
+                { t: "La compresión extrínseca del colédoco distal debida a un pseudoquiste de la cabeza pancreática", ok: false },
+                { t: "La obliteración neoplásica de la confluencia de los conductos hepáticos (Tumor de Klatskin)", ok: false }
+            ]
+        }
+    ];
+
+    // ================================================================
+    // 6. BANCO DE EXAMENES (30 preguntas por categoría - COMPLETO)
+    // ================================================================
+    const BANCO_EXAMENES = {
+        0: [
+            { q: "¿Qué sutura es absorbible sintética?", o: ["Seda", "Nylon", "Poliglactina 910 (Vicryl)", "Polipropileno"], c: 2 },
+            { q: "La solución salina fisiológica al 0.9% es una solución de tipo:", o: ["Hipotónica", "Isotónica", "Hipertónica", "Coloide"], c: 1 },
+            { q: "Signo electrocardiográfico clásico de la hiperpotasemia severa:", o: ["Ondas T picudas y altas", "Aparición de onda U", "Acortamiento del segmento ST", "Inversión de la onda P"], c: 0 },
+            { q: "¿Cuál es el principal catión del líquido extracelular?", o: ["Potasio", "Calcio", "Magnesio", "Sodio"], c: 3 },
+            { q: "El requerimiento basal promedio diario de agua en un adulto sano es:", o: ["10-15 ml/kg", "30-35 ml/kg", "70-80 ml/kg", "100 ml/kg"], c: 1 },
+            { q: "¿Qué tipo de sutura se prefiere para la aponeurosis en abdomen?", o: ["Catgut simple", "Monofilamento no absorbible o absorción lenta", "Seda trenzada 3-0", "Vicryl rápido"], c: 1 },
+            { q: "La pérdida de potasio por vómitos repetidos suele causar:", o: ["Alcalosis metabólica hipopotasémica", "Acidosis metabólica", "Hipernatremia severa", "Acidosis respiratoria"], c: 0 },
+            { q: "¿Cuál es una complicación inmediata de una hidratación masiva desmedida?", o: ["Insuficiencia renal prerrenal", "Edema agudo del pulmón", "Deshidratación celular", "Hipocaliemia falsa"], c: 1 },
+            { q: "La mejor sutura para la piel por su baja reactividad es:", o: ["Catgut crómico", "Nylon o Polipropileno", "Seda", "Ácido poliglicólico"], c: 1 },
+            { q: "Ante una hiponatremia dilucional, la primera medida terapéutica es:", o: ["Restricción de líquidos", "Carga rápida de solución salina al 3%", "Dar diuréticos osmóticos", "Administrar potasio"], c: 0 }
+        ],
+        1: [
+            { q: "¿Cuál es la causa más común de abdomen agudo quirúrgico?", o: ["Colecistitis de urgencia", "Apendicitis aguda", "Obstrucción intestinal", "Perforación ulcerosa"], c: 1 },
+            { q: "La hernia que compromete solo el borde antimesentérico del intestino se llama:", o: ["Hernia de Richter", "Hernia de Littre", "Hernia de Spiegel", "Hernia de Pantalón"], c: 0 },
+            { q: "Punto doloroso apendicular situado en el tercio externo de la línea espino-umbilical:", o: ["Punto de McBurney", "Punto de Lanz", "Punto de Morris", "Punto de Rovsing"], c: 0 },
+            { q: "Las hernias inguinales directas se producen:", o: ["Por fuera de los vasos epigástricos", "A través del anillo inguinal profundo", "Por dentro de los vasos epigástricos (Hesselbach)", "A través del conducto crural"], c: 2 },
+            { q: "El signo radiológico de 'grano de café' es característico de:", o: ["Apendicitis", "Vólvulo de sigmoides", "Colecistitis", "Invaginación ileocecal"], c: 1 },
+            { q: "¿Qué estructura anatómica define el límite inferior del conducto inguinal?", o: ["Ligamento inguinal (Poupart)", "Músculo transverso", "Fascia transversalis", "Tendón conjunto"], c: 0 },
+            { q: "Una hernia que contiene un divertículo de Meckel en su saco es:", o: ["Hernia de Garant", "Hernia de Amyand", "Hernia de Littre", "Hernia de Richter"], c: 2 },
+            { q: "Ante un neumoperitoneo evidente en placa de bipedestación, el diagnóstico es:", o: ["Obstrucción mecánica", "Íleo paralítico", "Perforación de víscera hueca", "Apendicitis fase congestiva"], c: 2 },
+            { q: "La técnica quirúrgica inguinal con malla libre de tensión se llama:", o: ["Shouldice", "Bassini", "McVay", "Lichtenstein"], c: 3 },
+            { q: "El signo de Murphy positivo es orientador de:", o: ["Apendicitis aguda", "Colecistitis aguda", "Pancreatitis aguda", "Diverticulitis"], c: 1 }
+        ],
+        2: [
+            { q: "La clasificación de Forrest se utiliza para evaluar riesgo en:", o: ["Pancreatitis aguda", "Hemorragia digestiva alta por úlcera", "Cáncer de colon", "Colecistitis aguda"], c: 1 },
+            { q: "¿Cuál es el tumor maligno más frecuente del estómago?", o: ["Linfoma", "Adenocarcinoma", "GIST", "Leiomiosarcoma"], c: 1 },
+            { q: "Causa más común de dolor en fosa ilíaca izquierda en adultos mayores:", o: ["Diverticulitis aguda", "Apendicitis izquierda", "Quiste de ovario", "Hernia de Spiegel"], c: 0 },
+            { q: "Mujer en edad fértil con dolor abdominal agudo en FII, hypotension y retraso menstrual:", o: ["Torsión ovárica", "Embarazo ectópico roto", "Apendicitis perforada", "Salpingitis aguda"], c: 1 },
+            { q: "¿Cuál es la técnica estándar para tumores de cabeza de páncreas?", o: ["Operación de Whipple", "Operación de Miles", "Operación de Hartmann", "Pancreatectomía distal"], c: 0 },
+            { q: "¿Qué maniobra se usa para movilizar el duodeno y cabeza pancreática?", o: ["Maniobra de Pringle", "Maniobra de Kocher", "Maniobra de Cattell", "Maniobra de Mattox"], c: 1 },
+            { q: "Tratamiento de elección para la colelitiasis sintomática electiva:", o: ["Colecistectomía laparoscópica", "Ácido ursodesoxicólico", "Escleroterapia biliar", "Litotricia extracorpórea"], c: 0 },
+            { q: "El tumor ovárico que con mayor frecuencia sufre torsión aguda es:", o: ["Quiste dermoide (Teratoma)", "Cistadenoma seroso", "Fibroma", "Tumor de Brenner"], c: 0 },
+            { q: "La operación de Hartmann consiste en:", o: ["Resección rectal con anastomosis", "Resección colónica con colostomía proximal y cierre de muñón distal", "Derivación interna total", "Y de Roux"], c: 1 },
+            { q: "Estudio inicial de elección ante sospecha de patología ginecológica aguda:", o: ["Tomografía axial computarizada", "Ultrasonido pélvico / transvaginal", "Resonancia magnética", "Laparoscopia"], c: 1 }
+        ],
+        3: [
+            { q: "El cuadrante mamario con mayor incidencia de cáncer de mama es:", o: ["Superior interno", "Inferior externo", "Superior externo", "Retroareolar"], c: 2 },
+            { q: "Estándar de oro para el diagnóstico de embolia arterial aguda de extremidades:", o: ["Angio-TAC / Arteriografía", "Ultrasonido Doppler", "Pletismografía", "Flebografía"], c: 0 },
+            { q: "¿Qué tipo de biopsia confirma histología en nódulo de mama de forma estándar?", o: ["BAAF", "Biopsia con aguja gruesa (Trucut)", "Incisional abierta", "Marcaje por arpón"], c: 1 },
+            { q: "La presencia de secreción hemática unilateral y espontánea por el pezón sugiere:", o: ["Papiloma intraductal", "Ectasia ductal", "Mastitis crónica", "Fibroadenoma"], c: 0 },
+            { q: "La escala radiológica utilizada para clasificar hallazgos en mamografía es:", o: ["Escala de Hinchey", "Clasificación BI-RADS", "Criterios de Ranson", "Escala de Glasgow"], c: 1 },
+            { q: "La complicación neurológica más temida tras tiroidectomía total bilateral es:", o: ["Lesión de nervio facial", "Lesión de nervio laríngeo recurrente", "Lesión de nervio espinal", "Lesión de tronco simpático"], c: 1 },
+            { q: "El tumor maligno de tiroides más frecuente y de mejor pronóstico es:", o: ["Carcinoma folicular", "Carcinoma papilar", "Carcinoma medular", "Carcinoma anaplásico"], c: 1 },
+            { q: "¿Cuál es el tumor benigno más común de la glándula parótida?", o: ["Adenoma pleomorfo", "Tumor de Warthin", "Oncocitoma", "Carcinoma mucoepidermoide"], c: 0 },
+            { q: "Durante una parotidectomía superficial, la estructura clave que divide lóbulos es:", o: ["La arteria carótida externa", "El nervio facial (VII par)", "El conducto de Stenon", "La vena retromandibular"], c: 1 },
+            { q: "Las células tumorales del carcinoma medular de tiroides producen:", o: ["Tiroglobulina", "Calcitonina", "Hormona paratiroidea", "Tiroxina"], c: 1 }
+        ],
+        4: [
+            { q: "El límite para definir un hemotórax masivo es el drenaje inicial de:", o: ["500 ml", "1000 ml", "1500 ml o más (o >200ml/h continuamente)", "2000 ml"], c: 2 },
+            { q: "Tratamiento inmediato para un tórax batiente con insuficiencia respiratoria severa:", o: ["Fijación con esparadrapo", "Estabilización neumática interna (intubación + VM)", "Toracotomía bilateral", "Bloqueo intercostal"], c: 1 },
+            { q: "¿Qué estructura pasa a través del espacio del opérculo torácico superior?", o: ["El plexo braquial y vasos subclavios", "El nervio vago izquierdo", "La arteria carótida primitiva", "La vena ácigos"], c: 0 },
+            { q: "La indicación quirúrgica absoluta en un neumotórax espontáneo primario es:", o: ["Primer episodio <10%", "Segundo episodio ipsilateral o fuga aérea persistente", "Presencia de tos", "Edad menor de 18 años"], c: 1 },
+            { q: "Tratamiento de elección de adenocarcinoma pancreático en cuerpo/cola resecable:", o: ["Whipple", "Pancreatectomía distal con esplenectomía", "Bypass biliar", "Quimioterapia aislada"], c: 1 },
+            { q: "¿Cuál es el método diagnóstico con mayor sensibilidad para la coledocolitiasis?", o: ["Ultrasonido abdominal", "CPRM (Colangiorresonancia)", "Radiografía de abdomen", "Gammagrafía"], c: 1 },
+            { q: "Ante sospecha de perforación esofágica, el contraste inicial debe ser:", o: ["Bario denso", "Contraste hidrosoluble", "Tecnecio 99", "Ninguno, contraindicado"], c: 1 },
+            { q: "El principal factor de riesgo modificable para TEP postoperatorio es:", o: ["Falta de profilaxis con heparina y movilización precoz", "Uso de sutura absorbible", "Anestesia local", "Dieta previa"], c: 0 },
+            { q: "La causa más común de obstrucción intestinal adquirida en lactantes de 6 a 24 meses es:", o: ["Estenosis hipertrófica del píloro", "Invaginación intestinal (intususcepción)", "Malrotación intestinal", "Íleo meconial"], c: 1 },
+            { q: "La presión intraabdominal máxima recomendada de forma estándar durante el neumoperitoneo con CO2 en laparoscopia de adultos es:", o: ["5-8 mmHg", "12-15 mmHg", "20-25 mmHg", "30 mmHg"], c: 1 }
+        ],
+        5: [
+            { q: "The syndrome of Zollinger-Ellison está causado por un tumor secretor de:", o: ["Insulina", "Gastrina", "Glucagón", "Somatostatina"], c: 1 },
+            { q: "La hernia crural o femoral protruye a través de:", o: ["El anillo inguinal superficial", "El conducto femoral, bajo ligamento inguinal", "El triángulo de Petit", "La línea de Spiegel"], c: 1 },
+            { q: "El tumor estromal gastrointestinal (GIST) se caracteriza por expresar:", o: ["CD117 (c-KIT)", "Citoqueratina 20", "CEA", "Vimentina"], c: 0 },
+            { q: "La clasificación de Hinchey se utiliza para estadificar:", o: ["Pancreatitis aguda", "Diverticulitis aguda perforada", "Trauma hepático", "Hemorragia biliar"], c: 1 },
+            { q: "Complicación metabólica tardía más común tras una gastrectomía total:", o: ["Anemia megaloblástica (déficit B12)", "Hipercalcemia", "Diabetes Mellitus", "Saturación férrica"], c: 0 },
+            { q: "En un paciente con politraumatismo y sospecha de lesión traqueobronquial con fuga aérea persistente post-tubo de tórax, el método diagnóstico de elección es:", o: ["TAC de alta resolución", "Broncoscopia flexible", "Arteriografía pulmonar", "Toracotomía diagnóstica inmediata"], c: 1 },
+            { q: "La fístula biliar poscolecistectomía tipo D de la clasificación de Strasberg corresponde a:", o: ["Lesión del conducto cístico", "Lesión parcial de un conducto hepático derecho sectorial", "Lesión lateral del conducto biliar principal", "Transección completa del colédoco"], c: 2 },
+            { q: "¿Cuál es el manejo oncológico estándar óptimo para un adenocarcinoma rectal localmente avanzado (T3-T4 o N+) localizado a 5 cm del margen anal?", o: ["Mastectomía paliativa", "Quimiorradioterapia neoadyuvante seguida de resección total del mesorrecto (RTM)", "Cirugía inmediata y quimioterapia adyuvante solo si perfora", "Escisión local transanal exclusivamente"], c: 1 },
+            { q: "El pseudoquiste pancreático maduro (>6 semanas), sintomático o complicado, sin comunicación lúmen-ductal demostrada, se trata preferentemente mediante:", o: ["Resección total del páncreas", "Drenaje endoscópico transmural (cistogastrostomía) o derivación interna quirúrgica", "Aspiración percutánea simple repetida", "Marsupialización abierta"], c: 1 },
+            { q: "De acuerdo con los criterios de Milán para trasplante hepático en pacientes con hepatocarcinoma, los límites son:", o: ["Lesión única ≤ 5 cm o hasta 3 lesiones ≤ 3 cm", "Lesión única ≤ 10 cm sin invasión", "Hasta 5 lesiones de cualquier tamaño", "Cualquier tamaño siempre que no tenga metástasis esplénicas"], c: 0 }
+        ]
+    };
+
+    // ================================================================
+    // 7. PROYECTOS DE INVESTIGACIÓN Y CASOS CLÍNICOS
+    // ================================================================
+    const PROYECTOS = [
+        { id: "revision_literatura", nombre: "Revisión sistemática de apendicitis", desc: "+0.2 Prestigio/s pasivo permanente", costoXP: 1500, costoPrestigio: 10, duracion: 30, recompensaPasivaPrestigio: 0.2, recompensaXP: 200, recompensaPrestigio: 5 },
+        { id: "meta_hernias", nombre: "Meta-análisis de reparación herniaria", desc: "+0.5 Prestigio/s pasivo permanente", costoXP: 8000, costoPrestigio: 40, duracion: 60, recompensaPasivaPrestigio: 0.5, recompensaXP: 800, recompensaPrestigio: 20 },
+        { id: "estudio_biliar", nombre: "Estudio de coledocolitiasis", desc: "+1.0 Prestigio/s pasivo permanente", costoXP: 25000, costoPrestigio: 100, duracion: 120, recompensaPasivaPrestigio: 1.0, recompensaXP: 2500, recompensaPrestigio: 50 },
+        { id: "protocolo_ERAS", nombre: "Protocolo ERAS en cirugía mayor", desc: "+2.0 Prestigio/s pasivo permanente", costoXP: 80000, costoPrestigio: 250, duracion: 180, recompensaPasivaPrestigio: 2.0, recompensaXP: 8000, recompensaPrestigio: 120 }
+    ];
+
+    const CASOS_CLINICOS = [
+        {
+            titulo: "Paciente con abdomen agudo",
+            pasos: [
+                { pregunta: "Varón de 45 años con dolor abdominal difuso, fiebre y taquicardia. ¿Qué estudio inicial solicitas?", opciones: [
+                    { texto: "TAC de abdomen con contraste", correcta: true, xp: 200, prestigio: 5 },
+                    { texto: "Radiografía simple de abdomen", correcta: false, xp: -50, prestigio: -2 },
+                    { texto: "Ecografía abdominal", correcta: false, xp: -30, prestigio: -1 }
+                ]},
+                { pregunta: "El TAC muestra apendicitis perforada con absceso periapendicular. ¿Cuál es la conducta?", opciones: [
+                    { texto: "Antibióticos + drenaje percutáneo", correcta: true, xp: 300, prestigio: 10 },
+                    { texto: "Apendicectomía de urgencia", correcta: false, xp: -100, prestigio: -5 },
+                    { texto: "Manejo expectante", correcta: false, xp: -200, prestigio: -10 }
+                ]},
+                { pregunta: "El paciente mejora, pero a las 48 horas presenta fiebre y dolor en FID. ¿Qué haces?", opciones: [
+                    { texto: "Repetir TAC y valorar nuevo drenaje", correcta: true, xp: 150, prestigio: 3 },
+                    { texto: "Dar el alta con antibióticos orales", correcta: false, xp: -100, prestigio: -5 },
+                    { texto: "Laparoscopia exploradora", correcta: false, xp: -80, prestigio: -2 }
+                ]}
+            ]
+        },
+        {
+            titulo: "Síndrome ictérico obstructivo",
+            pasos: [
+                { pregunta: "Mujer de 55 años con ictericia, coluria y prurito. ¿Cuál es el estudio inicial?", opciones: [
+                    { texto: "Ecografía abdominal", correcta: true, xp: 150, prestigio: 3 },
+                    { texto: "TAC de abdomen", correcta: false, xp: -50, prestigio: -2 },
+                    { texto: "Resonancia magnética", correcta: false, xp: -30, prestigio: -1 }
+                ]},
+                { pregunta: "La ecografía muestra dilatación de la vía biliar y cálculo en colédoco. ¿Qué conducta?", opciones: [
+                    { texto: "CPRE con esfinterotomía", correcta: true, xp: 250, prestigio: 8 },
+                    { texto: "Colecistectomía directa", correcta: false, xp: -80, prestigio: -3 },
+                    { texto: "Tratamiento médico con ácido ursodesoxicólico", correcta: false, xp: -150, prestigio: -5 }
+                ]}
+            ]
+        },
+        {
+            titulo: "Trauma abdominal cerrado",
+            pasos: [
+                { pregunta: "Paciente de 30 años con accidente de tránsito, dolor en hipocondrio izquierdo e hipotensión. ¿Qué estudio inicial?", opciones: [
+                    { texto: "FAST (Ultrasonido abdominal)", correcta: true, xp: 200, prestigio: 5 },
+                    { texto: "TAC de abdomen completo", correcta: false, xp: -100, prestigio: -3 },
+                    { texto: "Radiografía simple de abdomen", correcta: false, xp: -50, prestigio: -2 }
+                ]},
+                { pregunta: "El FAST es positivo en espacio de Morrison. ¿Cuál es la conducta?", opciones: [
+                    { texto: "Laparotomía exploradora de urgencia", correcta: true, xp: 300, prestigio: 10 },
+                    { texto: "Observación en UCI con monitoreo", correcta: false, xp: -150, prestigio: -5 },
+                    { texto: "Angiografía y embolización", correcta: false, xp: -80, prestigio: -3 }
+                ]}
+            ]
+        }
+    ];
+
+    // ================================================================
+    // 8. ESTADO DEL JUEGO Y VARIABLES GLOBALES
+    // ================================================================
+    let game = {
+    xp: 0,
+    reputacionBase: 0,
+    destreza: 0,
+    rangoIdx: 0,
+    items: {},
+    subordinados: {},
+    xpClicBase: 1,
+    xpPasivaTotal: 0,
+    prestigioPasivoTotal: 0,
+    habilidadCdRestante: 0,
+    multiplicadorPasivoTemporal: 1,
+    multiplicadorClicTemporal: 1,
+    habilidadesDesbloqueadas: [],
+    suerte: 0,
+    crisisResueltas: 0,
+    confianza: {},
+    investigacionActiva: null,
+    investigacionesCompletadas: [],
+    bonusInvestigacion: 0,
+    bonusInvestigacionPrestigio: 0,
+    misiones: {},
+    ultimoResetMisiones: Date.now()
+};
+
+    let guardiaActiva = false;
+    let tiempoGuardia = 0;
+    let clicsDuranteGuardia = 0;
+    const DURACION_GUARDIA = 30;
+
+    let interrogatorioPendiente = null;
+    let examenActivo = false;
+    let crisisActiva = false;
+    let tecnicaActual = null;
+    let indicePasoEsperado = 0;
+    let examenPreguntas = [];
+    let examenPreguntaActualIdx = 0;
+    let examenAciertos = 0;
+    let casoActivo = null;
+    let pasoActual = 0;
+    let aciertosCaso = 0;
+
+    const CRISIS_BANCO = [
+        { titulo: "⚡ Se fue la luz mientras operabas una Hernia Inguinal", descripcion: "El quirófano queda a oscuras. ¿Qué decides?", opciones: [
+            { texto: "🔦 Te alumbras con una linterna", efectos: { xp: -500 } },
+            { texto: "⏳ Esperas a que regrese la luz", efectos: { destreza: -30 } },
+            { texto: "🤞 Sigues a ciegas", efectos: { prestigio: -20 } }
+        ], rangoMinimo: 0 },
+        { titulo: "🩸 Paciente con hemorragia masiva intraoperatoria", descripcion: "El equipo de anestesia te pide una decisión rápida.", opciones: [
+            { texto: "🧪 Pides más hemoderivados", efectos: { xp: -200 } },
+            { texto: "🩹 Aplicas un clamp vascular", efectos: { destreza: -15 } },
+            { texto: "📞 Llamas al jefe de servicio", efectos: { prestigio: -10 } }
+        ], rangoMinimo: 0 },
+        { titulo: "📚 El jefe de servicio te hace una pregunta inesperada", descripcion: "Te pregunta sobre el manejo de una fístula pancreática. Tienes tres opciones:", opciones: [
+            { texto: "📖 Respondes con la evidencia actual (Ganar +300 XP)", efectos: { xp: 300 } },
+            { texto: "🤷 Le dices que preguntes a otro residente (Pierdes 10 Prestigio)", efectos: { prestigio: -10 } },
+            { texto: "📱 Buscas rápidamente en tu teléfono (Pierdes 20 Destreza)", efectos: { destreza: -20 } }
+        ], rangoMinimo: 1 },
+        { titulo: "👨‍⚕️ Un interno te pide ayuda con una sutura complicada", descripcion: "¿Cómo manejas la situación?", opciones: [
+            { texto: "🧵 Le enseñas paso a paso (Ganas +5 Destreza)", efectos: { destreza: 5 } },
+            { texto: "🩹 Le dices que lo haga solo (Pierdes 200 XP)", efectos: { xp: -200 } },
+            { texto: "📋 Lo registras como 'no apto' (Pierdes 15 Prestigio)", efectos: { prestigio: -15 } }
+        ], rangoMinimo: 0 },
+        { titulo: "🔥 Incendio en el quirófano por chispa del electrobisturí", descripcion: "El campo estéril comienza a arder. Actúa rápido.", opciones: [
+            { texto: "🧯 Usas el extintor", efectos: { xp: -300 } },
+            { texto: "🪣 Arrojas suero fisiológico", efectos: { destreza: -20 } },
+            { texto: "🏃 Evacúas al paciente", efectos: { prestigio: -25 } }
+        ], rangoMinimo: 0 },
+        { titulo: "📉 El paciente presenta parada cardíaca súbita", descripcion: "El monitor muestra asistolia. ¿Cuál es tu conducta?", opciones: [
+            { texto: "🫀 Inicias RCP avanzada", efectos: { xp: -400 } },
+            { texto: "💉 Administras adrenalina", efectos: { destreza: -10 } },
+            { texto: "⚡ Aplicas desfibrilación (aunque no corresponde)", efectos: { prestigio: -35 } }
+        ], rangoMinimo: 0 },
+        { titulo: "🧬 Derrame de material radioactivo en el área quirúrgica", descripcion: "Se rompe un vial de isótopo. Debes proteger al equipo.", opciones: [
+            { texto: "☢️ Aíslas la zona", efectos: { xp: -250 } },
+            { texto: "🧤 Usas doble guante y sigues", efectos: { destreza: -25 } },
+            { texto: "📢 Informas al servicio de radiología", efectos: { prestigio: -15 } }
+        ], rangoMinimo: 0 },
+        { titulo: "🧫 Contaminación de la muestra de biopsia", descripcion: "La pieza quirúrgica cae al suelo. El patólogo espera.", opciones: [
+            { texto: "🧪 Llamas al patólogo y explicas", efectos: { xp: -180 } },
+            { texto: "🧼 La lavas con suero y la envías", efectos: { destreza: -12 } },
+            { texto: "📝 Anotas que se perdió y pides otra", efectos: { prestigio: -18 } }
+        ], rangoMinimo: 0 }
+    ];
+
+    const MISIONES_DIARIAS = [
+        { id: "diaria_evolucion", nombre: "Evoluciona pacientes", desc: "Haz clic en 'Evolucionar'", icono: "🩺", progreso: 0, max: 10, recompensa: { xp: 200, prestigio: 10 } },
+        { id: "diaria_quirurgica", nombre: "Cirugías realizadas", desc: "Completa técnicas en quirófano", icono: "😷", progreso: 0, max: 3, recompensa: { xp: 300, destreza: 5 } },
+        { id: "diaria_crisis", nombre: "Crisis superadas", desc: "Resuelve crisis de guardia", icono: "🚨", progreso: 0, max: 2, recompensa: { xp: 250, prestigio: 15 } },
+        { id: "diaria_casos", nombre: "Casos clínicos", desc: "Completa casos clínicos", icono: "📋", progreso: 0, max: 2, recompensa: { xp: 300, prestigio: 10 } }
+    ];
+
+    if (!game.misiones) {
+        game.misiones = {};
+        MISIONES_DIARIAS.forEach(m => { game.misiones[m.id] = { progreso: 0, completada: false }; });
+    }
+    if (!game.ultimoResetMisiones) game.ultimoResetMisiones = Date.now();
+
+    // ================================================================
+    // 9. FUNCIONES DEL JUEGO - CORREGIDAS
+    // ================================================================
+    function agregarLog(texto) {
+        let log = document.getElementById("log");
+        if(log) {
+            let entry = document.createElement("div");
+            entry.className = "log-entry";
+            entry.innerText = `[${new Date().toLocaleTimeString()}] ${texto}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+    }
+
+    function cambiarPestaña(tab) {
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+        let tabContent = document.getElementById(`tab-${tab}`);
+        if(tabContent) tabContent.classList.add("active");
+        let navItem = document.getElementById(`nav-${tab}`);
+        if(navItem) navItem.classList.add("active");
+    }
+
+    // ================================================================
+    // FUNCIÓN CORREGIDA: AHORA SÍ SUMA LOS BONOS DE LA TIENDA
+    // ================================================================
+    function obtenerXpPorClic() {
+        let extra = 0;
+        TIENDA_ITEMS.forEach(i => { 
+            let cantidad = game.items[i.id] || 0;
+            let aporte = i.aporteClic || 0;
+            extra += cantidad * aporte;
+        });
+        
+        let base = game.xpClicBase || 1;
+        let mult = game.multiplicadorClicTemporal || 1;
+        let total = (base + extra) * mult;
+        
+        return Math.floor(total) || 0;
+    }
+
+    function recalarXpPasiva() {
+        let totalXP = 0;
+        let totalPrestigio = 0;
+        SUBORDINADOS_DATA.forEach(s => { totalXP += (game.subordinados[s.id] || 0) * s.aportePasivo; });
+        if (game.rangoIdx === 1 || (game.habilidadesDesbloqueadas && game.habilidadesDesbloqueadas.includes("Evolución Rápida"))) totalXP += 5;
+        totalXP += (game.bonusInvestigacion || 0);
+        totalPrestigio += (game.bonusInvestigacionPrestigio || 0);
+        game.xpPasivaTotal = totalXP;
+        game.prestigioPasivoTotal = totalPrestigio;
+    }
+
+    function obtenerPrestigioTotal() { return game.reputacionBase + (game.bonusInvestigacionPrestigio || 0); }
+
+    // ================================================================
+    // FUNCIONES DE TIENDA (CORREGIDAS)
+    // ================================================================
+    function renderTienda() {
+        let container = document.getElementById("lista-tienda");
+        if(!container) return;
+        container.innerHTML = "";
+        TIENDA_ITEMS.forEach(i => {
+            let cant = game.items[i.id] || 0;
+            let costeActual = Math.floor(i.costo * Math.pow(i.costoEscala, cant));
+            let bonusTexto = "";
+            if(i.aporteClic) bonusTexto += `+${i.aporteClic} XP/clic`;
+            if(i.aporteDestreza) bonusTexto += (bonusTexto ? ", " : "") + `+${i.aporteDestreza} Destreza`;
+            if(i.aportePrestigio) bonusTexto += (bonusTexto ? ", " : "") + `+${i.aportePrestigio} Prestigio`;
+            
+            container.innerHTML += `
+                <div class="card">
+                    <div class="card-info">
+                        <h4>${i.nombre} (${cant})</h4>
+                        <p>${i.desc}</p>
+                        <p style="color:var(--success-green); font-size:0.8rem;">${bonusTexto}</p>
+                        <p style="color:var(--medical-cyan); font-weight:bold; margin-top:3px;">Coste: ${costeActual} XP</p>
+                    </div>
+                    <button class="btn-buy" id="buy-${i.id}" onclick="comprarItem('${i.id}')">Adquirir</button>
+                </div>
+            `;
+        });
+    }
+
+    function comprarItem(id) {
+        if(crisisActiva) return;
+        let item = TIENDA_ITEMS.find(i => i.id === id);
+        let cant = game.items[id] || 0;
+        let coste = Math.floor(item.costo * Math.pow(item.costoEscala, cant));
+        if(game.xp >= coste) {
+            game.xp -= coste;
+            game.items[id] = cant + 1;
+            if(item.aporteDestreza) game.destreza += item.aporteDestreza;
+            if(item.aportePrestigio) game.reputacionBase += item.aportePrestigio;
+            agregarLog(`🛒 Adquiriste: ${item.nombre}. Ahora tienes ${game.items[id]} unidades.`);
+            renderTienda();
+            actualizarUI();
+        } else {
+            agregarLog(`❌ No tienes suficientes XP para comprar ${item.nombre}.`);
+        }
+    }
+
+    // ================================================================
+    // FUNCIONES DE SUBORDINADOS
+    // ================================================================
+    function renderSubordinados() {
+        let container = document.getElementById("lista-subordinados");
+        if(!container) return;
+        container.innerHTML = "";
+        SUBORDINADOS_DATA.forEach(s => {
+            let cant = game.subordinados[s.id] || 0;
+            let costeActual = Math.floor(s.costoXp * Math.pow(1.3, cant));
+            container.innerHTML += `
+                <div class="card" style="border-left: 4px solid var(--subordinate-color);">
+                    <div class="card-info">
+                        <h4>${s.nombre} (${cant})</h4>
+                        <p>${s.desc} (+${s.aportePasivo} XP/s c/u)</p>
+                        <p style="font-size:0.75rem; color:var(--warning-amber);">Requiere: ${s.repuReq} Prestigio</p>
+                        <p style="color:var(--medical-cyan); font-weight:bold; margin-top:3px;">Coste: ${costeActual} XP</p>
+                    </div>
+                    <button class="btn-buy" style="background:var(--subordinate-color);" id="sub-${s.id}" onclick="comprarSubordinado('${s.id}')">Asignar</button>
+                </div>
+            `;
+        });
+    }
+
+    function comprarSubordinado(id) {
+        if(crisisActiva) return;
+        let sub = SUBORDINADOS_DATA.find(s => s.id === id);
+        let cant = game.subordinados[id] || 0;
+        let coste = Math.floor(sub.costoXp * Math.pow(1.3, cant));
+        if(game.xp >= coste && obtenerPrestigioTotal() >= sub.repuReq) {
+            game.xp -= coste;
+            game.subordinados[id] = cant + 1;
+            agregarLog(`👥 Asignaste responsabilidades a: ${sub.nombre}.`);
+            recalarXpPasiva();
+            renderSubordinados();
+            actualizarUI();
+        }
+    }
+
+    function verificarDespidosPorPrestigio() {
+        let totalRepu = obtenerPrestigioTotal();
+        SUBORDINADOS_DATA.forEach(s => {
+            let cant = game.subordinados[s.id] || 0;
+            if (cant > 0 && totalRepu < s.repuReq) {
+                game.subordinados[s.id] = 0;
+                agregarLog(`⚠️ ${s.nombre.split(" ")[0]} se marchó por bajo prestigio.`);
+            }
+        });
+        recalarXpPasiva();
+        renderSubordinados();
+    }
+
+    // ================================================================
+    // FUNCIONES DE INVESTIGACIÓN
+    // ================================================================
+    function iniciarInvestigacion(id) {
+        const proy = PROYECTOS.find(p => p.id === id);
+        if (!proy) return;
+        if (game.investigacionActiva) { alert("Ya tienes una investigación en curso."); return; }
+        if (game.xp < proy.costoXP || game.reputacionBase < proy.costoPrestigio) {
+            alert("No tienes suficientes recursos.");
+            return;
+        }
+        game.xp -= proy.costoXP;
+        game.reputacionBase -= proy.costoPrestigio;
+        game.investigacionActiva = { id: proy.id, tiempoRestante: proy.duracion, duracionTotal: proy.duracion };
+        agregarLog(`🔬 Iniciaste investigación: ${proy.nombre}`);
+        actualizarUI();
+        renderizarProyectos();
+    }
+
+    function actualizarInvestigacion() {
+        if (!game.investigacionActiva) return;
+        game.investigacionActiva.tiempoRestante--;
+        if (game.investigacionActiva.tiempoRestante <= 0) completarInvestigacion();
+        actualizarUI();
+        renderizarProyectos();
+    }
+
+    function completarInvestigacion() {
+        const id = game.investigacionActiva.id;
+        const proy = PROYECTOS.find(p => p.id === id);
+        if (!proy) return;
+        game.xp += proy.recompensaXP || 0;
+        game.reputacionBase += proy.recompensaPrestigio || 0;
+        game.bonusInvestigacionPrestigio += proy.recompensaPasivaPrestigio || 0;
+        if (!game.investigacionesCompletadas) game.investigacionesCompletadas = [];
+        if (!game.investigacionesCompletadas.includes(id)) game.investigacionesCompletadas.push(id);
+        agregarLog(`✅ Investigación completada: ${proy.nombre}. Bonus: +${proy.recompensaPasivaPrestigio} Prestigio/s`);
+        game.investigacionActiva = null;
+        recalarXpPasiva();
+        actualizarUI();
+        renderizarProyectos();
+    }
+
+    function renderizarProyectos() {
+        const container = document.getElementById("lista-proyectos");
+        if (!container) return;
+        container.innerHTML = "";
+        const estadoDiv = document.getElementById("investigacion-estado");
+        const progresoDiv = document.getElementById("investigacion-progreso");
+        const barra = document.getElementById("barra-investigacion");
+        const tiempoRest = document.getElementById("tiempo-restante");
+        
+        if (game.investigacionActiva) {
+            const proy = PROYECTOS.find(p => p.id === game.investigacionActiva.id);
+            const pct = ((game.investigacionActiva.duracionTotal - game.investigacionActiva.tiempoRestante) / game.investigacionActiva.duracionTotal) * 100;
+            estadoDiv.innerText = `🔬 Investigando: ${proy.nombre}`;
+            progresoDiv.style.display = "block";
+            barra.style.width = pct + "%";
+            tiempoRest.innerText = `Tiempo restante: ${game.investigacionActiva.tiempoRestante}s`;
+        } else {
+            estadoDiv.innerText = "No hay investigación activa. Elige un proyecto.";
+            progresoDiv.style.display = "none";
+        }
+        
+        PROYECTOS.filter(p => !(game.investigacionesCompletadas || []).includes(p.id)).forEach(proy => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.style.borderLeft = "4px solid var(--medical-cyan)";
+            card.innerHTML = `
+                <div class="card-info">
+                    <h4>${proy.nombre}</h4>
+                    <p>${proy.desc}</p>
+                    <p style="color:var(--warning-amber); font-size:0.8rem;">
+                        Costo: ${proy.costoXP} XP / ${proy.costoPrestigio} Prestigio · Duración: ${proy.duracion}s
+                    </p>
+                </div>
+                <button class="btn-buy" onclick="iniciarInvestigacion('${proy.id}')">Iniciar</button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // ================================================================
+    // MISIONES DIARIAS
+    // ================================================================
+    function resetearMisionesDiarias() {
+        const ahora = Date.now();
+        if ((ahora - game.ultimoResetMisiones) / (1000 * 60 * 60) >= 24) {
+            MISIONES_DIARIAS.forEach(m => { game.misiones[m.id] = { progreso: 0, completada: false }; });
+            game.ultimoResetMisiones = ahora;
+            agregarLog("🔄 Misiones diarias reiniciadas.");
+            renderizarMisiones();
+            actualizarUI();
+        }
+    }
+
+    function renderizarMisiones() {
+        const container = document.getElementById("lista-misiones");
+        if (!container) return;
+        container.innerHTML = "";
+        resetearMisionesDiarias();
+        let todasCompletadas = true;
+        MISIONES_DIARIAS.forEach(m => {
+            if (!game.misiones[m.id]) game.misiones[m.id] = { progreso: 0, completada: false };
+            const estado = game.misiones[m.id];
+            const pct = Math.min(100, (estado.progreso / m.max) * 100);
+            const completada = estado.completada;
+            if (!completada) todasCompletadas = false;
+            const div = document.createElement("div");
+            div.style.cssText = `
+                background: ${completada ? 'rgba(34, 197, 94, 0.1)' : 'rgba(0,0,0,0.2)'};
+                border-radius: 6px; padding: 8px 10px; margin-bottom: 6px;
+                border-left: 3px solid ${completada ? 'var(--success-green)' : 'var(--warning-amber)'};
+                display: flex; justify-content: space-between; align-items: center;
+            `;
+            div.innerHTML = `
+                <div style="flex:1; min-width:0;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span>${m.icono}</span>
+                        <span style="font-size:0.85rem; font-weight:bold; ${completada ? 'color:var(--success-green)' : 'color:#fff'}">
+                            ${m.nombre} ${completada ? ' ✅' : ''}
+                        </span>
+                    </div>
+                    <div style="font-size:0.7rem; color:var(--text-muted);">${m.desc}</div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:3px;">
+                        <div style="flex:1; background:#1e293b; height:4px; border-radius:2px; overflow:hidden;">
+                            <div style="height:100%; width:${pct}%; background:${completada ? 'var(--success-green)' : 'var(--medical-cyan)'}; transition: width 0.3s;"></div>
+                        </div>
+                        <span style="font-size:0.7rem; color:var(--text-muted); white-space:nowrap;">${estado.progreso}/${m.max}</span>
+                    </div>
+                </div>
+                <div style="font-size:0.7rem; color:var(--warning-amber); text-align:right; margin-left:8px; flex-shrink:0;">
+                    ${completada ? '✅ +' : '+'}${m.recompensa.xp || 0} XP
+                </div>
+            `;
+            container.appendChild(div);
+        });
+        if (todasCompletadas) {
+            const msg = document.createElement("div");
+            msg.style.cssText = `text-align:center; padding:8px; color:var(--success-green); font-size:0.9rem; font-weight:bold; border:1px dashed var(--success-green); border-radius:6px; margin-top:4px;`;
+            msg.innerText = "🎉 ¡Todas las misiones completadas hoy! Vuelve mañana.";
+            container.appendChild(msg);
+        }
+    }
+
+    function progresarMision(id, incremento = 1) {
+        if (!game.misiones) { game.misiones = {}; MISIONES_DIARIAS.forEach(m => { game.misiones[m.id] = { progreso: 0, completada: false }; }); }
+        if (!game.misiones[id]) game.misiones[id] = { progreso: 0, completada: false };
+        const mision = game.misiones[id];
+        if (mision.completada) return;
+        const definicion = MISIONES_DIARIAS.find(m => m.id === id);
+        if (!definicion) return;
+        mision.progreso = Math.min(definicion.max, mision.progreso + incremento);
+        if (mision.progreso >= definicion.max) {
+            mision.completada = true;
+            const recompensa = definicion.recompensa;
+            game.xp += recompensa.xp || 0;
+            game.reputacionBase += recompensa.prestigio || 0;
+            game.destreza += recompensa.destreza || 0;
+            agregarLog(`📋 Misión completada: ${definicion.nombre}`);
+            renderizarMisiones();
+            actualizarUI();
+        }
+    }
+
+    // ================================================================
+    // FUNCIONES DE CASOS CLÍNICOS
+    // ================================================================
+    function iniciarCasoClinico() {
+        if (casoActivo || examenActivo || crisisActiva || interrogatorioPendiente) return;
+        casoActivo = CASOS_CLINICOS[Math.floor(Math.random() * CASOS_CLINICOS.length)];
+        pasoActual = 0;
+        aciertosCaso = 0;
+        mostrarPasoCaso();
+    }
+
+    function mostrarPasoCaso() {
+        if (!casoActivo) return;
+        const paso = casoActivo.pasos[pasoActual];
+        document.getElementById("modal-doctor-tag").innerText = "📋 CASO CLÍNICO";
+        document.getElementById("modal-doctor-tag").style.backgroundColor = "var(--medical-cyan)";
+        document.getElementById("modal-titulo").innerText = casoActivo.titulo;
+        document.getElementById("modal-descripcion").innerHTML = `<p><strong>Paso ${pasoActual+1}/${casoActivo.pasos.length}</strong></p><p>${paso.pregunta}</p>`;
+        const container = document.getElementById("modal-options");
+        container.innerHTML = "";
+        paso.opciones.forEach(op => {
+            const btn = document.createElement("button");
+            btn.innerText = op.texto;
+            btn.onclick = () => {
+                if (op.correcta) aciertosCaso++;
+                game.xp = Math.max(0, game.xp + (op.xp || 0));
+                game.reputacionBase = Math.max(0, game.reputacionBase + (op.prestigio || 0));
+                pasoActual++;
+                if (pasoActual < casoActivo.pasos.length) mostrarPasoCaso();
+                else finalizarCaso();
+            };
+            container.appendChild(btn);
+        });
+        document.getElementById("decision-modal").style.display = "flex";
+    }
+
+    function finalizarCaso() {
+        const totalPasos = casoActivo ? casoActivo.pasos.length : 0;
+        const aciertos = aciertosCaso;
+        const bonus = (totalPasos > 0 && aciertos === totalPasos) ? 500 : 0;
+        document.getElementById("decision-modal").style.display = "none";
+        const mensaje = (totalPasos > 0 && aciertos === totalPasos) ? "¡Excelente! Caso perfecto." : "Has resuelto el caso con algunos errores.";
+        alert(`${mensaje}\nBonus: +${bonus} XP`);
+        game.xp += bonus;
+        progresarMision('diaria_casos', 1);
+        agregarLog(`📋 Caso clínico completado con ${aciertos}/${totalPasos} aciertos.`);
+        casoActivo = null;
+        pasoActual = 0;
+        aciertosCaso = 0;
+        actualizarUI();
+    }
+
+    // ================================================================
+    // FUNCIONES DE CRISIS
+    // ================================================================
+    function obtenerCrisisAleatoria() {
+        const disponibles = CRISIS_BANCO.filter(c => (c.rangoMinimo || 0) <= game.rangoIdx);
+        if (disponibles.length === 0) return null;
+        return disponibles[Math.floor(Math.random() * disponibles.length)];
+    }
+
+    function intentarCrisis() {
+        if (crisisActiva || examenActivo || interrogatorioPendiente !== null) return false;
+        if (Math.random() > 0.05) return false;
+        const crisis = obtenerCrisisAleatoria();
+        if (!crisis) return false;
+        mostrarCrisisConOpciones(crisis);
+        return true;
+    }
+
+    function mostrarCrisisConOpciones(crisis) {
+        crisisActiva = true;
+        actualizarUI();
+        document.getElementById("modal-doctor-tag").innerText = "🚨 CRISIS DE GUARDIA";
+        document.getElementById("modal-doctor-tag").style.backgroundColor = "var(--danger-red)";
+        document.getElementById("modal-titulo").innerText = crisis.titulo;
+        document.getElementById("modal-descripcion").innerHTML = `<span style="font-size:1.1rem;">${crisis.descripcion}</span>`;
+        const container = document.getElementById("modal-options");
+        container.innerHTML = "";
+        container.style.display = "block";
+        crisis.opciones.forEach((opcion) => {
+            const btn = document.createElement("button");
+            btn.innerText = opcion.texto;
+            btn.style.background = "#334155";
+            btn.style.border = "1px solid var(--border-color)";
+            btn.style.margin = "6px 0";
+            btn.onclick = function() {
+                const ef = opcion.efectos;
+                let perdidas = [];
+                let hayPenalizacion = false;
+                const factorSuerte = (game.suerte > 20) ? 0.8 : 1;
+                if (ef.xp) {
+                    let valor = Math.round(ef.xp * (ef.xp < 0 ? factorSuerte : 1));
+                    game.xp = Math.max(0, game.xp + valor);
+                    perdidas.push((ef.xp > 0 ? '+' : '') + valor + ' XP');
+                    if (ef.xp < 0) hayPenalizacion = true;
+                }
+                if (ef.destreza) {
+                    let valor = Math.round(ef.destreza * (ef.destreza < 0 ? factorSuerte : 1));
+                    game.destreza = Math.max(0, game.destreza + valor);
+                    perdidas.push((ef.destreza > 0 ? '+' : '') + valor + ' Destreza');
+                    if (ef.destreza < 0) hayPenalizacion = true;
+                }
+                if (ef.prestigio) {
+                    let valor = Math.round(ef.prestigio * (ef.prestigio < 0 ? factorSuerte : 1));
+                    game.reputacionBase = Math.max(0, game.reputacionBase + valor);
+                    perdidas.push((ef.prestigio > 0 ? '+' : '') + valor + ' Prestigio');
+                    if (ef.prestigio < 0) hayPenalizacion = true;
+                }
+                if (!hayPenalizacion) game.suerte = (game.suerte || 0) + 1;
+                game.crisisResueltas = (game.crisisResueltas || 0) + 1;
+                progresarMision('diaria_crisis', 1);
+                document.getElementById("decision-modal").style.display = "none";
+                crisisActiva = false;
+                actualizarUI();
+                agregarLog(`⚡ Crisis: ${crisis.titulo} → ${opcion.texto}. ${perdidas.join(', ')}`);
+                verificarDespidosPorPrestigio();
+            };
+            container.appendChild(btn);
+        });
+        document.getElementById("btn-modal-cancelar").style.display = "none";
+        document.getElementById("btn-modal-entendido").style.display = "none";
+        document.getElementById("decision-modal").style.display = "flex";
+    }
+
+    // ================================================================
+    // FUNCIONES DE TÉCNICA QUIRÚRGICA
+    // ================================================================
+    function abrirMinijuegoTecnica() {
+        if(examenActivo || crisisActiva || interrogatorioPendiente !== null) return;
+        tecnicaActual = BANCO_TECNICAS[Math.floor(Math.random() * BANCO_TECNICAS.length)];
+        indicePasoEsperado = 0;
+        let tag = document.getElementById("modal-doctor-tag");
+        tag.innerText = "MESA DE OPERACIONES";
+        tag.style.backgroundColor = "var(--doctor-color)";
+        document.getElementById("modal-titulo").innerText = `Operando: ${tecnicaActual.cirugia}`;
+        document.getElementById("modal-descripcion").innerText = "Selecciona los pasos en la secuencia correcta:";
+        document.getElementById("modal-options").style.display = "none";
+        let containerPasos = document.getElementById("tecnica-quirurgica-container");
+        containerPasos.innerHTML = "";
+        containerPasos.style.display = "flex";
+        let pasosMezclados = [...tecnicaActual.pasosCorrectos].sort(() => Math.random() - 0.5);
+        pasosMezclados.forEach(pasoTexto => {
+            let btn = document.createElement("button");
+            btn.className = "paso-btn";
+            btn.innerText = pasoTexto;
+            btn.onclick = () => evaluarPasoSeleccionado(btn, pasoTexto);
+            containerPasos.appendChild(btn);
+        });
+        document.getElementById("btn-modal-cancelar").style.display = "none";
+        document.getElementById("decision-modal").style.display = "flex";
+    }
+
+    function evaluarPasoSeleccionado(boton, textoPaso) {
+        let pasoCorrectoObjetivo = tecnicaActual.pasosCorrectos[indicePasoEsperado];
+        if(textoPaso === pasoCorrectoObjetivo) {
+            boton.classList.add("correcto");
+            boton.disabled = true;
+            indicePasoEsperado++;
+            if(indicePasoEsperado === tecnicaActual.pasosCorrectos.length) {
+                progresarMision('diaria_quirurgica', 1);
+                let recompensaXp = 250 * (game.rangoIdx + 1);
+                game.xp += recompensaXp;
+                game.destreza += 5;
+                game.reputacionBase += 4;
+                setTimeout(() => {
+                    document.getElementById("decision-modal").style.display = "none";
+                    document.getElementById("tecnica-quirurgica-container").style.display = "none";
+                    document.getElementById("modal-options").style.display = "block";
+                    alert(`💉 ¡Excelente técnica!\n\n+${recompensaXp} XP\n+5 Destreza\n+4 Prestigio`);
+                    agregarLog(`😷 Operación exitosa: ${tecnicaActual.cirugia}`);
+                    tecnicaActual = null;
+                    actualizarUI();
+                }, 400);
+            }
+        } else {
+            setTimeout(() => {
+                document.getElementById("decision-modal").style.display = "none";
+                document.getElementById("tecnica-quirurgica-container").style.display = "none";
+                document.getElementById("modal-options").style.display = "block";
+                game.reputacionBase = Math.max(0, game.reputacionBase - 10);
+                alert(`❌ ERROR EN LA TÉCNICA!\n\nPenalización: -10 Prestigio.`);
+                agregarLog(`⚠️ Error en técnica: ${tecnicaActual.cirugia}`);
+                tecnicaActual = null;
+                actualizarUI();
+            }, 200);
+        }
+    }
+
+    function entrenarDestrezaQuirurgica() {
+        if(examenActivo || crisisActiva) return;
+        game.destreza += 0.1;
+        agregarLog(`✂️ Practicaste nudos. +0.1 Destreza.`);
+        actualizarUI();
+    }
+
+    // ================================================================
+    // FUNCIONES PRINCIPALES
+    // ================================================================
+    function hacerClicEvolucion() {
+        if (examenActivo || (interrogatorioPendiente !== null && !crisisActiva)) return;
+        let xpGanado = obtenerXpPorClic();
+        game.xp += xpGanado;
+        agregarLog(`🩺 Evolucionaste paciente. +${xpGanado} XP`);
+        progresarMision('diaria_evolucion', 1);
+        if (Math.random() < 0.15) game.destreza += 1;
+        if (Math.random() < 0.03 && interrogatorioPendiente === null && !crisisActiva) provocarInterrogatorioPasillo();
+        actualizarUI();
+        if (!crisisActiva && !examenActivo && interrogatorioPendiente === null) intentarCrisis();
+        if (Math.random() < 0.03 && !casoActivo && !crisisActiva && !examenActivo && !interrogatorioPendiente) iniciarCasoClinico();
+        if (guardiaActiva) clicsDuranteGuardia++;
+        if (!guardiaActiva && game.xp > 0 && Math.random() < 0.01) iniciarGuardia();
+    }
+
+    function iniciarGuardia() {
+        if (guardiaActiva) return;
+        guardiaActiva = true;
+        tiempoGuardia = DURACION_GUARDIA;
+        clicsDuranteGuardia = 0;
+        agregarLog("🚨 ¡Comienza la guardia! +100% XP");
+        game.multiplicadorClicTemporal = 2;
+        actualizarUI();
+    }
+
+    function actualizarGuardia() {
+        if (!guardiaActiva) return;
+        tiempoGuardia--;
+        if (tiempoGuardia <= 0) finalizarGuardia();
+        actualizarUI();
+    }
+
+    function finalizarGuardia() {
+        guardiaActiva = false;
+        game.multiplicadorClicTemporal = 1;
+        const bonus = Math.floor(clicsDuranteGuardia * 5);
+        game.reputacionBase += bonus;
+        agregarLog(`🏁 Guardia finalizada. Bonus: +${bonus} Prestigio.`);
+        actualizarUI();
+    }
+
+    function activarHabilidad() {
+        if(game.habilidadCdRestante > 0 || game.rangoIdx === 1 || crisisActiva) return;
+        agregarLog(`⚡ Habilidad ejecutada: ${RANGOS[game.rangoIdx].xpHab}`);
+        if(game.rangoIdx === 0) { 
+            game.multiplicadorClicTemporal = 2;
+            setTimeout(() => { game.multiplicadorClicTemporal = 1; agregarLog("☕ Café terminado."); actualizarUI(); }, 12000);
+        } else if(game.rangoIdx === 2) { 
+            game.multiplicadorClicTemporal = 1.5;
+            setTimeout(() => { game.multiplicadorClicTemporal = 1; agregarLog("⏱ Ritmo normal."); actualizarUI(); }, 15000);
+        } else if(game.rangoIdx === 3) { 
+            game.xp += 400; provocarInterrogatorioPasillo();
+        } else if(game.rangoIdx === 4) { 
+            game.reputacionBase += 20;
+        } else if(game.rangoIdx === 5) { 
+            game.multiplicadorPasivoTemporal = 3;
+            setTimeout(() => { game.multiplicadorPasivoTemporal = 1; agregarLog("⏱ Ritmo normal."); actualizarUI(); }, 20000);
+        }
+        game.habilidadCdRestante = RANGOS[game.rangoIdx].cd;
+        actualizarUI();
+    }
+
+    function provocarInterrogatorioPasillo() {
+        if(typeof PREGUNTAS_PASILLO === 'undefined' || PREGUNTAS_PASILLO.length === 0) return;
+        let idx = Math.floor(Math.random() * PREGUNTAS_PASILLO.length);
+        interrogatorioPendiente = PREGUNTAS_PASILLO[idx];
+        document.getElementById("btn-floating-esp").style.display = "flex";
+        actualizarUI(); 
+    }
+
+    function interceptarEspecialista() {
+        if(!interrogatorioPendiente || crisisActiva) return;
+        document.getElementById("btn-floating-esp").style.display = "none";
+        document.getElementById("btn-modal-cancelar").style.display = "block";
+        document.getElementById("btn-modal-entendido").style.display = "none";
+        document.getElementById("modal-doctor-tag").innerText = "INTERROGATORIO";
+        document.getElementById("modal-doctor-tag").style.backgroundColor = "var(--medical-cyan)";
+        document.getElementById("modal-titulo").innerText = `Dr(a). ${interrogatorioPendiente.esp}`;
+        document.getElementById("modal-descripcion").innerText = interrogatorioPendiente.q;
+        let cnt = document.getElementById("modal-options"); cnt.innerHTML = "";
+        let opts = [...interrogatorioPendiente.opts].sort(() => Math.random() - 0.5);
+        opts.forEach(opt => {
+            let btn = document.createElement("button"); btn.innerText = opt.t;
+            btn.onclick = () => {
+                let caso = interrogatorioPendiente; document.getElementById("decision-modal").style.display = "none";
+                let mult = game.rangoIdx + 1;
+                if(opt.ok) {
+                    game.xp += 100 * mult; game.reputacionBase += 5; 
+                    alert(`👨‍⚕️ Dr. ${caso.esp} dice:\n"${DIALOGOS_ESPECIALISTAS[caso.esp].ok}"\n\n🎉 ¡CORRECTO! (+${100 * mult} XP y +5 Prestigio)`);
+                } else {
+                    game.xp = Math.max(0, game.xp - (300 * mult)); 
+                    game.reputacionBase = Math.max(0, game.reputacionBase - 25); 
+                    alert(`👨‍⚕️ Dr. ${caso.esp} dice:\n"${DIALOGOS_ESPECIALISTAS[caso.esp].fail}"\n\n❌ INCORRECTO. (-25 Prestigio y -${300 * mult} XP)`);
+                    verificarDespidosPorPrestigio();
+                }
+                interrogatorioPendiente = null; actualizarUI();
+            };
+            cnt.appendChild(btn);
+        });
+        document.getElementById("decision-modal").style.display = "flex";
+    }
+
+    function ejecutarPenalizacionRechazo() {
+        document.getElementById("decision-modal").style.display = "none";
+        let perdidaXp = Math.floor(game.xp * 0.4); game.xp -= perdidaXp;
+        game.reputacionBase = Math.max(0, game.reputacionBase - 15);
+        alert("Evadiste al especialista. Penalización aplicada.");
+        interrogatorioPendiente = null; verificarDespidosPorPrestigio(); actualizarUI();
+    }
+
+    function cerrarModalCrisis() {
+        document.getElementById("decision-modal").style.display = "none";
+        document.getElementById("btn-modal-entendido").style.display = "none";
+        crisisActiva = false; actualizarUI(); 
+    }
+
+    // ================================================================
+    // SISTEMA DE EXAMEN
+    // ================================================================
+    function iniciarExamen() {
+        if (interrogatorioPendiente) return;
+        examenActivo = true; examenAciertos = 0; examenPreguntaActualIdx = 0;
+        examenPreguntas = [...BANCO_EXAMENES[game.rangoIdx]].sort(() => Math.random() - 0.5).slice(0, 10);
+        document.getElementById("modal-doctor-tag").innerText = "TRIBUNAL";
+        document.getElementById("modal-doctor-tag").style.backgroundColor = "var(--exam-color)";
+        document.getElementById("btn-modal-cancelar").style.display = "none";
+        desplegarPreguntaExamen();
+        document.getElementById("decision-modal").style.display = "flex";
+    }
+
+    function desplegarPreguntaExamen() {
+        if (examenPreguntaActualIdx >= 10) { finalizarExamen(); return; }
+        let p = examenPreguntas[examenPreguntaActualIdx];
+        document.getElementById("modal-descripcion").innerHTML = `<b>Pregunta ${examenPreguntaActualIdx + 1}:</b><br>${p.q}`;
+        let cnt = document.getElementById("modal-options"); cnt.innerHTML = "";
+        p.o.forEach((txt, idx) => {
+            let btn = document.createElement("button"); btn.innerText = txt;
+            btn.onclick = () => { if (idx === p.c) examenAciertos++; examenPreguntaActualIdx++; desplegarPreguntaExamen(); };
+            cnt.appendChild(btn);
+        });
+    }
+
+    function finalizarExamen() {
+        document.getElementById("decision-modal").style.display = "none"; examenActivo = false;
+        let rv = RANGOS[game.rangoIdx];
+        if (examenAciertos >= 7) {
+            game.xp -= rv.xpReq; game.rangoIdx++; alert("¡APROBADO!");
+        } else {
+            game.xp = 0; alert("REPROBADO. Barra de XP reiniciada.");
+        }
+        recalarXpPasiva(); actualizarUI();
+    }
+
+    // ================================================================
+    // LOGROS
+    // ================================================================
+    const LOGROS = [
+        { id: "primer_xp", nombre: "Primera evolución", condicion: () => game.xp >= 100, recompensa: { xp: 50, prestigio: 5 } },
+        { id: "10k_xp", nombre: "10,000 XP acumulados", condicion: () => game.xp >= 10000, recompensa: { xp: 500, prestigio: 20 } },
+        { id: "primer_crisis", nombre: "Primera crisis", condicion: () => game.crisisResueltas >= 1, recompensa: { xp: 200, prestigio: 10 } },
+        { id: "10_crisis", nombre: "10 crisis superadas", condicion: () => game.crisisResueltas >= 10, recompensa: { xp: 1000, prestigio: 50 } },
+        { id: "primer_investigacion", nombre: "Primera investigación", condicion: () => game.investigacionesCompletadas.length >= 1, recompensa: { xp: 500, prestigio: 30 } }
+    ];
+
+    function verificarLogros() {
+        LOGROS.forEach(logro => {
+            if (!logro.completado && logro.condicion()) {
+                logro.completado = true;
+                game.xp += logro.recompensa.xp || 0;
+                game.reputacionBase += logro.recompensa.prestigio || 0;
+                game.destreza += logro.recompensa.destreza || 0;
+                agregarLog(`🏆 Logro desbloqueado: ${logro.nombre}`);
+                actualizarUI();
+            }
+        });
+    }
+
+    function aplicarPrestigioPasivo() {
+        if (!game.prestigioPasivoTotal || game.prestigioPasivoTotal <= 0) return;
+        if (examenActivo || crisisActiva) return;
+        game.reputacionBase += game.prestigioPasivoTotal / 10;
+    }
+
+    // ================================================================
+    // ACTUALIZAR UI (CORREGIDA)
+    // ================================================================
+    function actualizarUI() {
+        let totalRepu = obtenerPrestigioTotal();
+        document.getElementById("stat-xp").innerText = (isNaN(game.xp) ? 0 : Math.floor(game.xp)).toLocaleString();
+        document.getElementById("stat-repu").innerText = totalRepu.toFixed(2);
+        document.getElementById("stat-destreza").innerText = game.destreza.toFixed(2);
+        document.getElementById("stat-crisis").innerText = game.crisisResueltas || 0;
+        document.getElementById("rango-badge").innerText = RANGOS[game.rangoIdx]?.nombre || "Jefe de Servicio";
+        
+        const prestigioPasivoMostrar = (game.prestigioPasivoTotal || 0) / 10;
+        document.getElementById("stat-pasivo").innerText = 
+            `+${(game.xpPasivaTotal * game.multiplicadorPasivoTemporal).toFixed(1)} XP/s | +${prestigioPasivoMostrar.toFixed(2)} Prestigio/s`;
+
+        let btnEvolucionar = document.getElementById("btn-evolucionar-principal");
+        let lblEvolucionarDesc = document.getElementById("lbl-evolucionar-desc");
+        let btnOp = document.getElementById("btn-organizar-tecnica");
+
+        if(btnOp) btnOp.disabled = (interrogatorioPendiente !== null || examenActivo || crisisActiva);
+
+        let xpPorClic = obtenerXpPorClic();
+
+        if (crisisActiva) {
+            if(btnEvolucionar) btnEvolucionar.disabled = false;
+            if(lblEvolucionarDesc) lblEvolucionarDesc.innerText = `¡CRISIS! Suma +${xpPorClic} XP a clics`;
+        } else if (interrogatorioPendiente !== null || examenActivo) {
+            if(btnEvolucionar) btnEvolucionar.disabled = true;
+            if(lblEvolucionarDesc) lblEvolucionarDesc.innerText = "BLOQUEADO: Atiende el Interrogatorio";
+        } else {
+            if(btnEvolucionar) btnEvolucionar.disabled = false;
+            if(lblEvolucionarDesc) lblEvolucionarDesc.innerText = `Suma +${xpPorClic} XP por evolución médica`;
+        }
+
+        let habBtn = document.getElementById("btn-habilidad");
+        if(habBtn) {
+            if(game.rangoIdx === 1) {
+                habBtn.innerText = `Habilidad Pasiva: R1 (+5 XP/s)`;
+                habBtn.disabled = true;
+                habBtn.classList.remove("disponible");
+            } else if(game.habilidadCdRestante > 0) {
+                habBtn.innerText = `Recargando: ${game.habilidadCdRestante}s`;
+                habBtn.disabled = true;
+                habBtn.classList.remove("disponible");
+            } else {
+                habBtn.innerText = `⚡ Activar: ${RANGOS[game.rangoIdx].xpHab}`;
+                if (game.rangoIdx === 6 || crisisActiva) {
+                    habBtn.disabled = true;
+                    habBtn.classList.remove("disponible");
+                } else {
+                    habBtn.disabled = false;
+                    habBtn.classList.add("disponible");
+                }
+            }
+        }
+
+        let sig = RANGOS[game.rangoIdx + 1];
+        if(sig) {
+            document.getElementById("tribunal-siguiente-rango").innerText = `Siguiente: ${sig.nombre}`;
+            document.getElementById("tribunal-requisitos").innerText = `Requisitos: ${sig.xpReq.toLocaleString()} XP, ${sig.repuReq} Prestigio, ${sig.destrezaReq} Destreza`;
+            document.getElementById("btn-iniciar-examen").disabled = game.xp < sig.xpReq || totalRepu < sig.repuReq || game.destreza < sig.destrezaReq || interrogatorioPendiente !== null || crisisActiva;
+        } else {
+            document.getElementById("tribunal-siguiente-rango").innerText = "👑 ¡Máximo Alcanzado!";
+            document.getElementById("tribunal-requisitos").innerText = "Eres el Jefe de Servicio.";
+            document.getElementById("btn-iniciar-examen").style.display = "none";
+        }
+
+        TIENDA_ITEMS.forEach(i => {
+            let b = document.getElementById(`buy-${i.id}`);
+            if(b) b.disabled = game.xp < Math.floor(i.costo * Math.pow(i.costoEscala, game.items[i.id] || 0)) || crisisActiva;
+        });
+
+        SUBORDINADOS_DATA.forEach(s => {
+            let b = document.getElementById(`sub-${s.id}`);
+            if(b) b.disabled = game.xp < Math.floor(s.costoXp * Math.pow(1.3, game.subordinados[s.id] || 0)) || totalRepu < s.repuReq || crisisActiva;
+        });
+        
+        renderizarMisiones();
+        verificarLogros();
+    }
+
+    // ================================================================
+    function guardarPartida() {
+    const datos = {
+        xp: game.xp,
+        reputacionBase: game.reputacionBase,
+        destreza: game.destreza,
+        rangoIdx: game.rangoIdx,
+        items: game.items,
+        subordinados: game.subordinados,
+        suerte: game.suerte,
+        crisisResueltas: game.crisisResueltas,
+        investigacionActiva: game.investigacionActiva,
+        investigacionesCompletadas: game.investigacionesCompletadas,
+        bonusInvestigacionPrestigio: game.bonusInvestigacionPrestigio,
+        habilidadCdRestante: game.habilidadCdRestante,
+        multiplicadorPasivoTemporal: game.multiplicadorPasivoTemporal,
+        multiplicadorClicTemporal: game.multiplicadorClicTemporal,
+        xpPasivaTotal: game.xpPasivaTotal,
+        prestigioPasivoTotal: game.prestigioPasivoTotal,
+        misiones: game.misiones,
+        ultimoResetMisiones: game.ultimoResetMisiones,
+        logros: LOGROS.map(l => ({ id: l.id, completado: l.completado }))
+    };
+    localStorage.setItem("residencia_cirugia_savev4", JSON.stringify(datos));
+}
+
+// INTERVALOS Y CARGA INICIAL
+function cargarPartida() {
+    const guardado = localStorage.getItem("residencia_cirugia_savev4");
+    if (!guardado) return;
+
+    try {
+        const datos = JSON.parse(guardado);
+        
+        game.xp = datos.xp || 0;
+        game.reputacionBase = datos.reputacionBase || 0;
+        game.destreza = datos.destreza || 0;
+        game.rangoIdx = datos.rangoIdx || 0;
+        game.items = datos.items || {};
+        game.subordinados = datos.subordinados || {};
+        game.suerte = datos.suerte || 0;
+        game.crisisResueltas = datos.crisisResueltas || 0;
+        game.investigacionActiva = datos.investigacionActiva || null;
+        game.investigacionesCompletadas = datos.investigacionesCompletadas || [];
+        game.bonusInvestigacionPrestigio = datos.bonusInvestigacionPrestigio || 0;
+        game.habilidadCdRestante = datos.habilidadCdRestante || 0;
+        game.multiplicadorPasivoTemporal = datos.multiplicadorPasivoTemporal || 1;
+        game.multiplicadorClicTemporal = datos.multiplicadorClicTemporal || 1;
+        game.xpPasivaTotal = datos.xpPasivaTotal || 0;
+        game.prestigioPasivoTotal = datos.prestigioPasivoTotal || 0;
+        game.misiones = datos.misiones || {};
+        game.ultimoResetMisiones = datos.ultimoResetMisiones || Date.now();
+
+        if (datos.logros) {
+            datos.logros.forEach(logroGuardado => {
+                const logro = LOGROS.find(l => l.id === logroGuardado.id);
+                if (logro) logro.completado = logroGuardado.completado || false;
+            });
+        }
+
+        agregarLog("💾 Partida cargada exitosamente.");
+    } catch (e) {
+        console.error("Error al cargar partida:", e);
+        agregarLog("⚠️ Error al cargar la partida. Se inició una nueva.");
+    }
+}
+
+// --- ESTO ES LO QUE FALTABA ---
+setInterval(() => {
+    guardarPartida();
+}, 10000);
+
+window.onload = function() {
+    cargarPartida();
+    
+    if (Object.keys(game.misiones).length === 0) {
+        MISIONES_DIARIAS.forEach(m => { game.misiones[m.id] = { progreso: 0, completada: false }; });
+        game.ultimoResetMisiones = Date.now();
+    }
+    
+    recalarXpPasiva();
+    renderizarMisiones();
+    renderTienda();
+    renderSubordinados();
+    renderizarProyectos();
+    actualizarUI();
+    agregarLog("🏥 Cargado. ¡A trabajar!");
+};
+
+// ================================================================
+// ¡ESTE ES EL INTERVALO PRINCIPAL QUE FALTABA!
+// ================================================================
+function tickJuego() {
+    // 1. Aplicar XP pasiva
+    let xpPasiva = (game.xpPasivaTotal || 0) * (game.multiplicadorPasivoTemporal || 1);
+    if (xpPasiva > 0 && !examenActivo && !crisisActiva) {
+        game.xp += xpPasiva / 10; // Dividido por 10 porque el tick es cada 100ms
+    }
+
+    // 2. Aplicar Prestigio pasivo
+    let prestigioPasivo = (game.prestigioPasivoTotal || 0) / 10;
+    if (prestigioPasivo > 0 && !examenActivo && !crisisActiva) {
+        game.reputacionBase += prestigioPasivo;
+    }
+
+    // 3. Actualizar investigación
+    if (game.investigacionActiva) {
+        game.investigacionActiva.tiempoRestante -= 0.1;
+        if (game.investigacionActiva.tiempoRestante <= 0) {
+            completarInvestigacion();
+        }
+        // Actualizar barra de progreso en UI
+        const proy = PROYECTOS.find(p => p.id === game.investigacionActiva.id);
+        if (proy) {
+            const pct = ((proy.duracion - game.investigacionActiva.tiempoRestante) / proy.duracion) * 100;
+            const barra = document.getElementById("barra-investigacion");
+            const tiempoRest = document.getElementById("tiempo-restante");
+            if (barra) barra.style.width = Math.min(100, pct) + "%";
+            if (tiempoRest) tiempoRest.innerText = `Tiempo restante: ${Math.ceil(game.investigacionActiva.tiempoRestante)}s`;
+        }
+    }
+
+    // 4. Actualizar guardia
+    if (guardiaActiva) {
+        tiempoGuardia -= 0.1;
+        if (tiempoGuardia <= 0) {
+            finalizarGuardia();
+        }
+    }
+
+    // 5. Actualizar cooldown de habilidad
+    if (game.habilidadCdRestante > 0) {
+        game.habilidadCdRestante -= 0.1;
+        if (game.habilidadCdRestante < 0) game.habilidadCdRestante = 0;
+    }
+
+    // 6. Intentar generar una crisis (cada ~2 segundos)
+    if (!crisisActiva && !examenActivo && interrogatorioPendiente === null && Math.random() < 0.002) {
+        intentarCrisis();
+    }
+
+    // 7. Verificar y actualizar UI
+    if (Math.floor(Date.now() / 500) % 2 === 0) {
+        actualizarUI();
+    }
+}
+
+// --- INICIAR EL INTERVALO PRINCIPAL ---
+setInterval(tickJuego, 100); // Ejecutar cada 100ms (10 veces por segundo)
+
+// También necesitamos el intervalo de guardado separado
+setInterval(() => {
+    guardarPartida();
+}, 10000);
+    </script>
+</body>
+</html>
