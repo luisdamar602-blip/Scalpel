@@ -433,39 +433,71 @@
         //  EJECUTAR
         // ================================================================
         document.addEventListener('DOMContentLoaded', init);
-        // --- Lógica para instalar como App (PWA) ---
-let deferredPrompt;
+     // --- Lógica para instalar como App (PWA) ---
+let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Previene que el navegador muestre su propio mini-aviso (opcional)
     e.preventDefault();
-    // Guarda el evento para dispararlo cuando el usuario quiera
     deferredPrompt = e;
-    
-    // Mostrar un botón o pregunta al usuario
-    // Aquí usamos un confirm simple, pero puedes crear un botón flotante
-    const instalar = confirm("¿Quieres instalar esta aplicación en tu teléfono para acceder más rápido?");
-    
-    if (instalar) {
-        // Muestra el prompt nativo de instalación
+
+    // Crear botón flotante solo si no existe ya
+    if (document.getElementById('btn-instalar-pwa')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'btn-instalar-pwa';
+    btn.innerHTML = '📲 Instalar aplicación';
+    btn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #0b2b4a;
+        color: white;
+        border: none;
+        padding: 14px 22px;
+        border-radius: 30px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        font-family: 'Segoe UI', sans-serif;
+        cursor: pointer;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+        z-index: 99998;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+    `;
+    btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+    btn.onmouseout = () => btn.style.transform = 'scale(1)';
+
+    btn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
         deferredPrompt.prompt();
-        // Espera la respuesta del usuario
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('Usuario aceptó instalar la app');
-            } else {
-                console.log('Usuario rechazó la instalación');
-            }
-            deferredPrompt = null;
-        });
-    }
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            localStorage.setItem('pwa_instalada', 'true');
+            console.log('App instalada');
+        }
+        deferredPrompt = null;
+        btn.remove();
+    });
+
+    document.body.appendChild(btn);
 });
 
-// Opcional: Detectar cuando ya se instaló
+// Ocultar el botón si ya está instalada (recordado en este navegador)
 window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwa_instalada', 'true');
+    const btn = document.getElementById('btn-instalar-pwa');
+    if (btn) btn.remove();
+    deferredPrompt = null;
     console.log('¡App instalada con éxito!');
-    // Podrías ocultar el botón de instalar aquí si tuvieras uno
 });
+
+// Si ya se instaló antes en este navegador, no mostrar el botón
+if (localStorage.getItem('pwa_instalada') === 'true') {
+    // Bloquea la creación del botón
+    window.addEventListener('beforeinstallprompt', (e) => e.preventDefault());
+}
     </script>
 
 </body>
