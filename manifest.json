@@ -1,6 +1,6 @@
 {
   "name": "Centro de Cirugía General",
-  "short_name": "Cirugía",
+  "short_name": "Scalpel",
   "description": "Centro de recursos para el Residente de Cirugía General",
   "start_url": "index.html",
   "display": "standalone",
