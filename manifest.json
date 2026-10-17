@@ -1,0 +1,21 @@
+{
+  "name": "Centro de Cirugía General",
+  "short_name": "Cirugía",
+  "description": "Centro de recursos para el Residente de Cirugía General",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#0b2b4a",
+  "icons": [
+    {
+      "src": "scalpel.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "scalpel.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

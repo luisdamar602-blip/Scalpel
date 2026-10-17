@@ -8,6 +8,7 @@
     <!-- ✅ ICONO DE LA PÁGINA (FAVICON) -->
     <link rel="icon" type="image/png" href="scalpel.png">
     <link rel="apple-touch-icon" href="scalpel.png">
+    <link rel="manifest" href="manifest.json">
 
     <style>
         /* ----- RESET Y ESTILOS GLOBALES ----- */
@@ -432,6 +433,39 @@
         //  EJECUTAR
         // ================================================================
         document.addEventListener('DOMContentLoaded', init);
+        // --- Lógica para instalar como App (PWA) ---
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Previene que el navegador muestre su propio mini-aviso (opcional)
+    e.preventDefault();
+    // Guarda el evento para dispararlo cuando el usuario quiera
+    deferredPrompt = e;
+    
+    // Mostrar un botón o pregunta al usuario
+    // Aquí usamos un confirm simple, pero puedes crear un botón flotante
+    const instalar = confirm("¿Quieres instalar esta aplicación en tu teléfono para acceder más rápido?");
+    
+    if (instalar) {
+        // Muestra el prompt nativo de instalación
+        deferredPrompt.prompt();
+        // Espera la respuesta del usuario
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Usuario aceptó instalar la app');
+            } else {
+                console.log('Usuario rechazó la instalación');
+            }
+            deferredPrompt = null;
+        });
+    }
+});
+
+// Opcional: Detectar cuando ya se instaló
+window.addEventListener('appinstalled', () => {
+    console.log('¡App instalada con éxito!');
+    // Podrías ocultar el botón de instalar aquí si tuvieras uno
+});
     </script>
 
 </body>
