@@ -177,112 +177,10 @@
 
         hr { margin: 30px 0; border: 0; height: 1px; background: #f0e0c0; }
 
-        /* ===== GALERÍA DE FOTOS ===== */
-        .photo-gallery {
-            margin: 20px 0 30px 0;
-            padding: 16px;
-            background: #fdf8f0;
-            border-radius: 12px;
-            border: 1px solid #f0e0c0;
-        }
-        .photo-gallery h4 {
-            color: #8a4a10;
-            margin-bottom: 12px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
-        .photo-item {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(138, 74, 16, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-            border: 1px solid #f0e0c0;
-        }
-        .photo-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(138, 74, 16, 0.2);
-        }
-        .photo-item img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            display: block;
-            background: #f5ede0;
-        }
-        .photo-caption {
-            padding: 8px 10px;
-            font-size: 0.8rem;
-            color: #6a4a20;
-            text-align: center;
-            background: #fdf8f0;
-            font-weight: 500;
-        }
-        .photo-missing {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 140px;
-            background: #f5ede0;
-            color: #b09070;
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 10px;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .photo-missing .icon {
-            font-size: 2rem;
-        }
-
-        /* Modal lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.92);
-            align-items: center;
-            justify-content: center;
-            cursor: zoom-out;
-        }
-        .lightbox.active {
-            display: flex;
-        }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 8px;
-            box-shadow: 0 0 40px rgba(255, 184, 77, 0.3);
-        }
-        .lightbox .caption {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 1rem;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 20px;
-            border-radius: 20px;
-        }
-
         @media (max-width: 820px) {
             body { flex-direction: column; height: auto; overflow: visible; }
             .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
             .main { padding: 20px; }
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
         }
 
         @media print {
@@ -290,7 +188,7 @@
             .content-section * { display: block !important; visibility: visible !important; opacity: 1 !important; }
             .surg-box, .clin-box, .note-box { break-inside: avoid; page-break-inside: avoid; }
             .grade-table { break-inside: avoid; page-break-inside: avoid; }
-            .sidebar, .nav-group, .nav-btn, .lightbox { display: none !important; }
+            .sidebar, .nav-group, .nav-btn { display: none !important; }
         }
     </style>
 </head>
@@ -369,10 +267,6 @@
         <div class="subtitle">Técnicas quirúrgicas detalladas para procedimientos con anestesia local</div>
 
         <p style="font-size:1.05rem; margin-bottom:16px;">Bienvenido al manual de <strong>Cirugía Menor</strong>. Esta aplicación reúne los procedimientos más frecuentes realizados en la consulta, sala de urgencias o quirófano ambulatorio bajo anestesia local.</p>
-
-        <div class="note-box">
-            <p><strong>📸 Sobre las fotos:</strong> Cada procedimiento cuenta con una galería de hasta 5 fotos que deberás colocar en la carpeta <code>recursos</code>. Los nombres deben seguir el formato <code>[nombre-procedimiento]-1.jpg</code>, <code>[nombre-procedimiento]-2.jpg</code>, etc.</p>
-        </div>
 
         <h3>Contenido</h3>
         <ul>
@@ -495,12 +389,6 @@
             <li>Hipotensión (por extracción rápida de grandes volúmenes).</li>
             <li>Hiponatremia, hipoalbuminemia (en paracentesis terapéutica masiva).</li>
         </ul>
-
-        <!-- GALERÍA DE FOTOS -->
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-paracentesis"></div>
-        </div>
     </div>
 
     <!-- ===== PLEUROCENTESIS ===== -->
@@ -573,11 +461,6 @@
             <li>Hipotensión o síncope.</li>
             <li>Lesión hepática o esplénica (si el sitio es demasiado bajo).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-pleurocentesis"></div>
-        </div>
     </div>
 
     <!-- ===== TORACOSTOMIA ===== -->
@@ -648,11 +531,6 @@
             <li>Pulmón reexpandido en radiografía.</li>
             <li>Técnica: pinzar el tubo, desconectar, retirar con un movimiento rápido y firme mientras el paciente realiza una espiración forzada o maniobra de Valsalva. Colocar apósito oclusivo.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-toracostomia"></div>
-        </div>
     </div>
 
     <!-- ===== SELDINGER ===== -->
@@ -722,11 +600,6 @@
             <li>Trombosis venosa.</li>
             <li>Embolia aérea.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-seldinger"></div>
-        </div>
     </div>
 
     <!-- ===== DISECCIÓN VENOSA ===== -->
@@ -797,11 +670,6 @@
             <li>Infección de la herida.</li>
             <li>Trombosis venosa.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-diseccion-vena"></div>
-        </div>
     </div>
 
     <!-- ===== LIPOMA ===== -->
@@ -855,11 +723,6 @@
             <li>Recidiva (si no se extirpa la cápsula completa).</li>
             <li>Lesión de estructuras vecinas (nervios, vasos).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-lipoma"></div>
-        </div>
     </div>
 
     <!-- ===== ABSCESOS ===== -->
@@ -918,11 +781,6 @@
             <li>Recidiva (si no se drena completamente).</li>
             <li>Fístula (si el absceso está en relación con una víscera).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-abscesos"></div>
-        </div>
     </div>
 
     <!-- ===== QUISTES SEBÁCEOS ===== -->
@@ -973,11 +831,6 @@
             <li>Recidiva (si no se extirpa la cápsula completa).</li>
             <li>Lesión de estructuras vecinas (nervios, vasos).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-quistes"></div>
-        </div>
     </div>
 
     <!-- ===== BIOPSIA DE ADENOPATÍAS ===== -->
@@ -1030,11 +883,6 @@
             <li>Fístula linfática.</li>
             <li>Diseminación tumoral (si se manipula demasiado).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-biopsia-adenopatias"></div>
-        </div>
     </div>
 
     <!-- ===== GRANULOMAS ===== -->
@@ -1082,11 +930,6 @@
             <li>Infección de la herida.</li>
             <li>Fístula persistente.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-granulomas"></div>
-        </div>
     </div>
 
     <!-- ===== RESECCION EN BLOQUE ===== -->
@@ -1140,11 +983,6 @@
             <li>Recidiva (si el margen es insuficiente).</li>
             <li>Lesión de estructuras vecinas.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-reseca-bloque"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN MEDIA ===== -->
@@ -1193,11 +1031,6 @@
             <li><strong>Ventajas:</strong> Acceso amplio a toda la cavidad abdominal, rápida, versátil.</li>
             <li><strong>Desventajas:</strong> Mayor riesgo de eventración, peor resultado estético.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-media"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN PARAMEDIANA ===== -->
@@ -1239,11 +1072,6 @@
             <li><strong>Ventajas:</strong> Menor riesgo de eventración que la incisión media (el músculo recto protege).</li>
             <li><strong>Desventajas:</strong> Menor exposición que la incisión media.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-paramediana"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN MCBURNEY ===== -->
@@ -1288,11 +1116,6 @@
             <li><strong>Ventajas:</strong> Menor dolor postoperatorio, menor riesgo de eventración, mejor resultado estético.</li>
             <li><strong>Desventajas:</strong> Exposición limitada, difícil de extender si se necesita más campo.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-mcburney"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN SUBCOSTAL ===== -->
@@ -1335,11 +1158,6 @@
             <li><strong>Ventajas:</strong> Excelente exposición de la vía biliar y el hígado.</li>
             <li><strong>Desventajas:</strong> Mayor dolor postoperatorio, riesgo de lesión del nervio intercostal.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-subcostal"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN PFANNENSTIEL ===== -->
@@ -1381,11 +1199,6 @@
             <li><strong>Ventajas:</strong> Excelente resultado estético, menor dolor postoperatorio, menor riesgo de eventración.</li>
             <li><strong>Desventajas:</strong> Exposición limitada, difícil de extender.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-pfannenstiel"></div>
-        </div>
     </div>
 
     <!-- ===== INCISIÓN DE KEHR ===== -->
@@ -1426,11 +1239,6 @@
             <li><strong>Ventajas:</strong> Excelente exposición del hígado, vías biliares y páncreas.</li>
             <li><strong>Desventajas:</strong> Mayor dolor postoperatorio, riesgo de lesión de nervios intercostales.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-inc-kehr"></div>
-        </div>
     </div>
 
     <!-- ===== VARICOCELE ===== -->
@@ -1471,11 +1279,6 @@
             <li>Hidrocele postoperatorio.</li>
             <li>Recidiva.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-varicocele"></div>
-        </div>
     </div>
 
     <!-- ===== HIDROCELE ===== -->
@@ -1514,11 +1317,6 @@
             <li>Lesión del epidídimo.</li>
             <li>Atrofia testicular (raro).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-hidrocele"></div>
-        </div>
     </div>
 
     <!-- ===== CIRCUNCISIÓN ===== -->
@@ -1560,11 +1358,6 @@
             <li>Fimosis secundaria (si se reseca poco prepucio).</li>
             <li>Lesión del glande (raro).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-circuncision"></div>
-        </div>
     </div>
 
     <!-- ===== FASCIOTOMIA ===== -->
@@ -1606,11 +1399,6 @@
             <li>Lesión nerviosa.</li>
             <li>Dehiscencia de la herida.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-fasciotomia"></div>
-        </div>
     </div>
 
     <!-- ===== COLGAJOS ===== -->
@@ -1649,11 +1437,6 @@
             <li>Dehiscencia.</li>
             <li>Seroma o hematoma.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-colgajos"></div>
-        </div>
     </div>
 
     <!-- ===== ENTUBACIÓN ===== -->
@@ -1707,11 +1490,6 @@
             <li>Hemorragia.</li>
             <li>Estenosis traqueal (tardía).</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-entubacion"></div>
-        </div>
     </div>
 
     <!-- ===== SUTURAS EN PIEL ===== -->
@@ -1783,11 +1561,6 @@
             <li><strong>Espalda:</strong> 14-21 días.</li>
             <li><strong>Articulaciones:</strong> 14 días.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-suturas-piel"></div>
-        </div>
     </div>
 
     <!-- ===== SUTURAS INTESTINALES ===== -->
@@ -1861,211 +1634,11 @@
             <li>Infección.</li>
             <li>Fístula.</li>
         </ul>
-
-        <div class="photo-gallery">
-            <h4>📸 Fotos del procedimiento</h4>
-            <div class="photo-grid" id="gallery-suturas-intestinal"></div>
-        </div>
     </div>
 
 </div>
 
-<!-- ===== LIGHTBOX PARA FOTOS ===== -->
-<div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
-    <img id="lightboxImg" src="" alt="">
-    <div class="caption" id="lightboxCaption"></div>
-</div>
-
 <script>
-    // ================================================================
-    // CONFIGURACIÓN DE FOTOS
-    // ================================================================
-    // Carpeta donde están las fotos
-    const CARPETA_FOTOS = 'recursos/';
-
-    // Estructura de fotos por procedimiento
-    // Cada procedimiento tiene 5 fotos: [nombre]-1.jpg, [nombre]-2.jpg, etc.
-    const procedimientos = {
-        'paracentesis': {
-            nombre: 'Paracentesis',
-            fotos: ['paracentesis-1.jpg', 'paracentesis-2.jpg', 'paracentesis-3.jpg', 'paracentesis-4.jpg'],
-            captions: []
-            },
-        'pleurocentesis': {
-            nombre: 'Pleurocentesis',
-            fotos: ['pleurocentesis-1.jpg', 'pleurocentesis-2.jpg', 'pleurocentesis-3.jpg', 'pleurocentesis-4.jpg', 'pleurocentesis-5.jpg'],
-            captions: []
-        },
-        'toracostomia': {
-            nombre: 'Toracostomía',
-            fotos: ['toracostomia-1.jpg', 'toracostomia-2.jpg', 'toracostomia-3.jpg', 'toracostomia-4.jpg', 'toracostomia-5.jpg'],
-            captions: []},
-        'seldinger': {
-            nombre: 'Técnica de Seldinger',
-            fotos: ['seldinger-1.jpg', 'seldinger-2.jpg', 'seldinger-3.jpg', 'seldinger-4.jpg', 'seldinger-5.jpg'],
-            captions: []
-        },
-        'diseccion-vena': {
-            nombre: 'Disección Venosa',
-            fotos: ['diseccion-vena-1.jpg', 'diseccion-vena-2.jpg', 'diseccion-vena-3.jpg', 'diseccion-vena-4.jpg', 'diseccion-vena-5.jpg'],
-            captions: []
-        },
-        'lipoma': {
-            nombre: 'Lipoma',
-            fotos: ['lipoma-1.jpg', 'lipoma-2.jpg', 'lipoma-3.jpg', 'lipoma-4.jpg', 'lipoma-5.jpg'],
-            captions: []
-        },
-        'abscesos': {
-            nombre: 'Abscesos',
-            fotos: ['abscesos-1.jpg', 'abscesos-2.jpg', 'abscesos-3.jpg', 'abscesos-4.jpg', 'abscesos-5.jpg'],
-            captions: []
-        },
-        'quistes': {
-            nombre: 'Quistes Sebáceos',
-            fotos: ['quistes-1.jpg', 'quistes-2.jpg', 'quistes-3.jpg', 'quistes-4.jpg', 'quistes-5.jpg'],
-            captions: []
-        },
-        'biopsia-adenopatias': {
-            nombre: 'Biopsia de Adenopatías',
-            fotos: ['biopsia-adenopatias-1.jpg', 'biopsia-adenopatias-2.jpg', 'biopsia-adenopatias-3.jpg', 'biopsia-adenopatias-4.jpg', 'biopsia-adenopatias-5.jpg'],
-            captions: []
-        },
-        'granulomas': {
-            nombre: 'Granulomas',
-            fotos: ['granulomas-1.jpg', 'granulomas-2.jpg', 'granulomas-3.jpg', 'granulomas-4.jpg', 'granulomas-5.jpg'],
-            captions: []
-        },
-        'reseca-bloque': {
-            nombre: 'Resección en Bloque',
-            fotos: ['reseca-bloque-1.jpg', 'reseca-bloque-2.jpg', 'reseca-bloque-3.jpg', 'reseca-bloque-4.jpg', 'reseca-bloque-5.jpg'],
-            captions: []
-        },
-        'inc-media': {
-            nombre: 'Incisión Media',
-            fotos: ['inc-media-1.jpg', 'inc-media-2.jpg', 'inc-media-3.jpg', 'inc-media-4.jpg', 'inc-media-5.jpg'],
-            captions: []
-        },
-        'inc-paramediana': {
-            nombre: 'Incisión Paramediana',
-            fotos: ['inc-paramediana-1.jpg', 'inc-paramediana-2.jpg', 'inc-paramediana-3.jpg', 'inc-paramediana-4.jpg', 'inc-paramediana-5.jpg'],
-            captions: []
-        },
-        'inc-mcburney': {
-            nombre: 'Incisión de McBurney',
-            fotos: ['inc-mcburney-1.jpg', 'inc-mcburney-2.jpg', 'inc-mcburney-3.jpg', 'inc-mcburney-4.jpg', 'inc-mcburney-5.jpg'],
-            captions: []
-        },
-        'inc-subcostal': {
-            nombre: 'Incisión Subcostal',
-            fotos: ['inc-subcostal-1.jpg', 'inc-subcostal-2.jpg', 'inc-subcostal-3.jpg', 'inc-subcostal-4.jpg', 'inc-subcostal-5.jpg'],
-            captions: []
-        },
-        'inc-pfannenstiel': {
-            nombre: 'Incisión de Pfannenstiel',
-            fotos: ['inc-pfannenstiel-1.jpg', 'inc-pfannenstiel-2.jpg', 'inc-pfannenstiel-3.jpg', 'inc-pfannenstiel-4.jpg', 'inc-pfannenstiel-5.jpg'],
-            captions: []
-        },
-        'inc-kehr': {
-            nombre: 'Incisión de Kehr',
-            fotos: ['inc-kehr-1.jpg', 'inc-kehr-2.jpg', 'inc-kehr-3.jpg', 'inc-kehr-4.jpg', 'inc-kehr-5.jpg'],
-            captions: []
-        },
-        'varicocele': {
-            nombre: 'Varicocele',
-            fotos: ['varicocele-1.jpg', 'varicocele-2.jpg', 'varicocele-3.jpg', 'varicocele-4.jpg', 'varicocele-5.jpg'],
-            captions: []
-        },
-        'hidrocele': {
-            nombre: 'Hidrocele',
-            fotos: ['hidrocele-1.jpg', 'hidrocele-2.jpg', 'hidrocele-3.jpg', 'hidrocele-4.jpg', 'hidrocele-5.jpg'],
-            captions: []
-        },
-        'circuncision': {
-            nombre: 'Circuncisión',
-            fotos: ['circuncision-1.jpg', 'circuncision-2.jpg', 'circuncision-3.jpg', 'circuncision-4.jpg', 'circuncision-5.jpg'],
-            captions: []
-        },
-        'fasciotomia': {
-            nombre: 'Fasciotomía',
-            fotos: ['fasciotomia-1.jpg', 'fasciotomia-2.jpg', 'fasciotomia-3.jpg', 'fasciotomia-4.jpg', 'fasciotomia-5.jpg'],
-            captions: []
-        },
-        'colgajos': {
-            nombre: 'Colgajos',
-            fotos: ['colgajos-1.jpg', 'colgajos-2.jpg', 'colgajos-3.jpg', 'colgajos-4.jpg', 'colgajos-5.jpg'],
-            captions: []
-        },
-        'entubacion': {
-            nombre: 'Entubación Endotraqueal',
-            fotos: ['entubacion-1.jpg', 'entubacion-2.jpg', 'entubacion-3.jpg', 'entubacion-4.jpg', 'entubacion-5.jpg'],
-            captions: []
-        },
-        'suturas-piel': {
-            nombre: 'Suturas en Piel',
-            fotos: ['suturas-piel-1.jpg', 'suturas-piel-2.jpg', 'suturas-piel-3.jpg', 'suturas-piel-4.jpg', 'suturas-piel-5.jpg'],
-            captions: []
-        },
-        'suturas-intestinal': {
-            nombre: 'Suturas Intestinales',
-            fotos: ['suturas-intestinal-1.jpg', 'suturas-intestinal-2.jpg', 'suturas-intestinal-3.jpg', 'suturas-intestinal-4.jpg', 'suturas-intestinal-5.jpg'],
-            captions: []
-        }
-    };
-
-    // ================================================================
-    // FUNCIONES DE GALERÍA DE FOTOS
-    // ================================================================
-    function cargarGaleria(procedimientoKey) {
-        const galleryId = 'gallery-' + procedimientoKey;
-        const galleryContainer = document.getElementById(galleryId);
-        if (!galleryContainer) return;
-
-        const proc = procedimientos[procedimientoKey];
-        if (!proc) {
-            galleryContainer.innerHTML = '<p style="color:#b09070;">No hay fotos configuradas.</p>';
-            return;
-        }
-
-        galleryContainer.innerHTML = '';
-
-        proc.fotos.forEach((foto, index) => {
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
-
-            const rutaCompleta = CARPETA_FOTOS + foto;
-            const caption = proc.captions[index] || 'Foto ' + (index + 1);
-
-            photoItem.innerHTML = `
-                <img src="${rutaCompleta}"
-                     alt="${caption}"
-                     onerror="this.parentElement.innerHTML='<div class=\\'photo-missing\\'><div class=\\'icon\\'>📷</div><div>${foto}</div></div>'"
-                     onclick="abrirLightbox('${rutaCompleta}', '${caption}')"
-                     style="cursor: zoom-in;">
-                <div class="photo-caption">${caption}</div>
-            `;
-
-            galleryContainer.appendChild(photoItem);
-        });
-    }
-
-    function abrirLightbox(src, caption) {
-        const lightbox = document.getElementById('lightbox');
-        const img = document.getElementById('lightboxImg');
-        const cap = document.getElementById('lightboxCaption');
-        img.src = src;
-        cap.textContent = caption;
-        lightbox.classList.add('active');
-    }
-
-    function cerrarLightbox() {
-        document.getElementById('lightbox').classList.remove('active');
-    }
-
-    // Cerrar lightbox con Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') cerrarLightbox();
-    });
-
     // ================================================================
     // NAVEGACIÓN
     // ================================================================
@@ -2081,11 +1654,6 @@
             if (btn.dataset.target === targetId) btn.classList.add('active');
         });
         document.getElementById('mainContent').scrollTop = 0;
-
-        // Cargar galería si existe para esta sección
-        if (procedimientos[targetId]) {
-            cargarGaleria(targetId);
-        }
     }
 
     buttons.forEach(btn => {
@@ -2093,14 +1661,6 @@
             const target = this.dataset.target;
             if (target) showSection(target);
         });
-    });
-
-    // ================================================================
-    // INICIALIZACIÓN
-    // ================================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Cargar galería de la sección activa (inicio no tiene galería)
-        // Las galerías se cargan al navegar a cada sección
     });
 
     // Mostrar inicio por defecto

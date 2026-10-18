@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mnemotecnias Quirúrgicas — Surgical Recall</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #f0e6c8;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 350px;
+            background: #111;
+            color: #f0e6c8;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 16px rgba(0,0,0,0.8);
+            z-index: 10;
+            border-right: 1px solid #2a2a00;
+        }
+        .sidebar h2 {
+            font-size: 1.15rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #3a3a00;
+            letter-spacing: 0.5px;
+            color: #f0e6c8;
+        }
+        .sidebar h2 span { font-weight: 700; color: #ffd700; }
+        .nav-group-title {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ffd700;
+            padding: 12px 20px 4px 20px;
+            font-weight: 700;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #d8cba0;
+            padding: 6px 20px 6px 28px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover {
+            background: #1a1a00;
+            color: #fff;
+            border-left-color: #ffd700;
+        }
+        .nav-btn.active {
+            background: #2a2a00;
+            color: #fff;
+            border-left-color: #ffd700;
+            font-weight: 500;
+        }
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 40px 60px 40px;
+            background: #0f0f0f;
+        }
+        .main h1 {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #c8b860;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #2a2a00;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .content-section h2 {
+            color: #ffd700;
+            border-left: 6px solid #ffd700;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        .content-section h3 {
+            color: #ffe066;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #2a2a00;
+            padding-bottom: 6px;
+            font-size: 1.15rem;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; color: #d8cba0; }
+        .content-section ul, .content-section ol {
+            padding-left: 26px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            color: #d8cba0;
+        }
+        .content-section li { margin-bottom: 6px; }
+
+        .mnemo-word {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffd700;
+            letter-spacing: 3px;
+            margin: 8px 0 4px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+            line-height: 1.3;
+        }
+        .mnemo-box {
+            background: linear-gradient(145deg, #1a1a00, #141400);
+            border: 1px solid #3a3a00;
+            border-left: 6px solid #ffd700;
+            border-radius: 10px;
+            padding: 22px 26px;
+            margin: 20px 0;
+        }
+        .mnemo-box .item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+        .mnemo-box .item:last-child { margin-bottom: 0; }
+        .mnemo-box .letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffd700;
+            color: #0a0a0a;
+            font-weight: 800;
+            font-size: 0.95rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .mnemo-box .letter-spacer {
+            width: 30px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .mnemo-box .item strong { color: #ffd700; }
+        .mnemo-box .item .desc { color: #d8cba0; line-height: 1.5; }
+
+        .tip-box {
+            background: #141400;
+            border-left: 5px solid #c8a000;
+            padding: 16px 22px;
+            border-radius: 8px;
+            margin: 18px 0;
+            color: #d8cba0;
+        }
+        .tip-box strong { color: #ffd700; }
+        .tip-box ul { margin-bottom: 0; }
+
+        .warn-box {
+            background: #1a1000;
+            border-left: 5px solid #cc6600;
+            padding: 16px 22px;
+            border-radius: 8px;
+            margin: 18px 0;
+            color: #e8d8b0;
+        }
+        .warn-box strong { color: #ffaa33; }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 260px; overflow-y: auto; }
+            .main { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🧠 <span>Mnemotecnias</span> Quirúrgicas</h2>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Inicio</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Notas y Documentación</div>
+        <button class="nav-btn" data-target="ppp-safe-disc">📝 PPP SAFE DISC</button>
+        <button class="nav-btn" data-target="acdc-ava">📋 AC/DC AVA PAIN DUD</button>
+        <button class="nav-btn" data-target="avoid-wte">👁️ AVOID WTE</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Trauma y Shock</div>
+        <button class="nav-btn" data-target="abcdes">🚑 ABCDEs</button>
+        <button class="nav-btn" data-target="ample">📜 AMPLE</button>
+        <button class="nav-btn" data-target="beck-triad">💔 Beck's Triad</button>
+        <button class="nav-btn" data-target="cushing-triad">🧠 Cushing's Triad</button>
+        <button class="nav-btn" data-target="virchow-triad">🩸 Virchow's Triad</button>
+        <button class="nav-btn" data-target="six-ps">🦵 Six P's</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Abdomen Agudo</div>
+        <button class="nav-btn" data-target="mantrels">🔪 MANTRELS (Alvarado)</button>
+        <button class="nav-btn" data-target="get-smashed">🟡 I GET SMASHED</button>
+        <button class="nav-btn" data-target="pancreas">📊 PANCREAS (Glasgow)</button>
+        <button class="nav-btn" data-target="ga-law">⚖️ GA LAW (Ranson)</button>
+        <button class="nav-btn" data-target="c-hobbs">📉 C HOBBS (Ranson 48h)</button>
+        <button class="nav-btn" data-target="6f">🎈 6 F's</button>
+        <button class="nav-btn" data-target="rule2">🔵 Rule of 2's (Meckel)</button>
+        <button class="nav-btn" data-target="charcot">🟡 Charcot / Reynolds</button>
+        <button class="nav-btn" data-target="saints">✝️ Saint's Triad</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Signos y Síndromes</div>
+        <button class="nav-btn" data-target="cullen-grey">🟣 Cullen / Grey Turner</button>
+        <button class="nav-btn" data-target="murphy">🫀 Murphy's Sign</button>
+        <button class="nav-btn" data-target="rovsing">🔄 Rovsing / Psoas / Obturator</button>
+        <button class="nav-btn" data-target="courvoisier">🫁 Courvoisier</button>
+        <button class="nav-btn" data-target="goodsall">🍑 Goodsall's Rule</button>
+        <button class="nav-btn" data-target="kehr">🫁 Kehr's Sign</button>
+        <button class="nav-btn" data-target="battle-raccoon">👁️ Battle / Raccoon Eyes</button>
+        <button class="nav-btn" data-target="chvostek">💪 Chvostek / Trousseau</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Oncología</div>
+        <button class="nav-btn" data-target="melanoma-abcd">🔬 ABCDs del Melanoma</button>
+        <button class="nav-btn" data-target="breast-risk">🎗️ NAACP / CHAFED LIPS</button>
+        <button class="nav-btn" data-target="carcinoid-air">🌡️ AIR (Carcinoide)</button>
+        <button class="nav-btn" data-target="carcinoid-bfdr">💓 B FDR (Carcinoide)</button>
+        <button class="nav-btn" data-target="sister-mary">👵 Sister Mary Joseph</button>
+        <button class="nav-btn" data-target="virchow-node">🫁 Virchow's Node</button>
+        <button class="nav-btn" data-target="blumer">📦 Blumer's Shelf</button>
+        <button class="nav-btn" data-target="krukenberg">🥚 Krukenberg</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Gastroenterología</div>
+        <button class="nav-btn" data-target="cat-urp">🩺 CAT URP (Crohn/UC)</button>
+        <button class="nav-btn" data-target="apie-sack">🦴 A PIE SACK (EII)</button>
+        <button class="nav-btn" data-target="his-friend">🚰 HIS FRIEND (Fístulas)</button>
+        <button class="nav-btn" data-target="ppp">🔺 PPP (MEN-I)</button>
+        <button class="nav-btn" data-target="mph">🔺 MPH (MEN-IIa)</button>
+        <button class="nav-btn" data-target="mmmp">🔺 MMMP (MEN-IIb)</button>
+        <button class="nav-btn" data-target="sod">🌱 SOD (Gardner)</button>
+        <button class="nav-btn" data-target="dieulafoy">🩸 Dieulafoy</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Neumología y Tórax</div>
+        <button class="nav-btn" data-target="stop-it">🛑 STOP IT (Ca. Pulmón)</button>
+        <button class="nav-btn" data-target="rule3-6-9">📏 3, 6, 9 Rule</button>
+        <button class="nav-btn" data-target="hammer">🔨 Hammerhead</button>
+        <button class="nav-btn" data-target="westermark">🫁 Westermark</button>
+        <button class="nav-btn" data-target="hamman">💓 Hamman's Sign</button>
+        <button class="nav-btn" data-target="mackler">💔 Mackler's Triad</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Cardiovascular</div>
+        <button class="nav-btn" data-target="as-532">❤️ AS 5-3-2 (Estenosis Aórtica)</button>
+        <button class="nav-btn" data-target="cia">🦵 CIA (Leriche)</button>
+        <button class="nav-btn" data-target="bemoan">💊 BEMOAN (IAM Postop)</button>
+        <button class="nav-btn" data-target="navel">🦵 NAVEL (Femoral)</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Neurología</div>
+        <button class="nav-btn" data-target="map-horner">👁️ MAP (Horner)</button>
+        <button class="nav-btn" data-target="brown-sequard">🧠 CPT (Brown-Séquard)</button>
+        <button class="nav-btn" data-target="tko-ewing">🦴 TKO Ewing</button>
+        <button class="nav-btn" data-target="coa">🧠 COA (Wernicke)</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Nefrología y Electrolitos</div>
+        <button class="nav-btn" data-target="salud">🧪 SALUD (Anion Gap)</button>
+        <button class="nav-btn" data-target="you-need-pee">💧 YOU NEED PEE (FENa)</button>
+        <button class="nav-btn" data-target="tie">💧 TIE (Líquidos)</button>
+        <button class="nav-btn" data-target="bgs-123">🥤 BGS 1-2-3 (Secreciones)</button>
+        <button class="nav-btn" data-target="chimpanzees">🦧 CHIMPANZEES (Hipercalcemia)</button>
+        <button class="nav-btn" data-target="cb-dial-k">💊 CB DIAL K (Hiperkalemia)</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Pediatría</div>
+        <button class="nav-btn" data-target="d-cops">👶 D COPS (Cantrell)</button>
+        <button class="nav-btn" data-target="vacterl">👶 VACTERL</button>
+        <button class="nav-btn" data-target="fetal-circulation">🩸 Circulación Fetal</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Ginecología y Mama</div>
+        <button class="nav-btn" data-target="breast-triad">🎗️ Triad of Error (Mama)</button>
+        <button class="nav-btn" data-target="breast-risk2">🎗️ Factores de Riesgo</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Técnicas Quirúrgicas</div>
+        <button class="nav-btn" data-target="sits">💪 SITS (Manguito Rotador)</button>
+        <button class="nav-btn" data-target="potts">🔪 POTTS</button>
+        <button class="nav-btn" data-target="navel2">🦵 NAVEL (Acceso Femoral)</button>
+    </div>
+</div>
+
+<div class="main" id="mainContent">
+
+    <!-- INICIO -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>🧠 Mnemotecnias Quirúrgicas</h1>
+        <div class="subtitle">Recursos de estudio basados en Surgical Recall — Paráfrasis y estructura propia</div>
+
+        <p style="font-size:1.02rem; margin-bottom:18px;">Selecciona una mnemotecnia del menú lateral. Cada recurso incluye el desglose completo, el contexto clínico y consejos prácticos para fijar el conocimiento.</p>
+
+        <div class="tip-box">
+            <strong>💡 Método de estudio:</strong> Primero entiende cada término del desglose. Luego repite la palabra clave en voz alta asociando cada letra con su concepto. Finalmente, aplica la mnemotecnia a un caso clínico concreto.
+        </div>
+
+        <h3>Contenido</h3>
+        <ul>
+            <li><strong>Notas y documentación:</strong> PPP SAFE DISC, AC/DC AVA PAIN DUD, AVOID WTE.</li>
+            <li><strong>Trauma y shock:</strong> ABCDEs, AMPLE, Beck's Triad, Cushing's Triad, Virchow's Triad, Six P's.</li>
+            <li><strong>Abdomen agudo:</strong> MANTRELS, I GET SMASHED, PANCREAS, GA LAW, C HOBBS, 6 F's, Rule of 2's, Charcot/Reynolds, Saint's Triad.</li>
+            <li><strong>Signos y síndromes:</strong> Cullen/Grey Turner, Murphy, Rovsing/Psoas/Obturator, Courvoisier, Goodsall, Kehr, Battle/Raccoon, Chvostek/Trousseau.</li>
+            <li><strong>Oncología:</strong> ABCDs del melanoma, NAACP/CHAFED LIPS, AIR, B FDR, Sister Mary Joseph, Virchow's node, Blumer's shelf, Krukenberg.</li>
+            <li><strong>Gastroenterología:</strong> CAT URP, A PIE SACK, HIS FRIEND, PPP, MPH, MMMP, SOD, Dieulafoy.</li>
+            <li><strong>Neumología y tórax:</strong> STOP IT, 3-6-9 Rule, Hammerhead, Westermark, Hamman, Mackler.</li>
+            <li><strong>Cardiovascular:</strong> AS 5-3-2, CIA (Leriche), BEMOAN, NAVEL.</li>
+            <li><strong>Neurología:</strong> MAP (Horner), CPT (Brown-Séquard), TKO Ewing, COA (Wernicke).</li>
+            <li><strong>Nefrología y electrolitos:</strong> SALUD, YOU NEED PEE, TIE, BGS 1-2-3, CHIMPANZEES, CB DIAL K.</li>
+            <li><strong>Pediatría:</strong> D COPS, VACTERL, Circulación Fetal.</li>
+            <li><strong>Ginecología y mama:</strong> Triad of Error, Factores de Riesgo.</li>
+            <li><strong>Técnicas quirúrgicas:</strong> SITS, POTTS, NAVEL.</li>
+        </ul>
+    </div>
+
+    <!-- PPP SAFE DISC -->
+    <div class="content-section" id="sec-ppp-safe-disc">
+        <h2>📝 PPP SAFE DISC — Nota operatoria</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">PPP SAFE DISC</div>
+            <div class="item"><span class="letter">P</span><div><strong>Preop Dx</strong> — <span class="desc">Diagnóstico preoperatorio.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Postop Dx</strong> — <span class="desc">Diagnóstico postoperatorio.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Procedure</strong> — <span class="desc">Procedimiento realizado.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Surgeon (and assistants)</strong> — <span class="desc">Cirujano y asistentes.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Anesthesia</strong> — <span class="desc">Tipo de anestesia.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Fluids</strong> — <span class="desc">Líquidos administrados.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Estimated blood loss (EBL)</strong> — <span class="desc">Pérdida sanguínea estimada.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Drains</strong> — <span class="desc">Drenajes colocados.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>IV Fluids</strong> — <span class="desc">Líquidos intravenosos.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Specimen</strong> — <span class="desc">Muestras enviadas a patología.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Complications</strong> — <span class="desc">Complicaciones intraoperatorias.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Repite la secuencia en voz alta antes de dictar o escribir una nota operatoria.
+        </div>
+    </div>
+
+    <!-- AC/DC AVA PAIN DUD -->
+    <div class="content-section" id="sec-acdc-ava">
+        <h2>📋 AC/DC AVA PAIN DUD — Órdenes de admisión</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">AC/DC AVA PAIN DUD</div>
+            <div class="item"><span class="letter">A</span><div><strong>Admit to</strong> — <span class="desc">Sala y médico tratante.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Care Provider</strong> — <span class="desc">Médico responsable.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Diagnosis</strong> — <span class="desc">Diagnóstico de ingreso.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Condition</strong> — <span class="desc">Estado del paciente.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Allergies</strong> — <span class="desc">Alergias conocidas.</span></div></div>
+            <div class="item"><span class="letter">V</span><div><strong>Vitals</strong> — <span class="desc">Frecuencia de signos vitales.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Activity</strong> — <span class="desc">Actividad permitida.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pain meds</strong> — <span class="desc">Analgesia.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Antibiotics</strong> — <span class="desc">Antibióticos.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>IVF/Incentive Spirometry</strong> — <span class="desc">Líquidos IV y espirometría incentiva.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Nursing (Drains, etc.)</strong> — <span class="desc">Cuidados de enfermería.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>DVT prophylaxis</strong> — <span class="desc">Profilaxis de TVP.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Ulcer prophylaxis</strong> — <span class="desc">Profilaxis de úlcera de estrés.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Diet</strong> — <span class="desc">Dieta.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Úsalo como checklist al escribir órdenes de ingreso o postoperatorias.
+        </div>
+    </div>
+
+    <!-- AVOID WTE -->
+    <div class="content-section" id="sec-avoid-wte">
+        <h2>👁️ AVOID WTE — Revisión diaria del paciente</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">AVOID WTE</div>
+            <div class="item"><span class="letter">A</span><div><strong>Appearance</strong> — <span class="desc">Aspecto general y quejas subjetivas.</span></div></div>
+            <div class="item"><span class="letter">V</span><div><strong>Vital signs</strong> — <span class="desc">Signos vitales.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Output</strong> — <span class="desc">Diuresis y débito de drenajes.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Intake</strong> — <span class="desc">Ingesta oral y líquidos IV.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Drains</strong> — <span class="desc">Número, débito y características.</span></div></div>
+            <div class="item"><span class="letter">W</span><div><strong>Wound/dressing/weight</strong> — <span class="desc">Herida, apósito y peso.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Temperature</strong> — <span class="desc">Temperatura máxima.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Exam</strong> — <span class="desc">Examen cardiovascular, pulmonar, abdominal, etc.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Revisa esta secuencia antes de las rondas para una presentación completa.
+        </div>
+    </div>
+
+    <!-- ABCDES -->
+    <div class="content-section" id="sec-abcdes">
+        <h2>🚑 ABCDEs — Evaluación primaria en trauma</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">ABCDEs</div>
+            <div class="item"><span class="letter">A</span><div><strong>Airway</strong> — <span class="desc">Vía aérea con control cervical.</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Breathing</strong> — <span class="desc">Ventilación y oxigenación.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Circulation</strong> — <span class="desc">Control de hemorragia y reposición de volumen.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Disability</strong> — <span class="desc">Estado neurológico (Glasgow, pupilas).</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Exposure</strong> — <span class="desc">Exposición completa con control de hipotermia.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> No pases a la siguiente letra sin resolver la anterior. La hemorragia es la causa más frecuente de muerte evitable.
+        </div>
+    </div>
+
+    <!-- AMPLE -->
+    <div class="content-section" id="sec-ample">
+        <h2>📜 AMPLE — Historia en trauma</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">AMPLE</div>
+            <div class="item"><span class="letter">A</span><div><strong>Allergies</strong> — <span class="desc">Alergias.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Medications</strong> — <span class="desc">Medicamentos.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Past medical history</strong> — <span class="desc">Antecedentes médicos.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Last meal</strong> — <span class="desc">Última ingesta.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Events</strong> — <span class="desc">Eventos del traumatismo.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BECK'S TRIAD -->
+    <div class="content-section" id="sec-beck-triad">
+        <h2>💔 Beck's Triad — Taponamiento cardíaco</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">BECK</div>
+            <div class="item"><span class="letter">H</span><div><strong>Hipotensión</strong> — <span class="desc">Por bajo gasto cardíaco.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Ruidos cardíacos apagados</strong> — <span class="desc">Por el líquido pericárdico.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Ingurgitación yugular (JVD)</strong> — <span class="desc">Por aumento de presión venosa.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Ante inestabilidad con JVD y ruidos apagados, sospecha taponamiento y realiza ecografía.
+        </div>
+    </div>
+
+    <!-- CUSHING'S TRIAD -->
+    <div class="content-section" id="sec-cushing-triad">
+        <h2>🧠 Cushing's Triad — Hipertensión intracraneal</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CUSHING</div>
+            <div class="item"><span class="letter">H</span><div><strong>Hipertensión</strong> — <span class="desc">Respuesta simpática.</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Bradicardia</strong> — <span class="desc">Aumento del tono vagal.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Respiración irregular</strong> — <span class="desc">Compromiso del centro respiratorio.</span></div></div>
+        </div>
+
+        <div class="warn-box">
+            <strong>⚠️ Signo tardío:</strong> indica herniación inminente. Actúa de inmediato.
+        </div>
+    </div>
+
+    <!-- VIRCHOW'S TRIAD -->
+    <div class="content-section" id="sec-virchow-triad">
+        <h2>🩸 Virchow's Triad — Riesgo de trombosis</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">VIRCHOW</div>
+            <div class="item"><span class="letter">E</span><div><strong>Estasis</strong> — <span class="desc">Falta de flujo sanguíneo.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Lesión endotelial</strong> — <span class="desc">Daño al endotelio vascular.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hipercoagulabilidad</strong> — <span class="desc">Estado protrombótico.</span></div></div>
+        </div>
+    </div>
+
+    <!-- SIX P'S -->
+    <div class="content-section" id="sec-six-ps">
+        <h2>🦵 Six P's — Isquemia arterial aguda</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SIX P's</div>
+            <div class="item"><span class="letter">P</span><div><strong>Pain</strong> — <span class="desc">Dolor agudo.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pallor</strong> — <span class="desc">Palidez.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pulselessness</strong> — <span class="desc">Ausencia de pulso.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Paresthesia</strong> — <span class="desc">Parestesias.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Paralysis</strong> — <span class="desc">Parálisis (signo tardío).</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Poikilothermia/Polar</strong> — <span class="desc">Piel fría.</span></div></div>
+        </div>
+    </div>
+
+    <!-- MANTRELS -->
+    <div class="content-section" id="sec-mantrels">
+        <h2>🔪 MANTRELS — Escala de Alvarado (Apendicitis)</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MANTRELS</div>
+            <div class="item"><span class="letter">M</span><div><strong>Migration</strong> — <span class="desc">Migración del dolor a FID. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Anorexia</strong> — <span class="desc">Pérdida del apetito. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Nausea/vomiting</strong> — <span class="desc">Náuseas o vómitos. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Temperature</strong> — <span class="desc">&gt; 37.3°C. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Rebound tenderness</strong> — <span class="desc">Dolor a la descompresión. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Elevated WBC</strong> — <span class="desc">Leucocitos &gt; 10,000. <strong>2 puntos</strong>.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Leukocytosis shift</strong> — <span class="desc">Desviación izquierda. <strong>1 punto</strong>.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sign of Rovsing</strong> — <span class="desc">Dolor en FID al comprimir FII. <strong>1 punto</strong>.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> 0–4: baja probabilidad; 5–6: moderada; 7–10: alta. Los leucocitos elevados valen doble.
+        </div>
+    </div>
+
+    <!-- I GET SMASHED -->
+    <div class="content-section" id="sec-get-smashed">
+        <h2>🟡 I GET SMASHED — Causas de pancreatitis</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">I GET SMASHED</div>
+            <div class="item"><span class="letter">I</span><div><strong>Idiopathic</strong> — <span class="desc">Idiopática.</span></div></div>
+            <div class="item"><span class="letter">G</span><div><strong>Gallstones</strong> — <span class="desc">Cálculos biliares (causa más frecuente).</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Ethanol</strong> — <span class="desc">Alcohol.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Trauma</strong> — <span class="desc">Traumatismo.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Steroids</strong> — <span class="desc">Corticoides.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Mumps</strong> — <span class="desc">Parotiditis y virus.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Autoimmune</strong> — <span class="desc">Enfermedades autoinmunes.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Scorpion venom</strong> — <span class="desc">Picadura de escorpión.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hypercalcemia / Hyperlipidemia</strong> — <span class="desc">Hipercalcemia e hipertrigliceridemia.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>ERCP</strong> — <span class="desc">Post-CPRE.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Drugs</strong> — <span class="desc">Fármacos.</span></div></div>
+        </div>
+    </div>
+
+    <!-- PANCREAS -->
+    <div class="content-section" id="sec-pancreas">
+        <h2>📊 PANCREAS — Criterios de Glasgow</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">PANCREAS</div>
+            <div class="item"><span class="letter">P</span><div><strong>PaO₂</strong> — <span class="desc">&lt; 8 kPa (60 mmHg).</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Age</strong> — <span class="desc">Edad &gt; 55 años.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Neutrophilia</strong> — <span class="desc">Leucocitos &gt; 15,000/mm³.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Calcium</strong> — <span class="desc">Calcio &lt; 2 mmol/L (8 mg/dL).</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Renal function</strong> — <span class="desc">Urea &gt; 16 mmol/L (45 mg/dL).</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Enzymes</strong> — <span class="desc">LDH &gt; 600 UI/L o AST &gt; 200 UI/L.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Albumin</strong> — <span class="desc">Albúmina &lt; 32 g/L.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sugar</strong> — <span class="desc">Glucemia &gt; 10 mmol/L (180 mg/dL).</span></div></div>
+        </div>
+
+        <div class="warn-box">
+            <strong>⚠️ Dato clave:</strong> ≥ 3 criterios en 48 h = pancreatitis grave.
+        </div>
+    </div>
+
+    <!-- GA LAW -->
+    <div class="content-section" id="sec-ga-law">
+        <h2>⚖️ GA LAW — Criterios de Ranson al ingreso</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">GA LAW</div>
+            <div class="item"><span class="letter">G</span><div><strong>Glucose</strong> — <span class="desc">&gt; 200 mg/dL.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Age</strong> — <span class="desc">&gt; 55 años.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>LDH</strong> — <span class="desc">&gt; 350 UI/L.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>AST</strong> — <span class="desc">&gt; 250 UI/L.</span></div></div>
+            <div class="item"><span class="letter">W</span><div><strong>WBC</strong> — <span class="desc">&gt; 16,000/mm³.</span></div></div>
+        </div>
+    </div>
+
+    <!-- C HOBBS -->
+    <div class="content-section" id="sec-c-hobbs">
+        <h2>📉 C HOBBS — Criterios de Ranson a las 48 h</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">C HOBBS</div>
+            <div class="item"><span class="letter">C</span><div><strong>Calcium</strong> — <span class="desc">&lt; 8 mg/dL.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hct drop</strong> — <span class="desc">Caída &gt; 10%.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>O₂ (PaO₂)</strong> — <span class="desc">&lt; 60 mmHg.</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Base deficit</strong> — <span class="desc">&gt; 4 mEq/L.</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>BUN increase</strong> — <span class="desc">&gt; 5 mg/dL.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sequestration</strong> — <span class="desc">&gt; 6 L de líquidos secuestrados.</span></div></div>
+        </div>
+    </div>
+
+    <!-- 6 F'S -->
+    <div class="content-section" id="sec-6f">
+        <h2>🎈 6 F's — Causas de distensión abdominal</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">6 F's</div>
+            <div class="item"><span class="letter">F</span><div><strong>Fat</strong> — <span class="desc">Obesidad, panículo adiposo.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Fluid</strong> — <span class="desc">Ascitis, líquido libre.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Flatus</strong> — <span class="desc">Distensión por gas.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Faeces</strong> — <span class="desc">Impactación fecal.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Foetus</strong> — <span class="desc">Embarazo.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Fulminant mass</strong> — <span class="desc">Masa intraabdominal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- RULE OF 2'S -->
+    <div class="content-section" id="sec-rule2">
+        <h2>🔵 Rule of 2's — Divertículo de Meckel</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">RULE OF 2's</div>
+            <div class="item"><span class="letter">2</span><div><strong>2% de la población</strong> — <span class="desc">Prevalencia.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>2 veces más frecuente en hombres</strong> — <span class="desc">Predominio masculino.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>2 pies proximal a la válvula ileocecal</strong> — <span class="desc">Localización típica (~60 cm).</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>2 pulgadas de longitud</strong> — <span class="desc">Tamaño promedio.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>2 tipos de tejido ectópico</strong> — <span class="desc">Mucosa gástrica y pancreática.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CHARCOT / REYNOLDS -->
+    <div class="content-section" id="sec-charcot">
+        <h2>🟡 Charcot / Reynolds — Colangitis</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CHARCOT → REYNOLDS</div>
+            <div class="item"><span class="letter">C</span><div><strong>Charcot: Dolor en HCD</strong> — <span class="desc">Dolor en hipocondrio derecho.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Charcot: Hipertermia</strong> — <span class="desc">Fiebre con escalofríos.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Charcot: Ictericia</strong> — <span class="desc">Coloración amarilla.</span></div></div>
+            <div class="item"><span class="letter-spacer"></span><div style="color:#c8a000; font-size:0.85rem; padding:4px 0;">— Pentada de Reynolds añade: —</div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Reynolds: Shock</strong> — <span class="desc">Hipotensión / shock séptico.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Reynolds: Confusión</strong> — <span class="desc">Alteración del estado mental.</span></div></div>
+        </div>
+
+        <div class="warn-box">
+            <strong>⚠️ Dato clave:</strong> Reynolds = Charcot + shock + confusión = colangitis supurativa, urgencia de drenaje biliar.
+        </div>
+    </div>
+
+    <!-- SAINT'S TRIAD -->
+    <div class="content-section" id="sec-saints">
+        <h2>✝️ Saint's Triad — Asociación clásica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SAINT'S TRIAD</div>
+            <div class="item"><span class="letter">1</span><div><strong>Colelitiasis</strong> — <span class="desc">Cálculos biliares.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>Hernia hiatal</strong> — <span class="desc">Hernia del hiato esofágico.</span></div></div>
+            <div class="item"><span class="letter">3</span><div><strong>Diverticulosis</strong> — <span class="desc">Enfermedad diverticular del colon.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CULLEN / GREY TURNER -->
+    <div class="content-section" id="sec-cullen-grey">
+        <h2>🟣 Cullen / Grey Turner — Pancreatitis hemorrágica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CULLEN · GREY TURNER</div>
+            <div class="item"><span class="letter">C</span><div><strong>Cullen's sign</strong> — <span class="desc">Equimosis periumbilical por hemorragia retroperitoneal.</span></div></div>
+            <div class="item"><span class="letter">G</span><div><strong>Grey Turner's sign</strong> — <span class="desc">Equimosis de flancos (TURN side to side).</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Fox's sign</strong> — <span class="desc">Equimosis del ligamento inguinal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- MURPHY'S SIGN -->
+    <div class="content-section" id="sec-murphy">
+        <h2>🫀 Murphy's Sign — Colecistitis aguda</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MURPHY</div>
+            <div class="item"><span class="letter">M</span><div><strong>Maniobra</strong> — <span class="desc">Palpar bajo el reborde costal derecho mientras el paciente inspira profundo.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Respuesta</strong> — <span class="desc">Cese de la inspiración por dolor.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Colecistitis</strong> — <span class="desc">Signo clásico de colecistitis aguda.</span></div></div>
+        </div>
+    </div>
+
+    <!-- ROVSING -->
+    <div class="content-section" id="sec-rovsing">
+        <h2>🔄 Rovsing / Psoas / Obturator — Apendicitis</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">ROVSING · PSOAS · OBTURATOR</div>
+            <div class="item"><span class="letter">R</span><div><strong>Rovsing</strong> — <span class="desc">Dolor en FID al comprimir FII.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Psoas</strong> — <span class="desc">Dolor al extender la cadera (apéndice retrocecal).</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Obturator</strong> — <span class="desc">Dolor a la rotación interna de la cadera flexionada (apéndice pélvico).</span></div></div>
+        </div>
+    </div>
+
+    <!-- COURVOISIER -->
+    <div class="content-section" id="sec-courvoisier">
+        <h2>🫁 Courvoisier — Vesícula palpable en ictericia</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">COURVOISIER</div>
+            <div class="item"><span class="letter">C</span><div><strong>Ley de Courvoisier</strong> — <span class="desc">Vesícula palpable no dolorosa en ictericia obstructiva sugiere cáncer de páncreas (no colelitiasis).</span></div></div>
+        </div>
+    </div>
+
+    <!-- GOODSALL -->
+    <div class="content-section" id="sec-goodsall">
+        <h2>🍑 Goodsall's Rule — Fístulas anales</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">GOODSALL</div>
+            <div class="item"><span class="letter">A</span><div><strong>Anterior</strong> — <span class="desc">Trayecto recto desde la línea media.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Posterior</strong> — <span class="desc">Trayecto curvo.</span></div></div>
+        </div>
+    </div>
+
+    <!-- KEHR'S SIGN -->
+    <div class="content-section" id="sec-kehr">
+        <h2>🫁 Kehr's Sign — Ruptura esplénica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">KEHR</div>
+            <div class="item"><span class="letter">D</span><div><strong>Dolor en hombro izquierdo</strong> — <span class="desc">Por irritación diafragmática (nervio frénico).</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Ballance's sign</strong> — <span class="desc">Matidez en flanco izquierdo y timpanismo en derecho.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BATTLE / RACCOON -->
+    <div class="content-section" id="sec-battle-raccoon">
+        <h2>👁️ Battle / Raccoon Eyes — Fractura de base de cráneo</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">BATTLE · RACCOON</div>
+            <div class="item"><span class="letter">B</span><div><strong>Battle's sign</strong> — <span class="desc">Equimosis retroauricular (mastoides).</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Raccoon eyes</strong> — <span class="desc">Equimosis periorbitaria bilateral.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hemotímpano</strong> — <span class="desc">Sangre en oído medio.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Otorrea / Rinorrea</strong> — <span class="desc">Salida de LCR.</span></div></div>
+        </div>
+
+        <div class="warn-box">
+            <strong>⚠️ Dato clave:</strong> No coloques sonda nasogástrica en sospecha de fractura de base de cráneo.
+        </div>
+    </div>
+
+    <!-- CHVOSTEK / TROUSSEAU -->
+    <div class="content-section" id="sec-chvostek">
+        <h2>💪 Chvostek / Trousseau — Hipocalcemia</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CHVOSTEK · TROUSSEAU</div>
+            <div class="item"><span class="letter">C</span><div><strong>Chvostek</strong> — <span class="desc">Espasmo facial al percutir el nervio facial (CHEek).</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Trousseau</strong> — <span class="desc">Espasmo carpal al ocluir la circulación del antebrazo con el manguito.</span></div></div>
+        </div>
+    </div>
+
+    <!-- ABCDs DEL MELANOMA -->
+    <div class="content-section" id="sec-melanoma-abcd">
+        <h2>🔬 ABCDs del Melanoma</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">ABCDs</div>
+            <div class="item"><span class="letter">A</span><div><strong>Asymmetry</strong> — <span class="desc">Asimetría.</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Border irregularity</strong> — <span class="desc">Bordes irregulares.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Color variation</strong> — <span class="desc">Variación de color.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Diameter &gt; 6 mm / Dark</strong> — <span class="desc">Diámetro mayor de 6 mm y lesión oscura.</span></div></div>
+        </div>
+    </div>
+
+    <!-- NAACP / CHAFED LIPS -->
+    <div class="content-section" id="sec-breast-risk">
+        <h2>🎗️ NAACP / CHAFED LIPS — Riesgo de cáncer de mama</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">NAACP</div>
+            <div class="item"><span class="letter">N</span><div><strong>Nulliparity</strong> — <span class="desc">Nuliparidad.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Age at menarche</strong> — <span class="desc">Menarquia temprana (&lt; 13 años).</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Age at menopause</strong> — <span class="desc">Menopausia tardía (&gt; 55 años).</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Cancer of the breast</strong> — <span class="desc">Antecedente personal o familiar.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pregnancy with first child &gt; 30 años</strong> — <span class="desc">Primer embarazo tardío.</span></div></div>
+        </div>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CHAFED LIPS</div>
+            <div class="item"><span class="letter">C</span><div><strong>Cancer in the breast</strong> — <span class="desc">3% cáncer contralateral sincrónico.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hyperplasia</strong> — <span class="desc">Moderada/florida (2x).</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Atypical hyperplasia</strong> — <span class="desc">4x.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Female</strong> — <span class="desc">100x riesgo vs. hombre.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Elderly</strong> — <span class="desc">Edad avanzada.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>DCIS</strong> — <span class="desc">Carcinoma ductal in situ.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>LCIS</strong> — <span class="desc">Carcinoma lobulillar in situ.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Inherited genes</strong> — <span class="desc">BRCA1/2.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Papilloma</strong> — <span class="desc">1.5x.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sclerosing adenosis</strong> — <span class="desc">1.5x.</span></div></div>
+        </div>
+    </div>
+
+    <!-- AIR CARCINOID -->
+    <div class="content-section" id="sec-carcinoid-air">
+        <h2>🌡️ AIR — Sitios del carcinoide</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">AIR</div>
+            <div class="item"><span class="letter">A</span><div><strong>Appendix</strong> — <span class="desc">Apéndice (más frecuente).</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Ileum</strong> — <span class="desc">Íleon.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Rectum</strong> — <span class="desc">Recto.</span></div></div>
+        </div>
+    </div>
+
+    <!-- B FDR -->
+    <div class="content-section" id="sec-carcinoid-bfdr">
+        <h2>💓 B FDR — Síndrome carcinoide</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">B FDR</div>
+            <div class="item"><span class="letter">B</span><div><strong>Bronchospasm</strong> — <span class="desc">Broncoespasmo.</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Flushing</strong> — <span class="desc">Rubor facial.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Diarrhea</strong> — <span class="desc">Diarrea.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Right-sided heart failure</strong> — <span class="desc">Insuficiencia cardíaca derecha.</span></div></div>
+        </div>
+    </div>
+
+    <!-- SISTER MARY JOSEPH -->
+    <div class="content-section" id="sec-sister-mary">
+        <h2>👵 Sister Mary Joseph — Metástasis umbilical</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SISTER MARY JOSEPH</div>
+            <div class="item"><span class="letter">N</span><div><strong>Nódulo umbilical</strong> — <span class="desc">Metástasis al ganglio umbilical.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Origen</strong> — <span class="desc">Clásicamente cáncer gástrico, ovárico o colorrectal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- VIRCHOW'S NODE -->
+    <div class="content-section" id="sec-virchow-node">
+        <h2>🫁 Virchow's Node — Metástasis supraclavicular</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">VIRCHOW</div>
+            <div class="item"><span class="letter">I</span><div><strong>Izquierda</strong> — <span class="desc">Ganglio supraclavicular izquierdo.</span></div></div>
+            <div class="item"><span class="letter">G</span><div><strong>Gástrico</strong> — <span class="desc">Clásicamente por cáncer gástrico.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BLUMER'S SHELF -->
+    <div class="content-section" id="sec-blumer">
+        <h2>📦 Blumer's Shelf — Metástasis pélvica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">BLUMER</div>
+            <div class="item"><span class="letter">B</span><div><strong>Borde</strong> — <span class="desc">Estante palpable en el fondo de saco de Douglas (tacto rectal).</span></div></div>
+        </div>
+    </div>
+
+    <!-- KRUKENBERG -->
+    <div class="content-section" id="sec-krukenberg">
+        <h2>🥚 Krukenberg — Tumor ovárico metastásico</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">KRUKENBERG</div>
+            <div class="item"><span class="letter">K</span><div><strong>Krukenberg</strong> — <span class="desc">Metástasis ovárica bilateral, clásicamente de cáncer gástrico (células en anillo de sello).</span></div></div>
+        </div>
+    </div>
+
+    <!-- CAT URP -->
+    <div class="content-section" id="sec-cat-urp">
+        <h2>🩺 CAT URP — Crohn vs. Colitis Ulcerosa</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CAT URP</div>
+            <div class="item"><span class="letter">C</span><div><strong>Crohn</strong> — <span class="desc">Afectación <strong>A</strong>nal y <strong>T</strong>ransmural.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>UC</strong> — <span class="desc">Afectación <strong>R</strong>ectal y <strong>P</strong>arcial (mucosa/submucosa).</span></div></div>
+        </div>
+    </div>
+
+    <!-- A PIE SACK -->
+    <div class="content-section" id="sec-apie-sack">
+        <h2>🦴 A PIE SACK — Manifestaciones extraintestinales de EII</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">A PIE SACK</div>
+            <div class="item"><span class="letter">A</span><div><strong>Aphthous ulcers</strong> — <span class="desc">Úlceras aftosas orales.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pyoderma gangrenosum</strong> — <span class="desc">Pioderma gangrenoso.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Iritis</strong> — <span class="desc">Iritis / uveítis.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Erythema nodosum</strong> — <span class="desc">Eritema nodoso.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sclerosing cholangitis</strong> — <span class="desc">Colangitis esclerosante primaria.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Arthritis / Ankylosing spondylitis</strong> — <span class="desc">Artritis y espondilitis anquilosante.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Clubbing</strong> — <span class="desc">Acropaquia.</span></div></div>
+            <div class="item"><span class="letter">K</span><div><strong>Kidney</strong> — <span class="desc">Amiloidosis, síndrome nefrótico.</span></div></div>
+        </div>
+    </div>
+
+    <!-- HIS FRIEND -->
+    <div class="content-section" id="sec-his-friend">
+        <h2>🚰 HIS FRIEND — Factores que perpetúan fístulas</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">HIS FRIEND</div>
+            <div class="item"><span class="letter">H</span><div><strong>High output</strong> — <span class="desc">Alto débito (&gt; 500 cc/día).</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Intestinal destruction</strong> — <span class="desc">Destrucción &gt; 50% de la circunferencia.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Short segment</strong> — <span class="desc">Segmento corto (&lt; 2.5 cm).</span></div></div>
+            <div class="item"><span class="letter">F</span><div><strong>Foreign body</strong> — <span class="desc">Cuerpo extraño.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Radiation</strong> — <span class="desc">Radiación.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Infection</strong> — <span class="desc">Infección.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Epithelization</strong> — <span class="desc">Epitelización del trayecto.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Neoplasm</strong> — <span class="desc">Neoplasia.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Distal obstruction</strong> — <span class="desc">Obstrucción distal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- PPP MEN-I -->
+    <div class="content-section" id="sec-ppp">
+        <h2>🔺 PPP — MEN tipo I</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">PPP</div>
+            <div class="item"><span class="letter">P</span><div><strong>Parathyroid</strong> — <span class="desc">Hiperparatiroidismo (~90%).</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pancreas</strong> — <span class="desc">Tumores de islotes (gastrinoma, insulinoma) (~66%).</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pituitary</strong> — <span class="desc">Prolactinoma (~50%).</span></div></div>
+        </div>
+    </div>
+
+    <!-- MPH MEN-IIa -->
+    <div class="content-section" id="sec-mph">
+        <h2>🔺 MPH — MEN tipo IIa</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MPH</div>
+            <div class="item"><span class="letter">M</span><div><strong>Medullary thyroid carcinoma</strong> — <span class="desc">Carcinoma medular de tiroides (100%).</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pheochromocytoma</strong> — <span class="desc">Feocromocitoma (~33%).</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hyperparathyroidism</strong> — <span class="desc">Hiperparatiroidismo (~50%).</span></div></div>
+        </div>
+    </div>
+
+    <!-- MMMP MEN-IIb -->
+    <div class="content-section" id="sec-mmmp">
+        <h2>🔺 MMMP — MEN tipo IIb</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MMMP</div>
+            <div class="item"><span class="letter">M</span><div><strong>Mucosal neuromas</strong> — <span class="desc">Neuromas mucosos (100%).</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Medullary thyroid carcinoma</strong> — <span class="desc">Carcinoma medular de tiroides (~85%).</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Marfanoid habitus</strong> — <span class="desc">Hábito marfanoide.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pheochromocytoma</strong> — <span class="desc">Feocromocitoma (~50%), a menudo bilateral.</span></div></div>
+        </div>
+    </div>
+
+    <!-- SOD GARDNER -->
+    <div class="content-section" id="sec-sod">
+        <h2>🌱 SOD — Síndrome de Gardner</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SOD</div>
+            <div class="item"><span class="letter">S</span><div><strong>Sebaceous cysts</strong> — <span class="desc">Quistes sebáceos.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Osteomas</strong> — <span class="desc">Osteomas.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Desmoid tumors</strong> — <span class="desc">Tumores desmoides.</span></div></div>
+        </div>
+    </div>
+
+    <!-- DIEULAFOY -->
+    <div class="content-section" id="sec-dieulafoy">
+        <h2>🩸 Dieulafoy — Lesión vascular gástrica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">DIEULAFOY</div>
+            <div class="item"><span class="letter">D</span><div><strong>Defecto puntiforme</strong> — <span class="desc">Lesión mucosal puntiforme con vaso arterial subyacente.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sangrado masivo</strong> — <span class="desc">Hemorragia digestiva alta recurrente.</span></div></div>
+        </div>
+    </div>
+
+    <!-- STOP IT -->
+    <div class="content-section" id="sec-stop-it">
+        <h2>🛑 STOP IT — Contraindicaciones de cirugía en cáncer de pulmón</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">STOP IT</div>
+            <div class="item"><span class="letter">S</span><div><strong>Superior vena cava syndrome</strong> — <span class="desc">Síndrome de vena cava superior.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Supraclavicular node metastasis</strong> — <span class="desc">Metástasis ganglionar supraclavicular.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Scalene node metastasis</strong> — <span class="desc">Metástasis ganglionar escalénica.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Tracheal carina involvement</strong> — <span class="desc">Afectación traqueal o carinal.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Oat cell carcinoma</strong> — <span class="desc">Carcinoma de células en avena (microcítico).</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pulmonary function tests show FEV₁ &lt; 0.8 L</strong> — <span class="desc">Función pulmonar insuficiente.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Infarction (myocardial)</strong> — <span class="desc">Infarto reciente.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Tumor elsewhere (metastatic disease)</strong> — <span class="desc">Metástasis a distancia.</span></div></div>
+        </div>
+    </div>
+
+    <!-- 3,6,9 RULE -->
+    <div class="content-section" id="sec-rule3-6-9">
+        <h2>📏 3, 6, 9 Rule — Calibres radiológicos del intestino</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">3 · 6 · 9</div>
+            <div class="item"><span class="letter">3</span><div><strong>Intestino delgado</strong> — <span class="desc">&lt; 3 cm.</span></div></div>
+            <div class="item"><span class="letter">6</span><div><strong>Colon transverso</strong> — <span class="desc">&lt; 6 cm.</span></div></div>
+            <div class="item"><span class="letter">9</span><div><strong>Ciego</strong> — <span class="desc">&lt; 9 cm.</span></div></div>
+        </div>
+    </div>
+
+    <!-- HAMMERHEAD -->
+    <div class="content-section" id="sec-hammer">
+        <h2>🔨 Hammerhead — Actitud del estudiante de cirugía</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">HAMMERHEAD</div>
+            <div class="item"><span class="letter">H</span><div><strong>Hardcore</strong> — <span class="desc">Comprometido.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Available</strong> — <span class="desc">Disponible.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Motivated</strong> — <span class="desc">Motivado.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Modest</strong> — <span class="desc">Humilde.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Energetic</strong> — <span class="desc">Enérgico.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Reliable</strong> — <span class="desc">Fiable.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Honest</strong> — <span class="desc">Honesto.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Enthusiastic</strong> — <span class="desc">Entusiasta.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Attentive</strong> — <span class="desc">Atento.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Dedicated</strong> — <span class="desc">Dedicado.</span></div></div>
+        </div>
+    </div>
+
+    <!-- WESTERMARK -->
+    <div class="content-section" id="sec-westermark">
+        <h2>🫁 Westermark — Signo radiológico del TEP</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">WESTERMARK</div>
+            <div class="item"><span class="letter">W</span><div><strong>Wedge-shaped</strong> — <span class="desc">Área en cuña de hiperlucencia por disminución de la vasculatura pulmonar.</span></div></div>
+        </div>
+    </div>
+
+    <!-- HAMMAN -->
+    <div class="content-section" id="sec-hamman">
+        <h2>💓 Hamman's Sign — Neumomediastino</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">HAMMAN</div>
+            <div class="item"><span class="letter">H</span><div><strong>Crunch</strong> — <span class="desc">Crujido audible sobre el corazón durante la auscultación.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Mediastino</strong> — <span class="desc">Enfisema mediastínico (Boerhaave, neumomediastino).</span></div></div>
+        </div>
+    </div>
+
+    <!-- MACKLER -->
+    <div class="content-section" id="sec-mackler">
+        <h2>💔 Mackler's Triad — Ruptura esofágica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MACKLER</div>
+            <div class="item"><span class="letter">E</span><div><strong>Emesis</strong> — <span class="desc">Vómito previo.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Dolor torácico bajo</strong> — <span class="desc">Dolor retroesternal.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Enfisema subcutáneo cervical</strong> — <span class="desc">Aire subcutáneo en cuello.</span></div></div>
+        </div>
+
+        <div class="warn-box">
+            <strong>⚠️ Dato clave:</strong> La ruptura esofágica tiene alta mortalidad si no se opera en las primeras 24 h.
+        </div>
+    </div>
+
+    <!-- AS 5-3-2 -->
+    <div class="content-section" id="sec-as-532">
+        <h2>❤️ AS 5-3-2 — Complicaciones de la estenosis aórtica</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">5 · 3 · 2</div>
+            <div class="item"><span class="letter">5</span><div><strong>Angina</strong> — <span class="desc">Supervivencia media de 5 años.</span></div></div>
+            <div class="item"><span class="letter">3</span><div><strong>Syncope</strong> — <span class="desc">Supervivencia media de 3 años.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>CHF</strong> — <span class="desc">Supervivencia media de 2 años.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CIA LERICHE -->
+    <div class="content-section" id="sec-cia">
+        <h2>🦵 CIA — Síndrome de Leriche</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CIA</div>
+            <div class="item"><span class="letter">C</span><div><strong>Claudicación</strong> — <span class="desc">Claudicación de glúteos y muslos.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Impotencia</strong> — <span class="desc">Disfunción eréctil.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Atrofia</strong> — <span class="desc">Atrofia muscular de las piernas.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BEMOAN -->
+    <div class="content-section" id="sec-bemoan">
+        <h2>💊 BEMOAN — Tratamiento del IAM postoperatorio</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">BEMOAN</div>
+            <div class="item"><span class="letter">B</span><div><strong>Beta-blocker</strong> — <span class="desc">Betabloqueante (si tolerado).</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Evaluate</strong> — <span class="desc">Evaluar y monitorizar.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Morphine</strong> — <span class="desc">Morfina IV para el dolor.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Oxygen</strong> — <span class="desc">Oxígeno suplementario.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Aspirin</strong> — <span class="desc">Aspirina.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Nitrates</strong> — <span class="desc">Nitratos (si tolerados).</span></div></div>
+        </div>
+    </div>
+
+    <!-- NAVEL -->
+    <div class="content-section" id="sec-navel">
+        <h2>🦵 NAVEL — Orden de estructuras femorales</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">NAVEL</div>
+            <div class="item"><span class="letter">N</span><div><strong>Nerve</strong> — <span class="desc">Nervio (lateral).</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Artery</strong> — <span class="desc">Arteria femoral.</span></div></div>
+            <div class="item"><span class="letter">V</span><div><strong>Vein</strong> — <span class="desc">Vena femoral (medial a la arteria).</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Empty space</strong> — <span class="desc">Espacio vacío (canal femoral).</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Lymphatics</strong> — <span class="desc">Linfáticos.</span></div></div>
+        </div>
+    </div>
+
+    <!-- MAP HORNER -->
+    <div class="content-section" id="sec-map-horner">
+        <h2>👁️ MAP — Síndrome de Horner</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">MAP</div>
+            <div class="item"><span class="letter">M</span><div><strong>Miosis</strong> — <span class="desc">Pupila pequeña.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Anhidrosis</strong> — <span class="desc">Ausencia de sudoración ipsilateral.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Ptosis</strong> — <span class="desc">Párpado caído.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BROWN-SEQUARD -->
+    <div class="content-section" id="sec-brown-sequard">
+        <h2>🧠 CPT — Síndrome de Brown-Séquard</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CPT</div>
+            <div class="item"><span class="letter">C</span><div><strong>Contralateral</strong> — <span class="desc">Pérdida contralateral.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pain</strong> — <span class="desc">Pérdida de dolor.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Temperature</strong> — <span class="desc">Pérdida de temperatura.</span></div></div>
+        </div>
+    </div>
+
+    <!-- TKO EWING -->
+    <div class="content-section" id="sec-tko-ewing">
+        <h2>🦴 TKO Ewing — Sarcoma de Ewing</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">TKO</div>
+            <div class="item"><span class="letter">T</span><div><strong>Twenty years old or younger</strong> — <span class="desc">Edad ≤ 20 años.</span></div></div>
+            <div class="item"><span class="letter">K</span><div><strong>Knee joint</strong> — <span class="desc">Localización periarticular de rodilla.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Onion skinning</strong> — <span class="desc">Reacción perióstica en capas de cebolla.</span></div></div>
+        </div>
+    </div>
+
+    <!-- COA WERNICKE -->
+    <div class="content-section" id="sec-coa">
+        <h2>🧠 COA — Encefalopatía de Wernicke</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">COA</div>
+            <div class="item"><span class="letter">C</span><div><strong>Confusion</strong> — <span class="desc">Confusión.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Ophthalmoplegia</strong> — <span class="desc">Oftalmoplejía.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Ataxia</strong> — <span class="desc">Ataxia.</span></div></div>
+        </div>
+    </div>
+
+    <!-- SALUD -->
+    <div class="content-section" id="sec-salud">
+        <h2>🧪 SALUD — Causas de anion gap elevado</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SALUD</div>
+            <div class="item"><span class="letter">S</span><div><strong>Starvation</strong> — <span class="desc">Cetoacidosis por inanición.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Alcohol</strong> — <span class="desc">Cetoacidosis alcohólica.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Lactic acidosis</strong> — <span class="desc">Acidosis láctica (isquemia).</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Uremia</strong> — <span class="desc">Insuficiencia renal.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>DKA</strong> — <span class="desc">Cetoacidosis diabética.</span></div></div>
+        </div>
+    </div>
+
+    <!-- YOU NEED PEE -->
+    <div class="content-section" id="sec-you-need-pee">
+        <h2>💧 YOU NEED PEE — Fórmula de FENa</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">YOU NEED PEE</div>
+            <div class="item"><span class="letter">U</span><div><strong>Urine Na⁺</strong> — <span class="desc">Sodio urinario.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Plasma Cr</strong> — <span class="desc">Creatinina plasmática.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Plasma Na⁺</strong> — <span class="desc">Sodio plasmático.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Urine Cr</strong> — <span class="desc">Creatinina urinaria.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> FENa &lt; 1% = prerenal; FENa &gt; 2% = renal.
+        </div>
+    </div>
+
+    <!-- TIE -->
+    <div class="content-section" id="sec-tie">
+        <h2>💧 TIE — Distribución de líquidos corporales</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">TIE</div>
+            <div class="item"><span class="letter">T</span><div><strong>Total body fluid</strong> — <span class="desc">60% del peso corporal.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Intracellular</strong> — <span class="desc">40% del peso corporal.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Extracellular</strong> — <span class="desc">20% del peso corporal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BGS 1-2-3 -->
+    <div class="content-section" id="sec-bgs-123">
+        <h2>🥤 BGS 1-2-3 — Secreciones digestivas</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">BGS 1-2-3</div>
+            <div class="item"><span class="letter">B</span><div><strong>Bile</strong> — <span class="desc">≈ 1 L/día.</span></div></div>
+            <div class="item"><span class="letter">G</span><div><strong>Gastric</strong> — <span class="desc">≈ 2 L/día.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Small bowel</strong> — <span class="desc">≈ 3 L/día.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CHIMPANZEES -->
+    <div class="content-section" id="sec-chimpanzees">
+        <h2>🦧 CHIMPANZEES — Causas de hipercalcemia</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CHIMPANZEES</div>
+            <div class="item"><span class="letter">C</span><div><strong>Calcium supplementation</strong> — <span class="desc">Suplementos de calcio IV.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hyperparathyroidism</strong> — <span class="desc">Hiperparatiroidismo.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Immobility / Iatrogenic</strong> — <span class="desc">Inmovilidad / tiazidas.</span></div></div>
+            <div class="item"><span class="letter">M</span><div><strong>Mets / Milk alkali</strong> — <span class="desc">Metástasis / síndrome leche-álcali.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Paget's disease</strong> — <span class="desc">Enfermedad de Paget.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Addison's / Acromegaly</strong> — <span class="desc">Addison / acromegalia.</span></div></div>
+            <div class="item"><span class="letter">N</span><div><strong>Neoplasm</strong> — <span class="desc">Neoplasia (colon, pulmón, mama, próstata, mieloma).</span></div></div>
+            <div class="item"><span class="letter">Z</span><div><strong>Zollinger-Ellison</strong> — <span class="desc">Síndrome de Z-E.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Excessive vitamin D</strong> — <span class="desc">Exceso de vitamina D.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Excessive vitamin A</strong> — <span class="desc">Exceso de vitamina A.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sarcoidosis</strong> — <span class="desc">Sarcoidosis.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CB DIAL K -->
+    <div class="content-section" id="sec-cb-dial-k">
+        <h2>💊 CB DIAL K — Tratamiento de hiperkalemia</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">CB DIAL K</div>
+            <div class="item"><span class="letter">C</span><div><strong>Calcium</strong> — <span class="desc">Calcio IV (cardioprotector).</span></div></div>
+            <div class="item"><span class="letter">B</span><div><strong>Bicarbonate</strong> — <span class="desc">Bicarbonato sódico IV.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Dialysis</strong> — <span class="desc">Diálisis.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Insulin / dextrose</strong> — <span class="desc">Insulina con glucosa.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Albuterol</strong> — <span class="desc">Salbutamol nebulizado.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Lasix</strong> — <span class="desc">Furosemida.</span></div></div>
+            <div class="item"><span class="letter">K</span><div><strong>Kayexalate</strong> — <span class="desc">Resina de intercambio iónico.</span></div></div>
+        </div>
+    </div>
+
+    <!-- D COPS -->
+    <div class="content-section" id="sec-d-cops">
+        <h2>👶 D COPS — Pentalogía de Cantrell</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">D COPS</div>
+            <div class="item"><span class="letter">D</span><div><strong>Diaphragmatic defect</strong> — <span class="desc">Defecto diafragmático (hernia).</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Cardiac abnormality</strong> — <span class="desc">Cardiopatía congénita.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Omphalocele</strong> — <span class="desc">Onfalocele.</span></div></div>
+            <div class="item"><span class="letter">P</span><div><strong>Pericardium malformation</strong> — <span class="desc">Alteración del pericardio.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Sternal cleft</strong> — <span class="desc">Hendidura esternal.</span></div></div>
+        </div>
+    </div>
+
+    <!-- VACTERL -->
+    <div class="content-section" id="sec-vacterl">
+        <h2>👶 VACTERL — Asociación congénita</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">VACTERL</div>
+            <div class="item"><span class="letter">V</span><div><strong>Vertebral</strong> — <span class="desc">Defectos vertebrales.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Anorectal</strong> — <span class="desc">Malformación anorrectal.</span></div></div>
+            <div class="item"><span class="letter">C</span><div><strong>Cardiac</strong> — <span class="desc">Cardiopatía congénita.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Tracheoesophageal</strong> — <span class="desc">Fístula traqueoesofágica.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Esophageal atresia</strong> — <span class="desc">Atresia esofágica.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Renal / Radial</strong> — <span class="desc">Anomalías renales y radiales.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Limb</strong> — <span class="desc">Alteraciones de miembros.</span></div></div>
+        </div>
+    </div>
+
+    <!-- CIRCULACIÓN FETAL -->
+    <div class="content-section" id="sec-fetal-circulation">
+        <h2>🩸 Circulación Fetal — Estructuras y remanentes</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">FETAL → ADULTO</div>
+            <div class="item"><span class="letter">D</span><div><strong>Ductus venosus</strong> → <span class="desc">Ligamentum venosum.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Umbilical vein</strong> → <span class="desc">Ligamentum teres.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Umbilical artery</strong> → <span class="desc">Ligamento umbilical medial.</span></div></div>
+            <div class="item"><span class="letter">D</span><div><strong>Ductus arteriosus</strong> → <span class="desc">Ligamentum arteriosum.</span></div></div>
+            <div class="item"><span class="letter">U</span><div><strong>Urachus</strong> → <span class="desc">Ligamento umbilical medio.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Tiroides (descenso)</strong> → <span class="desc">Foramen cecum.</span></div></div>
+            <div class="item"><span class="letter">V</span><div><strong>Vitelline duct</strong> → <span class="desc">Divertículo de Meckel.</span></div></div>
+        </div>
+    </div>
+
+    <!-- BREAST TRIAD OF ERROR -->
+    <div class="content-section" id="sec-breast-triad">
+        <h2>🎗️ Triad of Error — Cáncer de mama mal diagnosticado</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">TRIAD OF ERROR</div>
+            <div class="item"><span class="letter">1</span><div><strong>Edad &lt; 45 años</strong> — <span class="desc">Mayor densidad mamaria, menor sensibilidad de la mamografía.</span></div></div>
+            <div class="item"><span class="letter">2</span><div><strong>Masa autopalpada</strong> — <span class="desc">La paciente detecta el nódulo.</span></div></div>
+            <div class="item"><span class="letter">3</span><div><strong>Mamografía negativa</strong> — <span class="desc">Falso negativo que retrasa el diagnóstico.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Ante una masa palpable con mamografía negativa, realizar ecografía y biopsia.
+        </div>
+    </div>
+
+    <!-- BREAST RISK 2 (Factores de Riesgo) -->
+    <div class="content-section" id="sec-breast-risk2">
+        <h2>🎗️ Factores de Riesgo de Cáncer de Mama</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">FACTORES</div>
+            <div class="item"><span class="letter">E</span><div><strong>Edad</strong> — <span class="desc">Mayor riesgo a mayor edad.</span></div></div>
+            <div class="item"><span class="letter">G</span><div><strong>Genética</strong> — <span class="desc">BRCA1/2, antecedente familiar.</span></div></div>
+            <div class="item"><span class="letter">H</span><div><strong>Hormonas</strong> — <span class="desc">Menarquia temprana, menopausia tardía, TRH.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Reproducción</strong> — <span class="desc">Nuliparidad, primer embarazo tardío.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Obesidad</strong> — <span class="desc">Postmenopáusica.</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Alcohol</strong> — <span class="desc">Consumo elevado.</span></div></div>
+            <div class="item"><span class="letter">R</span><div><strong>Radiación</strong> — <span class="desc">Exposición torácica previa.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Tabaco</strong> — <span class="desc">Factor de riesgo emergente.</span></div></div>
+        </div>
+    </div>
+
+    <!-- SITS -->
+    <div class="content-section" id="sec-sits">
+        <h2>💪 SITS — Músculos del manguito rotador</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">SITS</div>
+            <div class="item"><span class="letter">S</span><div><strong>Supraspinatus</strong> — <span class="desc">Supraespinoso.</span></div></div>
+            <div class="item"><span class="letter">I</span><div><strong>Infraspinatus</strong> — <span class="desc">Infraespinoso.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Teres minor</strong> — <span class="desc">Redondo menor.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Subscapularis</strong> — <span class="desc">Subescapular.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> La rotura del manguito rotador suele ocurrir en la quinta década y cursa con dolor y debilidad en la abducción.
+        </div>
+    </div>
+
+    <!-- POTTS -->
+    <div class="content-section" id="sec-potts">
+        <h2>🔪 POTTS — Control vascular</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">POTTS</div>
+            <div class="item"><span class="letter">P</span><div><strong>Proximal control</strong> — <span class="desc">Control proximal del vaso.</span></div></div>
+            <div class="item"><span class="letter">O</span><div><strong>Occlude</strong> — <span class="desc">Ocluir con vessel loop o clamp.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Test</strong> — <span class="desc">Verificar hemostasia.</span></div></div>
+            <div class="item"><span class="letter">T</span><div><strong>Transect</strong> — <span class="desc">Seccionar el vaso entre ligaduras.</span></div></div>
+            <div class="item"><span class="letter">S</span><div><strong>Suture</strong> — <span class="desc">Suturar la anastomosis o ligadura.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> Todo vaso a reparar debe tener control proximal y distal antes de incidirlo.
+        </div>
+    </div>
+
+    <!-- NAVEL 2 -->
+    <div class="content-section" id="sec-navel2">
+        <h2>🦵 NAVEL — Acceso vascular femoral</h2>
+
+        <div class="mnemo-box">
+            <div class="mnemo-word">NAVEL</div>
+            <div class="item"><span class="letter">N</span><div><strong>Nerve</strong> — <span class="desc">Nervio (lateral).</span></div></div>
+            <div class="item"><span class="letter">A</span><div><strong>Artery</strong> — <span class="desc">Arteria femoral.</span></div></div>
+            <div class="item"><span class="letter">V</span><div><strong>Vein</strong> — <span class="desc">Vena femoral.</span></div></div>
+            <div class="item"><span class="letter">E</span><div><strong>Empty space</strong> — <span class="desc">Espacio vacío.</span></div></div>
+            <div class="item"><span class="letter">L</span><div><strong>Lymphatics</strong> — <span class="desc">Linfáticos.</span></div></div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Consejo:</strong> La vena femoral se localiza medial al pulso arterial femoral.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    showSection('inicio');
+</script>
+
+</body>
+</html>
