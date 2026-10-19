@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Centro de Cirugía General</title>
 
-    <!-- ✅ ICONO DE LA PÁGINA (FAVICON) -->
     <link rel="icon" type="image/png" href="scalpel.png">
     <link rel="apple-touch-icon" href="scalpel.png">
     <link rel="manifest" href="manifest.json">
 
     <style>
         /* ----- RESET Y ESTILOS GLOBALES ----- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
@@ -40,21 +35,9 @@
             gap: 16px;
         }
 
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        .header h1 span {
-            color: #7ab7e0;
-        }
-
-        .header .subtitle {
-            font-size: 0.95rem;
-            opacity: 0.85;
-            font-weight: 300;
-        }
-
+        .header h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: 0.5px; }
+        .header h1 span { color: #7ab7e0; }
+        .header .subtitle { font-size: 0.95rem; opacity: 0.85; font-weight: 300; }
         .header .badge-count {
             background: rgba(255,255,255,0.15);
             padding: 6px 18px;
@@ -71,10 +54,7 @@
             width: 100%;
         }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
+        .search-box { position: relative; width: 100%; }
 
         .search-box input {
             width: 100%;
@@ -95,9 +75,7 @@
             box-shadow: 0 4px 20px rgba(26, 82, 118, 0.15);
         }
 
-        .search-box input::placeholder {
-            color: #8a9aa8;
-        }
+        .search-box input::placeholder { color: #8a9aa8; }
 
         .search-icon {
             position: absolute;
@@ -122,9 +100,7 @@
             flex-direction: column;
         }
 
-        .search-results.active {
-            display: flex;
-        }
+        .search-results.active { display: flex; }
 
         .search-result-item {
             background: #fff;
@@ -146,11 +122,7 @@
             transform: translateX(4px);
         }
 
-        .search-result-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
+        .search-result-info { display: flex; flex-direction: column; gap: 2px; }
 
         .search-result-app {
             font-size: 0.75rem;
@@ -166,11 +138,7 @@
             color: #0b2b4a;
         }
 
-        .search-result-go {
-            font-size: 1.2rem;
-            color: #1a5276;
-            opacity: 0.6;
-        }
+        .search-result-go { font-size: 1.2rem; color: #1a5276; opacity: 0.6; }
 
         .no-results {
             padding: 30px;
@@ -218,26 +186,10 @@
             border-color: #1a5276;
         }
 
-        .app-card .icon {
-            font-size: 2.6rem;
-        }
-        .app-card .title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #0b2b4a;
-        }
-        .app-card .desc {
-            font-size: 0.92rem;
-            color: #4a5a6e;
-            line-height: 1.5;
-            flex: 1;
-        }
-        .app-card .status {
-            margin-top: 4px;
-            font-size: 0.8rem;
-            color: #27ae60;
-            font-weight: 600;
-        }
+        .app-card .icon { font-size: 2.6rem; }
+        .app-card .title { font-size: 1.2rem; font-weight: 700; color: #0b2b4a; }
+        .app-card .desc { font-size: 0.92rem; color: #4a5a6e; line-height: 1.5; flex: 1; }
+        .app-card .status { margin-top: 4px; font-size: 0.8rem; color: #27ae60; font-weight: 600; }
 
         .app-card .btn-abrir {
             margin-top: 8px;
@@ -254,10 +206,7 @@
             width: 100%;
             text-align: center;
         }
-        .app-card .btn-abrir:hover {
-            background: #0b3b55;
-            transform: scale(1.02);
-        }
+        .app-card .btn-abrir:hover { background: #0b3b55; transform: scale(1.02); }
 
         .app-card .order-number {
             font-size: 0.7rem;
@@ -277,39 +226,18 @@
 
         /* ----- RESPONSIVE ----- */
         @media (max-width: 760px) {
-            .header {
-                padding: 14px 20px;
-            }
-            .header h1 {
-                font-size: 1.3rem;
-            }
-            .search-container {
-                padding: 15px 16px 5px 16px;
-            }
-            .search-box input {
-                padding: 14px 18px;
-                font-size: 1rem;
-            }
-            .main-container {
-                padding: 16px;
-            }
-            .search-results {
-                padding: 0 16px;
-                max-height: 50vh;
-            }
-            .cards-grid {
-                gap: 16px;
-                grid-template-columns: 1fr;
-            }
-            .app-card {
-                padding: 20px 18px;
-            }
+            .header { padding: 14px 20px; }
+            .header h1 { font-size: 1.3rem; }
+            .search-container { padding: 15px 16px 5px 16px; }
+            .search-box input { padding: 14px 18px; font-size: 1rem; }
+            .main-container { padding: 16px; }
+            .search-results { padding: 0 16px; max-height: 50vh; }
+            .cards-grid { gap: 16px; grid-template-columns: 1fr; }
+            .app-card { padding: 20px 18px; }
         }
 
         @media print {
-            .header, .search-container, .search-results {
-                display: none;
-            }
+            .header, .search-container, .search-results { display: none; }
         }
     </style>
 </head>
@@ -855,32 +783,17 @@
         }
 
         /**
-         * Abre la aplicación en una nueva ventana e inyecta un botón flotante
-         * para volver al lanzador principal.
+         * Inyecta el botón "Volver al inicio" en la ventana emergente.
+         * @param {Window} ventana - La ventana emergente.
          */
-        function abrirConBotonDeVuelta(app) {
-            // Abrir la aplicación en una nueva ventana
-            const nuevaVentana = window.open(app.archivo, '_blank');
-
-            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
-                alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
-                return;
-            }
-
-            // Esperar a que la ventana cargue completamente
-            // e inyectar el botón "Volver al inicio" con un estilo fijo
-            const ventana = nuevaVentana;
+        function inyectarBotonVolver(ventana) {
             const interval = setInterval(() => {
                 try {
-                    // Verificar si la ventana ya tiene el documento cargado
                     if (ventana.document && ventana.document.body) {
-                        // Evitar inyectar múltiples veces
                         if (ventana.document.getElementById('btn-volver-inicio')) {
                             clearInterval(interval);
                             return;
                         }
-
-                        // Crear el botón
                         const btn = ventana.document.createElement('div');
                         btn.id = 'btn-volver-inicio';
                         btn.innerHTML = `
@@ -912,30 +825,38 @@
                             </button>
                         `;
                         ventana.document.body.appendChild(btn);
-
-                        // Añadir también un atajo de teclado (Alt + Flecha izquierda)
                         ventana.document.addEventListener('keydown', (e) => {
                             if (e.altKey && e.key === 'ArrowLeft') {
                                 ventana.close();
                             }
                         });
-
                         clearInterval(interval);
                     }
                 } catch (e) {
-                    // Si la ventana se cerró o no es accesible, detener el intervalo
                     if (ventana.closed) {
                         clearInterval(interval);
                     }
                 }
             }, 300);
-
-            // Timeout de seguridad: detener después de 10 segundos si no se pudo inyectar
             setTimeout(() => {
                 clearInterval(interval);
             }, 10000);
+        }
 
-            ventana.focus();
+        /**
+         * Abre la aplicación en una nueva ventana e inyecta un botón flotante
+         * para volver al lanzador principal.
+         */
+        function abrirConBotonDeVuelta(app) {
+            const nuevaVentana = window.open(app.archivo, '_blank');
+
+            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
+                alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
+                return;
+            }
+
+            inyectarBotonVolver(nuevaVentana);
+            nuevaVentana.focus();
         }
 
         /** Busca secciones en todas las aplicaciones */
@@ -988,9 +909,12 @@
             searchResults.classList.add('active');
         }
 
-        /** Abre la aplicación y navega a la sección específica */
+        /**
+         * Abre la aplicación y navega a la sección específica.
+         * Usa un parámetro de URL para pasar la sección y espera a que cargue.
+         */
         function abrirSeccionDirecta(res) {
-            const url = `${res.archivo}#sec-${res.sectionId}`;
+            const url = `${res.archivo}?section=${res.sectionId}`;
             const nuevaVentana = window.open(url, '_blank');
 
             if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
@@ -998,63 +922,54 @@
                 return;
             }
 
-            // Inyectar el botón "Volver al inicio" de la misma forma
-            const ventana = nuevaVentana;
+            // Inyectar el botón de volver
+            inyectarBotonVolver(nuevaVentana);
+
+            // Inyectar el script para activar la sección después de que la página cargue
             const interval = setInterval(() => {
                 try {
-                    if (ventana.document && ventana.document.body) {
-                        if (ventana.document.getElementById('btn-volver-inicio')) {
+                    if (nuevaVentana.document && nuevaVentana.document.body) {
+                        // Verificar si la aplicación ya se inicializó (buscando el botón de inicio o algún elemento clave)
+                        // Asumimos que si hay un botón con id 'sec-inicio', la app cargó.
+                        if (nuevaVentana.document.getElementById('sec-inicio')) {
+                            // Inyectar el script que simula el clic en el botón de la sección correcta
+                            const script = nuevaVentana.document.createElement('script');
+                            script.textContent = `
+                                (function() {
+                                    const sectionId = '${res.sectionId}';
+                                    const targetBtn = document.querySelector('.nav-btn[data-target="' + sectionId + '"]');
+                                    if (targetBtn) {
+                                        targetBtn.click();
+                                    } else {
+                                        // Si no hay botón (ej. en juegos), intentar buscar el elemento directamente
+                                        const sectionEl = document.getElementById('sec-' + sectionId);
+                                        if (sectionEl) {
+                                            // Ocultar todas las secciones
+                                            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                                            sectionEl.classList.add('active');
+                                            // Actualizar botones
+                                            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                                            const btn = document.querySelector('.nav-btn[data-target="' + sectionId + '"]');
+                                            if (btn) btn.classList.add('active');
+                                        }
+                                    }
+                                })();
+                            `;
+                            nuevaVentana.document.body.appendChild(script);
                             clearInterval(interval);
-                            return;
                         }
-                        const btn = ventana.document.createElement('div');
-                        btn.id = 'btn-volver-inicio';
-                        btn.innerHTML = `
-                            <button onclick="window.close()" style="
-                                position: fixed;
-                                top: 16px;
-                                left: 16px;
-                                background: rgba(11, 43, 74, 0.92);
-                                color: white;
-                                border: none;
-                                padding: 12px 22px;
-                                border-radius: 30px;
-                                font-size: 0.95rem;
-                                font-weight: 600;
-                                cursor: pointer;
-                                font-family: 'Segoe UI', sans-serif;
-                                box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-                                transition: 0.2s;
-                                z-index: 99999;
-                                display: flex;
-                                align-items: center;
-                                gap: 10px;
-                                backdrop-filter: blur(4px);
-                            "
-                            onmouseover="this.style.transform='scale(1.05)'; this.style.background='#1a5276';"
-                            onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(11,43,74,0.92)';"
-                            >
-                            <span style="font-size:1.4rem;">←</span> Volver al inicio
-                            </button>
-                        `;
-                        ventana.document.body.appendChild(btn);
-                        ventana.document.addEventListener('keydown', (e) => {
-                            if (e.altKey && e.key === 'ArrowLeft') {
-                                ventana.close();
-                            }
-                        });
-                        clearInterval(interval);
                     }
                 } catch (e) {
-                    if (ventana.closed) {
+                    if (nuevaVentana.closed) {
                         clearInterval(interval);
                     }
                 }
             }, 300);
             setTimeout(() => {
                 clearInterval(interval);
-            }, 10000);
-            ventana.focus();
+            }, 15000); // Aumentar timeout por si la app tarda en cargar
+
+            nuevaVentana.focus();
             searchResults.classList.remove('active');
             searchInput.value = '';
         }
