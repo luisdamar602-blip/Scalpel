@@ -2,12 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Centro de Cirugía General</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b2b4a">
+    <meta name="description" content="Centro de recursos para el Residente de Cirugía General">
 
-    <link rel="icon" type="image/png" href="scalpel.png">
-    <link rel="apple-touch-icon" href="scalpel.png">
+    <!-- PWA: Manifest -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- PWA: Íconos (Android + iOS) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="scalpel.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="scalpel.png">
+    <link rel="apple-touch-icon" href="scalpel.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="scalpel.png">
+
+    <!-- PWA: Meta para iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Cirugía">
+
+    <!-- PWA: Meta para Windows/Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Cirugía">
+    <meta name="msapplication-TileColor" content="#0b2b4a">
+
+    <title>📚 Centro de Cirugía General</title>
 
     <style>
         /* ----- RESET Y ESTILOS GLOBALES ----- */
@@ -274,7 +292,7 @@
         </div>
 
         <div class="footer-note">
-            💡 Haz clic en "Abrir aplicación" o en la tarjeta para abrirla en una nueva ventana.
+            💡 Haz clic en "Abrir aplicación" o en la tarjeta para abrirla.
             <br>✅ Cada aplicación incluirá automáticamente un botón flotante para volver al inicio.
         </div>
     </div>
@@ -382,7 +400,7 @@
         }];
 
         // ================================================================
-        //  ÍNDICE DE SECCIONES POR APLICACIÓN
+        //  ÍNDICE DE SECCIONES POR APLICACIÓN (se mantiene igual)
         // ================================================================
         const appSections = {
             'generales-hernia': [
@@ -745,15 +763,12 @@
         //  FUNCIONES
         // ================================================================
 
-        /** Actualiza el contador de apps */
         function actualizarContador() {
             appCounter.textContent = apps.length;
         }
 
-        /** Genera las tarjetas de inicio en el orden definido */
         function generarTarjetas() {
             cardsGrid.innerHTML = '';
-
             const appsOrdenadas = [...apps].sort((a, b) => a.orden - b.orden);
 
             appsOrdenadas.forEach((app) => {
@@ -770,7 +785,6 @@
                 `;
                 cardsGrid.appendChild(card);
 
-                // Evento: Abrir en nueva ventana con botón inyectado
                 card.querySelector('.btn-abrir').addEventListener('click', (e) => {
                     e.stopPropagation();
                     abrirConBotonDeVuelta(app);
@@ -784,7 +798,6 @@
 
         /**
          * Inyecta el botón "Volver al inicio" en la ventana emergente.
-         * @param {Window} ventana - La ventana emergente.
          */
         function inyectarBotonVolver(ventana) {
             const interval = setInterval(() => {
@@ -844,22 +857,32 @@
         }
 
         /**
-         * Abre la aplicación en una nueva ventana e inyecta un botón flotante
-         * para volver al lanzador principal.
+         * Abre la aplicación. Si estamos dentro de la PWA (standalone),
+         * navega en la misma ventana para no salir al navegador.
+         * Si estamos en el navegador normal, abre en pestaña nueva.
          */
         function abrirConBotonDeVuelta(app) {
-            const nuevaVentana = window.open(app.archivo, '_blank');
+            const esStandalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true;
 
-            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
-                alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
-                return;
+            if (esStandalone) {
+                // Dentro de la PWA: navegar en la misma ventana
+                window.location.href = app.archivo;
+            } else {
+                // En navegador normal: pestaña nueva con botón de volver
+                const nuevaVentana = window.open(app.archivo, '_blank');
+                if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
+                    alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
+                    return;
+                }
+                inyectarBotonVolver(nuevaVentana);
+                nuevaVentana.focus();
             }
-
-            inyectarBotonVolver(nuevaVentana);
-            nuevaVentana.focus();
         }
 
-        /** Busca secciones en todas las aplicaciones */
+        /**
+         * Busca secciones en todas las aplicaciones.
+         */
         function buscarSecciones(query) {
             if (!query || query.trim().length < 2) {
                 searchResults.classList.remove('active');
@@ -911,91 +934,86 @@
 
         /**
          * Abre la aplicación y navega a la sección específica.
-         * Usa un bucle persistente para asegurar que el clic se ejecute
-         * una vez que el DOM de la aplicación esté listo.
          */
         function abrirSeccionDirecta(res) {
+            const esStandalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true;
             const url = `${res.archivo}?section=${res.sectionId}`;
-            const nuevaVentana = window.open(url, '_blank');
 
+            if (esStandalone) {
+                window.location.href = url;
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+                return;
+            }
+
+            const nuevaVentana = window.open(url, '_blank');
             if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
                 alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
                 return;
             }
 
-            // Inyectar el botón de volver
             inyectarBotonVolver(nuevaVentana);
 
-            // Bucle persistente para esperar a que la app cargue y hacer clic
             let intentos = 0;
-            const maxIntentos = 100; // 100 * 200ms = 20 segundos máximo
+            const maxIntentos = 100;
             const interval = setInterval(() => {
                 intentos++;
                 if (intentos > maxIntentos || nuevaVentana.closed) {
                     clearInterval(interval);
                     return;
                 }
-
                 try {
                     const doc = nuevaVentana.document;
                     if (!doc || !doc.body) return;
-
-                    // Buscar el botón de navegación correspondiente
                     const targetBtn = doc.querySelector(`.nav-btn[data-target="${res.sectionId}"]`);
-                    
                     if (targetBtn) {
-                        // Si el botón existe, hacer clic en él
                         targetBtn.click();
                         clearInterval(interval);
                     } else {
-                        // Si no existe el botón, intentar manipulación directa del DOM
                         const targetSec = doc.getElementById('sec-' + res.sectionId);
                         if (targetSec) {
-                            // Desactivar todas las secciones
                             doc.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                            // Activar la sección objetivo
                             targetSec.classList.add('active');
-                            // Desactivar todos los botones
                             doc.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                            // Activar el botón si existe
                             const btn = doc.querySelector(`.nav-btn[data-target="${res.sectionId}"]`);
                             if (btn) btn.classList.add('active');
-                            
                             clearInterval(interval);
                         }
                     }
-                } catch (e) {
-                    // Ignorar errores de acceso (la ventana puede estar cargando)
-                }
+                } catch (e) { /* esperando carga */ }
             }, 200);
-            
-            // Timeout de seguridad
-            setTimeout(() => {
-                clearInterval(interval);
-            }, 20000);
 
+            setTimeout(() => clearInterval(interval), 20000);
             nuevaVentana.focus();
             searchResults.classList.remove('active');
             searchInput.value = '';
         }
 
-        /** Inicializa la aplicación */
         function init() {
             actualizarContador();
             generarTarjetas();
-
-            // Evento de búsqueda
             searchInput.addEventListener('input', (e) => {
                 buscarSecciones(e.target.value);
             });
         }
 
-        // ================================================================
-        //  EJECUTAR
-        // ================================================================
         document.addEventListener('DOMContentLoaded', init);
 
-        // --- Lógica para instalar como App (PWA) ---
+        // ================================================================
+        //  REGISTRO DEL SERVICE WORKER
+        // ================================================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((reg) => console.log('✅ Service Worker registrado:', reg.scope))
+                    .catch((err) => console.warn('⚠️ Service Worker no registrado:', err));
+            });
+        }
+
+        // ================================================================
+        //  LÓGICA DE INSTALACIÓN PWA
+        // ================================================================
         let deferredPrompt = null;
 
         window.addEventListener('beforeinstallprompt', (e) => {
