@@ -911,7 +911,8 @@
 
         /**
          * Abre la aplicación y navega a la sección específica.
-         * Usa un parámetro de URL para pasar la sección y espera a que cargue.
+         * Usa un bucle persistente para asegurar que el clic se ejecute
+         * una vez que el DOM de la aplicación esté listo.
          */
         function abrirSeccionDirecta(res) {
             const url = `${res.archivo}?section=${res.sectionId}`;
@@ -925,49 +926,53 @@
             // Inyectar el botón de volver
             inyectarBotonVolver(nuevaVentana);
 
-            // Inyectar el script para activar la sección después de que la página cargue
+            // Bucle persistente para esperar a que la app cargue y hacer clic
+            let intentos = 0;
+            const maxIntentos = 100; // 100 * 200ms = 20 segundos máximo
             const interval = setInterval(() => {
+                intentos++;
+                if (intentos > maxIntentos || nuevaVentana.closed) {
+                    clearInterval(interval);
+                    return;
+                }
+
                 try {
-                    if (nuevaVentana.document && nuevaVentana.document.body) {
-                        // Verificar si la aplicación ya se inicializó (buscando el botón de inicio o algún elemento clave)
-                        // Asumimos que si hay un botón con id 'sec-inicio', la app cargó.
-                        if (nuevaVentana.document.getElementById('sec-inicio')) {
-                            // Inyectar el script que simula el clic en el botón de la sección correcta
-                            const script = nuevaVentana.document.createElement('script');
-                            script.textContent = `
-                                (function() {
-                                    const sectionId = '${res.sectionId}';
-                                    const targetBtn = document.querySelector('.nav-btn[data-target="' + sectionId + '"]');
-                                    if (targetBtn) {
-                                        targetBtn.click();
-                                    } else {
-                                        // Si no hay botón (ej. en juegos), intentar buscar el elemento directamente
-                                        const sectionEl = document.getElementById('sec-' + sectionId);
-                                        if (sectionEl) {
-                                            // Ocultar todas las secciones
-                                            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                                            sectionEl.classList.add('active');
-                                            // Actualizar botones
-                                            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                                            const btn = document.querySelector('.nav-btn[data-target="' + sectionId + '"]');
-                                            if (btn) btn.classList.add('active');
-                                        }
-                                    }
-                                })();
-                            `;
-                            nuevaVentana.document.body.appendChild(script);
+                    const doc = nuevaVentana.document;
+                    if (!doc || !doc.body) return;
+
+                    // Buscar el botón de navegación correspondiente
+                    const targetBtn = doc.querySelector(`.nav-btn[data-target="${res.sectionId}"]`);
+                    
+                    if (targetBtn) {
+                        // Si el botón existe, hacer clic en él
+                        targetBtn.click();
+                        clearInterval(interval);
+                    } else {
+                        // Si no existe el botón, intentar manipulación directa del DOM
+                        const targetSec = doc.getElementById('sec-' + res.sectionId);
+                        if (targetSec) {
+                            // Desactivar todas las secciones
+                            doc.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                            // Activar la sección objetivo
+                            targetSec.classList.add('active');
+                            // Desactivar todos los botones
+                            doc.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                            // Activar el botón si existe
+                            const btn = doc.querySelector(`.nav-btn[data-target="${res.sectionId}"]`);
+                            if (btn) btn.classList.add('active');
+                            
                             clearInterval(interval);
                         }
                     }
                 } catch (e) {
-                    if (nuevaVentana.closed) {
-                        clearInterval(interval);
-                    }
+                    // Ignorar errores de acceso (la ventana puede estar cargando)
                 }
-            }, 300);
+            }, 200);
+            
+            // Timeout de seguridad
             setTimeout(() => {
                 clearInterval(interval);
-            }, 15000); // Aumentar timeout por si la app tarda en cargar
+            }, 20000);
 
             nuevaVentana.focus();
             searchResults.classList.remove('active');
