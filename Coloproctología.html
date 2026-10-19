@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coloproctología - Resumen Quirúrgico</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f0fa;
+            color: #1a1a2e;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 340px;
+            background: #5a2d6e;
+            color: #f0e6ff;
+            padding: 16px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding: 0 20px 14px 20px;
+            border-bottom: 1px solid #7a4d8e;
+            letter-spacing: 0.5px;
+            color: #e6d4ff;
+        }
+        .sidebar h2 span { font-weight: 700; color: #d4a6f0; }
+        .nav-group-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #d4a6f0;
+            padding: 10px 20px 4px 20px;
+            font-weight: 600;
+        }
+        .nav-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: #e0d4f0;
+            padding: 8px 20px 8px 28px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+            line-height: 1.3;
+        }
+        .nav-btn:hover { background: #6e3d8a; color: #ffffff; border-left-color: #d4a6f0; }
+        .nav-btn.active { background: #7a4d9e; color: #ffffff; border-left-color: #d4a6f0; font-weight: 500; }
+        .nav-btn.sub { padding-left: 40px; font-size: 0.82rem; color: #cdb8ec; }
+        .nav-btn.sub:hover { background: #6e3d8a; }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 40px 50px 40px;
+            background: white;
+        }
+        .main h1 {
+            font-size: 2.1rem;
+            color: #5a2d6e;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .main .subtitle {
+            color: #7a4d8e;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ede8f5;
+            padding-bottom: 12px;
+        }
+        .content-section { display: none; animation: fade 0.2s ease; }
+        .content-section.active { display: block; }
+        @keyframes fade { from { opacity: 0.4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-section h2 {
+            color: #5a2d6e;
+            border-left: 6px solid #9b59b6;
+            padding-left: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .content-section h3 {
+            color: #6e3d8a;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e5ddf0;
+            padding-bottom: 6px;
+            font-size: 1.2rem;
+        }
+        .content-section h4 {
+            color: #7a4d8e;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .content-section h5 {
+            color: #8a5d9e;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+            font-weight: 600;
+        }
+        .content-section p { margin-bottom: 12px; line-height: 1.7; }
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .content-section li { margin-bottom: 5px; }
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 22px 0;
+            font-size: 0.9rem;
+        }
+        .grade-table th {
+            background: #5a2d6e;
+            color: white;
+            padding: 9px 10px;
+            text-align: left;
+            border: 1px solid #5a2d6e;
+        }
+        .grade-table td {
+            border: 1px solid #d4d0e0;
+            padding: 9px 10px;
+            vertical-align: top;
+            background: #fbfafe;
+        }
+        .grade-table tr:nth-child(even) td { background: #f4f0fa; }
+        .badge {
+            display: inline-block;
+            background: #9b59b6;
+            color: white;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .surg-box, .clin-box, .note-box, .dx-box, .comp-box {
+            padding: 14px 22px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .surg-box { background: #f0ebf8; border-left: 5px solid #9b59b6; }
+        .clin-box { background: #fdf6e8; border-left: 5px solid #d4a017; }
+        .note-box { background: #edf0f9; border-left: 5px solid #5a6d9a; }
+        .dx-box { background: #e8f8f0; border-left: 5px solid #22a06b; }
+        .comp-box { background: #fdecea; border-left: 5px solid #d9534f; }
+        hr { margin: 30px 0; border: 0; height: 1px; background: #e5ddf0; }
+
+        @media (max-width: 820px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; max-height: 280px; overflow-y: auto; }
+            .main { padding: 20px; }
+        }
+
+        @media print {
+            .content-section { display: block !important; page-break-inside: avoid; }
+            .content-section * { display: block !important; visibility: visible !important; opacity: 1 !important; }
+            .surg-box, .clin-box, .note-box, .dx-box, .comp-box { break-inside: avoid; page-break-inside: avoid; }
+            .grade-table { break-inside: avoid; page-break-inside: avoid; }
+            .sidebar, .nav-group, .nav-btn { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+    <h2>🍑 <span>Coloproctología</span></h2>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Generalidades</div>
+        <button class="nav-btn active" data-target="inicio">🏠 Inicio</button>
+        <button class="nav-btn" data-target="anatomia">📖 Anatomía quirúrgica anorrectal</button>
+        <button class="nav-btn" data-target="evaluacion">🩺 Evaluación proctológica</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Patología Benigna Anorrectal</div>
+        <button class="nav-btn" data-target="hemorroides">🔴 Enfermedad Hemorroidal</button>
+        <button class="nav-btn" data-target="fisura">✂️ Fisura Anal</button>
+        <button class="nav-btn" data-target="absceso">🦠 Absceso Perianal</button>
+        <button class="nav-btn" data-target="fistula">🔗 Fístula Perianal</button>
+        <button class="nav-btn" data-target="seno-pilonidal">🟡 Seno Pilonidal</button>
+        <button class="nav-btn" data-target="prurito">💢 Prurito Anal</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Prolapso y Suelo Pélvico</div>
+        <button class="nav-btn" data-target="prolapso-rectal">🔄 Prolapso Rectal</button>
+        <button class="nav-btn" data-target="incontinencia">💧 Incontinencia Fecal</button>
+        <button class="nav-btn" data-target="rectocele">👩 Rectocele</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Enfermedad Diverticular</div>
+        <button class="nav-btn" data-target="diverticulosis">🫘 Diverticulosis</button>
+        <button class="nav-btn" data-target="diverticulitis">🔴 Diverticulitis Aguda</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Enfermedad Inflamatoria Intestinal</div>
+        <button class="nav-btn" data-target="crohn">🔵 Enfermedad de Crohn</button>
+        <button class="nav-btn" data-target="colitis-ulcerosa">🔴 Colitis Ulcerosa</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Neoplasias Colorrectales</div>
+        <button class="nav-btn" data-target="cancer-colon">🟢 Cáncer de Colon</button>
+        <button class="nav-btn" data-target="cancer-recto">🔵 Cáncer de Recto</button>
+        <button class="nav-btn" data-target="polipos">🟡 Pólipos Colorrectales</button>
+        <button class="nav-btn" data-target="sindrome-poliposis">🧬 Síndromes de Poliposis</button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-title">Otras Patologías</div>
+        <button class="nav-btn" data-target="incontinencia-uretral">🚽 Incontinencia Urinaria</button>
+        <button class="nav-btn" data-target="proctitis-radica">☢️ Proctitis Rádica</button>
+        <button class="nav-btn" data-target="its-anorrectal">🦠 ITS Anorrectales</button>
+    </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div class="main" id="mainContent">
+
+    <!-- INICIO -->
+    <div class="content-section active" id="sec-inicio">
+        <h1>🍑 Coloproctología</h1>
+        <div class="subtitle">Resumen de patología colorrectal y anorrectal para el residente de Cirugía General</div>
+
+        <p style="font-size:1.05rem; margin-bottom:16px;">Bienvenido al manual de <strong>Coloproctología</strong>. Esta aplicación reúne las patologías más frecuentes del colon, recto y ano, con diagnóstico explicado, técnicas quirúrgicas detalladas y manejo de complicaciones.</p>
+
+        <h3>Contenido</h3>
+        <ul>
+            <li><strong>Generalidades:</strong> Anatomía quirúrgica anorrectal, evaluación proctológica.</li>
+            <li><strong>Patología benigna:</strong> Hemorroides, fisura, absceso, fístula, seno pilonidal, prurito.</li>
+            <li><strong>Prolapso y suelo pélvico:</strong> Prolapso rectal, incontinencia fecal, rectocele.</li>
+            <li><strong>Enfermedad diverticular:</strong> Diverticulosis, diverticulitis aguda.</li>
+            <li><strong>EII:</strong> Crohn, colitis ulcerosa.</li>
+            <li><strong>Neoplasias:</strong> Cáncer de colon, cáncer de recto, pólipos, síndromes de poliposis.</li>
+            <li><strong>Otras:</strong> Incontinencia urinaria, proctitis rádica, ITS anorrectales.</li>
+        </ul>
+        <hr>
+        <p style="color:#7a4d8e;">Énfasis en diagnóstico clínico, técnicas quirúrgicas paso a paso y prevención de complicaciones.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ANATOMÍA QUIRÚRGICA ANORRECTAL -->
+    <div class="content-section" id="sec-anatomia">
+        <h2>📖 Anatomía Quirúrgica Anorrectal</h2>
+
+        <h3>Anatomía del Recto</h3>
+        <ul>
+            <li><strong>Definición:</strong> Porción del intestino grueso que va desde la unión rectosigmoidea (S3) hasta el canal anal.</li>
+            <li><strong>Longitud:</strong> 12-15 cm.</li>
+            <li><strong>Porciones:</strong>
+                <ul>
+                    <li><strong>Recto superior (intraperitoneal):</strong> porción anterior y lateral cubierta por peritoneo.</li>
+                    <li><strong>Recto medio (extraperitoneal):</strong> solo la cara anterior está cubierta por peritoneo.</li>
+                    <li><strong>Recto inferior (extraperitoneal):</strong> sin cobertura peritoneal.</li>
+                </ul>
+            </li>
+            <li><strong>Curvaturas:</strong> sacra (concavidad anterior) y perineal (ángulo anorrectal de 90-100°).</li>
+            <li><strong>Válvulas de Houston:</strong> 3 pliegues transversales (superior, medio e inferior) que dificultan el paso del endoscopio.</li>
+            <li><strong>Irrigación:</strong> arteria rectal superior (rama de la mesentérica inferior), rectal media (rama de la ilíaca interna) y rectal inferior (rama de la pudenda interna).</li>
+            <li><strong>Drenaje venoso:</strong> vena rectal superior (sistema portal) y venas rectales media e inferior (sistema sistémico).</li>
+            <li><strong>Drenaje linfático:</strong> ganglios mesentéricos inferiores, ilíacos internos e inguinales.</li>
+            <li><strong>Inervación:</strong> simpática (plexo hipogástrico) y parasimpática (nervios esplácnicos pélvicos, S2-S4).</li>
+        </ul>
+
+        <h3>Anatomía del Canal Anal</h3>
+        <ul>
+            <li><strong>Definición:</strong> Porción terminal del tracto digestivo, desde el anillo anorrectal hasta el margen anal.</li>
+            <li><strong>Longitud:</strong> 3-4 cm.</li>
+            <li><strong>Porciones:</strong>
+                <ul>
+                    <li><strong>Zona columnar:</strong> con columnas de Morgagni y criptas anales.</li>
+                    <li><strong>Zona transicional:</strong> epitelio cuboidal.</li>
+                    <li><strong>Zona escamosa:</strong> epitelio escamoso estratificado (piel).</li>
+                </ul>
+            </li>
+            <li><strong>Línea pectínea (dentada):</strong> unión entre el epitelio columnar y escamoso, a 2-3 cm del margen anal. Importante para la clasificación de hemorroides y fístulas.</li>
+            <li><strong>Esfínteres:</strong>
+                <ul>
+                    <li><strong>Esfínter interno:</strong> músculo liso, involuntario (control de la continencia en reposo).</li>
+                    <li><strong>Esfínter externo:</strong> músculo estriado, voluntario (control de la continencia en el esfuerzo).</li>
+                </ul>
+            </li>
+            <li><strong>Espacio interesfintérico:</strong> entre el esfínter interno y externo, donde se localizan las glándulas anales (origen de abscesos y fístulas).</li>
+            <li><strong>Fosa isquiorrectal:</strong> espacio lateral al canal anal, donde se pueden formar abscesos.</li>
+            <li><strong>Ligamento de Parks:</strong> banda fibrosa que separa el espacio interesfintérico de la fosa isquiorrectal.</li>
+        </ul>
+
+        <h3>Irrigación e Inervación del Canal Anal</h3>
+        <ul>
+            <li><strong>Arteria rectal inferior:</strong> rama de la pudenda interna.</li>
+            <li><strong>Venas:</strong> plexo hemorroidal inferior (drena a la vena pudenda interna).</li>
+            <li><strong>Inervación sensitiva:</strong> nervio rectal inferior (rama del pudendo), que inerva la piel del margen anal y el esfínter externo.</li>
+            <li><strong>Inervación del esfínter interno:</strong> fibras simpáticas (L1-L2) y parasimpáticas (S2-S4).</li>
+        </ul>
+
+        <div class="note-box">
+            <p><strong>Importancia quirúrgica:</strong> El conocimiento de la línea pectínea, el espacio interesfintérico y la fosa isquiorrectal es esencial para el tratamiento de hemorroides, fístulas y abscesos.</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- EVALUACIÓN PROCTOLÓGICA -->
+    <div class="content-section" id="sec-evaluacion">
+        <h2>🩺 Evaluación Proctológica</h2>
+
+        <h3>Historia clínica</h3>
+        <ul>
+            <li><strong>Motivo de consulta:</strong> dolor, sangrado, prurito, masa, secreción, incontinencia, estreñimiento.</li>
+            <li><strong>Antecedentes:</strong> cirugía previa, EII, ITS, radioterapia, hábitos defecatorios, dieta.</li>
+            <li><strong>Antecedentes familiares:</strong> cáncer colorrectal, poliposis.</li>
+        </ul>
+
+        <h3>Examen físico</h3>
+        <ul>
+            <li><strong>Inspección:</strong> posición del paciente (decúbito lateral izquierdo o navaja sevillana), observar el margen anal, hemorroides externas, fisuras, fístulas, prolapso, lesiones cutáneas.</li>
+            <li><strong>Tacto rectal:</strong> 
+                <ul>
+                    <li>Evaluar el tono del esfínter, la presencia de masas, el tamaño de la próstata (en hombres) o el útero (en mujeres), el fondo de saco de Douglas.</li>
+                    <li>Valorar el dolor, la sangre en el dedo, la impactación fecal.</li>
+                </ul>
+            </li>
+            <li><strong>Anoscopia:</strong> visualización del canal anal y el recto distal.</li>
+            <li><strong>Rectosigmoidoscopia:</strong> visualización del recto y el sigmoides.</li>
+            <li><strong>Colonoscopia:</strong> visualización de todo el colon (indicada en sospecha de neoplasia, EII, sangrado).</li>
+        </ul>
+
+        <h3>Estudios complementarios</h3>
+        <ul>
+            <li><strong>Manometría anorrectal:</strong> evalúa la función del esfínter y el reflejo rectoanal.</li>
+            <li><strong>Ecografía endoanal:</strong> evalúa los esfínteres y el espacio interesfintérico.</li>
+            <li><strong>RMN pélvica:</strong> de elección para fístulas complejas, abscesos, tumores.</li>
+            <li><strong>Defecografía:</strong> evalúa el prolapso y el rectocele.</li>
+            <li><strong>Laboratorio:</strong> hemograma, coagulograma, marcadores tumorales (CEA), pruebas de EII.</li>
+        </ul>
+
+        <div class="note-box">
+            <p><strong>Regla de oro:</strong> "Todo paciente con sangrado rectal debe ser evaluado con colonoscopia para descartar neoplasia, independientemente de la causa aparente."</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HEMORROIDES -->
+    <div class="content-section" id="sec-hemorroides">
+        <h2>🔴 Enfermedad Hemorroidal</h2>
+
+        <h3>Concepto y anatomía</h3>
+        <p>Las hemorroides son cojines vasculares submucosos que se encuentran en el canal anal. Son estructuras normales que contribuyen a la continencia. Se convierten en enfermedad cuando se dilatan, inflaman o sangran.</p>
+        <ul>
+            <li><strong>Hemorroides internas:</strong> por encima de la línea pectínea, cubiertas por mucosa, no sensibles al dolor (inervación visceral).</li>
+            <li><strong>Hemorroides externas:</strong> por debajo de la línea pectínea, cubiertas por piel, sensibles al dolor (inervación somática).</li>
+            <li><strong>Mixtas:</strong> ambas.</li>
+        </ul>
+
+        <h3>Clasificación de las hemorroides internas</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Tratamiento</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Sangran, no prolapsan.</td><td>Médico (dieta, fibra, baños de asiento).</td></tr>
+                <tr><td>II</td><td>Prolapsan con la defecación, se reducen espontáneamente.</td><td>Ligadura con banda elástica, escleroterapia.</td></tr>
+                <tr><td>III</td><td>Prolapsan con la defecación, requieren reducción manual.</td><td>Ligadura, hemorroidectomía (si falla).</td></tr>
+                <tr><td>IV</td><td>Prolapso permanente, irreductible.</td><td>Hemorroidectomía quirúrgica.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Sangrado rectal:</strong> rojo rutilante, al final de la defecación, en las heces o en el papel.</li>
+                <li><strong>Prolapso:</strong> sensación de masa que sale por el ano.</li>
+                <li><strong>Dolor:</strong> solo si hay trombosis o estrangulación (hemorroides externas).</li>
+                <li><strong>Prurito:</strong> por irritación de la piel.</li>
+                <li><strong>Trombosis hemorroidal:</strong> dolor intenso, masa dura, azulada, en el margen anal.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Anoscopia:</strong> visualización de las hemorroides internas.</li>
+            <li><strong>Colonoscopia:</strong> indicada si hay sangrado para descartar neoplasia (especialmente en mayores de 40 años).</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Hemorroidectomía (técnica de Milligan-Morgan)</h4>
+            <p><strong>Indicación:</strong> hemorroides grado III-IV, trombosis, fracaso del tratamiento conservador.</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito lateral izquierdo o navaja sevillana.</li>
+                <li><strong>Anestesia:</strong> local, regional o general.</li>
+                <li><strong>Exposición:</strong> identificar los paquetes hemorroidales (generalmente a las 3, 7 y 11 horas).</li>
+                <li><strong>Pinzamiento:</strong> pinzar la hemorroide con una pinza de anillo y traccionar.</li>
+                <li><strong>Incisión:</strong> en forma de V o elíptica, desde el margen anal hasta la línea pectínea.</li>
+                <li><strong>Disección:</strong> disección del paquete hemorroidal del esfínter interno.</li>
+                <li><strong>Ligadura:</strong> ligar el pedículo vascular con Vicryl 2/0.</li>
+                <li><strong>Sección:</strong> seccionar el paquete hemorroidal.</li>
+                <li><strong>Hemostasia:</strong> cuidadosa, dejando la herida abierta (para evitar abscesos).</li>
+                <li><strong>Repetir:</strong> con las otras hemorroides.</li>
+                <li><strong>Apósito:</strong> gasa con vaselina.</li>
+            </ol>
+            <p><strong>Variantes:</strong> Técnica de Ferguson (cierre primario), hemorroidopexia con grapadora (PPH), ligadura con banda elástica.</p>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Hemorragia:</strong> postoperatoria (1-5%).</li>
+                <li><strong>Retención urinaria:</strong> por dolor o anestesia.</li>
+                <li><strong>Infección:</strong> rara pero grave (sepsis).</li>
+                <li><strong>Estenosis anal:</strong> por cicatrización excesiva.</li>
+                <li><strong>Incontinencia fecal:</strong> por lesión del esfínter.</li>
+                <li><strong>Recidiva:</strong> 5-10%.</li>
+                <li><strong>Dolor postoperatorio:</strong> intenso, manejo con analgesia.</li>
+            </ul>
+        </div>
+
+        <h3>Manejo postoperatorio</h3>
+        <ul>
+            <li><strong>Analgesia:</strong> AINEs, opioides si es necesario.</li>
+            <li><strong>Baños de asiento:</strong> tibios, 2-3 veces al día.</li>
+            <li><strong>Dieta:</strong> rica en fibra, abundantes líquidos.</li>
+            <li><strong>Ablandadores de heces:</strong> para evitar estreñimiento.</li>
+            <li><strong>Control:</strong> a la semana y al mes.</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FISURA ANAL -->
+    <div class="content-section" id="sec-fisura">
+        <h2>✂️ Fisura Anal</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La fisura anal es una úlcera lineal en el canal anal, generalmente en la línea media posterior (90%), por debajo de la línea pectínea. Se produce por un traumatismo durante la defecación de heces duras, con un esfínter interno hipertónico que perpetúa la lesión.</p>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Dolor:</strong> intenso, desproporcionado, que aparece durante la defecación y dura horas después.</li>
+                <li><strong>Sangrado:</strong> rojo rutilante, en el papel o en las heces.</li>
+                <li><strong>Espasmo del esfínter:</strong> al tacto rectal.</li>
+                <li><strong>Úlcera lineal:</strong> visible en la inspección, generalmente en la línea media posterior.</li>
+                <li><strong>Triada clásica:</strong> fisura + papila hipertrófica + plicoma (hemorroide centinela).</li>
+                <li><strong>Fisura atípica:</strong> si está en la línea media anterior, lateral o es múltiple → sospechar EII, tuberculosis, ITS, neoplasia.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico diferencial</h3>
+        <ul>
+            <li><strong>Hemorroides trombosadas.</strong></li>
+            <li><strong>Absceso perianal.</strong></li>
+            <li><strong>Enfermedad de Crohn.</strong></li>
+            <li><strong>Tuberculosis anal.</strong></li>
+            <li><strong>ITS (sífilis, chancro).</strong></li>
+            <li><strong>Cáncer anal.</strong></li>
+        </ul>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Tratamiento médico (primera línea)</h4>
+            <ul>
+                <li><strong>Dieta rica en fibra</strong> y abundantes líquidos.</li>
+                <li><strong>Baños de asiento</strong> tibios.</li>
+                <li><strong>Analgesia:</strong> AINEs, lidocaína tópica.</li>
+                <li><strong>Relajantes del esfínter:</strong> nitroglicerina tópica 0.2-0.4%, diltiazem 2% o nifedipino 0.3% (aplicar 2 veces al día por 6-8 semanas).</li>
+                <li><strong>Toxina botulínica:</strong> inyección en el esfínter interno (alternativa).</li>
+            </ul>
+
+            <h4>2. Tratamiento quirúrgico</h4>
+            <p><strong>Indicación:</strong> fisura crónica que no responde al tratamiento médico (6-8 semanas).</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito lateral izquierdo o navaja sevillana.</li>
+                <li><strong>Anestesia:</strong> local, regional o general.</li>
+                <li><strong>Exposición:</strong> identificación de la fisura.</li>
+                <li><strong>Esfinterotomía lateral interna:</strong> 
+                    <ul>
+                        <li>Incisión en la línea media lateral (a las 3 o 9 horas).</li>
+                        <li>Sección del esfínter interno (hasta la línea pectínea).</li>
+                        <li>Hemostasia.</li>
+                    </ul>
+                </li>
+                <li><strong>Alternativa:</strong> fisurectomía (escisión de la fisura) con esfinterotomía.</li>
+                <li><strong>Apósito.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Incontinencia fecal:</strong> 5-10% (por esfinterotomía).</li>
+                <li><strong>Recidiva:</strong> 5-10%.</li>
+                <li><strong>Hemorragia.</strong></li>
+                <li><strong>Absceso perianal.</strong></li>
+                <li><strong>Fístula.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABSCESO PERIANAL -->
+    <div class="content-section" id="sec-absceso">
+        <h2>🦠 Absceso Perianal</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>El absceso perianal es una colección purulenta en el espacio perianal, originada por la infección de las glándulas anales (criptoglandular). Puede localizarse en el espacio perianal, interesfintérico, isquiorrectal o supraelevador.</p>
+
+        <h3>Clasificación</h3>
+        <ul>
+            <li><strong>Perianal:</strong> el más frecuente, superficial.</li>
+            <li><strong>Isquiorrectal:</strong> profundo, en la fosa isquiorrectal.</li>
+            <li><strong>Interesfintérico:</strong> entre los esfínteres.</li>
+            <li><strong>Supraelevador:</strong> por encima del elevador del ano.</li>
+            <li><strong>Submucoso:</strong> en la submucosa del canal anal.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Dolor:</strong> intenso, continuo, que empeora con la defecación y la sedestación.</li>
+                <li><strong>Tumoración:</strong> en el margen anal, caliente, enrojecida, fluctuante.</li>
+                <li><strong>Fiebre:</strong> si hay infección sistémica.</li>
+                <li><strong>Secreción:</strong> si drena espontáneamente.</li>
+                <li><strong>Tacto rectal:</strong> doloroso, puede palparse la colección.</li>
+                <li><strong>Diagnóstico diferencial:</strong> hemorroides trombosadas, quiste pilonidal, hidradenitis, ITS.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Ecografía endoanal:</strong> localiza la colección y su relación con los esfínteres.</li>
+            <li><strong>RMN pélvica:</strong> de elección para abscesos profundos o complejos.</li>
+            <li><strong>TAC:</strong> alternativa si no hay RMN.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Drenaje del absceso perianal</h4>
+            <p><strong>Indicación:</strong> todo absceso perianal (urgencia).</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito lateral izquierdo o navaja sevillana.</li>
+                <li><strong>Anestesia:</strong> local, regional o general.</li>
+                <li><strong>Incisión:</strong> 
+                    <ul>
+                        <li><strong>Absceso perianal:</strong> incisión radial o elíptica sobre la zona de mayor fluctuación.</li>
+                        <li><strong>Absceso isquiorrectal:</strong> incisión en la fosa isquiorrectal, paralela al margen anal.</li>
+                    </ul>
+                </li>
+                <li><strong>Drenaje:</strong> evacuar el pus, tomar muestra para cultivo.</li>
+                <li><strong>Desbridamiento:</strong> romper las loculaciones con el dedo o pinza.</li>
+                <li><strong>Lavado:</strong> con suero fisiológico o agua oxigenada.</li>
+                <li><strong>Drenaje:</strong> colocar un drenaje de Penrose o gasa (mecha) para mantener la herida abierta.</li>
+                <li><strong>Búsqueda de fístula:</strong> si es evidente, tratar en el mismo acto (fistulotomía).</li>
+                <li><strong>Cierre:</strong> no cerrar la piel (dejar drenar).</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Fístula perianal:</strong> 30-50% (complicación más frecuente).</li>
+                <li><strong>Recidiva:</strong> 10-15%.</li>
+                <li><strong>Sepsis:</strong> rara pero grave (especialmente en inmunodeprimidos y diabéticos).</li>
+                <li><strong>Incontinencia fecal:</strong> si se lesiona el esfínter.</li>
+                <li><strong>Celulitis:</strong> extensión de la infección.</li>
+                <li><strong>Gangrena de Fournier:</strong> fascitis necrosante perineal (rara pero letal).</li>
+            </ul>
+        </div>
+
+        <h3>Manejo postoperatorio</h3>
+        <ul>
+            <li><strong>Antibióticos:</strong> amoxicilina-clavulánico o metronidazol + ciprofloxacino.</li>
+            <li><strong>Analgesia.</strong></li>
+            <li><strong>Baños de asiento.</strong></li>
+            <li><strong>Control de la herida:</strong> curación diaria.</li>
+            <li><strong>Dieta rica en fibra.</strong></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FÍSTULA PERIANAL -->
+    <div class="content-section" id="sec-fistula">
+        <h2>🔗 Fístula Perianal</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La fístula perianal es un trayecto anormal que conecta el canal anal (cripta anal) con la piel perineal. Se origina por la infección crónica de una glándula anal (origen criptoglandular).</p>
+
+        <h3>Clasificación de Parks</h3>
+        <table class="grade-table">
+            <thead><tr><th>Tipo</th><th>Descripción</th><th>Frecuencia</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Interesfintérica</strong></td><td>El trayecto pasa entre el esfínter interno y externo.</td><td>45%</td></tr>
+                <tr><td><strong>Transesfintérica</strong></td><td>El trayecto atraviesa el esfínter externo.</td><td>30%</td></tr>
+                <tr><td><strong>Supraesfintérica</strong></td><td>El trayecto pasa por encima del esfínter externo.</td><td>20%</td></tr>
+                <tr><td><strong>Extraesfintérica</strong></td><td>El trayecto pasa por fuera de los esfínteres (por trauma, EII, malignidad).</td><td>5%</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Regla de Goodsall</h3>
+        <p>Predice el trayecto de la fístula según la localización del orificio externo:</p>
+        <ul>
+            <li><strong>Orificio externo anterior:</strong> el trayecto es recto hacia la línea pectínea.</li>
+            <li><strong>Orificio externo posterior:</strong> el trayecto es curvo hacia la línea media posterior.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Secreción:</strong> purulenta o serosa, intermitente, por el orificio externo.</li>
+                <li><strong>Dolor:</strong> leve, con la defecación.</li>
+                <li><strong>Prurito:</strong> por irritación de la piel.</li>
+                <li><strong>Orificio externo:</strong> visible en el margen anal, con tejido de granulación.</li>
+                <li><strong>Tacto rectal:</strong> puede palparse el trayecto fibroso.</li>
+                <li><strong>Clasificación:</strong> simple (interesfintérica o transesfintérica baja) vs compleja (supraesfintérica, extraesfintérica, múltiple, EII).</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Ecografía endoanal:</strong> localiza el trayecto y su relación con los esfínteres.</li>
+            <li><strong>RMN pélvica:</strong> de elección para fístulas complejas, EII, recidivantes.</li>
+            <li><strong>Fistulografía:</strong> inyección de contraste en el orificio externo.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Fistulotomía</h4>
+            <p><strong>Indicación:</strong> fístula simple (interesfintérica o transesfintérica baja).</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito lateral izquierdo o navaja sevillana.</li>
+                <li><strong>Anestesia:</strong> local, regional o general.</li>
+                <li><strong>Identificación:</strong> localizar el orificio externo e interno (con sonda de Nelaton o estilete).</li>
+                <li><strong>Fistulotomía:</strong> seccionar el trayecto sobre la sonda, incluyendo la piel y el esfínter comprometido.</li>
+                <li><strong>Curetaje:</strong> legrar el trayecto para eliminar el tejido de granulación.</li>
+                <li><strong>Hemostasia.</strong></li>
+                <li><strong>Cierre:</strong> dejar la herida abierta para que cicatrice por segunda intención.</li>
+                <li><strong>Apósito.</strong></li>
+            </ol>
+
+            <h4>Alternativas para fístulas complejas</h4>
+            <ul>
+                <li><strong>Setón:</strong> hilo de drenaje que se deja en el trayecto para evitar la retención de pus y permitir la fibrosis.</li>
+                <li><strong>Colgajo de avance mucoso:</strong> para fístulas transesfintéricas altas.</li>
+                <li><strong>LIFT (ligadura del trayecto interesfintérico):</strong> para fístulas interesfintéricas.</li>
+                <li><strong>Tapón de fibrina o matriz de colágeno:</strong> para fístulas complejas.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Incontinencia fecal:</strong> 5-10% (por sección del esfínter).</li>
+                <li><strong>Recidiva:</strong> 5-15%.</li>
+                <li><strong>Retención urinaria.</strong></li>
+                <li><strong>Infección.</strong></li>
+                <li><strong>Estenosis anal.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SENO PILONIDAL -->
+    <div class="content-section" id="sec-seno-pilonidal">
+        <h2>🟡 Seno Pilonidal</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>El seno pilonidal es una enfermedad inflamatoria crónica de la región sacrococcígea, caracterizada por la presencia de senos y fístulas que contienen pelos. Se produce por la penetración de pelos en la piel, con reacción inflamatoria y formación de abscesos.</p>
+        <ul>
+            <li><strong>Factores de riesgo:</strong> sexo masculino, obesidad, hirsutismo, sudoración excesiva, sedentarismo, traumatismo local.</li>
+            <li><strong>Edad:</strong> 15-40 años.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Dolor:</strong> en la región sacrococcígea, que empeora con la sedestación.</li>
+                <li><strong>Tumoración:</strong> en la línea media interglútea, con orificios (senos) que drenan secreción purulenta.</li>
+                <li><strong>Fiebre:</strong> si hay absceso.</li>
+                <li><strong>Diagnóstico diferencial:</strong> absceso perianal, fístula perianal, hidradenitis supurativa, enfermedad de Crohn, tuberculosis.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Ecografía:</strong> para evaluar la extensión y la presencia de absceso.</li>
+            <li><strong>RMN:</strong> en casos complejos o recidivantes.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Exéresis del seno pilonidal</h4>
+            <p><strong>Indicación:</strong> seno pilonidal crónico o abscesificado.</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito prono, con separación de las nalgas.</li>
+                <li><strong>Anestesia:</strong> local, regional o general.</li>
+                <li><strong>Marcado:</strong> identificar los orificios y el área de inflamación.</li>
+                <li><strong>Incisión:</strong> elíptica, incluyendo los orificios y el tejido inflamado.</li>
+                <li><strong>Exéresis:</strong> resecar el seno y el tejido fibrótico hasta el plano fascial (fascia presacra).</li>
+                <li><strong>Hemostasia.</strong></li>
+                <li><strong>Cierre:</strong> 
+                    <ul>
+                        <li><strong>Cierre primario:</strong> si la herida es limpia y sin tensión.</li>
+                        <li><strong>Cierre por segunda intención:</strong> si hay infección (dejar la herida abierta con gasa).</li>
+                        <li><strong>Colgajo:</strong> en casos extensos (colgajo de Limberg, Karydakis).</li>
+                    </ul>
+                </li>
+                <li><strong>Drenaje:</strong> si es necesario.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Recidiva:</strong> 10-20%.</li>
+                <li><strong>Infección de la herida.</strong></li>
+                <li><strong>Dehiscencia.</strong></li>
+                <li><strong>Seroma.</strong></li>
+                <li><strong>Cicatriz dolorosa.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PRURITO ANAL -->
+    <div class="content-section" id="sec-prurito">
+        <h2>💢 Prurito Anal</h2>
+
+        <h3>Concepto y etiología</h3>
+        <p>El prurito anal es una sensación de picazón intensa en la región perianal, que puede ser primaria (idiopática) o secundaria a diversas causas.</p>
+        <ul>
+            <li><strong>Causas primarias:</strong> idiopáticas (50%).</li>
+            <li><strong>Causas secundarias:</strong> 
+                <ul>
+                    <li><strong>Infecciosas:</strong> oxiuros (niños), hongos (Candida), ITS (sífilis, herpes).</li>
+                    <li><strong>Dermatológicas:</strong> dermatitis de contacto, psoriasis, liquen escleroso.</li>
+                    <li><strong>Anorrectales:</strong> hemorroides, fisura, fístula, prolapso.</li>
+                    <li><strong>Sistémicas:</strong> diabetes, enfermedades hepáticas, linfoma.</li>
+                    <li><strong>Higiene:</strong> excesiva o deficiente.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Prurito:</strong> intenso, que empeora por la noche.</li>
+                <li><strong>Inspección:</strong> enrojecimiento, excoriaciones, liquenificación.</li>
+                <li><strong>Interrogatorio:</strong> hábitos de higiene, uso de ropa interior, dieta, medicamentos.</li>
+                <li><strong>Pruebas complementarias:</strong> 
+                    <ul>
+                        <li>Test de Graham (cinta adhesiva) para oxiuros.</li>
+                        <li>Cultivo de hongos.</li>
+                        <li>Serología para ITS.</li>
+                        <li>Biopsia si hay lesiones sospechosas.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Medidas higiénicas</h4>
+            <ul>
+                <li>Lavado con agua y jabón neutro, sin frotar.</li>
+                <li>Secado cuidadoso.</li>
+                <li>Ropa interior de algodón, holgada.</li>
+                <li>Evitar el uso de papel higiénico con perfume.</li>
+                <li>No usar talco ni cremas irritantes.</li>
+            </ul>
+
+            <h4>2. Tratamiento etiológico</h4>
+            <ul>
+                <li><strong>Oxiuros:</strong> albendazol o mebendazol.</li>
+                <li><strong>Hongos:</strong> clotrimazol o miconazol tópico.</li>
+                <li><strong>ITS:</strong> tratamiento específico.</li>
+                <li><strong>Hemorroides/fisura:</strong> tratamiento específico.</li>
+            </ul>
+
+            <h4>3. Tratamiento sintomático</h4>
+            <ul>
+                <li><strong>Corticoides tópicos:</strong> hidrocortisona 1% (por corto tiempo).</li>
+                <li><strong>Antihistamínicos:</strong> para el prurito nocturno.</li>
+                <li><strong>Óxido de zinc:</strong> para proteger la piel.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Liquenificación:</strong> engrosamiento de la piel por rascado crónico.</li>
+                <li><strong>Infección secundaria:</strong> por bacterias o hongos.</li>
+                <li><strong>Alteración del sueño.</strong></li>
+                <li><strong>Ansiedad y depresión.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROLAPSO RECTAL -->
+    <div class="content-section" id="sec-prolapso-rectal">
+        <h2>🔄 Prolapso Rectal</h2>
+
+        <h3>Concepto y clasificación</h3>
+        <p>El prolapso rectal es la protrusión de la pared rectal a través del ano. Puede ser completo (todas las capas) o incompleto (solo la mucosa).</p>
+        <ul>
+            <li><strong>Prolapso completo (procidentia):</strong> protrusión de todo el espesor de la pared rectal.</li>
+            <li><strong>Prolapso mucoso (incompleto):</strong> protrusión solo de la mucosa.</li>
+            <li><strong>Prolapso interno (oculto):</strong> invaginación rectal sin protrusión externa.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Masa que sale por el ano:</strong> con la defecación o el esfuerzo, se reduce espontáneamente o manualmente.</li>
+                <li><strong>Incontinencia fecal:</strong> por debilidad del esfínter.</li>
+                <li><strong>Sangrado:</strong> por ulceración de la mucosa.</li>
+                <li><strong>Estreñimiento:</strong> por obstrucción.</li>
+                <li><strong>Mucus:</strong> secreción mucosa.</li>
+                <li><strong>Diagnóstico diferencial:</strong> prolapso hemorroidal, invaginación, tumor rectal.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Defecografía:</strong> evalúa el prolapso y el rectocele.</li>
+            <li><strong>Colonoscopia:</strong> para descartar neoplasia.</li>
+            <li><strong>Manometría anorrectal:</strong> evalúa la función del esfínter.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Rectopexia (fijación del recto)</h4>
+            <p><strong>Indicación:</strong> prolapso rectal completo.</p>
+            <ol>
+                <li><strong>Posición:</strong> decúbito supino o litotomía.</li>
+                <li><strong>Abordaje:</strong> laparoscópico o abdominal (laparotomía).</li>
+                <li><strong>Movilización del recto:</strong> disección del recto hasta el suelo pélvico.</li>
+                <li><strong>Fijación:</strong> 
+                    <ul>
+                        <li><strong>Rectopexia posterior:</strong> fijar el recto al sacro con malla (polipropileno o malla biológica).</li>
+                        <li><strong>Rectopexia anterior:</strong> fijar el recto a la pared vaginal (en mujeres).</li>
+                        <li><strong>Resección:</strong> en casos seleccionados (resección sigmoidea).</li>
+                    </ul>
+                </li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+            <p><strong>Alternativa en pacientes de alto riesgo:</strong> procedimiento perineal (Delorme o Altemeier).</p>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Recidiva:</strong> 5-15%.</li>
+                <li><strong>Infección de la malla.</strong></li>
+                <li><strong>Estenosis rectal.</strong></li>
+                <li><strong>Incontinencia fecal.</strong></li>
+                <li><strong>Obstrucción intestinal.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- INCONTINENCIA FECAL -->
+    <div class="content-section" id="sec-incontinencia">
+        <h2>💧 Incontinencia Fecal</h2>
+
+        <h3>Concepto y clasificación</h3>
+        <p>La incontinencia fecal es la incapacidad de controlar la salida de heces o gases. Puede ser leve (gases), moderada (heces líquidas) o grave (heces sólidas).</p>
+        <ul>
+            <li><strong>Causas:</strong> 
+                <ul>
+                    <li><strong>Lesión del esfínter:</strong> obstétrica, quirúrgica, traumática.</li>
+                    <li><strong>Neuropatía:</strong> diabetes, lesión medular, esclerosis múltiple.</li>
+                    <li><strong>Disminución de la capacidad rectal:</strong> EII, radioterapia, cirugía.</li>
+                    <li><strong>Diarrea crónica.</strong></li>
+                    <li><strong>Impactación fecal.</strong></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Historia:</strong> frecuencia, tipo de incontinencia, factores desencadenantes.</li>
+                <li><strong>Examen físico:</strong> tono del esfínter, reflejo cremastérico, sensibilidad perineal.</li>
+                <li><strong>Manometría anorrectal:</strong> evalúa la presión del esfínter y la sensibilidad rectal.</li>
+                <li><strong>Ecografía endoanal:</strong> evalúa la integridad de los esfínteres.</li>
+                <li><strong>Defecografía:</strong> evalúa el prolapso y el rectocele.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Tratamiento conservador</h4>
+            <ul>
+                <li><strong>Dieta:</strong> rica en fibra, evitar irritantes.</li>
+                <li><strong>Ejercicios de Kegel:</strong> fortalecimiento del suelo pélvico.</li>
+                <li><strong>Biofeedback:</strong> entrenamiento de la sensibilidad rectal.</li>
+                <li><strong>Fármacos:</strong> loperamida (antidiarreico), amitriptilina.</li>
+                <li><strong>Dispositivos:</strong> tapones anales, electroestimulación.</li>
+            </ul>
+
+            <h4>2. Tratamiento quirúrgico</h4>
+            <ul>
+                <li><strong>Reparación del esfínter:</strong> esfinterorrafia (en lesiones obstétricas).</li>
+                <li><strong>Sacroestimulación neurológica:</strong> implante de electrodo en el nervio sacro (S3).</li>
+                <li><strong>Esfínter artificial:</strong> en casos graves.</li>
+                <li><strong>Colostomía:</strong> en casos refractarios.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Infección:</strong> del implante o de la herida.</li>
+                <li><strong>Migración del electrodo.</strong></li>
+                <li><strong>Fallo del dispositivo.</strong></li>
+                <li><strong>Recidiva de la incontinencia.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- RECTOCELE -->
+    <div class="content-section" id="sec-rectocele">
+        <h2>👩 Rectocele</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>El rectocele es la herniación de la pared rectal anterior hacia la vagina, debido a la debilidad del tabique rectovaginal. Es frecuente en mujeres multíparas y postmenopáusicas.</p>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Sensación de masa vaginal:</strong> que aumenta con el esfuerzo.</li>
+                <li><strong>Estreñimiento:</strong> dificultad para defecar, necesidad de maniobras manuales (esplinting).</li>
+                <li><strong>Incontinencia fecal:</strong> en casos avanzados.</li>
+                <li><strong>Dispareunia:</strong> dolor durante las relaciones sexuales.</li>
+                <li><strong>Examen físico:</strong> palpación de la pared vaginal posterior, con protrusión del recto.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Defecografía:</strong> evalúa el grado de rectocele y el vaciamiento rectal.</li>
+            <li><strong>RMN pélvica:</strong> evalúa la anatomía y las lesiones asociadas.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Colporrafia posterior</h4>
+            <p><strong>Indicación:</strong> rectocele sintomático que no responde al tratamiento conservador.</p>
+            <ol>
+                <li><strong>Posición:</strong> litotomía.</li>
+                <li><strong>Anestesia:</strong> regional o general.</li>
+                <li><strong>Incisión:</strong> en la pared vaginal posterior, desde el introito hasta el fondo de saco.</li>
+                <li><strong>Disección:</strong> separar la mucosa vaginal de la fascia rectovaginal.</li>
+                <li><strong>Plicatura:</strong> suturar la fascia rectovaginal con puntos de Vicryl 2/0 para corregir el defecto.</li>
+                <li><strong>Resección:</strong> resecar el exceso de mucosa vaginal.</li>
+                <li><strong>Cierre:</strong> sutura de la mucosa vaginal con Vicryl 3/0.</li>
+                <li><strong>Reparación del periné:</strong> si hay desgarro asociado.</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Recidiva:</strong> 10-20%.</li>
+                <li><strong>Dispareunia:</strong> por estenosis vaginal.</li>
+                <li><strong>Infección.</strong></li>
+                <li><strong>Fístula rectovaginal.</strong></li>
+                <li><strong>Incontinencia fecal.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DIVERTICULOSIS -->
+    <div class="content-section" id="sec-diverticulosis">
+        <h2>🫘 Diverticulosis</h2>
+
+        <h3>Concepto y epidemiología</h3>
+        <p>La diverticulosis es la presencia de divertículos (herniaciones de la mucosa a través de la pared muscular del colon). Es más frecuente en el colon sigmoides y en personas mayores de 60 años.</p>
+        <ul>
+            <li><strong>Factores de riesgo:</strong> dieta baja en fibra, estreñimiento, obesidad, sedentarismo, tabaquismo.</li>
+            <li><strong>Fisiopatología:</strong> aumento de la presión intraluminal + debilidad de la pared muscular → herniación de la mucosa.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Asintomática:</strong> en la mayoría de los casos.</li>
+                <li><strong>Síntomas:</strong> dolor abdominal vago, distensión, estreñimiento, diarrea.</li>
+                <li><strong>Complicaciones:</strong> diverticulitis, sangrado, obstrucción, fístula.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Colonoscopia:</strong> visualiza los divertículos y descarta neoplasia.</li>
+            <li><strong>Enema de bario:</strong> muestra los divertículos (múltiples imágenes en "sacabocados").</li>
+            <li><strong>TAC:</strong> en casos complicados.</li>
+        </ul>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <ul>
+                <li><strong>Dieta rica en fibra:</strong> 25-30 g/día.</li>
+                <li><strong>Abundantes líquidos.</strong></li>
+                <li><strong>Ejercicio regular.</strong></li>
+                <li><strong>Evitar estreñimiento.</strong></li>
+                <li><strong>No requiere cirugía</strong> en la mayoría de los casos.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Diverticulitis:</strong> inflamación de un divertículo.</li>
+                <li><strong>Sangrado diverticular:</strong> 5-15% (puede ser masivo).</li>
+                <li><strong>Obstrucción intestinal.</strong></li>
+                <li><strong>Fístula:</strong> colovesical, colovaginal, colocutánea.</li>
+                <li><strong>Absceso.</strong></li>
+                <li><strong>Perforación.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DIVERTICULITIS AGUDA -->
+    <div class="content-section" id="sec-diverticulitis">
+        <h2>🔴 Diverticulitis Aguda</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La diverticulitis aguda es la inflamación de uno o más divertículos, generalmente por obstrucción del cuello del divertículo por un fecalito, con proliferación bacteriana y microperforación.</p>
+
+        <h3>Clasificación de Hinchey</h3>
+        <table class="grade-table">
+            <thead><tr><th>Grado</th><th>Descripción</th><th>Tratamiento</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>Absceso pericólico confinado.</td><td>Médico + drenaje percutáneo si &gt;4 cm.</td></tr>
+                <tr><td>II</td><td>Absceso pélvico o retroperitoneal.</td><td>Drenaje percutáneo + antibióticos.</td></tr>
+                <tr><td>III</td><td>Peritonitis purulenta generalizada.</td><td>Cirugía (Hartmann o resección + anastomosis).</td></tr>
+                <tr><td>IV</td><td>Peritonitis fecaloidea.</td><td>Cirugía urgente (Hartmann).</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Dolor:</strong> en cuadrante inferior izquierdo (sigmoides), continuo.</li>
+                <li><strong>Fiebre:</strong> 38-39°C.</li>
+                <li><strong>Náuseas, vómitos, constipación o diarrea.</strong></li>
+                <li><strong>Signos locales:</strong> defensa en FII, masa palpable (plastrón).</li>
+                <li><strong>Leucocitosis.</strong></li>
+                <li><strong>Diagnóstico diferencial:</strong> apendicitis (si es en FID), EII, cáncer de colon, colitis isquémica.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>TAC abdominal con contraste:</strong> de elección. Muestra engrosamiento de la pared, absceso, gas extraluminal.</li>
+            <li><strong>Ecografía:</strong> alternativa, muestra engrosamiento y colecciones.</li>
+            <li><strong>Colonoscopia:</strong> contraindicada en fase aguda (riesgo de perforación).</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Operación de Hartmann</h4>
+            <p><strong>Indicación:</strong> diverticulitis Hinchey III-IV, peritonitis fecaloidea, paciente inestable.</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media infraumbilical o media.</li>
+                <li><strong>Exploración:</strong> identificar el segmento afectado y descartar otras lesiones.</li>
+                <li><strong>Resección:</strong> resecar el sigmoides afectado (márgenes de 5 cm).</li>
+                <li><strong>Cierre del muñón distal:</strong> cierre del recto con grapadora lineal (TA) o sutura manual en dos planos.</li>
+                <li><strong>Colostomía terminal:</strong> abocar el cabo proximal (colon descendente) a la piel del flanco izquierdo.</li>
+                <li><strong>Lavado peritoneal:</strong> con suero fisiológico tibio.</li>
+                <li><strong>Drenaje:</strong> drenaje pélvico.</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+            <p><strong>Reconstrucción:</strong> en un segundo tiempo (3-6 meses) con anastomosis colorrectal.</p>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Perforación:</strong> peritonitis.</li>
+                <li><strong>Absceso:</strong> pélvico, retroperitoneal.</li>
+                <li><strong>Fístula:</strong> colovesical, colovaginal, colocutánea.</li>
+                <li><strong>Obstrucción intestinal.</strong></li>
+                <li><strong>Sangrado.</strong></li>
+                <li><strong>Recidiva:</strong> 20-30% después del tratamiento médico.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ENFERMEDAD DE CROHN -->
+    <div class="content-section" id="sec-crohn">
+        <h2>🔵 Enfermedad de Crohn</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La enfermedad de Crohn es una enfermedad inflamatoria crónica, transmural y granulomatosa del tracto digestivo, de etiología desconocida. Puede afectar cualquier segmento, desde la boca hasta el ano, con predilección por el íleon terminal y el colon.</p>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Dolor abdominal:</strong> cólico o persistente, en FID (íleon terminal).</li>
+                <li><strong>Diarrea:</strong> acuosa o con sangre.</li>
+                <li><strong>Pérdida de peso, fiebre, anorexia.</strong></li>
+                <li><strong>Fístulas:</strong> perianales, enterocutáneas, enterovesicales.</li>
+                <li><strong>Manifestaciones extraintestinales:</strong> eritema nudoso, pioderma gangrenoso, artritis, uveítis, colangitis esclerosante.</li>
+                <li><strong>Diagnóstico diferencial:</strong> colitis ulcerosa, tuberculosis intestinal, linfoma, apendicitis.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Colonoscopia:</strong> visualiza lesiones (úlceras aftosas, aspecto empedrado, estenosis).</li>
+            <li><strong>Entero-TAC o Entero-RMN:</strong> evalúa la extensión y las complicaciones (fístulas, abscesos).</li>
+            <li><strong>Biopsia:</strong> granulomas no caseificantes (en el 50%).</li>
+            <li><strong>Laboratorio:</strong> anemia, leucocitosis, PCR elevada, calprotectina fecal elevada, ASCA positivo.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Resección intestinal</h4>
+            <p><strong>Indicación:</strong> estenosis sintomática, fístulas, abscesos, perforación, fracaso del tratamiento médico.</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media o laparoscopia.</li>
+                <li><strong>Exploración:</strong> identificar el segmento afectado (lesiones salteadas).</li>
+                <li><strong>Resección:</strong> resecar el segmento afectado con márgenes de 2-5 cm (no es necesario márgenes histológicos libres).</li>
+                <li><strong>Anastomosis:</strong> término-terminal en dos planos (Vicryl 3/0).</li>
+                <li><strong>Cierre del mesenterio:</strong> para evitar hernias internas.</li>
+                <li><strong>Drenaje:</strong> si hay absceso.</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+            <p><strong>Principio:</strong> "Resección limitada" para preservar la longitud intestinal.</p>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Estenosis:</strong> obstrucción intestinal.</li>
+                <li><strong>Fístulas:</strong> enterocutáneas, enterovesicales, enterovaginales.</li>
+                <li><strong>Abscesos:</strong> intraabdominales, perianales.</li>
+                <li><strong>Perforación:</strong> peritonitis.</li>
+                <li><strong>Recidiva:</strong> 50% a los 5 años, 80% a los 10 años.</li>
+                <li><strong>Síndrome de intestino corto:</strong> por resecciones extensas.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COLITIS ULCEROSA -->
+    <div class="content-section" id="sec-colitis-ulcerosa">
+        <h2>🔴 Colitis Ulcerosa</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La colitis ulcerosa es una enfermedad inflamatoria crónica de la mucosa del colon, que afecta de forma continua desde el recto hasta el colon proximal. Es de etiología desconocida (autoimmune).</p>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Diarrea:</strong> con sangre y moco, frecuente, urgente.</li>
+                <li><strong>Dolor abdominal:</strong> cólico, en hipogastrio.</li>
+                <li><strong>Tenesmo:</strong> sensación de evacuación incompleta.</li>
+                <li><strong>Pérdida de peso, fiebre, anemia.</strong></li>
+                <li><strong>Manifestaciones extraintestinales:</strong> artritis, uveítis, eritema nudoso, colangitis esclerosante.</li>
+                <li><strong>Diagnóstico diferencial:</strong> Crohn, colitis infecciosa, colitis isquémica.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Colonoscopia:</strong> inflamación continua, úlceras, pérdida de haustras, pseudopólipos.</li>
+            <li><strong>Biopsia:</strong> inflamación limitada a la mucosa, abscesos crípticos.</li>
+            <li><strong>Laboratorio:</strong> anemia, leucocitosis, PCR elevada, calprotectina fecal, pANCA positivo.</li>
+        </ul>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Proctocolectomía total con reservorio ileal</h4>
+            <p><strong>Indicación:</strong> colitis ulcerosa refractaria, displasia, cáncer, megacolon tóxico.</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media o laparoscopia.</li>
+                <li><strong>Proctocolectomía:</strong> resección de todo el colon y el recto.</li>
+                <li><strong>Reservorio ileal:</strong> confección de una bolsa con el íleon terminal (bolsa en J, S o W).</li>
+                <li><strong>Anastomosis:</strong> anastomosis del reservorio al canal anal (anastomosis íleo-anal).</li>
+                <li><strong>Ileostomía de protección:</strong> temporal, por 2-3 meses.</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Megacolon tóxico:</strong> dilatación colónica >6 cm con toxicidad sistémica (urgencia quirúrgica).</li>
+                <li><strong>Perforación:</strong> peritonitis.</li>
+                <li><strong>Hemorragia masiva.</strong></li>
+                <li><strong>Cáncer colorrectal:</strong> riesgo aumenta con la duración de la enfermedad (10% a los 20 años).</li>
+                <li><strong>Pouchitis:</strong> inflamación del reservorio ileal (50%).</li>
+                <li><strong>Estenosis anastomótica.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CÁNCER DE COLON -->
+    <div class="content-section" id="sec-cancer-colon">
+        <h2>🟢 Cáncer de Colon</h2>
+
+        <h3>Concepto y epidemiología</h3>
+        <p>El cáncer colorrectal es el tercer cáncer más frecuente en el mundo. La mayoría son adenocarcinomas, que se originan a partir de pólipos adenomatosos (secuencia adenoma-carcinoma).</p>
+        <ul>
+            <li><strong>Factores de riesgo:</strong> edad >50 años, dieta rica en grasas, obesidad, sedentarismo, tabaquismo, alcohol, EII, antecedentes familiares, síndromes genéticos (Lynch, FAP).</li>
+            <li><strong>Localización:</strong> colon derecho (30%), colon izquierdo (30%), recto (40%).</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Colon derecho:</strong> anemia ferropénica, masa palpable, dolor vago, pérdida de peso.</li>
+                <li><strong>Colon izquierdo:</strong> cambio en el hábito intestinal, dolor cólico, obstrucción, sangrado.</li>
+                <li><strong>Recto:</strong> rectorragia, tenesmo, masa palpable en el tacto rectal.</li>
+                <li><strong>Síntomas generales:</strong> anorexia, astenia, pérdida de peso.</li>
+                <li><strong>Metástasis:</strong> hígado (ictericia, hepatomegalia), pulmón, hueso.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Colonoscopia:</strong> GOLD STANDARD. Visualiza el tumor y permite biopsia.</li>
+            <li><strong>TAC de abdomen y tórax:</strong> estadificación (metástasis hepáticas y pulmonares).</li>
+            <li><strong>RMN pélvica:</strong> para el cáncer de recto (evalúa la invasión local).</li>
+            <li><strong>CEA:</strong> marcador tumoral (útil para seguimiento).</li>
+        </ul>
+
+        <h3>Estadificación (TNM)</h3>
+        <table class="grade-table">
+            <thead><tr><th>Estadio</th><th>T</th><th>N</th><th>M</th><th>Supervivencia 5 años</th></tr></thead>
+            <tbody>
+                <tr><td>I</td><td>T1-T2</td><td>N0</td><td>M0</td><td>90%</td></tr>
+                <tr><td>II</td><td>T3-T4</td><td>N0</td><td>M0</td><td>70-80%</td></tr>
+                <tr><td>III</td><td>Cualquier T</td><td>N1-N2</td><td>M0</td><td>50-70%</td></tr>
+                <tr><td>IV</td><td>Cualquier T</td><td>Cualquier N</td><td>M1</td><td>10-20%</td></tr>
+            </tbody>
+        </table>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Hemicolectomía derecha</h4>
+            <p><strong>Indicación:</strong> cáncer de colon derecho (ciego, ascendente, ángulo hepático).</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media o laparoscopia.</li>
+                <li><strong>Movilización:</strong> sección del peritoneo parietocólico derecho (maniobra de Kocher).</li>
+                <li><strong>Ligadura vascular:</strong> arteria y vena ileocólica, cólica derecha y cólica media (en el origen).</li>
+                <li><strong>Resección:</strong> resecar el íleon terminal (10-15 cm), el ciego, el colon ascendente y el ángulo hepático.</li>
+                <li><strong>Anastomosis:</strong> ileotransversa término-lateral o término-terminal (grapadora o sutura manual).</li>
+                <li><strong>Cierre del mesenterio.</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+
+            <h4>Técnica quirúrgica: Hemicolectomía izquierda</h4>
+            <p><strong>Indicación:</strong> cáncer de colon izquierdo (descendente, sigmoides).</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media o laparoscopia.</li>
+                <li><strong>Movilización:</strong> sección del peritoneo parietocólico izquierdo.</li>
+                <li><strong>Ligadura vascular:</strong> arteria y vena mesentérica inferior (en el origen).</li>
+                <li><strong>Resección:</strong> resecar el colon descendente, sigmoides y parte del recto superior.</li>
+                <li><strong>Anastomosis:</strong> colorrectal término-terminal (grapadora circular o sutura manual).</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Fuga anastomótica:</strong> 5-10%.</li>
+                <li><strong>Hemorragia.</li>
+                <li><strong>Infección de la herida.</li>
+                <li><strong>Obstrucción intestinal.</li>
+                <li><strong>Recidiva:</strong> 20-30%.</li>
+                <li><strong>Metástasis hepáticas.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CÁNCER DE RECTO -->
+    <div class="content-section" id="sec-cancer-recto">
+        <h2>🔵 Cáncer de Recto</h2>
+
+        <h3>Concepto y epidemiología</h3>
+        <p>El cáncer de recto es un adenocarcinoma que se origina en el recto. Su manejo es diferente al cáncer de colon por su localización en la pelvis y su relación con el esfínter anal.</p>
+        <ul>
+            <li><strong>Localización:</strong> recto superior (10-15 cm), medio (5-10 cm), inferior (<5 cm).</li>
+            <li><strong>Factores de riesgo:</strong> similares al cáncer de colon.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Rectorragia:</strong> el síntoma más frecuente.</li>
+                <li><strong>Tenesmo, urgencia defecatoria.</strong></li>
+                <li><strong>Cambio en el hábito intestinal.</strong></li>
+                <li><strong>Dolor pélvico.</strong></li>
+                <li><strong>Tacto rectal:</strong> masa palpable en el recto.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por imagen</h3>
+        <ul>
+            <li><strong>Rectosigmoidoscopia con biopsia:</strong> confirmación diagnóstica.</li>
+            <li><strong>RMN pélvica:</strong> GOLD STANDARD para estadificación local (evalúa la invasión del mesorrecto y los ganglios).</li>
+            <li><strong>TAC de abdomen y tórax:</strong> metástasis.</li>
+            <li><strong>Ecoendoscopia:</strong> para tumores superficiales.</li>
+        </ul>
+
+        <h3>Estadificación (TNM)</h3>
+        <p>Similar al cáncer de colon, pero con especial atención a la invasión del mesorrecto (T3) y los ganglios.</p>
+
+        <div class="surg-box">
+            <h4>Técnica quirúrgica: Resección anterior baja (RAB)</h4>
+            <p><strong>Indicación:</strong> cáncer de recto superior o medio.</p>
+            <ol>
+                <li><strong>Incisión:</strong> laparotomía media o laparoscopia.</li>
+                <li><strong>Movilización:</strong> disección del recto con escisión total del mesorrecto (TME).</li>
+                <li><strong>Ligadura vascular:</strong> arteria mesentérica inferior.</li>
+                <li><strong>Resección:</strong> resecar el recto afectado con margen distal de 2 cm.</li>
+                <li><strong>Anastomosis:</strong> colorrectal o coloanal (grapadora circular).</li>
+                <li><strong>Ileostomía de protección:</strong> temporal (en anastomosis bajas).</li>
+                <li><strong>Cierre por planos.</strong></li>
+            </ol>
+
+            <h4>Técnica quirúrgica: Amputación abdominoperineal (Miles)</h4>
+            <p><strong>Indicación:</strong> cáncer de recto inferior que invade el esfínter anal.</p>
+            <ol>
+                <li><strong>Incisión abdominal:</strong> laparotomía media.</li>
+                <li><strong>Movilización:</strong> disección del recto con TME.</li>
+                <li><strong>Incisión perineal:</strong> elipse alrededor del ano, resección del recto, el ano y el esfínter.</li>
+                <li><strong>Colostomía terminal:</strong> en el flanco izquierdo.</li>
+                <li><strong>Cierre perineal:</strong> con o sin colgajo (miocutáneo).</li>
+            </ol>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Fuga anastomótica:</strong> 10-15%.</li>
+                <li><strong>Incontinencia fecal:</strong> en anastomosis bajas.</li>
+                <li><strong>Disfunción sexual y urinaria:</strong> por lesión nerviosa.</li>
+                <li><strong>Recidiva local:</strong> 5-10% (menor con TME).</li>
+                <li><strong>Estenosis anastomótica.</strong></li>
+                <li><strong>Hernia paraestomal.</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PÓLIPOS COLORRECTALES -->
+    <div class="content-section" id="sec-polipos">
+        <h2>🟡 Pólipos Colorrectales</h2>
+
+        <h3>Concepto y clasificación</h3>
+        <p>Los pólipos colorrectales son protrusiones de la mucosa hacia la luz del colon. La mayoría son benignos, pero algunos tienen potencial maligno.</p>
+        <ul>
+            <li><strong>Neoplásicos (adenomas):</strong> 
+                <ul>
+                    <li><strong>Tubulares:</strong> 80%, riesgo de malignización 5%.</li>
+                    <li><strong>Vellosos:</strong> 10%, riesgo de malignización 30-40%.</li>
+                    <li><strong>Tubulovellosos:</strong> 10%, riesgo intermedio.</li>
+                </ul>
+            </li>
+            <li><strong>No neoplásicos:</strong> 
+                <ul>
+                    <li><strong>Hiperplásicos:</strong> sin riesgo de malignización.</li>
+                    <li><strong>Hamartomatosos:</strong> en síndromes (Peutz-Jeghers).</li>
+                    <li><strong>Inflamatorios:</strong> en EII.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Asintomáticos:</strong> en la mayoría de los casos.</li>
+                <li><strong>Sangrado:</strong> oculto o visible.</li>
+                <li><strong>Cambio en el hábito intestinal.</strong></li>
+                <li><strong>Diagnóstico:</strong> colonoscopia (visualización y biopsia).</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Polipectomía endoscópica</h4>
+            <p><strong>Indicación:</strong> pólipos pequeños (&lt;2 cm) o pediculados.</p>
+            <ul>
+                <li><strong>Asa de diatermia:</strong> para pólipos pediculados.</li>
+                <li><strong>Mucosectomía:</strong> para pólipos sésiles pequeños.</li>
+                <li><strong>Disección submucosa endoscópica (ESD):</strong> para pólipos planos o grandes.</li>
+            </ul>
+
+            <h4>2. Resección quirúrgica</h4>
+            <p><strong>Indicación:</strong> pólipos >2 cm, sésiles, no resecables por endoscopia, o con displasia de alto grado/cáncer.</p>
+            <ul>
+                <li><strong>Polipectomía quirúrgica:</strong> resección local con colonotomía.</li>
+                <li><strong>Resección segmentaria:</strong> si hay cáncer invasor.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Sangrado post-polipectomía:</strong> 1-2%.</li>
+                <li><strong>Perforación:</strong> 0.5-1%.</li>
+                <li><strong>Síndrome post-polipectomía:</strong> dolor, fiebre, leucocitosis (por coagulación).</li>
+                <li><strong>Recidiva:</strong> 10-20% (requiere seguimiento).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SÍNDROMES DE POLIPOSIS -->
+    <div class="content-section" id="sec-sindrome-poliposis">
+        <h2>🧬 Síndromes de Poliposis</h2>
+
+        <h3>Concepto y clasificación</h3>
+        <p>Los síndromes de poliposis son enfermedades hereditarias caracterizadas por la aparición de múltiples pólipos en el colon y otros órganos, con alto riesgo de cáncer colorrectal.</p>
+
+        <h3>Principales síndromes</h3>
+        <table class="grade-table">
+            <thead><tr><th>Síndrome</th><th>Gen</th><th>Características</th><th>Riesgo de cáncer</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Poliposis adenomatosa familiar (FAP)</strong></td><td>APC</td><td>Miles de pólipos adenomatosos en el colon, aparición en la adolescencia.</td><td>100% a los 40 años si no se trata.</td></tr>
+                <tr><td><strong>Síndrome de Lynch (HNPCC)</strong></td><td>MLH1, MSH2, MSH6, PMS2</td><td>Pólipos pocos, pero con alta tasa de malignización. Cáncer de colon derecho, endometrio, ovario.</td><td>80% a los 70 años.</td></tr>
+                <tr><td><strong>Síndrome de Peutz-Jeghers</strong></td><td>STK11</td><td>Pólipos hamartomatosos en todo el tracto digestivo, manchas melanóticas en labios y mucosa.</td><td>30-40% (colon, mama, páncreas).</td></tr>
+                <tr><td><strong>Síndrome de Gardner</strong></td><td>APC</td><td>FAP + osteomas, quistes sebáceos, tumores desmoides.</td><td>100% (similar a FAP).</td></tr>
+                <tr><td><strong>Síndrome de Turcot</strong></td><td>APC o MMR</td><td>FAP o Lynch + tumores cerebrales (meduloblastoma, glioblastoma).</td><td>Alto.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Historia familiar:</strong> antecedentes de cáncer colorrectal en familiares jóvenes.</li>
+                <li><strong>Colonoscopia:</strong> múltiples pólipos (FAP) o pólipos con displasia (Lynch).</li>
+                <li><strong>Estudio genético:</strong> identificación de mutaciones.</li>
+                <li><strong>Criterios de Amsterdam y Bethesda:</strong> para Lynch.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Poliposis adenomatosa familiar (FAP)</h4>
+            <ul>
+                <li><strong>Proctocolectomía total con reservorio ileal:</strong> tratamiento de elección (antes de los 20 años).</li>
+                <li><strong>Colectomía total con anastomosis ileorrectal:</strong> alternativa (con seguimiento del recto).</li>
+                <li><strong>Quimioprevención:</strong> sulindac, celecoxib (reduce los pólipos, pero no elimina el riesgo).</li>
+            </ul>
+
+            <h4>2. Síndrome de Lynch</h4>
+            <ul>
+                <li><strong>Colectomía total con anastomosis ileorrectal:</strong> en pacientes con cáncer o alto riesgo.</li>
+                <li><strong>Seguimiento:</strong> colonoscopia cada 1-2 años.</li>
+                <li><strong>Cirugía profiláctica:</strong> en portadores de mutación (discutible).</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Cáncer colorrectal:</strong> riesgo muy elevado.</li>
+                <li><strong>Cáncer extracolónico:</strong> duodeno, mama, tiroides, páncreas.</li>
+                <li><strong>Pouchitis:</strong> después de la proctocolectomía.</li>
+                <li><strong>Obstrucción intestinal:</strong> por adherencias.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- INCONTINENCIA URINARIA -->
+    <div class="content-section" id="sec-incontinencia-uretral">
+        <h2>🚽 Incontinencia Urinaria</h2>
+
+        <h3>Concepto y clasificación</h3>
+        <p>La incontinencia urinaria es la pérdida involuntaria de orina. Es más frecuente en mujeres y personas mayores.</p>
+        <ul>
+            <li><strong>De esfuerzo:</strong> pérdida con el esfuerzo (tos, estornudo, ejercicio) por debilidad del suelo pélvico.</li>
+            <li><strong>De urgencia:</strong> pérdida por contracciones involuntarias del detrusor (vejiga hiperactiva).</li>
+            <li><strong>Mixta:</strong> combinación de ambas.</li>
+            <li><strong>Por rebosamiento:</strong> por obstrucción o vejiga hipotónica.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Historia:</strong> tipo, frecuencia, factores desencadenantes.</li>
+                <li><strong>Examen físico:</strong> evaluación del suelo pélvico, prueba de esfuerzo.</li>
+                <li><strong>Diario miccional:</strong> registro de micciones y pérdidas.</li>
+                <li><strong>Estudios urodinámicos:</strong> evalúan la función vesical y del esfínter.</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Tratamiento conservador</h4>
+            <ul>
+                <li><strong>Ejercicios de Kegel:</strong> fortalecimiento del suelo pélvico.</li>
+                <li><strong>Biofeedback.</strong></li>
+                <li><strong>Fármacos:</strong> anticolinérgicos (oxibutinina), mirabegrón (para la vejiga hiperactiva).</li>
+                <li><strong>Pesarios:</strong> para el prolapso asociado.</li>
+            </ul>
+
+            <h4>2. Tratamiento quirúrgico</h4>
+            <ul>
+                <li><strong>Cabestrillo suburetral (TVT o TOT):</strong> para la incontinencia de esfuerzo.</li>
+                <li><strong>Colposuspensión de Burch:</strong> fijación del cuello vesical al ligamento de Cooper.</li>
+                <li><strong>Inyección de agentes de relleno:</strong> para la incompetencia esfinteriana.</li>
+                <li><strong>Esfínter urinario artificial:</strong> en casos graves.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Infección urinaria.</li>
+                <li><strong>Retención urinaria.</li>
+                <li><strong>Lesión vesical o uretral.</li>
+                <li><strong>Recidiva.</li>
+                <li><strong>Dispareunia.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PROCTITIS RÁDICA -->
+    <div class="content-section" id="sec-proctitis-radica">
+        <h2>☢️ Proctitis Rádica</h2>
+
+        <h3>Concepto y fisiopatología</h3>
+        <p>La proctitis rádica es la inflamación del recto secundaria a la radioterapia pélvica (para cáncer de próstata, cuello uterino, recto, vejiga). Se produce por daño a la mucosa y a los vasos sanguíneos.</p>
+        <ul>
+            <li><strong>Incidencia:</strong> 5-20% de los pacientes irradiados.</li>
+            <li><strong>Tiempo de aparición:</strong> 3-6 meses (aguda) o años (crónica).</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Rectorragia:</strong> el síntoma más frecuente (por telangiectasias).</li>
+                <li><strong>Tenesmo, urgencia defecatoria.</strong></li>
+                <li><strong>Dolor rectal.</strong></li>
+                <li><strong>Diarrea.</strong></li>
+                <li><strong>Endoscopia:</strong> mucosa eritematosa, telangiectasias, úlceras.</li>
+                <li><strong>Biopsia:</strong> confirma el daño por radiación (fibrosis, hialinización vascular).</li>
+            </ul>
+        </div>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Tratamiento médico</h4>
+            <ul>
+                <li><strong>Baños de asiento.</strong></li>
+                <li><strong>Antiinflamatorios tópicos:</strong> sucralfato, mesalazina (enemas).</li>
+                <li><strong>Corticoides tópicos.</strong></li>
+                <li><strong>Ácido aminocaproico o tranexámico:</strong> para el sangrado.</li>
+                <li><strong>Formalina tópica (4%):</strong> para coagular las telangiectasias.</li>
+                <li><strong>Terapia de oxígeno hiperbárico:</strong> para mejorar la cicatrización.</li>
+            </ul>
+
+            <h4>2. Tratamiento endoscópico</h4>
+            <ul>
+                <li><strong>Coagulación con argón plasma (APC):</strong> para telangiectasias.</li>
+                <li><strong>Electrocoagulación.</strong></li>
+                <li><strong>Láser.</strong></li>
+            </ul>
+
+            <h4>3. Tratamiento quirúrgico</h4>
+            <ul>
+                <li><strong>Indicación:</strong> sangrado refractario, estenosis, fístula, perforación.</li>
+                <li><strong>Colostomía de derivación:</strong> para proteger el recto.</li>
+                <li><strong>Proctectomía:</strong> en casos graves (raro).</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Hemorragia digestiva baja:</strong> por telangiectasias.</li>
+                <li><strong>Estenosis rectal.</li>
+                <li><strong>Fístula rectovaginal o rectovesical.</li>
+                <li><strong>Perforación.</li>
+                <li><strong>Incontinencia fecal.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ITS ANORRECTALES -->
+    <div class="content-section" id="sec-its-anorrectal">
+        <h2>🦠 Infecciones de Transmisión Sexual Anorrectales</h2>
+
+        <h3>Concepto y etiología</h3>
+        <p>Las ITS anorrectales son infecciones transmitidas por contacto sexual que afectan el ano y el recto. Son más frecuentes en hombres que tienen sexo con hombres (HSH) y en personas con prácticas sexuales de riesgo.</p>
+        <ul>
+            <li><strong>Bacterianas:</strong> Neisseria gonorrhoeae, Chlamydia trachomatis, Treponema pallidum (sífilis), Haemophilus ducreyi (chancroide).</li>
+            <li><strong>Virales:</strong> Virus del herpes simple (VHS), Virus del papiloma humano (VPH), VIH.</li>
+            <li><strong>Parasitarias:</strong> Entamoeba histolytica, Giardia.</li>
+        </ul>
+
+        <h3>Diagnóstico clínico</h3>
+        <div class="dx-box">
+            <ul>
+                <li><strong>Secreción anal:</strong> purulenta (gonococo), mucosa (clámide), sanguinolenta.</li>
+                <li><strong>Dolor anal:</strong> intenso en el herpes, leve en la sífilis.</li>
+                <li><strong>Úlceras:</strong> 
+                    <ul>
+                        <li><strong>Sífilis:</strong> chancro indoloro, bordes indurados.</li>
+                        <li><strong>Herpes:</strong> vesículas dolorosas, úlceras.</li>
+                        <li><strong>Chancroide:</strong> úlcera dolorosa, bordes blandos.</li>
+                    </ul>
+                </li>
+                <li><strong>Condilomas:</strong> verrugas por VPH.</li>
+                <li><strong>Prurito, tenesmo.</li>
+                <li><strong>Diagnóstico diferencial:</strong> EII, fisura, absceso, cáncer anal.</li>
+            </ul>
+        </div>
+
+        <h3>Diagnóstico por laboratorio</h3>
+        <ul>
+            <li><strong>Exudado anal:</strong> Gram, cultivo, PCR.</li>
+            <li><strong>Serología:</strong> sífilis (VDRL, FTA-ABS), VIH.</li>
+            <li><strong>Biopsia:</strong> en lesiones sospechosas.</li>
+            <li><strong>Anoscopia:</strong> visualización de lesiones.</li>
+        </ul>
+
+        <h3>Tratamiento</h3>
+        <div class="surg-box">
+            <h4>1. Tratamiento etiológico</h4>
+            <ul>
+                <li><strong>Gonococo:</strong> ceftriaxona 500 mg IM dosis única.</li>
+                <li><strong>Clámide:</strong> doxiciclina 100 mg VO c/12h por 7 días (o azitromicina 1 g VO dosis única).</li>
+                <li><strong>Sífilis:</strong> penicilina benzatínica 2.4 millones UI IM dosis única (o doxiciclina en alérgicos).</li>
+                <li><strong>Herpes:</strong> aciclovir 400 mg VO c/8h por 7-10 días (o valaciclovir).</li>
+                <li><strong>VPH:</strong> crioterapia, electrocoagulación, imiquimod tópico, o extirpación quirúrgica.</li>
+                <li><strong>VIH:</strong> terapia antirretroviral.</li>
+            </ul>
+
+            <h4>2. Tratamiento quirúrgico</h4>
+            <ul>
+                <li><strong>Condilomas gigantes:</strong> extirpación quirúrgica.</li>
+                <li><strong>Abscesos:</strong> drenaje.</li>
+                <li><strong>Estenosis:</strong> dilatación.</li>
+            </ul>
+        </div>
+
+        <h3>Complicaciones</h3>
+        <div class="comp-box">
+            <ul>
+                <li><strong>Estenosis rectal:</strong> por inflamación crónica (clamidia).</li>
+                <li><strong>Fístula:</strong> por absceso.</li>
+                <li><strong>Cáncer anal:</strong> por VPH (tipos 16 y 18).</li>
+                <li><strong>Diseminación sistémica:</strong> sífilis, VIH.</li>
+                <li><strong>Infección perinatal:</strong> en embarazadas.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Navegación
+    const buttons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+
+    function showSection(targetId) {
+        sections.forEach(sec => sec.classList.remove('active'));
+        const target = document.getElementById('sec-' + targetId);
+        if (target) target.classList.add('active');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons.forEach(btn => {
+            if (btn.dataset.target === targetId) btn.classList.add('active');
+        });
+        document.getElementById('mainContent').scrollTop = 0;
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.dataset.target;
+            if (target) showSection(target);
+        });
+    });
+
+    showSection('inicio');
+</script>
+
+</body>
+</html>

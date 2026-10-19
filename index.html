@@ -63,12 +63,128 @@
             font-weight: 500;
         }
 
+        /* ----- BARRA DE BÚSQUEDA ----- */
+        .search-container {
+            padding: 20px 40px 10px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            border: 2px solid #e2edf7;
+            border-radius: 50px;
+            background: #fff;
+            color: #1a1a2e;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1a5276;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.15);
+        }
+
+        .search-box input::placeholder {
+            color: #8a9aa8;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.4rem;
+            color: #8a9aa8;
+            pointer-events: none;
+        }
+
+        /* ----- RESULTADOS DE BÚSQUEDA ----- */
+        .search-results {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            width: 100%;
+            display: none;
+            max-height: 60vh;
+            overflow-y: auto;
+            gap: 8px;
+            flex-direction: column;
+        }
+
+        .search-results.active {
+            display: flex;
+        }
+
+        .search-result-item {
+            background: #fff;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 1px solid #e2edf7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .search-result-item:hover {
+            background: #f4f8fc;
+            border-color: #1a5276;
+            transform: translateX(4px);
+        }
+
+        .search-result-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .search-result-app {
+            font-size: 0.75rem;
+            color: #6a7a8e;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-result-section {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b2b4a;
+        }
+
+        .search-result-go {
+            font-size: 1.2rem;
+            color: #1a5276;
+            opacity: 0.6;
+        }
+
+        .no-results {
+            padding: 30px;
+            text-align: center;
+            color: #8a9aa8;
+            font-size: 1rem;
+        }
+
         /* ----- CONTENEDOR PRINCIPAL ----- */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 30px 40px 40px 40px;
+            padding: 10px 40px 40px 40px;
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
@@ -167,8 +283,19 @@
             .header h1 {
                 font-size: 1.3rem;
             }
+            .search-container {
+                padding: 15px 16px 5px 16px;
+            }
+            .search-box input {
+                padding: 14px 18px;
+                font-size: 1rem;
+            }
             .main-container {
                 padding: 16px;
+            }
+            .search-results {
+                padding: 0 16px;
+                max-height: 50vh;
             }
             .cards-grid {
                 gap: 16px;
@@ -180,7 +307,7 @@
         }
 
         @media print {
-            .header {
+            .header, .search-container, .search-results {
                 display: none;
             }
         }
@@ -199,6 +326,17 @@
         </div>
     </header>
 
+    <!-- ===== BARRA DE BÚSQUEDA ===== -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar un tema, sección o técnica... (Ej: hernia, apendicitis, trauma)">
+            <span class="search-icon">🔎</span>
+        </div>
+    </div>
+
+    <!-- ===== RESULTADOS DE BÚSQUEDA ===== -->
+    <div class="search-results" id="searchResults"></div>
+
     <!-- ===== CONTENIDO PRINCIPAL ===== -->
     <div class="main-container">
 
@@ -215,7 +353,7 @@
 
     <script>
         // ================================================================
-        //  DATOS DE LAS APLICACIONES (EN EL ORDEN SOLICITADO)
+        //  DATOS DE LAS APLICACIONES (ORDEN DEFINIDO)
         // ================================================================
         const apps = [{
             id: 'generales-hernia',
@@ -258,69 +396,422 @@
             color: '#7b4bb5',
             orden: 5
         }, {
-    id: 'leyes-cirugia',
-    nombre: 'Los 20 Mandamientos del Cirujano',
-    descripcion: 'Aforismos y principios fundamentales para la formación del residente de Cirugía General.',
-    icono: '📜',
-    archivo: 'Las 15 Leyes de la Cirugía.html',
-    color: '#1a5276',
-    orden: 6
-},{
-    id: 'cirugia-menor',
-    nombre: 'Cirugía Menor',
-    descripcion: 'Descripción de técnicas quirúrgicas en cirugía menor',
-    icono: '🔪',
-    archivo: 'Cirugía Menor.html',
-    color: '#2c7be5',
-    orden: 7
-},{
-    id: 'anestesia-toolkit',
-    nombre: 'Anesthesia Toolkit',
-    descripcion: 'Calculadoras, dosis, emergencias y farmacopea para anestesia.',
-    icono: '🩺',
-    archivo: 'Anestesia Toolkit.html',
-    color: '#2c7be5',
-    orden: 8
-},{
-    id: 'zerotosurgeon',
-    nombre: 'Zero to Surgeon',
-    descripcion: 'Juego IDLE sobre gestion de la residencia, evolucionando al servicio de Cirugía de hospital Carlos Manuel de Cespedes de Bayamo',
-    icono: '🏥',
-    archivo: 'Zero to Surgeon.html',
-    color: '#2c7be5',
-    orden: 9
-},{
-    id: 'mnemotecnias-quirurgicas',
-    nombre: 'Mnemotecnias Quirúrgicas',
-    descripcion: 'Más de 60 mnemotecnias basadas en Surgical Recall: ABCDEs, MANTRELS, Charcot/Reynolds, MEN, STOP IT, SALUD y muchas más.',
-    icono: '🧠',
-    archivo: 'Mnemotecnias Quirúrgicas.html',
-    color: '#ffd700',
-    orden: 10
-},{
-    id: 'guardia-medica',
-    nombre: 'Control de Guardia',
-    descripcion: 'Gestión de pacientes en guardia: ingresos, operados, pendientes, recados, tareas por paciente e informes de guardia.',
-    icono: '🏥',
-    archivo: 'Guardia Médica.html',
-    color: '#0077b6',
-    orden: 11
-},{
-    id: 'cirugia-pediatrica',
-    nombre: 'Cirugía Pediátrica',
-    descripcion: 'Abdomen agudo pediátrico, malformaciones congénitas, patología inguinoescrotal, tumores y trauma pediátrico con técnicas quirúrgicas detalladas.',
-    icono: '🧒',
-    archivo: 'Cirugía Pediátrica.html',
-    color: '#7b4bb5',
-    orden: 12
-}
-];
+            id: 'leyes-cirugia',
+            nombre: 'Los 20 Mandamientos del Cirujano',
+            descripcion: 'Aforismos y principios fundamentales para la formación del residente de Cirugía General.',
+            icono: '📜',
+            archivo: 'Las 15 Leyes de la Cirugía.html',
+            color: '#1a5276',
+            orden: 6
+        }, {
+            id: 'cirugia-menor',
+            nombre: 'Cirugía Menor',
+            descripcion: 'Descripción de técnicas quirúrgicas en cirugía menor',
+            icono: '🔪',
+            archivo: 'Cirugía Menor.html',
+            color: '#2c7be5',
+            orden: 7
+        }, {
+            id: 'anestesia-toolkit',
+            nombre: 'Anesthesia Toolkit',
+            descripcion: 'Calculadoras, dosis, emergencias y farmacopea para anestesia.',
+            icono: '🩺',
+            archivo: 'Anestesia Toolkit.html',
+            color: '#2c7be5',
+            orden: 8
+        }, {
+            id: 'zerotosurgeon',
+            nombre: 'Zero to Surgeon',
+            descripcion: 'Juego IDLE sobre gestion de la residencia, evolucionando al servicio de Cirugía de hospital Carlos Manuel de Cespedes de Bayamo',
+            icono: '🏥',
+            archivo: 'Zero to Surgeon.html',
+            color: '#2c7be5',
+            orden: 9
+        }, {
+            id: 'mnemotecnias-quirurgicas',
+            nombre: 'Mnemotecnias Quirúrgicas',
+            descripcion: 'Más de 60 mnemotecnias basadas en Surgical Recall: ABCDEs, MANTRELS, Charcot/Reynolds, MEN, STOP IT, SALUD y muchas más.',
+            icono: '🧠',
+            archivo: 'Mnemotecnias Quirúrgicas.html',
+            color: '#ffd700',
+            orden: 10
+        }, {
+            id: 'cirugia-pediatrica',
+            nombre: 'Cirugía Pediátrica',
+            descripcion: 'Abdomen agudo pediátrico, malformaciones congénitas, patología inguinoescrotal, tumores y trauma pediátrico con técnicas quirúrgicas detalladas.',
+            icono: '🧒',
+            archivo: 'Cirugía Pediátrica.html',
+            color: '#7b4bb5',
+            orden: 11
+        }, {
+            id: 'coloproctologia',
+            nombre: 'Coloproctología',
+            descripcion: 'Hemorroides, fisura, absceso, fístula, prolapso, diverticulitis, EII, cáncer colorrectal y técnicas quirúrgicas detalladas.',
+            icono: '📖',
+            archivo: 'Coloproctología.html',
+            color: '#0d4a3d',
+            orden: 12
+        }];
+
+        // ================================================================
+        //  ÍNDICE DE SECCIONES POR APLICACIÓN
+        // ================================================================
+        const appSections = {
+            'generales-hernia': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'hernias', nombre: 'Hernias - Definición y conceptos' },
+                { id: 'hernia-inguinal', nombre: 'Hernia Inguinal' },
+                { id: 'hernia-crural', nombre: 'Hernia Crural' },
+                { id: 'hernia-incisional', nombre: 'Hernia Incisional' },
+                { id: 'hernia-spiegel', nombre: 'Hernia de Spiegel' },
+                { id: 'hernia-umbilical', nombre: 'Hernia Umbilical' },
+                { id: 'hernia-epigastrica', nombre: 'Hernia Epigástrica' },
+                { id: 'hernias-complicaciones', nombre: 'Complicaciones generales de las hernias' },
+                { id: 'abdomen-agudo', nombre: 'Abdomen Agudo - Definición y síndromes' },
+                { id: 'peritonitis', nombre: 'Peritonitis' },
+                { id: 'diverticulitis', nombre: 'Diverticulitis Aguda' },
+                { id: 'pancreatitis', nombre: 'Pancreatitis Aguda' },
+                { id: 'embarazo-ectopico', nombre: 'Embarazo Ectópico Roto' },
+                { id: 'isquemia-mesenterica', nombre: 'Oclusión Vascular Mesentérica' },
+                { id: 'apendicitis', nombre: 'Apendicitis Aguda' },
+                { id: 'colecistitis', nombre: 'Colecistitis Aguda' },
+                { id: 'oclusion-intestinal', nombre: 'Oclusión Intestinal Mecánica' },
+                { id: 'equilibrio', nombre: 'Equilibrio Hidroelectrolítico - Introducción' },
+                { id: 'eq-deshidratacion', nombre: 'Deshidrataciones' },
+                { id: 'eq-electrolitos', nombre: 'Alteraciones electrolíticas' },
+                { id: 'eq-sodio', nombre: 'Sodio (hipo/hipernatremia)' },
+                { id: 'eq-potasio', nombre: 'Potasio (hipo/hiperpotasemia)' },
+                { id: 'eq-calcio', nombre: 'Calcio (hipo/hipercalcemia)' },
+                { id: 'eq-magnesio', nombre: 'Magnesio (hipo/hipermagnesemia)' },
+                { id: 'eq-acido-base', nombre: 'Ácido-base (gasometría)' },
+                { id: 'ostomias', nombre: 'Ostomías - Definición y clasificación' },
+                { id: 'gastrostomia', nombre: 'Gastrostomía' },
+                { id: 'cuidados-gastrostomia', nombre: 'Cuidados de gastrostomía' },
+                { id: 'yeyunostomia', nombre: 'Yeyunostomía' },
+                { id: 'ileostomia', nombre: 'Ileostomía' },
+                { id: 'colostomia', nombre: 'Colostomía' },
+                { id: 'cuidados-ostomias', nombre: 'Cuidados generales de ostomías' },
+                { id: 'antibioticos', nombre: 'Antibióticos - Definición y objetivos' },
+                { id: 'ab-mecanismos', nombre: 'Mecanismos de acción' },
+                { id: 'ab-clasificacion', nombre: 'Clasificación de antibióticos' },
+                { id: 'ab-profilaxis', nombre: 'Profilaxis perioperatoria' },
+                { id: 'ab-empirico', nombre: 'Tratamiento empírico' },
+                { id: 'ab-toxicidad', nombre: 'Reacciones adversas' },
+                { id: 'ab-resistencia', nombre: 'Resistencia bacteriana' }
+            ],
+            'trauma': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'partes-blandas', nombre: 'Traumatismo de partes blandas' },
+                { id: 'politrauma', nombre: 'Atención inicial al politraumatizado' },
+                { id: 'hemorragia', nombre: 'Grados de hemorragia aguda' },
+                { id: 'tce', nombre: 'Traumatismo craneoencefálico (TCE)' },
+                { id: 'tce-clasif', nombre: 'TCE - Clasificación' },
+                { id: 'tce-glasgow', nombre: 'Escala de Glasgow' },
+                { id: 'raquimedular', nombre: 'Traumatismo raquimedular (TRM)' },
+                { id: 'torax', nombre: 'Traumatismo torácico' },
+                { id: 'torax-simple', nombre: 'Traumas torácicos simples' },
+                { id: 'torax-complejo', nombre: 'Traumas torácicos complejos' },
+                { id: 'torax-cardiaco', nombre: 'Trauma cardíaco' },
+                { id: 'torax-esofago', nombre: 'Trauma esofágico' },
+                { id: 'torax-traquea', nombre: 'Trauma traqueobronquial' },
+                { id: 'abdomen', nombre: 'Traumatismo abdominal' },
+                { id: 'abdomen-higado', nombre: 'Traumatismo hepático' },
+                { id: 'abdomen-bazo', nombre: 'Traumatismo esplénico' },
+                { id: 'abdomen-rinon', nombre: 'Traumatismo renal' },
+                { id: 'abdomen-colon', nombre: 'Traumatismo de colon' },
+                { id: 'abdemen-duodeno', nombre: 'Traumatismo duodenal' },
+                { id: 'abdomen-pancreas', nombre: 'Traumatismo pancreático' },
+                { id: 'abdomen-estomago', nombre: 'Traumatismo gástrico' },
+                { id: 'abdomen-viasbiliares', nombre: 'Traumatismo de vías biliares' },
+                { id: 'abdomen-vejiga', nombre: 'Traumatismo vesical' },
+                { id: 'abdomen-vasos', nombre: 'Lesiones vasculares abdominales' },
+                { id: 'abdomen-retroperitoneal', nombre: 'Hematoma retroperitoneal' },
+                { id: 'abdomen-pelvis', nombre: 'Trauma de pelvis ósea' },
+                { id: 'abdomen-control', nombre: 'Control de daños (Damage Control)' },
+                { id: 'abdomen-sca', nombre: 'Síndrome Compartimental Abdominal (SCA)' },
+                { id: 'cuello', nombre: 'Traumatismo de cuello' },
+                { id: 'cuello-vascular', nombre: 'Lesiones vasculares del cuello' },
+                { id: 'cuello-laringe', nombre: 'Lesiones de laringe y tráquea cervical' },
+                { id: 'cuello-esofago', nombre: 'Lesiones esofágicas cervicales' }
+            ],
+            'abdomen': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'litiasis-vesicular', nombre: 'Litiasis Vesicular' },
+                { id: 'litiasis-hepatocoledoco', nombre: 'Litiasis Hepatocoledoco' },
+                { id: 'derivaciones-biliodigestivas', nombre: 'Derivaciones Biliodigestivas' },
+                { id: 'ictero-obstructivo', nombre: 'Íctero Obstructivo Extrahepático' },
+                { id: 'complicaciones-via-biliar', nombre: 'Complicaciones de Cirugía de Vía Biliar' },
+                { id: 'hipertension-portal', nombre: 'Hipertensión Portal' },
+                { id: 'absceso-hepatico', nombre: 'Absceso Hepático Amebiano' },
+                { id: 'pancreatitis', nombre: 'Pancreatitis' },
+                { id: 'tumores-pancreas', nombre: 'Tumores y Quistes del Páncreas' },
+                { id: 'esplenopatias', nombre: 'Esplenopatías Quirúrgicas No Traumáticas' },
+                { id: 'esplenectomia', nombre: 'Técnica Quirúrgica - Esplenectomía' },
+                { id: 'sangramiento-digestivo', nombre: 'Sangramiento Agudo del Tractus Digestivo' },
+                { id: 'anatomia-estomago', nombre: 'Anatomía Quirúrgica de Estómago y Duodeno' },
+                { id: 'ulcera-peptica', nombre: 'Úlcera Péptica Gástrica y Duodenal' },
+                { id: 'tecnica-ulcera', nombre: 'Técnica Quirúrgica para el Tratamiento de la Úlcera Péptica' },
+                { id: 'complicaciones-ulcera', nombre: 'Complicaciones de la Úlcera Péptica' },
+                { id: 'cancer-gastrico', nombre: 'Cáncer Gástrico' },
+                { id: 'tecnica-cancer', nombre: 'Técnica Quirúrgica para el Cáncer Gástrico' },
+                { id: 'cierre-duodenal', nombre: 'Técnicas para el Cierre del Muñón Duodenal' },
+                { id: 'complicaciones-gastrectomia', nombre: 'Complicaciones de la Cirugía Gástrica y las Gastrectomías' },
+                { id: 'gastrostomias', nombre: 'Gastrostomías' },
+                { id: 'hipertrofia-pilorica', nombre: 'Hipertrofia Congénita del Píloro' },
+                { id: 'tumores-intestino', nombre: 'Tumores de Intestino Delgado' },
+                { id: 'enteritis-regional', nombre: 'Enteritis Regional (Enfermedad de Crohn)' },
+                { id: 'fistulas-enterocutaneas', nombre: 'Fístulas Enterocutáneas Postoperatorias' }
+            ],
+            'toracica': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'anatomia-torax', nombre: 'Anatomía Quirúrgica del Tórax y Mediastino' },
+                { id: 'abordajes-torax', nombre: 'Vías de Abordaje del Tórax y Mediastino' },
+                { id: 'cancer-esofago', nombre: 'Cáncer de Esófago' },
+                { id: 'tecnicas-cancer', nombre: 'Técnicas Quirúrgicas - Esofaguectomía' },
+                { id: 'enfermedades-benignas', nombre: 'Enfermedades Benignas del Esófago' },
+                { id: 'tecnicas-acalasia', nombre: 'Técnicas Quirúrgicas para Acalasia y Benignas' },
+                { id: 'tumores-mediastino', nombre: 'Tumores de Mediastino' },
+                { id: 'cancer-pulmon', nombre: 'Cáncer de Pulmón' },
+                { id: 'empiema-pleural', nombre: 'Empiema Pleural' },
+                { id: 'tratamiento-empiema', nombre: 'Tratamiento del Empiema Pleural' },
+                { id: 'hamartoma-pleural', nombre: 'Hamartoma Pulmonar (y Pleural)' },
+                { id: 'diafragma', nombre: 'Cirugía Diafragmática' }
+            ],
+            'cuello-mama-gineco': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'mama-anatomia', nombre: 'Anatomía Quirúrgica de la Mama' },
+                { id: 'mama-factores', nombre: 'Factores de Riesgo para Cáncer de Mama' },
+                { id: 'mama-clasif', nombre: 'Clasificación TNM (Cáncer de Mama)' },
+                { id: 'mama-tto', nombre: 'Tratamiento Quirúrgico del Cáncer de Mama' },
+                { id: 'mama-conservadora', nombre: 'Cirugía Conservadora de la Mama' },
+                { id: 'mama-complicaciones', nombre: 'Complicaciones de la Cirugía de Mama' },
+                { id: 'mama-tto-medico', nombre: 'Tratamiento Médico del Cáncer de Mama' },
+                { id: 'cuello-anatomia', nombre: 'Anatomía Quirúrgica del Cuello' },
+                { id: 'tiroides-anatomia', nombre: 'Anatomía Quirúrgica de la Glándula Tiroides' },
+                { id: 'tiroides-patologia', nombre: 'Patología Quirúrgica de la Tiroides' },
+                { id: 'tiroides-cancer', nombre: 'Cáncer de Tiroides' },
+                { id: 'tiroides-tecnica', nombre: 'Técnica Quirúrgica de Tiroidectomía' },
+                { id: 'tiroides-complicaciones', nombre: 'Complicaciones de la Cirugía Tiroidea' },
+                { id: 'tiroides-tormenta', nombre: 'Tormenta Tiroidea' },
+                { id: 'parotida-anatomia', nombre: 'Anatomía Quirúrgica de la Glándula Parótida' },
+                { id: 'parotida-tecnica', nombre: 'Tumores de la Parótida y Técnica Quirúrgica' },
+                { id: 'parotida-nervio', nombre: 'Prevención de Lesión del Nervio Facial en Parotidectomía' },
+                { id: 'cuello-branquial', nombre: 'Malformaciones Branquiales' },
+                { id: 'cuello-traqueostomia', nombre: 'Traqueostomía' },
+                { id: 'cuello-laringe', nombre: 'Anatomía Quirúrgica de la Laringe y Tráquea Cervical' },
+                { id: 'cuello-recurrente', nombre: 'Lesiones del Nervio Laríngeo Recurrente' },
+                { id: 'cuello-mondor', nombre: 'Enfermedad de Mondor' },
+                { id: 'gineco-anatomia', nombre: 'Anatomía Quirúrgica de la Pelvis y el Periné Femenino' },
+                { id: 'gineco-prolapso', nombre: 'Prolapso Genital y Estados Afines' },
+                { id: 'gineco-ureterocele', nombre: 'Uretrocele y Cistocele: Técnicas Quirúrgicas' },
+                { id: 'gineco-htv', nombre: 'Histerectomía Vaginal' },
+                { id: 'gineco-hta', nombre: 'Histerectomía Abdominal Total' },
+                { id: 'gineco-fibroma', nombre: 'Fibroma Uterino' },
+                { id: 'gineco-ovario', nombre: 'Tumores de Ovario' },
+                { id: 'gineco-cancer', nombre: 'Cáncer Ginecológico' },
+                { id: 'angio-iaa', nombre: 'Insuficiencia Arterial Aguda (IAA)' },
+                { id: 'angio-tvp', nombre: 'Trombosis Venosa Profunda (TVP)' },
+                { id: 'angio-pie', nombre: 'Pie Diabético' },
+                { id: 'angio-amputaciones', nombre: 'Técnicas Quirúrgicas de Amputación' }
+            ],
+            'leyes-cirugia': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'mand1', nombre: '1. El que bien cose, bien cura' },
+                { id: 'mand2', nombre: '2. El mejor cirujano es el que sabe cuando no operar' },
+                { id: 'mand3', nombre: '3. No existe cavidad a la que no se pueda llegar con un trocar #14' },
+                { id: 'mand4', nombre: '4. Si no lo puedes ver, no lo puedes curar' },
+                { id: 'mand5', nombre: '5. Grandes incisiones, grandes cirujanos' },
+                { id: 'mand6', nombre: '6. Fiebre de ningún sitio, fiebre del subfrénico' },
+                { id: 'mand7', nombre: '7. El que no opera, no se complica' },
+                { id: 'mand8', nombre: '8. A mala hora, mala solución' },
+                { id: 'mand9', nombre: '9. El que no mira la herida, no ve la infección' },
+                { id: 'mand10', nombre: '10. Ver una, hacer una, enseñar una' },
+                { id: 'mand11', nombre: '11. La incisión se cierra como se abre, por planos' },
+                { id: 'mand12', nombre: '12. La ligadura es para el vaso que conoces, el electrodo para el que no' },
+                { id: 'mand13', nombre: '13. El paciente más importante es el paciente sin diagnóstico' },
+                { id: 'mand14', nombre: '14. El que no piensa en la complicación, la invita' },
+                { id: 'mand15', nombre: '15. Absceso diagnosticado, absceso drenado' },
+                { id: 'mand16', nombre: '16. El que no mete el dedo mete la pata' },
+                { id: 'mand17', nombre: '17. Sutura en un plano desde la boca hasta el ano' },
+                { id: 'mand18', nombre: '18. Toda sutura se aleja del cirujano menos el intradérmico' },
+                { id: 'mand19', nombre: '19. El cirujano no llora' },
+                { id: 'mand20', nombre: '20. Toda buena hemostasia empieza en la compresión' }
+            ],
+            'cirugia-menor': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'generalidades', nombre: 'Generalidades de la Cirugía Menor' },
+                { id: 'paracentesis', nombre: 'Paracentesis (Punción Abdominal)' },
+                { id: 'pleurocentesis', nombre: 'Pleurocentesis (Toracocentesis)' },
+                { id: 'toracostomia', nombre: 'Toracostomía por Sonda (Pleurostomía)' },
+                { id: 'seldinger', nombre: 'Técnica de Seldinger' },
+                { id: 'diseccion-vena', nombre: 'Disección Venosa (Safena y Tibial)' },
+                { id: 'lipoma', nombre: 'Lipoma' },
+                { id: 'abscesos', nombre: 'Abscesos de Partes Blandas' },
+                { id: 'quistes', nombre: 'Quistes Sebáceos' },
+                { id: 'biopsia-adenopatias', nombre: 'Biopsia de Adenopatías' },
+                { id: 'granulomas', nombre: 'Granulomas de Heridas por Suturas' },
+                { id: 'reseca-bloque', nombre: 'Resección en Bloque (Ántrax y Tumores)' },
+                { id: 'inc-media', nombre: 'Incisión Media (Laparotomía Media)' },
+                { id: 'inc-paramediana', nombre: 'Incisión Paramediana' },
+                { id: 'inc-mcburney', nombre: 'Incisión de McBurney' },
+                { id: 'inc-subcostal', nombre: 'Incisión Subcostal Derecha (Kocher)' },
+                { id: 'inc-pfannenstiel', nombre: 'Incisión de Pfannenstiel' },
+                { id: 'inc-kehr', nombre: 'Incisión de Kehr' },
+                { id: 'varicocele', nombre: 'Varicocele' },
+                { id: 'hidrocele', nombre: 'Hidrocele' },
+                { id: 'circuncision', nombre: 'Circuncisión' },
+                { id: 'fasciotomia', nombre: 'Fasciotomía (Gangrena)' },
+                { id: 'colgajos', nombre: 'Colgajos' },
+                { id: 'entubacion', nombre: 'Entubación Endotraqueal' },
+                { id: 'suturas-piel', nombre: 'Puntos de Sutura en Piel' },
+                { id: 'suturas-intestinal', nombre: 'Puntos de Sutura Intestinal' }
+            ],
+            'anestesia-toolkit': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'calculos', nombre: 'Cálculos (IMC, Sangre, Perfusión, Líquidos, Glasgow, Aldrete, Mallampati, Peso Pediátrico, RSI)' },
+                { id: 'dosis', nombre: 'Dosis (Inducción, Relajantes, Rescate, Broselow)' },
+                { id: 'emergencias', nombre: 'Emergencias (Algoritmos)' },
+                { id: 'farmacopea', nombre: 'Farmacopea (Buscador de fármacos)' }
+            ],
+            'zerotosurgeon': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'juego', nombre: 'Juego (Clínica, Tienda, Personal, Investigación, Tribunal)' }
+            ],
+            'mnemotecnias-quirurgicas': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'ppp-safe-disc', nombre: 'PPP SAFE DISC — Nota operatoria' },
+                { id: 'acdc-ava', nombre: 'AC/DC AVA PAIN DUD — Órdenes de admisión' },
+                { id: 'avoid-wte', nombre: 'AVOID WTE — Revisión diaria del paciente' },
+                { id: 'abcdes', nombre: 'ABCDEs — Evaluación primaria en trauma' },
+                { id: 'ample', nombre: 'AMPLE — Historia en trauma' },
+                { id: 'beck-triad', nombre: 'Beck\'s Triad — Taponamiento cardíaco' },
+                { id: 'cushing-triad', nombre: 'Cushing\'s Triad — Hipertensión intracraneal' },
+                { id: 'virchow-triad', nombre: 'Virchow\'s Triad — Riesgo de trombosis' },
+                { id: 'six-ps', nombre: 'Six P\'s — Isquemia arterial aguda' },
+                { id: 'mantrels', nombre: 'MANTRELS — Escala de Alvarado (Apendicitis)' },
+                { id: 'get-smashed', nombre: 'I GET SMASHED — Causas de pancreatitis' },
+                { id: 'pancreas', nombre: 'PANCREAS — Criterios de Glasgow' },
+                { id: 'ga-law', nombre: 'GA LAW — Criterios de Ranson al ingreso' },
+                { id: 'c-hobbs', nombre: 'C HOBBS — Criterios de Ranson a las 48 h' },
+                { id: '6f', nombre: '6 F\'s — Causas de distensión abdominal' },
+                { id: 'rule2', nombre: 'Rule of 2\'s — Divertículo de Meckel' },
+                { id: 'charcot', nombre: 'Charcot / Reynolds — Colangitis' },
+                { id: 'saints', nombre: 'Saint\'s Triad — Asociación clásica' },
+                { id: 'cullen-grey', nombre: 'Cullen / Grey Turner — Pancreatitis hemorrágica' },
+                { id: 'murphy', nombre: 'Murphy\'s Sign — Colecistitis aguda' },
+                { id: 'rovsing', nombre: 'Rovsing / Psoas / Obturator — Apendicitis' },
+                { id: 'courvoisier', nombre: 'Courvoisier — Vesícula palpable en ictericia' },
+                { id: 'goodsall', nombre: 'Goodsall\'s Rule — Fístulas anales' },
+                { id: 'kehr', nombre: 'Kehr\'s Sign — Ruptura esplénica' },
+                { id: 'battle-raccoon', nombre: 'Battle / Raccoon Eyes — Fractura de base de cráneo' },
+                { id: 'chvostek', nombre: 'Chvostek / Trousseau — Hipocalcemia' },
+                { id: 'melanoma-abcd', nombre: 'ABCDs del Melanoma' },
+                { id: 'breast-risk', nombre: 'NAACP / CHAFED LIPS — Riesgo de cáncer de mama' },
+                { id: 'carcinoid-air', nombre: 'AIR — Sitios del carcinoide' },
+                { id: 'carcinoid-bfdr', nombre: 'B FDR — Síndrome carcinoide' },
+                { id: 'sister-mary', nombre: 'Sister Mary Joseph — Metástasis umbilical' },
+                { id: 'virchow-node', nombre: 'Virchow\'s Node — Metástasis supraclavicular' },
+                { id: 'blumer', nombre: 'Blumer\'s Shelf — Metástasis pélvica' },
+                { id: 'krukenberg', nombre: 'Krukenberg — Tumor ovárico metastásico' },
+                { id: 'cat-urp', nombre: 'CAT URP — Crohn vs. Colitis Ulcerosa' },
+                { id: 'apie-sack', nombre: 'A PIE SACK — Manifestaciones extraintestinales de EII' },
+                { id: 'his-friend', nombre: 'HIS FRIEND — Factores que perpetúan fístulas' },
+                { id: 'ppp', nombre: 'PPP — MEN tipo I' },
+                { id: 'mph', nombre: 'MPH — MEN tipo IIa' },
+                { id: 'mmmp', nombre: 'MMMP — MEN tipo IIb' },
+                { id: 'sod', nombre: 'SOD — Síndrome de Gardner' },
+                { id: 'dieulafoy', nombre: 'Dieulafoy — Lesión vascular gástrica' },
+                { id: 'stop-it', nombre: 'STOP IT — Contraindicaciones de cirugía en cáncer de pulmón' },
+                { id: 'rule3-6-9', nombre: '3, 6, 9 Rule — Calibres radiológicos del intestino' },
+                { id: 'hammer', nombre: 'Hammerhead — Actitud del estudiante de cirugía' },
+                { id: 'westermark', nombre: 'Westermark — Signo radiológico del TEP' },
+                { id: 'hamman', nombre: 'Hamman\'s Sign — Neumomediastino' },
+                { id: 'mackler', nombre: 'Mackler\'s Triad — Ruptura esofágica' },
+                { id: 'as-532', nombre: 'AS 5-3-2 — Complicaciones de la estenosis aórtica' },
+                { id: 'cia', nombre: 'CIA — Síndrome de Leriche' },
+                { id: 'bemoan', nombre: 'BEMOAN — Tratamiento del IAM postoperatorio' },
+                { id: 'navel', nombre: 'NAVEL — Orden de estructuras femorales' },
+                { id: 'map-horner', nombre: 'MAP — Síndrome de Horner' },
+                { id: 'brown-sequard', nombre: 'CPT — Síndrome de Brown-Séquard' },
+                { id: 'tko-ewing', nombre: 'TKO Ewing — Sarcoma de Ewing' },
+                { id: 'coa', nombre: 'COA — Encefalopatía de Wernicke' },
+                { id: 'salud', nombre: 'SALUD — Causas de anion gap elevado' },
+                { id: 'you-need-pee', nombre: 'YOU NEED PEE — Fórmula de FENa' },
+                { id: 'tie', nombre: 'TIE — Distribución de líquidos corporales' },
+                { id: 'bgs-123', nombre: 'BGS 1-2-3 — Secreciones digestivas' },
+                { id: 'chimpanzees', nombre: 'CHIMPANZEES — Causas de hipercalcemia' },
+                { id: 'cb-dial-k', nombre: 'CB DIAL K — Tratamiento de hiperkalemia' },
+                { id: 'd-cops', nombre: 'D COPS — Pentalogía de Cantrell' },
+                { id: 'vacterl', nombre: 'VACTERL — Asociación congénita' },
+                { id: 'fetal-circulation', nombre: 'Circulación Fetal — Estructuras y remanentes' },
+                { id: 'breast-triad', nombre: 'Triad of Error — Cáncer de mama mal diagnosticado' },
+                { id: 'breast-risk2', nombre: 'Factores de Riesgo de Cáncer de Mama' },
+                { id: 'sits', nombre: 'SITS — Músculos del manguito rotador' },
+                { id: 'potts', nombre: 'POTTS — Control vascular' },
+                { id: 'navel2', nombre: 'NAVEL — Acceso vascular femoral' }
+            ],
+            'cirugia-pediatrica': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'generalidades', nombre: 'Generalidades de la Cirugía Pediátrica' },
+                { id: 'evaluacion', nombre: 'Evaluación del Niño Quirúrgico' },
+                { id: 'apendicitis-ped', nombre: 'Apendicitis Aguda en el Niño' },
+                { id: 'invaginacion', nombre: 'Invaginación Intestinal' },
+                { id: 'meckel', nombre: 'Divertículo de Meckel' },
+                { id: 'malrotacion', nombre: 'Malrotación Intestinal y Vólvulo' },
+                { id: 'hernia-ped', nombre: 'Hernia Inguinal Pediátrica' },
+                { id: 'hidrocele-ped', nombre: 'Hidrocele' },
+                { id: 'criptorquidia', nombre: 'Criptorquidia' },
+                { id: 'testiculo-torsion', nombre: 'Torsión Testicular' },
+                { id: 'fimosis', nombre: 'Fimosis y Circuncisión' },
+                { id: 'atresia-esofagica', nombre: 'Atresia Esofágica y Fístula Traqueoesofágica' },
+                { id: 'atresia-duodenal', nombre: 'Atresia Duodenal' },
+                { id: 'hirschsprung', nombre: 'Enfermedad de Hirschsprung' },
+                { id: 'malformacion-anorectal', nombre: 'Malformación Anorrectal' },
+                { id: 'onfalocele-gastrosquisis', nombre: 'Onfalocele y Gastrosquisis' },
+                { id: 'pilorica', nombre: 'Hipertrofia Congénita del Píloro' },
+                { id: 'neuroblastoma', nombre: 'Neuroblastoma' },
+                { id: 'wilms', nombre: 'Tumor de Wilms (Nefroblastoma)' },
+                { id: 'hepatoblastoma', nombre: 'Hepatoblastoma' },
+                { id: 'trauma-ped', nombre: 'Particularidades del Trauma Pediátrico' },
+                { id: 'trauma-abd-ped', nombre: 'Trauma Abdominal Pediátrico' },
+                { id: 'quiste-tirogloso', nombre: 'Quiste del Conducto Tirogloso' },
+                { id: 'branquial', nombre: 'Quistes y Fístulas Branquiales' },
+                { id: 'tumoraciones-ped', nombre: 'Tumoraciones Cervicales Pediátricas' }
+            ],
+            'coloproctologia': [
+                { id: 'inicio', nombre: 'Inicio' },
+                { id: 'anatomia', nombre: 'Anatomía Quirúrgica Anorrectal' },
+                { id: 'evaluacion', nombre: 'Evaluación Proctológica' },
+                { id: 'hemorroides', nombre: 'Enfermedad Hemorroidal' },
+                { id: 'fisura', nombre: 'Fisura Anal' },
+                { id: 'absceso', nombre: 'Absceso Perianal' },
+                { id: 'fistula', nombre: 'Fístula Perianal' },
+                { id: 'seno-pilonidal', nombre: 'Seno Pilonidal' },
+                { id: 'prurito', nombre: 'Prurito Anal' },
+                { id: 'prolapso-rectal', nombre: 'Prolapso Rectal' },
+                { id: 'incontinencia', nombre: 'Incontinencia Fecal' },
+                { id: 'rectocele', nombre: 'Rectocele' },
+                { id: 'diverticulosis', nombre: 'Diverticulosis' },
+                { id: 'diverticulitis', nombre: 'Diverticulitis Aguda' },
+                { id: 'crohn', nombre: 'Enfermedad de Crohn' },
+                { id: 'colitis-ulcerosa', nombre: 'Colitis Ulcerosa' },
+                { id: 'cancer-colon', nombre: 'Cáncer de Colon' },
+                { id: 'cancer-recto', nombre: 'Cáncer de Recto' },
+                { id: 'polipos', nombre: 'Pólipos Colorrectales' },
+                { id: 'sindrome-poliposis', nombre: 'Síndromes de Poliposis' },
+                { id: 'incontinencia-uretral', nombre: 'Incontinencia Urinaria' },
+                { id: 'proctitis-radica', nombre: 'Proctitis Rádica' },
+                { id: 'its-anorrectal', nombre: 'Infecciones de Transmisión Sexual Anorrectales' }
+            ]
+        };
 
         // ================================================================
         //  REFERENCIAS DOM
         // ================================================================
         const cardsGrid = document.getElementById('cardsGrid');
         const appCounter = document.getElementById('appCounter');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
 
         // ================================================================
         //  FUNCIONES
@@ -447,81 +938,204 @@
             ventana.focus();
         }
 
+        /** Busca secciones en todas las aplicaciones */
+        function buscarSecciones(query) {
+            if (!query || query.trim().length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+            const term = query.toLowerCase().trim();
+            const results = [];
+            apps.forEach(app => {
+                const sections = appSections[app.id];
+                if (sections) {
+                    sections.forEach(sec => {
+                        if (sec.nombre.toLowerCase().includes(term)) {
+                            results.push({
+                                app: app.nombre,
+                                appId: app.id,
+                                archivo: app.archivo,
+                                section: sec.nombre,
+                                sectionId: sec.id
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="no-results">🔍 No se encontraron secciones. Intenta con otra palabra.</div>';
+                searchResults.classList.add('active');
+                return;
+            }
+
+            searchResults.innerHTML = '';
+            results.forEach(res => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.innerHTML = `
+                    <div class="search-result-info">
+                        <div class="search-result-app">${res.app}</div>
+                        <div class="search-result-section">${res.section}</div>
+                    </div>
+                    <div class="search-result-go">➡️</div>
+                `;
+                item.addEventListener('click', () => {
+                    abrirSeccionDirecta(res);
+                });
+                searchResults.appendChild(item);
+            });
+            searchResults.classList.add('active');
+        }
+
+        /** Abre la aplicación y navega a la sección específica */
+        function abrirSeccionDirecta(res) {
+            const url = `${res.archivo}#sec-${res.sectionId}`;
+            const nuevaVentana = window.open(url, '_blank');
+
+            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
+                alert('⚠️ No se pudo abrir la ventana. Por favor, permite las ventanas emergentes para este sitio.');
+                return;
+            }
+
+            // Inyectar el botón "Volver al inicio" de la misma forma
+            const ventana = nuevaVentana;
+            const interval = setInterval(() => {
+                try {
+                    if (ventana.document && ventana.document.body) {
+                        if (ventana.document.getElementById('btn-volver-inicio')) {
+                            clearInterval(interval);
+                            return;
+                        }
+                        const btn = ventana.document.createElement('div');
+                        btn.id = 'btn-volver-inicio';
+                        btn.innerHTML = `
+                            <button onclick="window.close()" style="
+                                position: fixed;
+                                top: 16px;
+                                left: 16px;
+                                background: rgba(11, 43, 74, 0.92);
+                                color: white;
+                                border: none;
+                                padding: 12px 22px;
+                                border-radius: 30px;
+                                font-size: 0.95rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-family: 'Segoe UI', sans-serif;
+                                box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+                                transition: 0.2s;
+                                z-index: 99999;
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                backdrop-filter: blur(4px);
+                            "
+                            onmouseover="this.style.transform='scale(1.05)'; this.style.background='#1a5276';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(11,43,74,0.92)';"
+                            >
+                            <span style="font-size:1.4rem;">←</span> Volver al inicio
+                            </button>
+                        `;
+                        ventana.document.body.appendChild(btn);
+                        ventana.document.addEventListener('keydown', (e) => {
+                            if (e.altKey && e.key === 'ArrowLeft') {
+                                ventana.close();
+                            }
+                        });
+                        clearInterval(interval);
+                    }
+                } catch (e) {
+                    if (ventana.closed) {
+                        clearInterval(interval);
+                    }
+                }
+            }, 300);
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 10000);
+            ventana.focus();
+            searchResults.classList.remove('active');
+            searchInput.value = '';
+        }
+
         /** Inicializa la aplicación */
         function init() {
             actualizarContador();
             generarTarjetas();
+
+            // Evento de búsqueda
+            searchInput.addEventListener('input', (e) => {
+                buscarSecciones(e.target.value);
+            });
         }
 
         // ================================================================
         //  EJECUTAR
         // ================================================================
         document.addEventListener('DOMContentLoaded', init);
-     // --- Lógica para instalar como App (PWA) ---
-let deferredPrompt = null;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+        // --- Lógica para instalar como App (PWA) ---
+        let deferredPrompt = null;
 
-    // Crear botón flotante solo si no existe ya
-    if (document.getElementById('btn-instalar-pwa')) return;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
 
-    const btn = document.createElement('button');
-    btn.id = 'btn-instalar-pwa';
-    btn.innerHTML = '📲 Instalar aplicación';
-    btn.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #0b2b4a;
-        color: white;
-        border: none;
-        padding: 14px 22px;
-        border-radius: 30px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        font-family: 'Segoe UI', sans-serif;
-        cursor: pointer;
-        box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-        z-index: 99998;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: 0.2s;
-    `;
-    btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
-    btn.onmouseout = () => btn.style.transform = 'scale(1)';
+            if (document.getElementById('btn-instalar-pwa')) return;
 
-    btn.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
+            const btn = document.createElement('button');
+            btn.id = 'btn-instalar-pwa';
+            btn.innerHTML = '📲 Instalar aplicación';
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #0b2b4a;
+                color: white;
+                border: none;
+                padding: 14px 22px;
+                border-radius: 30px;
+                font-size: 0.95rem;
+                font-weight: 600;
+                font-family: 'Segoe UI', sans-serif;
+                cursor: pointer;
+                box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+                z-index: 99998;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: 0.2s;
+            `;
+            btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+            btn.onmouseout = () => btn.style.transform = 'scale(1)';
+
+            btn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    localStorage.setItem('pwa_instalada', 'true');
+                    console.log('App instalada');
+                }
+                deferredPrompt = null;
+                btn.remove();
+            });
+
+            document.body.appendChild(btn);
+        });
+
+        window.addEventListener('appinstalled', () => {
             localStorage.setItem('pwa_instalada', 'true');
-            console.log('App instalada');
+            const btn = document.getElementById('btn-instalar-pwa');
+            if (btn) btn.remove();
+            deferredPrompt = null;
+            console.log('¡App instalada con éxito!');
+        });
+
+        if (localStorage.getItem('pwa_instalada') === 'true') {
+            window.addEventListener('beforeinstallprompt', (e) => e.preventDefault());
         }
-        deferredPrompt = null;
-        btn.remove();
-    });
-
-    document.body.appendChild(btn);
-});
-
-// Ocultar el botón si ya está instalada (recordado en este navegador)
-window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwa_instalada', 'true');
-    const btn = document.getElementById('btn-instalar-pwa');
-    if (btn) btn.remove();
-    deferredPrompt = null;
-    console.log('¡App instalada con éxito!');
-});
-
-// Si ya se instaló antes en este navegador, no mostrar el botón
-if (localStorage.getItem('pwa_instalada') === 'true') {
-    // Bloquea la creación del botón
-    window.addEventListener('beforeinstallprompt', (e) => e.preventDefault());
-}
     </script>
 
 </body>
